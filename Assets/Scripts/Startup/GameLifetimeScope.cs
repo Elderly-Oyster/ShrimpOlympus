@@ -1,6 +1,6 @@
 using Core;
 using Core.Views;
-using Modules.MainMenu.Scripts;
+using Modules.ConverterScreen.Scripts;
 using Modules.StartGame.Scripts;
 using Services;
 using UnityEngine;
@@ -16,7 +16,7 @@ namespace Startup
         [SerializeField] private Camera mainCamera;
         
         [SerializeField] private StartGameUIView startGameUIView;
-        [SerializeField] private ConverterUIView converterUIView;
+        [SerializeField] private ConverterScreenView converterScreenView;
 
         protected override void Configure(IContainerBuilder builder)
         {            
@@ -28,16 +28,16 @@ namespace Startup
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
 
             builder.Register<StartGameScreenPresenter>(Lifetime.Transient);
-            builder.Register<ConverterPresenter>(Lifetime.Transient);
-            builder.Register<ConverterModel>(Lifetime.Singleton);
-            //builder.Register<StartGameModel>(Lifetime.Singleton); //TODO If we need it
+            builder.Register<ConverterScreenPresenter>(Lifetime.Transient);
+            builder.Register<ConverterScreenModel>(Lifetime.Singleton);
+            //builder.Register<StartGameModel>(Lifetime.Singleton); //чуть позже
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
             
             builder.RegisterInstance(screenTypeController).As<IRootController>();
             builder.RegisterInstance(startGameUIView).As<StartGameUIView>();
             
             builder
-                .RegisterComponentInNewPrefab(converterUIView, Lifetime.Transient)
+                .RegisterComponentInNewPrefab(converterScreenView, Lifetime.Transient)
                 .UnderTransform(rootCanvas.transform);
         }
     }

@@ -71,7 +71,7 @@ namespace Modules.StartGame.Scripts
             await _startGameUIView.WaitButton();
             cts.Cancel();
             cts.Dispose();
-            _rootController.RunPresenter(ScreenPresenterMap.MainMenu);
+            _rootController.RunPresenter(ScreenPresenterMap.Converter);
         }
 
         public async UniTask Stop() => await _startGameUIView.Hide();

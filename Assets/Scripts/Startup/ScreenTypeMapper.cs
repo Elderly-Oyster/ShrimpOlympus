@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core;
-using Modules.MainMenu.Scripts;
+using Modules.ConverterScreen.Scripts;
 using Modules.StartGame.Scripts;
 using VContainer;
 
@@ -18,7 +18,7 @@ namespace Startup
             _map = new Dictionary<ScreenPresenterMap, Type>
             {
                 { ScreenPresenterMap.StartGame, typeof(StartGameScreenPresenter) },
-                { ScreenPresenterMap.MainMenu, typeof(ConverterPresenter) },
+                { ScreenPresenterMap.Converter, typeof(ConverterScreenPresenter) },
             };
         }
 

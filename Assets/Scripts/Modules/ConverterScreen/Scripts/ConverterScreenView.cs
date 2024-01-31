@@ -5,9 +5,9 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Modules.MainMenu.Scripts
+namespace Modules.ConverterScreen.Scripts
 {
-    public class ConverterUIView : UIView
+    public class ConverterScreenView : UIView
     {
         [SerializeField] private TMP_InputField sourceAmountInputField;
         [SerializeField] private TMP_InputField targetAmountInputField;

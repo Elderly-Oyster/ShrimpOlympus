@@ -18,7 +18,6 @@ namespace Core
     public enum ScreenPresenterMap
     {
         StartGame = 0,
-        MainMenu = 1,
-        PlayMode = 2
+        Converter = 1
     }
 }
