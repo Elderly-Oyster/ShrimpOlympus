@@ -9,10 +9,8 @@ namespace Core
     
     public static class RootControllerExtension
     {
-        public static UniTaskVoid RunPresenter(this IRootController self, ScreenPresenterMap screenPresenterMap)
-        {
-            return self.RunPresenter(screenPresenterMap);
-        }
+        public static UniTaskVoid RunPresenter(this IRootController self, ScreenPresenterMap screenPresenterMap) => 
+            self.RunPresenter(screenPresenterMap);
     }
     
     public enum ScreenPresenterMap

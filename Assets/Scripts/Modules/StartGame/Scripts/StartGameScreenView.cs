@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 
 namespace Modules.StartGame.Scripts
 {
-    public class StartGameUIView : UIView
+    public class StartGameScreenView : UIView
     {
         [SerializeField] private Button continueButton;
         
@@ -31,7 +31,10 @@ namespace Modules.StartGame.Scripts
 
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         
-        public float duration = .2f;
+        private const string TapToContinueText = "Tap to continue";
+        private const float ProgressBarAnimDuration = 0.5f;
+        private const float Duration = .2f;
+        private const int TooltipDelay = 4000;
 
         
         private void Awake() => ResetProgressBar();
@@ -40,11 +43,12 @@ namespace Modules.StartGame.Scripts
 
         private void Start()
         {
-            versionText.text = Application.version;
             splashTooltipsText.transform.parent.gameObject.SetActive(true);
             ShowTooltips(_cancellationTokenSource.Token).Forget();
         }
         
+        public void SetVersionText(string version) => versionText.text = version;
+
         public override UniTask Show() => UniTask.CompletedTask;
 
         public override UniTask Hide()
@@ -82,23 +86,26 @@ namespace Modules.StartGame.Scripts
 
         private async UniTaskVoid ShowTooltips(CancellationToken cancellationToken)
         {
-            if (cancellationToken.IsCancellationRequested)
-                return;
-            
-            var index = Random.Range(0, tooltips.Length - 1);
-            while (!cancellationToken.IsCancellationRequested)
+            try
             {
-                splashTooltipsText.text = tooltips[index];
-                await UniTask.Delay(4000, cancellationToken: cancellationToken);
-                index = (index + 1) % tooltips.Length;
+                var index = Random.Range(0, tooltips.Length - 1);
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    splashTooltipsText.text = tooltips[index];
+                    await UniTask.Delay(TooltipDelay, cancellationToken: cancellationToken);
+                    index = (index + 1) % tooltips.Length;
+                }
             }
+            catch (OperationCanceledException) { }
+            catch (Exception ex) { Debug.LogError($"ShowTooltips Error: {ex.Message}"); }
         }
         
         public void ShowAnimations(CancellationToken cancellationToken)
         {
-            progressText.text = "Tap to continue";
-            progressBarCanvasGroup.DOFade(0, .5f);
-            progressText.transform.DOScale(1.2f, .5f).SetLoops(-1, LoopType.Yoyo);
+            progressText.text = TapToContinueText;
+            progressBarCanvasGroup.DOFade(0, ProgressBarAnimDuration);
+            progressText.transform.DOScale(1.2f, ProgressBarAnimDuration).
+                SetLoops(-1, LoopType.Yoyo);
 
             StartFlickering(cancellationToken).Forget();
         }
@@ -112,17 +119,20 @@ namespace Modules.StartGame.Scripts
                 var opacity = Random.Range(0f, .3f);
                 
                 await UniTask.WhenAll(
-                    lightingCanvasGroup.DOFade(opacity, duration).SetEase(easy)
+                    lightingCanvasGroup.DOFade(opacity, Duration).SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken),
-                    overlay.DOFade(1 - opacity, duration).SetEase(easy).ToUniTask(cancellationToken: cancellationToken)
+                    overlay.DOFade(1 - opacity, Duration).SetEase(easy)
+                        .ToUniTask(cancellationToken: cancellationToken)
                 );
 
                 await UniTask.WhenAll(
-                    lightingCanvasGroup.DOFade(1, duration).SetEase(easy)
+                    lightingCanvasGroup.DOFade(1, Duration).SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken),
-                    overlay.DOFade(0, duration).SetEase(easy).ToUniTask(cancellationToken: cancellationToken)
+                    overlay.DOFade(0, Duration).SetEase(easy).
+                        ToUniTask(cancellationToken: cancellationToken)
                 );
-                await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(.2f, .8f)), cancellationToken: cancellationToken);
+                await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(.2f, .8f)),
+                    cancellationToken: cancellationToken);
             }
         }
     }

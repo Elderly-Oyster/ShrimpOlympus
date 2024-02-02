@@ -15,7 +15,7 @@ namespace Startup
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
         
-        [SerializeField] private StartGameUIView startGameUIView;
+        [SerializeField] private StartGameScreenView startGameScreenView;
         [SerializeField] private ConverterScreenView converterScreenView;
 
         protected override void Configure(IContainerBuilder builder)
@@ -30,11 +30,11 @@ namespace Startup
             builder.Register<StartGameScreenPresenter>(Lifetime.Transient);
             builder.Register<ConverterScreenPresenter>(Lifetime.Transient);
             builder.Register<ConverterScreenModel>(Lifetime.Singleton);
-            //builder.Register<StartGameModel>(Lifetime.Singleton); //чуть позже
+            builder.Register<StartGameScreenModel>(Lifetime.Singleton); // Чуть позже
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
             
             builder.RegisterInstance(screenTypeController).As<IRootController>();
-            builder.RegisterInstance(startGameUIView).As<StartGameUIView>();
+            builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
             
             builder
                 .RegisterComponentInNewPrefab(converterScreenView, Lifetime.Transient)

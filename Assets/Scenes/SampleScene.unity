@@ -738,7 +738,7 @@ MonoBehaviour:
   screenTypeController: {fileID: 436144741}
   rootCanvas: {fileID: 414013163}
   mainCamera: {fileID: 519420031}
-  startGameUIView: {fileID: 2105838337}
+  startGameScreenView: {fileID: 2105838337}
   converterScreenView: {fileID: 4474734653127942602, guid: 8a5390bdd1badf742bc1b9fe7d21e7e2, type: 3}
 --- !u!1 &519420028
 GameObject:
@@ -1078,7 +1078,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.23529412}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1237,7 +1237,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100%
+  m_text: 0%
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1390,7 +1390,6 @@ MonoBehaviour:
   - Traveling abroad? Get accurate currency conversions instantly!
   - Make informed financial decisions with precise currency conversion at your fingertips!
   - Your reliable companion for international shopping, travel, and business!
-  duration: 0.2
 --- !u!222 &2105838339
 CanvasRenderer:
   m_ObjectHideFlags: 0

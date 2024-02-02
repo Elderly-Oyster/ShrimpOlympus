@@ -14,14 +14,15 @@ namespace Modules.StartGame.Scripts
     public class StartGameScreenPresenter : IScreenPresenter
     {
         private readonly Dictionary<string, Func<Task>> _commands;
-        private readonly StartGameUIView _startGameUIView;
+        private readonly StartGameScreenModel _startGameScreenModel;
+        private readonly StartGameScreenView _startGameScreenView;
         private readonly IRootController _rootController;
 
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
 
-        public StartGameScreenPresenter(StartGameUIView startGameUIView, IRootController rootController,
+        public StartGameScreenPresenter(StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView, IRootController rootController,
             FirstLongInitializationService firstLongInitializationService,
             SecondLongInitializationService secondLongInitializationService,
             ThirdLongInitializationService thirdLongInitializationService)
@@ -29,8 +30,9 @@ namespace Modules.StartGame.Scripts
             _firstLongInitializationService = firstLongInitializationService;
             _secondLongInitializationService = secondLongInitializationService;
             _thirdLongInitializationService = thirdLongInitializationService;
-            
-            _startGameUIView = startGameUIView;
+
+            _startGameScreenModel = startGameScreenModel;
+            _startGameScreenView = startGameScreenView;
             _rootController = rootController;
 
             _commands = new Dictionary<string, Func<Task>>();
@@ -55,27 +57,33 @@ namespace Modules.StartGame.Scripts
         public async UniTask Run(object param)
         {
             Application.targetFrameRate = 60;
+            var appVersion = _startGameScreenModel.appVersion;
+            _startGameScreenView.SetVersionText(appVersion);
             DoTweenInit();
             RegisterCommands();
             
             var timing = 1f / _commands.Count;
             var currentTiming = timing;
+            
             foreach (var (key, value) in _commands)
             {
-                await Task.WhenAll(value.Invoke(), _startGameUIView.ReportProgress(currentTiming, key).AsTask());
+                await Task.WhenAll(value.Invoke());
+                _startGameScreenModel.UpdateProgress(currentTiming, key); 
+                await _startGameScreenView.ReportProgress(_startGameScreenModel.currentProgress, _startGameScreenModel.currentServiceName); 
                 currentTiming += timing;
             }
             
-            var cts = new CancellationTokenSource();
-            _startGameUIView.ShowAnimations(cts.Token);
-            await _startGameUIView.WaitButton();
-            cts.Cancel();
-            cts.Dispose();
+            using (var cts = new CancellationTokenSource())
+            {
+                _startGameScreenView.ShowAnimations(cts.Token);
+                await _startGameScreenView.WaitButton();
+                cts.Cancel(); // Крутая штука, если нужно явно отменить задачи перед выходом из блока using
+            }
             _rootController.RunPresenter(ScreenPresenterMap.Converter);
-        }
+        } // Не нужно вызывать cts.Dispose(), блок using делает это автоматически
 
-        public async UniTask Stop() => await _startGameUIView.Hide();
+        public async UniTask Stop() => await _startGameScreenView.Hide();
 
-        public void Dispose() => _startGameUIView.Dispose();
+        public void Dispose() => _startGameScreenView.Dispose();
     }
 }
