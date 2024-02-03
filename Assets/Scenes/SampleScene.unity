@@ -1375,7 +1375,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   continueButton: {fileID: 2105838341}
-  progressValue: {fileID: 2063456695}
+  progressValueText: {fileID: 2063456695}
   progressText: {fileID: 1146110258}
   progressBar: {fileID: 5445053788604769925}
   progressBarCanvasGroup: {fileID: 5445053789093873116}
@@ -1384,12 +1384,6 @@ MonoBehaviour:
   overlay: {fileID: 1376068329}
   splashTooltipsText: {fileID: 178917106}
   versionText: {fileID: 13251023}
-  tooltips:
-  - Quickly check live exchange rates for over 1 currencies!
-  - Simple and easy-to-use interface to convert currencies on-the-go!
-  - Traveling abroad? Get accurate currency conversions instantly!
-  - Make informed financial decisions with precise currency conversion at your fingertips!
-  - Your reliable companion for international shopping, travel, and business!
 --- !u!222 &2105838339
 CanvasRenderer:
   m_ObjectHideFlags: 0

@@ -29,36 +29,22 @@ namespace Modules.StartGame.Scripts
         [Header("Splash Screen Components")]
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
-        [SerializeField] private string[] tooltips; 
         
         
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
         private const string TapToContinueText = "Tap to continue";
         private const float ProgressBarAnimDuration = 0.5f;
-        private const float Duration = .2f;
-        private const int TooltipDelay = 4000;
+        private const float FlickerDuration = .2f;
 
         private void Awake() => ResetProgressBar();
         
         private void ResetProgressBar() => progressBar.fillAmount = 0;
 
-        private void Start()
-        {
-            splashTooltipsText.transform.parent.gameObject.SetActive(true);
-            ShowTooltips(_cancellationTokenSource.Token).Forget();
-        }
-        
+        private void Start() => splashTooltipsText.transform.parent.gameObject.SetActive(true);
+
         public void SetVersionText(string version) => versionText.text = version;
 
         public override UniTask Show() => UniTask.CompletedTask;
 
-        public override UniTask Hide()
-        {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource?.Dispose();
-            return base.Hide();
-        }
-        
         public UniTask ReportProgress(float expProgress, string progressStatus)
         {
             progressText.text = progressStatus;
@@ -78,21 +64,8 @@ namespace Modules.StartGame.Scripts
         
         public UniTask WaitButton() => continueButton.OnClickAsync();
 
-        private async UniTaskVoid ShowTooltips(CancellationToken cancellationToken)
-        {
-            try
-            {
-                var index = Random.Range(0, tooltips.Length - 1);
-                while (!cancellationToken.IsCancellationRequested)
-                {
-                    splashTooltipsText.text = tooltips[index];
-                    await UniTask.Delay(TooltipDelay, cancellationToken: cancellationToken);
-                    index = (index + 1) % tooltips.Length;
-                }
-            }
-            catch (OperationCanceledException) { }
-            catch (Exception ex) { Debug.LogError($"ShowTooltips Error: {ex.Message}"); }
-        }
+        public void SetTooltipText(string text) =>
+            splashTooltipsText.text = text;
         
         public void ShowAnimations(CancellationToken cancellationToken)
         {
@@ -113,16 +86,16 @@ namespace Modules.StartGame.Scripts
                 var opacity = Random.Range(0f, .3f);
                 
                 await UniTask.WhenAll(
-                    lightingCanvasGroup.DOFade(opacity, Duration).SetEase(easy)
+                    lightingCanvasGroup.DOFade(opacity, FlickerDuration).SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken),
-                    overlay.DOFade(1 - opacity, Duration).SetEase(easy)
+                    overlay.DOFade(1 - opacity, FlickerDuration).SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken)
                 );
 
                 await UniTask.WhenAll(
-                    lightingCanvasGroup.DOFade(1, Duration).SetEase(easy)
+                    lightingCanvasGroup.DOFade(1, FlickerDuration).SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken),
-                    overlay.DOFade(0, Duration).SetEase(easy).
+                    overlay.DOFade(0, FlickerDuration).SetEase(easy).
                         ToUniTask(cancellationToken: cancellationToken)
                 );
                 await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(.2f, .8f)),

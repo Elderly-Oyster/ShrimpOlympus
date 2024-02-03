@@ -21,6 +21,9 @@ namespace Modules.StartGame.Scripts
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
+        
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private const int TooltipDelay = 3000; 
 
         public StartGameScreenPresenter(IRootController rootController,
             StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView,
@@ -59,9 +62,10 @@ namespace Modules.StartGame.Scripts
         {
             Application.targetFrameRate = 60;
             _startGameScreenView.SetVersionText(StartGameScreenModel.appVersion);
+            ShowTooltips(_cancellationTokenSource.Token).Forget();
             DoTweenInit();
             RegisterCommands();
-            
+
             var timing = 1f / _commands.Count;
             var currentTiming = timing;
             
@@ -79,6 +83,21 @@ namespace Modules.StartGame.Scripts
             }
             _rootController.RunPresenter(ScreenPresenterMap.Converter);
         } // Не нужно вызывать cts.Dispose(), блок using делает это автоматически
+        
+        private async UniTaskVoid ShowTooltips(CancellationToken cancellationToken)
+        {
+            try
+            {
+                while (!cancellationToken.IsCancellationRequested)
+                {
+                    var tooltip = _startGameScreenModel.GetNextTooltip();
+                    _startGameScreenView.SetTooltipText(tooltip);
+                    await UniTask.Delay(TooltipDelay, cancellationToken: cancellationToken);
+                }
+            }
+            catch (OperationCanceledException) { }
+            catch (Exception ex) { Debug.LogError($"ShowTooltips Error: {ex.Message}"); }
+        }
 
         private UniTask UpdateViewWithModelData(float progress, string serviceName)
         {
@@ -87,7 +106,12 @@ namespace Modules.StartGame.Scripts
                 ReportProgress(_startGameScreenModel.exponentialProgress, _startGameScreenModel.progressStatus);
         }
 
-        public async UniTask Stop() => await _startGameScreenView.Hide();
+        public async UniTask Stop()
+        {
+            _cancellationTokenSource.Cancel();
+            await _startGameScreenView.Hide();
+            _cancellationTokenSource.Dispose();
+        }
 
         public void Dispose() => _startGameScreenView.Dispose();
     }

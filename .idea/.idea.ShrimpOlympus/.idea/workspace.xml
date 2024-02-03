@@ -2,12 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenPresenter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Services/FirstLongInitializationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Services/FirstLongInitializationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Services/SecondLongInitializationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Services/SecondLongInitializationService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Services/ThirdLongInitializationService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Services/ThirdLongInitializationService.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,7 +74,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1706953351240</updated>
-      <workItem from="1706953354908" duration="7449000" />
+      <workItem from="1706953354908" duration="11375000" />
     </task>
     <servers />
   </component>
