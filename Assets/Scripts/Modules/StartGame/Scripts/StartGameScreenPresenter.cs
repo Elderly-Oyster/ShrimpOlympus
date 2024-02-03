@@ -22,7 +22,8 @@ namespace Modules.StartGame.Scripts
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
 
-        public StartGameScreenPresenter(StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView, IRootController rootController,
+        public StartGameScreenPresenter(IRootController rootController,
+            StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView,
             FirstLongInitializationService firstLongInitializationService,
             SecondLongInitializationService secondLongInitializationService,
             ThirdLongInitializationService thirdLongInitializationService)
@@ -57,19 +58,16 @@ namespace Modules.StartGame.Scripts
         public async UniTask Run(object param)
         {
             Application.targetFrameRate = 60;
-            var appVersion = _startGameScreenModel.appVersion;
-            _startGameScreenView.SetVersionText(appVersion);
+            _startGameScreenView.SetVersionText(StartGameScreenModel.appVersion);
             DoTweenInit();
             RegisterCommands();
             
             var timing = 1f / _commands.Count;
             var currentTiming = timing;
             
-            foreach (var (key, value) in _commands)
+            foreach (var (serviceName, initFunction) in _commands)
             {
-                await Task.WhenAll(value.Invoke());
-                _startGameScreenModel.UpdateProgress(currentTiming, key); 
-                await _startGameScreenView.ReportProgress(_startGameScreenModel.currentProgress, _startGameScreenModel.currentServiceName); 
+                await Task.WhenAll(initFunction.Invoke(), UpdateViewWithModelData(currentTiming, serviceName).AsTask());
                 currentTiming += timing;
             }
             
@@ -81,6 +79,13 @@ namespace Modules.StartGame.Scripts
             }
             _rootController.RunPresenter(ScreenPresenterMap.Converter);
         } // Не нужно вызывать cts.Dispose(), блок using делает это автоматически
+
+        private UniTask UpdateViewWithModelData(float progress, string serviceName)
+        {
+            _startGameScreenModel.UpdateProgress(progress, serviceName);
+            return _startGameScreenView.
+                ReportProgress(_startGameScreenModel.exponentialProgress, _startGameScreenModel.progressStatus);
+        }
 
         public async UniTask Stop() => await _startGameScreenView.Hide();
 

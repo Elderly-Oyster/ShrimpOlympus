@@ -18,7 +18,7 @@ namespace Services
 
         private async Task InitializeAsync()
         {
-            await Task.Delay(TimeSpan.FromSeconds(3)); // Задержка на 30 секунд для имитации
+            await Task.Delay(TimeSpan.FromSeconds(3)); // Задержка на 3 секунд для имитации
             _isInitialized = true;
         }
     }

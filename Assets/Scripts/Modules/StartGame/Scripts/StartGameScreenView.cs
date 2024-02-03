@@ -12,31 +12,32 @@ namespace Modules.StartGame.Scripts
 {
     public class StartGameScreenView : UIView
     {
+        [Header("UI Interaction Components")]
         [SerializeField] private Button continueButton;
-        
-        [SerializeField] private TMP_Text progressValue;
+
+        [Header("Progress UI Components")]
+        [SerializeField] private TMP_Text progressValueText;
         [SerializeField] private TMP_Text progressText;
         [SerializeField] private Image progressBar;
-
         [SerializeField] private CanvasGroup progressBarCanvasGroup;
-        [SerializeField] private CanvasGroup lightingCanvasGroup; // Тут не реализовывал, мб позже
 
+        [Header("Dynamic UI Visuals")]
+        [SerializeField] private CanvasGroup lightingCanvasGroup; // Это не реализовывал, мб позже
         [SerializeField] private Image stuffImage;
         [SerializeField] private Image overlay;
 
+        [Header("Splash Screen Components")]
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
+        [SerializeField] private string[] tooltips; 
         
-        [SerializeField] private string[] tooltips;
-
+        
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        
         private const string TapToContinueText = "Tap to continue";
         private const float ProgressBarAnimDuration = 0.5f;
         private const float Duration = .2f;
         private const int TooltipDelay = 4000;
 
-        
         private void Awake() => ResetProgressBar();
         
         private void ResetProgressBar() => progressBar.fillAmount = 0;
@@ -58,28 +59,21 @@ namespace Modules.StartGame.Scripts
             return base.Hide();
         }
         
-        public UniTask ReportProgress(float progress, string text)
+        public UniTask ReportProgress(float expProgress, string progressStatus)
         {
-            progressText.text = $"Loading: {text}";
+            progressText.text = progressStatus;
+            
             return DOTween.To(() => progressBar.fillAmount, x =>
             {
                 progressBar.fillAmount = x;
-                progressValue.text = $"{(int)(x * 100)}";
-                overlay.color = new Color(0, 0, 0, 1 - GetExp(x));
-                lightingCanvasGroup.alpha = GetExp(x);
-                stuffImage.color = new Color(1, 1, 1, Math.Max(.1f, GetExp(x)));
-            }, progress, .6f).ToUniTask();
+                progressValueText.text = $"{(int)(x * 100)}%";
+                
+                overlay.color = new Color(0, 0, 0, 1 - expProgress);
+                lightingCanvasGroup.alpha = expProgress;
+                stuffImage.color = new Color(1, 1, 1, Math.Max(.1f, expProgress));
+            }, expProgress, 1f).ToUniTask(); 
         }
-        
-        private float GetExp(float progress) // Тут не реализовывал, мб позже
-        {
-            var expValue = Math.Exp(progress);
-            var minExp = Math.Exp(0);
-            var maxExp = Math.Exp(1);
 
-            return (float)((expValue - minExp) / (maxExp - minExp));
-        }
-        
         public void ReportText(string text) => progressText.text = text; // Если можно резделить инициализацию сервиса
         
         public UniTask WaitButton() => continueButton.OnClickAsync();
