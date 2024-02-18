@@ -10,7 +10,7 @@ namespace Core
     public static class RootControllerExtension
     {
         public static UniTaskVoid RunModel(this IRootController self, ScreenModelMap screenModelMap) => 
-            RunModel(self, screenModelMap);
+            self.RunModel(screenModelMap);
     }
     
     public enum ScreenModelMap

@@ -42,16 +42,11 @@ namespace Modules.StartGame.Scripts
 
         private void Start() => splashTooltipsText.transform.parent.gameObject.SetActive(true);
 
-        public void SetupEventListeners(UnityAction onStartButtonClicked)
-        {
+        public void SetupEventListeners(UnityAction onStartButtonClicked) => 
             continueButton.onClick.AddListener(onStartButtonClicked);
-        }
 
-        public void RemoveEventListeners()
-        {
-            continueButton.onClick.RemoveAllListeners();
-        }
-        
+        public void RemoveEventListeners() => continueButton.onClick.RemoveAllListeners();
+
         public void SetVersionText(string version) => versionText.text = version;
 
         public override UniTask Show() => UniTask.CompletedTask;

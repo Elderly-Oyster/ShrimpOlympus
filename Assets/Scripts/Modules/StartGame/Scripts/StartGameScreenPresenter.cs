@@ -10,29 +10,37 @@ namespace Modules.StartGame.Scripts
     public class StartGameScreenPresenter : IPresenter
     {
         [Inject] private readonly StartGameScreenView _startGameScreenView;
+        private readonly UniTaskCompletionSource<bool> _continueButtonPressed = new();
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
         public StartGameScreenModel startGameScreenModel { get; set; }
 
-        public void Initialize()
+        public void Initialize() => _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
+
+        private void OnContinueButtonPressed()
         {
-            _startGameScreenView.SetupEventListeners(startGameScreenModel.RunConverterModel);
-        }
+            startGameScreenModel.RunConverterModel();
+            _continueButtonPressed.TrySetResult(true);
+        } 
+
+        public async UniTask WaitForContinueButtonPress() => await _continueButtonPressed.Task;
 
         public void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
 
-        public void ShowAnimations(CancellationToken token) => _startGameScreenView.ShowAnimations(token);
+        public void ShowAnimations() => _startGameScreenView.ShowAnimations(_cancellationTokenSource.Token);
 
-        public async UniTaskVoid ShowTooltips(CancellationToken cancellationToken)
+        public async UniTaskVoid ShowTooltips()
         {
+            var token = _cancellationTokenSource.Token;
             try
             {
-                while (!cancellationToken.IsCancellationRequested)
+                while (!token.IsCancellationRequested)
                 {
                     var tooltip = startGameScreenModel.GetNextTooltip();
                     _startGameScreenView.SetTooltipText(tooltip);
-                    await UniTask.Delay(TooltipDelay, cancellationToken: cancellationToken);
+                    await UniTask.Delay(TooltipDelay, cancellationToken: token);
                 }
             }
             catch (OperationCanceledException) { }
@@ -51,6 +59,8 @@ namespace Modules.StartGame.Scripts
             await _startGameScreenView.Hide();
             _startGameScreenView.RemoveEventListeners();
             _startGameScreenView.Dispose();
+            _cancellationTokenSource.Cancel();
+
         }
 
         private void UpdateProgress(float progress, string serviceName)

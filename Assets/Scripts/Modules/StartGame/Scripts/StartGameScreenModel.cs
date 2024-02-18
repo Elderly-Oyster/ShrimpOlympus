@@ -20,8 +20,6 @@ namespace Modules.StartGame.Scripts
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
-
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
         
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
@@ -73,7 +71,7 @@ namespace Modules.StartGame.Scripts
             Application.targetFrameRate = 60;
             _startGameScreenPresenter.Initialize();
             _startGameScreenPresenter.SetVersionText(appVersion);
-            _startGameScreenPresenter.ShowTooltips(_cancellationTokenSource.Token).Forget();
+            _startGameScreenPresenter.ShowTooltips().Forget();
             DoTweenInit();
             RegisterCommands();
 
@@ -86,7 +84,9 @@ namespace Modules.StartGame.Scripts
                 currentTiming += timing;
             }
             
-            _startGameScreenPresenter.ShowAnimations(_cancellationTokenSource.Token);
+            _startGameScreenPresenter.ShowAnimations();
+            
+            await _startGameScreenPresenter.WaitForContinueButtonPress();
         }
         
         
@@ -96,19 +96,64 @@ namespace Modules.StartGame.Scripts
             _currentTooltipIndex = (_currentTooltipIndex + 1) % _tooltips.Length;
             return tooltip;
         }
-        
-        public void RunConverterModel() => RootControllerExtension.RunModel(_rootController, ScreenModelMap.Converter);
 
-        public async UniTask Stop()
-        {
-            await _startGameScreenPresenter.HideScreenView();
-        }
-        
+        public void RunConverterModel() => RootControllerExtension.RunModel(_rootController, ScreenModelMap.Converter);
+        public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();
+
         public void Dispose()
         {
             _startGameScreenPresenter.RemoveEventListeners();
-            _cancellationTokenSource.Cancel();
-            _cancellationTokenSource.Dispose();
         } 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

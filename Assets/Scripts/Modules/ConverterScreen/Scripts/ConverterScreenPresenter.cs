@@ -7,7 +7,6 @@ namespace Modules.ConverterScreen.Scripts
 {
     public class ConverterScreenPresenter : IPresenter
     {
-        
         [Inject] private readonly ConverterScreenView _converterScreenView;
         public ConverterScreenModel converterScreenModel { get; set; }
 
