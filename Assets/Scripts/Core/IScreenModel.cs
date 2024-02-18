@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Core
 {
-    public interface IScreenPresenter : IPresenter, IDisposable
+    public interface IScreenModel : IModel, IDisposable
     {
         UniTask Run(object param);
         

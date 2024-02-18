@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -41,6 +42,16 @@ namespace Modules.StartGame.Scripts
 
         private void Start() => splashTooltipsText.transform.parent.gameObject.SetActive(true);
 
+        public void SetupEventListeners(UnityAction onStartButtonClicked)
+        {
+            continueButton.onClick.AddListener(onStartButtonClicked);
+        }
+
+        public void RemoveEventListeners()
+        {
+            continueButton.onClick.RemoveAllListeners();
+        }
+        
         public void SetVersionText(string version) => versionText.text = version;
 
         public override UniTask Show() => UniTask.CompletedTask;
@@ -62,8 +73,6 @@ namespace Modules.StartGame.Scripts
 
         public void ReportText(string text) => progressText.text = text; // Если можно резделить инициализацию сервиса
         
-        public UniTask WaitButton() => continueButton.OnClickAsync();
-
         public void SetTooltipText(string text) =>
             splashTooltipsText.text = text;
         

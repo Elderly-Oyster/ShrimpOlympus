@@ -49,12 +49,11 @@ namespace Modules.ConverterScreen.Scripts
             CountTargetMoney(_converterScreenView.currentSourceAmount);
         }
 
-        private void DetermineTargetCurrency(string name)
+        private void DetermineTargetCurrency(string name)   // Меняет таргет валюту у модели
         {
             _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
             CountTargetMoney(_converterScreenView.currentSourceAmount);
         }
-        
         private void CountTargetMoney(float count) => 
             _converterScreenView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
         

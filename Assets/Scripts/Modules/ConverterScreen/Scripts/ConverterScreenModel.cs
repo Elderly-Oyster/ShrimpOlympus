@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
+using Cysharp.Threading.Tasks;
 
 namespace Modules.ConverterScreen.Scripts
 {
@@ -10,7 +11,7 @@ namespace Modules.ConverterScreen.Scripts
         Pln,
         Pr
     }
-    public class ConverterScreenModel : IModel
+    public class ConverterScreenModel : IScreenModel
     {
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
@@ -32,11 +33,27 @@ namespace Modules.ConverterScreen.Scripts
         public float ConvertTargetToSource(float amount) =>
             ConvertCurrency(amount, _targetCurrency, _sourceCurrency);
 
+        
         private float ConvertCurrency(float amount, Currencies from, Currencies to)
         {
             var amountInEuro = amount / _currencyToEuroRate[from];
             var convertedAmount = amountInEuro * _currencyToEuroRate[to];
             return convertedAmount;
+        }
+
+        public void Dispose()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UniTask Run(object param)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public UniTask Stop()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

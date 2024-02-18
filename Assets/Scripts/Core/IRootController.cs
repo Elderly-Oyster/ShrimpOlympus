@@ -4,16 +4,16 @@ namespace Core
 {
     public interface  IRootController
     {
-        UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null);
+        UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null);
     }
     
     public static class RootControllerExtension
     {
-        public static UniTaskVoid RunPresenter(this IRootController self, ScreenPresenterMap screenPresenterMap) => 
-            self.RunPresenter(screenPresenterMap);
+        public static UniTaskVoid RunModel(this IRootController self, ScreenModelMap screenModelMap) => 
+            RunModel(self, screenModelMap);
     }
     
-    public enum ScreenPresenterMap
+    public enum ScreenModelMap
     {
         StartGame = 0,
         Converter = 1

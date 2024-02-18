@@ -1,9 +1,10 @@
 ﻿using System;
+using Core;
 using UnityEngine;
 
 namespace Modules.StartGame.Scripts
 {
-    public class StartGameScreenModel
+    public class StartGameScreenModel : IScreenModel
     {
         public float exponentialProgress { get; private set; }
         public string progressStatus { get; private set; }
@@ -25,12 +26,13 @@ namespace Modules.StartGame.Scripts
             };
         }
         
+        //TODO Перенести
         public void UpdateProgress(float progress, string serviceName)
         {
             progressStatus = $"Loading: {serviceName}";
             exponentialProgress = CalculateExponentialProgress(progress);
         }
-        
+        //TODO Перенести
         private float CalculateExponentialProgress(float progress)
         {
             var expValue = Math.Exp(progress);

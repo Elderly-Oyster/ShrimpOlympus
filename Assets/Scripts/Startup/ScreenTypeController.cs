@@ -12,15 +12,15 @@ namespace Startup
         private readonly SemaphoreSlim _semaphoreSlim = new (1, 1);
         private IScreenPresenter _currentPresenter;
 
-        private void Start() => RunPresenter(ScreenPresenterMap.StartGame).Forget();
+        private void Start() => RunModel(ScreenModelMap.StartGame).Forget();
 
-        public async UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null)
+        public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
         {
             await _semaphoreSlim.WaitAsync();
             
             try
             {
-                _currentPresenter = _screenTypeMapper.Resolve(screenPresenterMap);
+                _currentPresenter = _screenTypeMapper.Resolve(screenModelMap);
                 await _currentPresenter.Run(param);
                 await _currentPresenter.Stop();
                 _currentPresenter.Dispose();
