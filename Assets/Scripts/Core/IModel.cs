@@ -1,7 +1,4 @@
 ﻿namespace Core
 {
-    public interface IModel
-    {
-
-    }
+    public interface IModel { }
 }

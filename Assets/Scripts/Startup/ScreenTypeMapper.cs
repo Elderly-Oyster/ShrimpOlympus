@@ -17,12 +17,12 @@ namespace Startup
             _resolver = resolver;
             _map = new Dictionary<ScreenModelMap, Type>
             {
-                { ScreenModelMap.StartGame, typeof(StartGameScreenPresenter) },
-                { ScreenModelMap.Converter, typeof(ConverterScreenPresenter) },
+                { ScreenModelMap.StartGame, typeof(StartGameScreenModel) },
+                { ScreenModelMap.Converter, typeof(ConverterScreenModel) },
             };
         }
 
-        public IScreenPresenter Resolve(ScreenModelMap screenModelMap) => 
-            (IScreenPresenter)_resolver.Resolve(_map[screenModelMap]);
+        public IScreenModel Resolve(ScreenModelMap screenModelMap) => 
+            (IScreenModel)_resolver.Resolve(_map[screenModelMap]);
     }
 }

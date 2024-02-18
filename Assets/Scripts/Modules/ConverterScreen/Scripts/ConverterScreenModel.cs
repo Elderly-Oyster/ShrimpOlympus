@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Core;
 using Cysharp.Threading.Tasks;
 
@@ -13,6 +14,10 @@ namespace Modules.ConverterScreen.Scripts
     }
     public class ConverterScreenModel : IScreenModel
     {
+        private readonly IRootController _rootController;
+        private readonly ConverterScreenPresenter _converterScreenPresenter;
+        private readonly UniTaskCompletionSource<Action> _completionSource;
+
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
 
@@ -24,6 +29,21 @@ namespace Modules.ConverterScreen.Scripts
             { Currencies.Pr, 0.05f }
         };
 
+        public ConverterScreenModel(IRootController rootController, ConverterScreenPresenter converterScreenPresenter)
+        {
+            _completionSource = new UniTaskCompletionSource<Action>();
+            _rootController = rootController;
+            _converterScreenPresenter = converterScreenPresenter;
+        }
+        
+        public async UniTask Run(object param)
+        {
+            _converterScreenPresenter.Initialize();
+            await _converterScreenPresenter.ShowView();
+            var result = await _completionSource.Task;
+            result.Invoke();
+        }
+        
         public void SelectSourceCurrency(Currencies currency) => _sourceCurrency = currency;
         public void SelectTargetCurrency(Currencies currency) => _targetCurrency = currency;
 
@@ -41,19 +61,14 @@ namespace Modules.ConverterScreen.Scripts
             return convertedAmount;
         }
 
+        public async UniTask Stop()
+        {
+            await _converterScreenPresenter.HideScreenView();
+        }
+        
         public void Dispose()
         {
-            throw new System.NotImplementedException();
-        }
 
-        public UniTask Run(object param)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public UniTask Stop()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

@@ -5,17 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IScreenModel.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IRootController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IRootController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IScreenModel.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IScreenPresenter.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenPresenter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenPresenter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenView.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenTypeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenTypeController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenTypeMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenTypeMapper.cs" afterDir="false" />
     </list>
@@ -25,8 +20,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$USER_HOME$/Downloads/Telegram Desktop/StartGameScreenModel.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$USER_HOME$/Downloads/Telegram Desktop/StartGameScreenView.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@af7bd4ecab/Runtime/Internal/TypeAnalyzer.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -70,7 +64,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\Unity 2021.3.16f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\[MY]    Repositories\ShrimpOlympus&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\[MY]    Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -78,7 +72,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\Unity 2021.3.16f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\[MY]    Repositories\ShrimpOlympus&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\[MY]    Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -126,7 +120,7 @@
       <workItem from="1708200979249" duration="1229000" />
       <workItem from="1708203024300" duration="356000" />
       <workItem from="1708215106206" duration="2213000" />
-      <workItem from="1708217336954" duration="4793000" />
+      <workItem from="1708217336954" duration="12262000" />
     </task>
     <servers />
   </component>

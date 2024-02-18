@@ -10,7 +10,7 @@ namespace Startup
     {
         [Inject] private ScreenTypeMapper _screenTypeMapper;
         private readonly SemaphoreSlim _semaphoreSlim = new (1, 1);
-        private IScreenPresenter _currentPresenter;
+        private IScreenModel _currentModel;
 
         private void Start() => RunModel(ScreenModelMap.StartGame).Forget();
 
@@ -20,10 +20,10 @@ namespace Startup
             
             try
             {
-                _currentPresenter = _screenTypeMapper.Resolve(screenModelMap);
-                await _currentPresenter.Run(param);
-                await _currentPresenter.Stop();
-                _currentPresenter.Dispose();
+                _currentModel = _screenTypeMapper.Resolve(screenModelMap);
+                await _currentModel.Run(param);
+                await _currentModel.Stop();
+                _currentModel.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
         }
