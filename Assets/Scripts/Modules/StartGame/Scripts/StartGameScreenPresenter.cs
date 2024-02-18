@@ -9,21 +9,15 @@ namespace Modules.StartGame.Scripts
 {
     public class StartGameScreenPresenter : IPresenter
     {
-        //TODO Цикличиская зависимоссть
-        // [Inject] private readonly StartGameScreenModel _startGameScreenModel;
-        // [Inject] private readonly StartGameScreenView _startGameScreenView;
-        
-        private readonly StartGameScreenModel _startGameScreenModel;
-        private readonly StartGameScreenView _startGameScreenView;
-        
+        [Inject] private readonly StartGameScreenView _startGameScreenView;
         private const int TooltipDelay = 3000;
-
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
+        public StartGameScreenModel startGameScreenModel { get; set; }
 
         public void Initialize()
         {
-            _startGameScreenView.SetupEventListeners(_startGameScreenModel.RunConverterModel);
+            _startGameScreenView.SetupEventListeners(startGameScreenModel.RunConverterModel);
         }
 
         public void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
@@ -36,7 +30,7 @@ namespace Modules.StartGame.Scripts
             {
                 while (!cancellationToken.IsCancellationRequested)
                 {
-                    var tooltip = _startGameScreenModel.GetNextTooltip();
+                    var tooltip = startGameScreenModel.GetNextTooltip();
                     _startGameScreenView.SetTooltipText(tooltip);
                     await UniTask.Delay(TooltipDelay, cancellationToken: cancellationToken);
                 }

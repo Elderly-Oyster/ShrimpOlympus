@@ -69,6 +69,7 @@ namespace Modules.StartGame.Scripts
 
         public async UniTask Run(object param)
         {
+            _startGameScreenPresenter.startGameScreenModel = this;
             Application.targetFrameRate = 60;
             _startGameScreenPresenter.Initialize();
             _startGameScreenPresenter.SetVersionText(appVersion);

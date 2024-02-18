@@ -38,6 +38,7 @@ namespace Modules.ConverterScreen.Scripts
         
         public async UniTask Run(object param)
         {
+            _converterScreenPresenter.converterScreenModel = this;
             _converterScreenPresenter.Initialize();
             await _converterScreenPresenter.ShowView();
             var result = await _completionSource.Task;

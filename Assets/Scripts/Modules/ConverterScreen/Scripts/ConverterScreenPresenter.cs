@@ -7,12 +7,9 @@ namespace Modules.ConverterScreen.Scripts
 {
     public class ConverterScreenPresenter : IPresenter
     {
-        //TODO Цикличиская зависимоссть
-        // [Inject] private readonly ConverterScreenView _converterScreenView;
-        // [Inject] private readonly ConverterScreenModel _converterScreenModel;
         
-        private readonly ConverterScreenView _converterScreenView;
-        private readonly ConverterScreenModel _converterScreenModel;
+        [Inject] private readonly ConverterScreenView _converterScreenView;
+        public ConverterScreenModel converterScreenModel { get; set; }
 
         private readonly Dictionary<string, Currencies> _currencyToName = new()
         {
@@ -38,21 +35,21 @@ namespace Modules.ConverterScreen.Scripts
 
         private void DetermineSourceCurrency(string name)
         {
-            _converterScreenModel.SelectSourceCurrency(_currencyToName[name]);
+            converterScreenModel.SelectSourceCurrency(_currencyToName[name]);
             CountTargetMoney(_converterScreenView.currentSourceAmount);
         }
 
         private void DetermineTargetCurrency(string name) // Меняет таргет валюту у модели
         {
-            _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
+            converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
             CountTargetMoney(_converterScreenView.currentSourceAmount);
         }
 
         private void CountTargetMoney(float count) =>
-            _converterScreenView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
+            _converterScreenView.UpdateTargetText(converterScreenModel.ConvertSourceToTarget(count));
 
         private void CountSourceMoney(float count) =>
-            _converterScreenView.UpdateSourceText(_converterScreenModel.ConvertTargetToSource(count));
+            _converterScreenView.UpdateSourceText(converterScreenModel.ConvertTargetToSource(count));
 
         private void RemoveEventListeners() => _converterScreenView.RemoveEventListeners();
         
