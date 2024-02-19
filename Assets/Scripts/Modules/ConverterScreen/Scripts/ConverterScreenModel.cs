@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Core;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
 
 namespace Modules.ConverterScreen.Scripts
 {
@@ -54,7 +53,6 @@ namespace Modules.ConverterScreen.Scripts
 
         public float ConvertTargetToSource(float amount) =>
             ConvertCurrency(amount, _targetCurrency, _sourceCurrency);
-
         
         private float ConvertCurrency(float amount, Currencies from, Currencies to)
         {
@@ -63,14 +61,7 @@ namespace Modules.ConverterScreen.Scripts
             return convertedAmount;
         }
 
-        public async UniTask Stop()
-        {
-            await _converterScreenPresenter.HideScreenView();
-        }
-        
-        public void Dispose()
-        {
-
-        }
+        public async UniTask Stop() => await _converterScreenPresenter.HideScreenView();
+        public void Dispose() => _converterScreenPresenter.RemoveEventListeners();
     }
 }

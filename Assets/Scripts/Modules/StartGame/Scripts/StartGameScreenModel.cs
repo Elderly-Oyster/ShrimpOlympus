@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using Core;
 using Cysharp.Threading.Tasks;
@@ -13,9 +12,9 @@ namespace Modules.StartGame.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {
-        private readonly Dictionary<string, Func<Task>> _commands;
-        private readonly StartGameScreenPresenter _startGameScreenPresenter;
         private readonly IRootController _rootController;
+        private readonly StartGameScreenPresenter _startGameScreenPresenter;
+        private readonly Dictionary<string, Func<Task>> _commands;
 
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
@@ -98,12 +97,9 @@ namespace Modules.StartGame.Scripts
         }
 
         public void RunConverterModel() => RootControllerExtension.RunModel(_rootController, ScreenModelMap.Converter);
+        
         public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();
-
-        public void Dispose()
-        {
-            _startGameScreenPresenter.RemoveEventListeners();
-        } 
+        public void Dispose() => _startGameScreenPresenter.RemoveEventListeners();
     }
 }
 

@@ -6,12 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IRootController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IRootController.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/ConverterScreen/Scripts/ConverterScreenPresenter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenPresenter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/StartGame/Scripts/StartGameScreenView.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +117,8 @@
       <workItem from="1708200979249" duration="1229000" />
       <workItem from="1708203024300" duration="356000" />
       <workItem from="1708215106206" duration="2213000" />
-      <workItem from="1708217336954" duration="16186000" />
+      <workItem from="1708217336954" duration="16250000" />
+      <workItem from="1708309531107" duration="599000" />
     </task>
     <servers />
   </component>

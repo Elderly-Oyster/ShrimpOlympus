@@ -15,6 +15,7 @@ namespace Modules.StartGame.Scripts
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
+        //TODO Не получилось заинжектить, т.к. появлялась Circle Dependency Exception
         public StartGameScreenModel startGameScreenModel { get; set; }
 
         public void Initialize() => _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
