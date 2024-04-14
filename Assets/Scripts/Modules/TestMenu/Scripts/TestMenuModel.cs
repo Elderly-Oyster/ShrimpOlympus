@@ -1,16 +1,9 @@
 ﻿using System.Collections.Generic;
 using Core;
 
-namespace Modules.ConverterScreen.Scripts
+namespace Modules.TestMenu.Scripts
 {
-    public enum Currencies
-    {
-        Eur,
-        Usd,
-        Pln,
-        Pr
-    }
-    public class ConverterScreenModel : IModel
+    public class TestMenuModel : IModel
     {
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
@@ -38,5 +31,13 @@ namespace Modules.ConverterScreen.Scripts
             var convertedAmount = amountInEuro * _currencyToEuroRate[to];
             return convertedAmount;
         }
+    }
+    
+    public enum Currencies
+    {
+        Eur,
+        Usd,
+        Pln,
+        Pr
     }
 }

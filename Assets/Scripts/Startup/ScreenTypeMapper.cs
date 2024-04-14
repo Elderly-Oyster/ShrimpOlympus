@@ -18,7 +18,7 @@ namespace Startup
             _map = new Dictionary<ScreenPresenterMap, Type>
             {
                 { ScreenPresenterMap.StartGame, typeof(StartGameScreenPresenter) },
-                { ScreenPresenterMap.Converter, typeof(ConverterScreenPresenter) },
+                { ScreenPresenterMap.Converter, typeof(TestMenuPresenter) },
             };
         }
 

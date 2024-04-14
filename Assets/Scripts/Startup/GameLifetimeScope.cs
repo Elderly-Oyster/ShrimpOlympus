@@ -2,7 +2,9 @@ using Core;
 using Core.Views;
 using Modules.ConverterScreen.Scripts;
 using Modules.StartGame.Scripts;
+using Modules.TestMenu.Scripts;
 using Services;
+using Services.EnergyBar;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -16,20 +18,18 @@ namespace Startup
         [SerializeField] private Camera mainCamera;
         
         [SerializeField] private StartGameScreenView startGameScreenView;
-        [SerializeField] private ConverterScreenView converterScreenView;
+        [SerializeField] private TestMenuUIView testMenuUIView;
 
         protected override void Configure(IContainerBuilder builder)
         {            
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
             
-            builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
-            builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
-            builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
+            builder.Register<EnergyBarService>(Lifetime.Singleton);
 
             builder.Register<StartGameScreenPresenter>(Lifetime.Transient);
-            builder.Register<ConverterScreenPresenter>(Lifetime.Transient);
-            builder.Register<ConverterScreenModel>(Lifetime.Singleton);
+            builder.Register<TestMenuPresenter>(Lifetime.Transient);
+            builder.Register<TestMenuModel>(Lifetime.Singleton);
             builder.Register<StartGameScreenModel>(Lifetime.Singleton); // Чуть позже
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
             
@@ -37,7 +37,7 @@ namespace Startup
             builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
             
             builder
-                .RegisterComponentInNewPrefab(converterScreenView, Lifetime.Transient)
+                .RegisterComponentInNewPrefab(testMenuUIView, Lifetime.Transient)
                 .UnderTransform(rootCanvas.transform);
         }
     }
