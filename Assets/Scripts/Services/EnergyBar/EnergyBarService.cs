@@ -67,7 +67,7 @@ namespace Services.EnergyBar
             return totalSecondsSinceLastUpdate;
         }
         
-        public int IsEnoughEnergyToPlay()
+        public int IsEnoughEnergyToDoSmth()
         {
             var cost = _constantUserEnergy.startGameCost;
             if (_currentEnergy < cost) return -1;
@@ -76,7 +76,7 @@ namespace Services.EnergyBar
             return cost;
         }
 
-        public void BuyStartGame()
+        public void BuySmth()
         {
             var oldCurrentEnergy = _currentEnergy;
             _currentEnergy -= _constantUserEnergy.startGameCost;

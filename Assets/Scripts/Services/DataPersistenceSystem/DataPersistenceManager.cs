@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core.Systems.DataPersistenceSystem;
 using Services.EnergyBar;
+using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 
@@ -30,8 +31,12 @@ namespace Services.DataPersistenceSystem
             _gameData = _dataHandler.Load();
             if(_gameData == null)
                 NewData();
-            foreach (var dataPersistenceObject in _dataPersistenceObjects) 
+            
+            foreach (var dataPersistenceObject in _dataPersistenceObjects)
+            {
+                Debug.Log(dataPersistenceObject);
                 dataPersistenceObject.LoadData(_gameData);
+            }
         }
         
         private void SaveData()
@@ -44,8 +49,8 @@ namespace Services.DataPersistenceSystem
         private void SetDataPersistenceObjects()
         {
             _dataPersistenceObjects.Add(_energyBarService);
-            //... other services
         }
+        
         private void OnApplicationPause(bool pauseStatus) { if (pauseStatus) SaveData(); }
         private void OnApplicationQuit() => SaveData();
     }

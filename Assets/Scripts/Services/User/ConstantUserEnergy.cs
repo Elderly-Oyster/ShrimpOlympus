@@ -3,7 +3,6 @@ using Services.Backend;
 
 namespace Services.User
 {
-    //TODO Сделать Serializable
     public class ConstantUserEnergy
     {
         public int currentEnergy { get; private set; }

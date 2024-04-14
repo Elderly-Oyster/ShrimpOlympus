@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using Services.Backend;
 
@@ -9,11 +8,9 @@ namespace Services.DataPersistenceSystem
     public class GameData
     {
         public UserEnergyDto userEnergyDto;
-        //other data ...
 
         public GameData()   
         {
-            //other data initialize ...
             userEnergyDto = new UserEnergyDto
             {
                 currentEnergy = 15,
