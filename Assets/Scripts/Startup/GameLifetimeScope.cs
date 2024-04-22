@@ -1,3 +1,4 @@
+using Core.UI.EnergyBar;
 using Modules.TestMenu.Scripts;
 using Services.DataPersistenceSystem;
 using Services.EnergyBar;
@@ -11,15 +12,18 @@ namespace Startup
     {
         [SerializeField] private Camera mainCamera;
         [SerializeField] private TestMenuUIView testMenuUIView;
+        [SerializeField] private EnergyBarView energyBarView;
         [SerializeField] private DataPersistenceManager dataPersistenceManager;
 
         protected override void Configure(IContainerBuilder builder)
         {            
             builder.RegisterInstance(mainCamera);
             
+            builder.RegisterInstance(dataPersistenceManager);
+            
+            builder.RegisterInstance(energyBarView);
+            
             builder.Register<EnergyBarService>(Lifetime.Singleton);
-
-            builder.RegisterInstance<DataPersistenceManager>(dataPersistenceManager);
             
             builder.Register<TestMenu>(Lifetime.Transient);
         }

@@ -1,5 +1,6 @@
 ﻿using Services.EnergyBar;
 using UnityEngine;
+using VContainer;
 
 namespace Modules.TestMenu.Scripts
 {
@@ -8,15 +9,18 @@ namespace Modules.TestMenu.Scripts
         private readonly TestMenuUIView _testMenuUIView;
         private readonly EnergyBarService _energyBarService;
         
+        [Inject]
         public TestMenu(TestMenuUIView testMenuUIView, EnergyBarService energyBarService)
         {
             _testMenuUIView = testMenuUIView;
+            Debug.Log("EnergyBarService from constructor - " + energyBarService);
             _energyBarService = energyBarService;
         }
         
         private void Start()
         {
             SetupEventListeners();
+            _energyBarService.Init();
         }
 
         private void SetupEventListeners()
