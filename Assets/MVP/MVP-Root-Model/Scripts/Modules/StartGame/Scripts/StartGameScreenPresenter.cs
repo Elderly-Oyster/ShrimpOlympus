@@ -15,14 +15,17 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
-        //TODO Не получилось заинжектить, т.к. появлялась Circle Dependency Exception
-        public StartGameScreenModel startGameScreenModel { get; set; }
+        private StartGameScreenModel _startGameScreenModel; //Без инжекта, т.к. появлялась Circle Dependency Exception
 
-        public void Initialize() => _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
+        public void Initialize(StartGameScreenModel startGameScreenModel)
+        {
+            _startGameScreenModel = startGameScreenModel;
+            _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
+        }
 
         private void OnContinueButtonPressed()
         {
-            startGameScreenModel.RunConverterModel();
+            _startGameScreenModel.RunConverterModel();
             _continueButtonPressed.TrySetResult(true);
         } 
 
@@ -39,7 +42,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
             {
                 while (!token.IsCancellationRequested)
                 {
-                    var tooltip = startGameScreenModel.GetNextTooltip();
+                    var tooltip = _startGameScreenModel.GetNextTooltip();
                     _startGameScreenView.SetTooltipText(tooltip);
                     await UniTask.Delay(TooltipDelay, cancellationToken: token);
                 }

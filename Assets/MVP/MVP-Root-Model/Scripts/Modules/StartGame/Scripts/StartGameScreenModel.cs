@@ -66,9 +66,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
 
         public async UniTask Run(object param)
         {
-            _startGameScreenPresenter.startGameScreenModel = this;
             Application.targetFrameRate = 60;
-            _startGameScreenPresenter.Initialize();
+            _startGameScreenPresenter.Initialize(this);
             _startGameScreenPresenter.SetVersionText(appVersion);
             _startGameScreenPresenter.ShowTooltips().Forget();
             DoTweenInit();

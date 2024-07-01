@@ -23,19 +23,39 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
             
+            builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
+
+            RegisterServices(builder);
+            
+            RegisterPresenters(builder);
+            RegisterModels(builder);
+            RegisterViews(builder);
+            
+            builder.RegisterInstance(screenTypeController).As<IRootController>();
+        }
+        
+        private void RegisterServices(IContainerBuilder builder)
+        {
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
-
+        }
+        
+        private void RegisterPresenters(IContainerBuilder builder)
+        {
             builder.Register<StartGameScreenPresenter>(Lifetime.Transient);
             builder.Register<ConverterScreenPresenter>(Lifetime.Transient);
-            builder.Register<ConverterScreenModel>(Lifetime.Singleton);
-            builder.Register<StartGameScreenModel>(Lifetime.Singleton); // Чуть позже
-            builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
-            
-            builder.RegisterInstance(screenTypeController).As<IRootController>();
+        }
+        
+        private void RegisterModels(IContainerBuilder builder)
+        {
+            builder.Register<StartGameScreenModel>(Lifetime.Transient);
+            builder.Register<ConverterScreenModel>(Lifetime.Transient);
+        }
+        
+        private void RegisterViews(IContainerBuilder builder)
+        {
             builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
-            
             builder
                 .RegisterComponentInNewPrefab(converterScreenView, Lifetime.Transient)
                 .UnderTransform(rootCanvas.transform);

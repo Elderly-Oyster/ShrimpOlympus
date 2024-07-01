@@ -38,8 +38,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
         
         public async UniTask Run(object param)
         {
-            _converterScreenPresenter.converterScreenModel = this;
-            _converterScreenPresenter.Initialize();
+            _converterScreenPresenter.Initialize(this);
             await _converterScreenPresenter.ShowView();
             var result = await _completionSource.Task;
             result.Invoke();
