@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/SampleScene.unity
+    path: Assets/MVP/MVP-Root-Model/Scenes/StartScreen.unity
+    guid: 2ccec45666a9743428ff3206922df110
+  - enabled: 1
+    path: Assets/MVP/MVP-Root-Model/Scenes/ConverterScreen.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   m_configObjects: {}
