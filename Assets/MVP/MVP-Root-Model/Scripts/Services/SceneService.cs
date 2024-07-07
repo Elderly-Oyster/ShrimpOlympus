@@ -5,7 +5,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace MVP.MVP_Root_Model.Scripts.Services
+namespace Training.Services
 {
     public class SceneService
     {
