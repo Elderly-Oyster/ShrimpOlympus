@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace MVP.MVP_Root_Model.Scripts.Startup
+namespace MVP.MVP_Root_Model.Scripts.Installers
 {
     public class ConverterLifetimeScope : LifetimeScope
     {

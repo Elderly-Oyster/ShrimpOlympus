@@ -1,18 +1,18 @@
 ﻿using System.Threading;
 using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
-using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Startup
 {
-    public class ScreenTypeController : MonoBehaviour, IRootController
+    public class ScreenController : IRootController, IStartable
     {
         [Inject] private ScreenTypeMapper _screenTypeMapper;
         private readonly SemaphoreSlim _semaphoreSlim = new (1, 1);
         private IScreenModel _currentModel;
 
-        private void Start() => RunModel(ScreenModelMap.StartGame).Forget();
+        public void Start() => RunModel(ScreenModelMap.StartGame).Forget();
 
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
         {

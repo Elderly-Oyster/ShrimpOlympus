@@ -95,7 +95,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
             return tooltip;
         }
 
-        public void RunConverterModel() => RootControllerExtension.RunModel(_rootController, ScreenModelMap.Converter);
+        public void RunConverterModel() => _rootController.RunModel(ScreenModelMap.Converter);
         
         public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();
         public void Dispose() => _startGameScreenPresenter.RemoveEventListeners();

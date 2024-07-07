@@ -7,21 +7,17 @@
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/StartScreen.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/StartScreen.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/GlobalInitializer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/GlobalInitializer.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/ConverterLifetimeScope.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/ConverterLifetimeScope.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GameBootstraper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GameBootstraper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/ProjectLifetimeScope.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/ProjectLifetimeScope.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/StartGameLifeTimeScope.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/StartGameLifeTimeScope.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenTypeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenTypeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenTypeMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenTypeMapper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/ProjectLifetimeScope.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/ProjectLifetimeScope.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GameBootstraper.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GameBootstraper.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GlobalLifetimeScope.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/RootLifetimeScope.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GlobalLifetimeScope.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/RootLifetimeScope.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/StartLifetimeScope.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/StartLifetimeScope.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/StartGame/Scripts/StartGameScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenTypeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenTypeController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenController.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/DOTweenSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,14 +29,15 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51fded79cd284d4d911c5949aff4cb2146ac00/42/21148047/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1e29a71158e46cdb750140a667aea01175e00/30/4b12abc3/Scene.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1e29a71158e46cdb750140a667aea01175e00/81/ed8a6e3f/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/GlobalLifetimeScope.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/StartLifetimeScope.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/RootLifetimeScope.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Installers/StartLifetimeScope.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@5cc97c7f00/Runtime/UniTaskScheduler.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.textmeshpro@3.0.6/Scripts/Runtime/TMPro_UGUI_Private.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/Raycasters/BaseRaycaster.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.ugui@1.0.0/Runtime/EventSystem/UIBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@af7bd4ecab/Runtime/ContainerBuilderExtensions.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@af7bd4ecab/Runtime/Internal/InstanceProviders/CollectionInstanceProvider.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@af7bd4ecab/Runtime/Internal/TypeAnalyzer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@af7bd4ecab/Runtime/Unity/LifetimeScope.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/jp.hadashikick.vcontainer@af7bd4ecab/Runtime/Unity/VContainerSettings.cs" root0="SKIP_HIGHLIGHTING" />
@@ -84,7 +81,7 @@
       <method v="2" />
     </configuration>
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.16f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="E:\Programs\Unity\2022.3.35f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath E:\Repositories\ShrimpOlympus -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="E:\Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -140,6 +137,17 @@
   <component name="UnityCheckinConfiguration" checkUnsavedScenes="true" />
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
