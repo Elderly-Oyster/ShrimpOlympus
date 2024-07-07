@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 
-public class GameBootstraper : MonoBehaviour
+namespace MVP.MVP_Root_Model.Scripts.Installers
 {
-    private void Awake()
+    public class GameBootstraper : MonoBehaviour
     {
-        DontDestroyOnLoad(this);
+        private void Awake()
+        {
+            DontDestroyOnLoad(this);
+        }
     }
 }

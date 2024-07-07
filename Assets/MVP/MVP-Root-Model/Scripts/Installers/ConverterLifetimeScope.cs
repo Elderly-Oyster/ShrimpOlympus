@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace MVP.MVP_Root_Model.Scripts.Startup
+namespace MVP.MVP_Root_Model.Scripts.Installers
 {
     public class ConverterLifetimeScope : LifetimeScope
     {
@@ -15,6 +15,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         protected override void Configure(IContainerBuilder builder)
         {
+            Debug.Log("Initializing ConverterLifetimeScope");
+
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
 

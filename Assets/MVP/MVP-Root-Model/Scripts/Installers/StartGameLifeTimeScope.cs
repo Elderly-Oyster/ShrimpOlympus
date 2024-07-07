@@ -4,9 +4,9 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace MVP.MVP_Root_Model.Scripts.Startup
+namespace MVP.MVP_Root_Model.Scripts.Installers
 {
-    public class StartLifeTimeScope : LifetimeScope
+    public class StartGameLifetimeScope : LifetimeScope
     {
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
@@ -14,12 +14,16 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         protected override void Configure(IContainerBuilder builder)
         {
+            Debug.Log("Initializing StartGameLifetimeScope");
+
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
 
             builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
-            builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
             builder.Register<StartGameScreenModel>(Lifetime.Singleton);
+            builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
+
+            Debug.Log("StartGameLifetimeScope configured successfully");
         }
     }
 }
