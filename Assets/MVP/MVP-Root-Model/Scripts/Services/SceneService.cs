@@ -111,7 +111,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
         {
             float percentage = progress * 100;
             int percentageInt = (int)Math.Round(percentage, 0);
-            Debug.Log($"Loading progress: {percentageInt}%");
+            //Debug.Log($"Loading progress: {percentageInt}%");
         }
     }
 }

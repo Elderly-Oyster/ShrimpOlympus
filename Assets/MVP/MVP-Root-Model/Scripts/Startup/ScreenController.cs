@@ -20,8 +20,13 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         public void Start()
         {
-            Debug.Log("Try Run StartGame Mode");
-            RunModel(ScreenModelMap.StartGame).Forget();
+            Scene activeScene = SceneManager.GetActiveScene();
+
+            string currentSceneName = activeScene.name;
+
+            ScreenModelMap screenModelMap = SceneNameToEnum(currentSceneName);
+
+            RunModel(screenModelMap).Forget();
         }
 
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
@@ -31,17 +36,6 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             try
             {
                 string newSceneName = screenModelMap.ToString();
-                //if (!string.IsNullOrEmpty(_currentSceneName)) //TODO NE NADO
-                //{
-                //    var currentScene = SceneManager.GetSceneByName(_currentSceneName);
-                //    if (currentScene.IsValid() && currentScene.isLoaded)
-                //    {
-                //        var unloadOperation = SceneManager.UnloadSceneAsync(_currentSceneName);
-
-                //        if (unloadOperation != null)    
-                //            await unloadOperation;                        
-                //    }
-                //}
 
                 await _sceneService.OnLoadSceneAsync(newSceneName);
 
@@ -62,21 +56,29 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             }
         }
 
-
-
-
         public ISceneInstaller FindSceneInstaller()
         {
             GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-        
+
             foreach (GameObject rootObject in rootObjects)
             {
                 ISceneInstaller sceneInstaller = rootObject.GetComponent<ISceneInstaller>();
                 if (sceneInstaller != null)
                     return sceneInstaller;
             }
-            
+
             return null;
+        }
+
+        private ScreenModelMap SceneNameToEnum(string sceneName)
+        {
+            if (System.Enum.TryParse(sceneName, out ScreenModelMap result)) 
+                return result;            
+            else
+            {
+                Debug.LogError($"Не удалось преобразовать имя сцены {sceneName} в ScreenModelMap");
+                return ScreenModelMap.StartGame; // значение по умолчанию, если преобразование не удалось
+            }
         }
     }
 }
