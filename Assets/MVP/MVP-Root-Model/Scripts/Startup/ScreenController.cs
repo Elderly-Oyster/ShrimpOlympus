@@ -27,46 +27,43 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
         {
             await _semaphoreSlim.WaitAsync();
-            
+
             try
             {
                 string newSceneName = screenModelMap.ToString();
-                if (!string.IsNullOrEmpty(_currentSceneName))
-                {
-                    //Тут какая-то херня, сцена тупо не хочет выгружаться
-                    Debug.Log($"Unloading current scene: {_currentSceneName}");
-                    var currentScene = SceneManager.GetSceneByName(_currentSceneName);
-                    if (currentScene.isLoaded)
-                    {
-                        Debug.Log($"Current scene is loaded: {_currentSceneName}");
-                        var unloadOperation = SceneManager.UnloadSceneAsync(_currentSceneName);
-                        if (unloadOperation != null)
-                            await unloadOperation;
-                        else
-                            Debug.LogError($"Failed to get unload operation for scene: {_currentSceneName}");
-                    }
-                    else
-                        Debug.LogWarning($"Current scene is not loaded: {_currentSceneName}");
+                //if (!string.IsNullOrEmpty(_currentSceneName)) //TODO NE NADO
+                //{
+                //    var currentScene = SceneManager.GetSceneByName(_currentSceneName);
+                //    if (currentScene.IsValid() && currentScene.isLoaded)
+                //    {
+                //        var unloadOperation = SceneManager.UnloadSceneAsync(_currentSceneName);
 
-                    await _sceneService.OnLoadSceneAsync(newSceneName);
-                }
-                
+                //        if (unloadOperation != null)    
+                //            await unloadOperation;                        
+                //    }
+                //}
+
+                await _sceneService.OnLoadSceneAsync(newSceneName);
+
                 _currentSceneName = newSceneName;
                 ISceneInstaller sceneInstaller = FindSceneInstaller();
-                var sceneLifetimeScope = sceneInstaller.
-                    CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
-                
-                Debug.Log("Try Resolve StartGame Mode");
+                var sceneLifetimeScope = sceneInstaller.CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
+
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope);
-                Debug.Log("Resolved StartGame Mode: " + _currentModel);
 
                 await _currentModel.Run(param);
                 await _currentModel.Stop();
                 _currentModel.Dispose();
                 sceneLifetimeScope.Dispose();
             }
-            finally { _semaphoreSlim.Release(); }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
         }
+
+
+
 
         public ISceneInstaller FindSceneInstaller()
         {
