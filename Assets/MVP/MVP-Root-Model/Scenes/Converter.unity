@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -250,7 +249,7 @@ GameObject:
   - component: {fileID: 436144739}
   - component: {fileID: 436144740}
   m_Layer: 0
-  m_Name: SceneContext
+  m_Name: ConverterInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -265,11 +264,11 @@ Transform:
   m_GameObject: {fileID: 436144738}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 591147929}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &436144740
 MonoBehaviour:
@@ -283,13 +282,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45e00ba39aaf891458b01fcbe8460ba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parentReference:
-    TypeName: 
-  autoRun: 1
-  autoInjectGameObjects: []
+  converterScreenView: {fileID: 1601817687}
   rootCanvas: {fileID: 414013163}
   mainCamera: {fileID: 519420031}
-  converterScreenView: {fileID: 1601817687}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,7 +406,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 436144739}
   - {fileID: 1321880357}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -623,3 +617,4 @@ SceneRoots:
   - {fileID: 519420032}
   - {fileID: 414013167}
   - {fileID: 591147929}
+  - {fileID: 436144739}

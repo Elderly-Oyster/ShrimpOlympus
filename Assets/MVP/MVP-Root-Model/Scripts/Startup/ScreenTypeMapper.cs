@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts;
 using MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts;
+using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Startup
 {
@@ -22,7 +24,14 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             };
         }
 
-        public IScreenModel Resolve(ScreenModelMap screenModelMap) => 
-            (IScreenModel)_resolver.Resolve(_map[screenModelMap]);
+        public IScreenModel Resolve(ScreenModelMap screenModelMap, LifetimeScope lifetimeScope)
+        {
+            Debug.Log(_resolver);
+            Debug.Log(_map[screenModelMap].ToString());
+            var trueResolve = _resolver.TryResolve(typeof(IRootController), out object parentDependence);
+            var falseResolve = lifetimeScope.Container.TryResolve(typeof(StartGameScreenModel), out object childDependence);
+
+            return (IScreenModel)lifetimeScope.Container.Resolve(_map[screenModelMap]);
+        }
     }
 }
