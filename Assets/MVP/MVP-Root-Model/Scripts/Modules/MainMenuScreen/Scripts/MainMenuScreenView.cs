@@ -1,6 +1,7 @@
 ﻿using MVP.MVP_Root_Model.Scripts.Core.Views;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
@@ -8,30 +9,20 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
     public class MainMenuScreenView : UIView
     {
         [SerializeField] private Button converterButton;
-        [SerializeField] private Button featureButton;
+        [FormerlySerializedAs("featureButton")] [SerializeField] private Button ticTacButton;
 
         public void SetupEventListeners(
             UnityAction onConverterButtonClicked,
-            UnityAction onFeatureButtonSelected)
+            UnityAction onTicTacButtonSelected)
         {
-            converterButton.onClick.AddListener(() => OnConverterButtonClicked(onConverterButtonClicked));
-            featureButton.onClick.AddListener(() => OnFeatureButtonClicked(onFeatureButtonSelected));
-        }   
+            converterButton.onClick.AddListener(onConverterButtonClicked);
+            ticTacButton.onClick.AddListener(onTicTacButtonSelected);
+        }
 
         public void RemoveEventListeners()
         {
             converterButton.onClick.RemoveAllListeners();
-            featureButton.onClick.RemoveAllListeners();
-        }
-
-        private void OnConverterButtonClicked(UnityAction onConverterButtonClicked)
-        {
-            onConverterButtonClicked();
-        }        
-        
-        private void OnFeatureButtonClicked(UnityAction onFeatureButtonClicked)
-        {
-            onFeatureButtonClicked();
+            ticTacButton.onClick.RemoveAllListeners();
         }
     }
 }

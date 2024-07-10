@@ -7,7 +7,9 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
     public class MainMenuScreenPresenter : IPresenter
     {
         [Inject] private readonly MainMenuScreenView _mainMenuScreenView;
-        private MainMenuScreenModel _mainMenuScreenModel; //Без инжекта, т.к. появлялась Circle Dependency Exception
+        private MainMenuScreenModel _mainMenuScreenModel; 
+        
+        private readonly UniTaskCompletionSource<bool> _playButtonPressed = new();
 
         public void Initialize(MainMenuScreenModel mainMenuScreenModel)
         {
@@ -16,20 +18,24 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 
             _mainMenuScreenView.SetupEventListeners
             (
-                OpenConverter,
-                OpenFeature         
+                OnConverterButtonPressed,
+                OnTicTacButtonPressed         
             );
         }
 
-        private void OpenConverter()
+        private void OnConverterButtonPressed()
         {
-            _mainMenuScreenModel.OpenConverterState();
+            _mainMenuScreenModel.RunConverterModel();
+            _playButtonPressed.TrySetResult(true);
         }
 
-        private void OpenFeature()
+        private void OnTicTacButtonPressed()
         {
-            _mainMenuScreenModel.OpenFeatureState();
+            _mainMenuScreenModel.RunTicTacModel();
+            _playButtonPressed.TrySetResult(true);
         }
+        
+        public async UniTask WaitForPlayButtonPress() => await _playButtonPressed.Task;
 
         public async UniTask ShowView() => await _mainMenuScreenView.Show();
         public void RemoveEventListeners() => _mainMenuScreenView.RemoveEventListeners();

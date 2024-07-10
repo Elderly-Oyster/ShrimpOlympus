@@ -8,11 +8,9 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
     {
         private readonly IRootController _rootController;
         private readonly MainMenuScreenPresenter _mainMenuScreenPresenter;
-        private readonly UniTaskCompletionSource<Action> _completionSource;
 
         public MainMenuScreenModel(IRootController rootController, MainMenuScreenPresenter mainMenuScreenPresenter)
         {
-            _completionSource = new UniTaskCompletionSource<Action>();
             _rootController = rootController;
             _mainMenuScreenPresenter = mainMenuScreenPresenter;
         }
@@ -21,18 +19,14 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
         {
             _mainMenuScreenPresenter.Initialize(this);
             await _mainMenuScreenPresenter.ShowView();
-            var result = await _completionSource.Task;
-            result.Invoke();
+            await _mainMenuScreenPresenter.WaitForPlayButtonPress();
         }
 
-        public void OpenConverterState()
-        {
-            _rootController.RunModel(ScreenModelMap.Converter);
-        }
+        public void RunConverterModel() => _rootController.RunModel(ScreenModelMap.Converter);
 
-        public void OpenFeatureState()
+        public void RunTicTacModel()
         {
-            //_rootController.RunModel(ScreenModelMap.Feature);
+            //_rootController.RunModel(ScreenModelMap.TicTac);
         }
 
         public async UniTask Stop() => await _mainMenuScreenPresenter.HideScreenView();

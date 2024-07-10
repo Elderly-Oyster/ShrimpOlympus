@@ -16,7 +16,6 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         
         private readonly SemaphoreSlim _semaphoreSlim = new (1, 1);
         private IScreenModel _currentModel;
-        private string _currentSceneName;
 
         public void Start()
         {
@@ -31,19 +30,16 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
         {
-            UnityEngine.Debug.Log("ОТКРЫТИЕ СТЕЙТА " + screenModelMap.ToString());
+            Debug.Log("Run Model: " + screenModelMap);
 
             await _semaphoreSlim.WaitAsync();
 
             try
             {
                 string newSceneName = screenModelMap.ToString();
-
-                UnityEngine.Debug.Log("ОТКРЫТИЕ СТЕЙТА" + " " + newSceneName);
-
+                Debug.Log("Open Scene: " + newSceneName);
                 await _sceneService.OnLoadSceneAsync(newSceneName);
 
-                _currentSceneName = newSceneName;
                 ISceneInstaller sceneInstaller = FindSceneInstaller();
                 var sceneLifetimeScope = sceneInstaller.CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
 
@@ -54,13 +50,10 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                 _currentModel.Dispose();
                 sceneLifetimeScope.Dispose();
             }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
+            finally { _semaphoreSlim.Release(); }
         }
 
-        public ISceneInstaller FindSceneInstaller()
+        private static ISceneInstaller FindSceneInstaller()
         {
             GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
 
@@ -74,14 +67,14 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             return null;
         }
 
-        private ScreenModelMap SceneNameToEnum(string sceneName)
+        private static ScreenModelMap SceneNameToEnum(string sceneName)
         {
             if (System.Enum.TryParse(sceneName, out ScreenModelMap result)) 
                 return result;            
             else
             {
-                Debug.LogError($"Не удалось преобразовать имя сцены {sceneName} в ScreenModelMap");
-                return ScreenModelMap.StartGame; // значение по умолчанию, если преобразование не удалось
+                Debug.LogError($"Failed to convert scene name {sceneName} to ScreenModelMap");
+                return ScreenModelMap.StartGame; 
             }
         }
     }

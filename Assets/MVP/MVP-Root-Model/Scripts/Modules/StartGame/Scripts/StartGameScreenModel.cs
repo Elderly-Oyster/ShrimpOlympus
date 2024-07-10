@@ -78,7 +78,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
 
             foreach (var (serviceName, initFunction) in _commands)
             {
-                await Task.WhenAll(initFunction.Invoke(), _startGameScreenPresenter.UpdateViewWithModelData(currentTiming, serviceName).AsTask());
+                await Task.WhenAll(initFunction.Invoke(), 
+                    _startGameScreenPresenter.UpdateViewWithModelData(currentTiming, serviceName).AsTask());
                 currentTiming += timing;
             }
             
