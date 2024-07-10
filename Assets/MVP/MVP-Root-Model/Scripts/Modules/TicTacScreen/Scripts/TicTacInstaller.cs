@@ -9,7 +9,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
 {
     public class TicTacInstaller : MonoBehaviour, ISceneInstaller
     {
-        [FormerlySerializedAs("converterScreenView")] [SerializeField] private TicTacScreenView ticTacScreenView;
+        [SerializeField] private TicTacScreenView ticTacScreenView;
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 

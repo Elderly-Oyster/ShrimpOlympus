@@ -24,10 +24,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 
         public void RunConverterModel() => _rootController.RunModel(ScreenModelMap.Converter);
 
-        public void RunTicTacModel()
-        {
-            //_rootController.RunModel(ScreenModelMap.TicTac);
-        }
+        public void RunTicTacModel() => _rootController.RunModel(ScreenModelMap.TicTac);
 
         public async UniTask Stop() => await _mainMenuScreenPresenter.HideScreenView();
         public void Dispose() => _mainMenuScreenPresenter.RemoveEventListeners();

@@ -4,6 +4,7 @@ using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts;
 using MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts;
 using MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts;
+using MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -13,7 +14,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     public class ScreenTypeMapper
     {
         private readonly Dictionary<ScreenModelMap, Type> _map;
-        private readonly IObjectResolver _resolver;
+        private readonly IObjectResolver _resolver; //Root Resolver
 
         public ScreenTypeMapper(IObjectResolver resolver)
         {
@@ -23,18 +24,11 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                 { ScreenModelMap.StartGame, typeof(StartGameScreenModel) },
                 { ScreenModelMap.Converter, typeof(ConverterScreenModel) },
                 { ScreenModelMap.MainMenu, typeof(MainMenuScreenModel) },
-                //{ ScreenModelMap.Feature, typeof(FeatureScreenModel) }
+                { ScreenModelMap.TicTac, typeof(TicTacScreenModel) }
             };
         }
 
-        public IScreenModel Resolve(ScreenModelMap screenModelMap, LifetimeScope lifetimeScope)
-        {
-            Debug.Log(_resolver);
-            Debug.Log(_map[screenModelMap].ToString());
-            var trueResolve = _resolver.TryResolve(typeof(IRootController), out object parentDependence);
-            var falseResolve = lifetimeScope.Container.TryResolve(typeof(StartGameScreenModel), out object childDependence);
-
-            return (IScreenModel)lifetimeScope.Container.Resolve(_map[screenModelMap]);
-        }
+        public IScreenModel Resolve(ScreenModelMap screenModelMap, LifetimeScope lifetimeScope) =>
+            (IScreenModel)lifetimeScope.Container.Resolve(_map[screenModelMap]);
     }
 }
