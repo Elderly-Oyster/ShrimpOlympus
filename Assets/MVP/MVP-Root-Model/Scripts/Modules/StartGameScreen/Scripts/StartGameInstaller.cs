@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
+namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {
     public class StartGameInstaller : MonoBehaviour, ISceneInstaller
     {

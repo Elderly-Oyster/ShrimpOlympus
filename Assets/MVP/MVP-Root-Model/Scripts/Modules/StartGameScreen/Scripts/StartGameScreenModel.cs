@@ -8,7 +8,7 @@ using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
 using UnityEngine;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
+namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {

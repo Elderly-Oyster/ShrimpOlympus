@@ -9,7 +9,7 @@ using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
+namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenView : UIView
     {

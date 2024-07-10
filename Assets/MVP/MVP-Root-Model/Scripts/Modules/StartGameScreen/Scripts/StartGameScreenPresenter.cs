@@ -5,7 +5,7 @@ using MVP.MVP_Root_Model.Scripts.Core;
 using UnityEngine;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
+namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IPresenter
     {
