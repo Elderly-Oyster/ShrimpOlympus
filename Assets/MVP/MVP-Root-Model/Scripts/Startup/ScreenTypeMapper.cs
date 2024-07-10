@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts;
+using MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts;
 using MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts;
 using UnityEngine;
 using VContainer;
@@ -21,6 +22,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             {
                 { ScreenModelMap.StartGame, typeof(StartGameScreenModel) },
                 { ScreenModelMap.Converter, typeof(ConverterScreenModel) },
+                { ScreenModelMap.MainMenu, typeof(MainMenuScreenModel) },
+                //{ ScreenModelMap.Feature, typeof(FeatureScreenModel) }
             };
         }
 

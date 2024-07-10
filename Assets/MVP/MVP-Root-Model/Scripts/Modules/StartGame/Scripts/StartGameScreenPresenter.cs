@@ -25,7 +25,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGame.Scripts
 
         private void OnContinueButtonPressed()
         {
-            _startGameScreenModel.RunConverterModel();
+            _startGameScreenModel.RunMainMenuModel();
             _continueButtonPressed.TrySetResult(true);
         } 
 

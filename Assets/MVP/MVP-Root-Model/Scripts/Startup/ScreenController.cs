@@ -31,11 +31,15 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
         {
+            UnityEngine.Debug.Log("ОТКРЫТИЕ СТЕЙТА " + screenModelMap.ToString());
+
             await _semaphoreSlim.WaitAsync();
 
             try
             {
                 string newSceneName = screenModelMap.ToString();
+
+                UnityEngine.Debug.Log("ОТКРЫТИЕ СТЕЙТА" + " " + newSceneName);
 
                 await _sceneService.OnLoadSceneAsync(newSceneName);
 

@@ -16,6 +16,8 @@ namespace MVP.MVP_Root_Model.Scripts.Core
     public enum ScreenModelMap
     {
         StartGame = 0,
-        Converter = 1
+        Converter = 1,
+        MainMenu = 2,
+        //Feature = 3
     }
 }
