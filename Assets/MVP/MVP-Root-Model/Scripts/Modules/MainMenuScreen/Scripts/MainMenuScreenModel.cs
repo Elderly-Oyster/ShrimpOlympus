@@ -19,7 +19,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
         {
             _mainMenuScreenPresenter.Initialize(this);
             await _mainMenuScreenPresenter.ShowView();
-            await _mainMenuScreenPresenter.WaitForPlayButtonPress();
+            await _mainMenuScreenPresenter.WaitForTransitionButtonPress();
         }
 
         public void RunConverterModel() => _rootController.RunModel(ScreenModelMap.Converter);

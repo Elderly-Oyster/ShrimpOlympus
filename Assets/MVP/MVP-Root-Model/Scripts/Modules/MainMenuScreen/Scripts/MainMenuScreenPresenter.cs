@@ -9,7 +9,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
         [Inject] private readonly MainMenuScreenView _mainMenuScreenView;
         private MainMenuScreenModel _mainMenuScreenModel; 
         
-        private readonly UniTaskCompletionSource<bool> _playButtonPressed = new();
+        private readonly UniTaskCompletionSource<bool> _completionSource = new();
 
         public void Initialize(MainMenuScreenModel mainMenuScreenModel)
         {
@@ -26,16 +26,16 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
         private void OnConverterButtonPressed()
         {
             _mainMenuScreenModel.RunConverterModel();
-            _playButtonPressed.TrySetResult(true);
+            _completionSource.TrySetResult(true);
         }
 
         private void OnTicTacButtonPressed()
         {
             _mainMenuScreenModel.RunTicTacModel();
-            _playButtonPressed.TrySetResult(true);
+            _completionSource.TrySetResult(true);
         }
         
-        public async UniTask WaitForPlayButtonPress() => await _playButtonPressed.Task;
+        public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 
         public async UniTask ShowView() => await _mainMenuScreenView.Show();
         public void RemoveEventListeners() => _mainMenuScreenView.RemoveEventListeners();

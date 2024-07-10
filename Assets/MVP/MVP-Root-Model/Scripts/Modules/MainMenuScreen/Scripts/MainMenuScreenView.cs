@@ -9,7 +9,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
     public class MainMenuScreenView : UIView
     {
         [SerializeField] private Button converterButton;
-        [FormerlySerializedAs("featureButton")] [SerializeField] private Button ticTacButton;
+        [SerializeField] private Button ticTacButton;
 
         public void SetupEventListeners(
             UnityAction onConverterButtonClicked,
