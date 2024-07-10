@@ -83,7 +83,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                 await UniTask.Yield();
             }
 
-            await UniTask.Delay(1500, cancellationToken: token);
+            //await UniTask.Delay(1500, cancellationToken: token);
             asyncOperation.allowSceneActivation = true;
             await asyncOperation;
         }
@@ -102,7 +102,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                 await UniTask.Yield();
             }
 
-            await UniTask.Delay(1500, cancellationToken: token);
+            //await UniTask.Delay(1500, cancellationToken: token);
             asyncOperation.allowSceneActivation = true;
             await asyncOperation;
         }

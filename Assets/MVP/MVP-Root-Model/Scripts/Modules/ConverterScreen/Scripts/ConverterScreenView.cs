@@ -15,6 +15,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
         [SerializeField] private TMP_Dropdown sourceCurrencyDropdown;
         [SerializeField] private TMP_Dropdown targetCurrencyDropdown;
         [SerializeField] private Scrollbar amountScrollBar;
+        [SerializeField] private Button exitButton;
 
         public float currentSourceAmount => 
             float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
@@ -29,7 +30,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
             UnityAction<string> onSourceCurrencySelected,
             UnityAction<string> onTargetCurrencySelected,
             UnityAction<float> onSourceAmountChanged,
-            UnityAction<float> onTargetAmountChanged)
+            UnityAction<float> onTargetAmountChanged,
+            UnityAction onExitButtonClicked)
         {
             sourceAmountInputField.onValueChanged
                 .AddListener(value => AddFloatInputFieldListener(value, onSourceAmountChanged));            
@@ -41,6 +43,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
                 .AddListener(index => onTargetCurrencySelected(targetCurrencyDropdown.options[index].text));
             amountScrollBar.onValueChanged
                 .AddListener(HandleAmountScrollBarChanged);
+            exitButton.onClick.AddListener(onExitButtonClicked);
         }   
         public void RemoveEventListeners()
         {

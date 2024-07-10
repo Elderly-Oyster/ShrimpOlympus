@@ -16,7 +16,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
     {
         private readonly IRootController _rootController;
         private readonly ConverterScreenPresenter _converterScreenPresenter;
-        private readonly UniTaskCompletionSource<Action> _completionSource;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
 
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
@@ -31,7 +31,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 
         public ConverterScreenModel(IRootController rootController, ConverterScreenPresenter converterScreenPresenter)
         {
-            _completionSource = new UniTaskCompletionSource<Action>();
+            _completionSource = new UniTaskCompletionSource<bool>();
             _rootController = rootController;
             _converterScreenPresenter = converterScreenPresenter;
         }
@@ -41,7 +41,6 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
             _converterScreenPresenter.Initialize(this);
             await _converterScreenPresenter.ShowView();
             var result = await _completionSource.Task;
-            result.Invoke();
         }
         
         public void SelectSourceCurrency(Currencies currency) => _sourceCurrency = currency;
@@ -58,6 +57,12 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
             var amountInEuro = amount / _currencyToEuroRate[from];
             var convertedAmount = amountInEuro * _currencyToEuroRate[to];
             return convertedAmount;
+        }
+
+        public void RunMainMenuModel()
+        {
+            _completionSource.TrySetResult(true);
+            _rootController.RunModel(ScreenModelMap.MainMenu);
         }
 
         public async UniTask Stop() => await _converterScreenPresenter.HideScreenView();

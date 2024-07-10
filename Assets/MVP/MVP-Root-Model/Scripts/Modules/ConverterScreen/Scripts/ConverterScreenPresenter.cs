@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
+using MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts;
 using VContainer;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
@@ -27,7 +28,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
                 DetermineSourceCurrency,
                 DetermineTargetCurrency,
                 CountTargetMoney,
-                CountSourceMoney
+                CountSourceMoney,
+                OnExitButtonClicked
             );
         }
 
@@ -52,6 +54,11 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 
         private void CountSourceMoney(float count) =>
             _converterScreenView.UpdateSourceText(_converterScreenModel.ConvertTargetToSource(count));
+
+        private void OnExitButtonClicked()
+        {
+            _converterScreenModel.RunMainMenuModel();
+        }
 
         public void RemoveEventListeners() => _converterScreenView.RemoveEventListeners();
         public async UniTask HideScreenView() => await _converterScreenView.Hide();
