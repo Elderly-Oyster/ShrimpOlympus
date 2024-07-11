@@ -1,5 +1,4 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts

@@ -6,7 +6,6 @@ using DG.Tweening;
 using DG.Tweening.Core.Enums;
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
-using UnityEngine;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {
@@ -22,7 +21,6 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
         
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
-        private static string appVersion => Application.version;
 
         public StartGameScreenModel(IRootController rootController, StartGameScreenPresenter startGameScreenPresenter,
             FirstLongInitializationService firstLongInitializationService,
@@ -66,9 +64,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 
         public async UniTask Run(object param)
         {
-            Application.targetFrameRate = 60;
             _startGameScreenPresenter.Initialize(this);
-            _startGameScreenPresenter.SetVersionText(appVersion);
+            _startGameScreenPresenter.SetVersionText(_startGameScreenPresenter.GetAppVersion());
             _startGameScreenPresenter.ShowTooltips().Forget();
             DoTweenInit();
             RegisterCommands();

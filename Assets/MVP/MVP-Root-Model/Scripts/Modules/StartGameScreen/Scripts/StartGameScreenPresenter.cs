@@ -17,9 +17,13 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
         private string progressStatus { get; set; }
         private StartGameScreenModel _startGameScreenModel; //Без инжекта, т.к. появлялась Circle Dependency Exception
 
+        private static string appVersion;
+        private static int appFrameRate = 60;
+
         public void Initialize(StartGameScreenModel startGameScreenModel)
         {
             _startGameScreenModel = startGameScreenModel;
+            SetApplicationFrameRate();
             _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
         }
 
@@ -80,6 +84,9 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
             var maxExp = Math.Exp(1);
             return (float)((expValue - minExp) / (maxExp - minExp));
         }
+
+        private void SetApplicationFrameRate() => Application.targetFrameRate = appFrameRate;
+        public string GetAppVersion() => Application.version;
 
         public void RemoveEventListeners() => _startGameScreenView.RemoveEventListeners();
     }
