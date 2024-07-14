@@ -14,11 +14,12 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
         {
             _ticTacScreenModel = ticTacScreenModel;
             _ticTacScreenView.gameObject.SetActive(false);
-            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked);
+            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked, OnRestartButtonClicked);
+            _ticTacScreenView.ClearBoard();
         }
 
         public async UniTask ShowView() => await _ticTacScreenView.Show();
-        
+
         private void OnMainMenuButtonClicked()
         {
             _ticTacScreenModel.RunMainMenuModel();
@@ -28,15 +29,34 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
         private void OnCellClicked(int x, int y)
         {
             _ticTacScreenModel.MakeMove(x, y);
-            _ticTacScreenView.UpdateBoard(_ticTacScreenModel.Board);
+            _ticTacScreenView.UpdateBoard(_ticTacScreenModel.board);
             char winner = _ticTacScreenModel.CheckWinner();
             if (winner != '\0')
+            {
                 _ticTacScreenView.ShowWinner(winner);
+                _ticTacScreenView.BlockBoard();
+                _ticTacScreenView.AnimateRestartButton();
+            }
+            else if (_ticTacScreenModel.IsBoardFull())
+            {
+                _ticTacScreenView.ShowDraw();
+                _ticTacScreenView.BlockBoard();
+                _ticTacScreenView.AnimateRestartButton();
+            }
+        }
+
+        private void OnRestartButtonClicked()
+        {
+            _ticTacScreenModel.InitializeGame();
+            _ticTacScreenView.ClearBoard();
+            _ticTacScreenView.UnblockBoard();
+            _ticTacScreenView.StopAnimateRestartButton();
         }
 
         public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 
         public void RemoveEventListeners() => _ticTacScreenView.RemoveEventListeners();
+
         public async UniTask HideScreenView() => await _ticTacScreenView.Hide();
     }
 }

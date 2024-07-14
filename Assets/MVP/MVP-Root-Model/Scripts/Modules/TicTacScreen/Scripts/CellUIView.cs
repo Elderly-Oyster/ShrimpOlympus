@@ -24,7 +24,13 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
 
         public void SetText(char text) => cellText.text = text == '\0' ? "" : text.ToString();
 
-        public void ClearEventListeners() => cellButton.onClick.RemoveAllListeners();
+        public void ClearEventListeners()
+        {
+            cellButton.onClick.RemoveAllListeners();
+            _onCellClicked = null;
+        }
+
+        public void Block(bool isBlocked) => cellButton.interactable = !isBlocked;
 
         private void OnDestroy() => ClearEventListeners();
     }
