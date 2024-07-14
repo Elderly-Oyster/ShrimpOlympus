@@ -7,14 +7,14 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
     public class TicTacScreenPresenter : IPresenter
     {
         [Inject] private readonly TicTacScreenView _ticTacScreenView;
-        private TicTacScreenModel _ticTacScreenModel; 
+        private TicTacScreenModel _ticTacScreenModel;
         private readonly UniTaskCompletionSource<bool> _completionSource = new();
 
         public void Initialize(TicTacScreenModel ticTacScreenModel)
         {
             _ticTacScreenModel = ticTacScreenModel;
             _ticTacScreenView.gameObject.SetActive(false);
-            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked);
+            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked);
         }
 
         public async UniTask ShowView() => await _ticTacScreenView.Show();
@@ -24,6 +24,16 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             _ticTacScreenModel.RunMainMenuModel();
             _completionSource.TrySetResult(true);
         }
+
+        private void OnCellClicked(int x, int y)
+        {
+            _ticTacScreenModel.MakeMove(x, y);
+            _ticTacScreenView.UpdateBoard(_ticTacScreenModel.Board);
+            char winner = _ticTacScreenModel.CheckWinner();
+            if (winner != '\0')
+                _ticTacScreenView.ShowWinner(winner);
+        }
+
         public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 
         public void RemoveEventListeners() => _ticTacScreenView.RemoveEventListeners();
