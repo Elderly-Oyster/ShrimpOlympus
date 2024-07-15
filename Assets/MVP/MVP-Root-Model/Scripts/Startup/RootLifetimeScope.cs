@@ -9,7 +9,6 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            Debug.Log("Init RootLifetimeScope");
             RegisterServices(builder);
 
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -19,63 +20,39 @@ namespace MVP.MVP_Root_Model.Scripts.Services
         private bool IsCurrentScene(string sceneName) =>
             SceneManager.GetActiveScene().name == sceneName;
 
-        public async UniTask OnLoadSceneAsync(string sceneName)
+        public async UniTask OnLoadSceneAsync(string sceneName, bool additive = false)
         {
             if (IsCurrentScene(sceneName))
                 return;
-            await LoadSceneAsyncInternal(() => SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single));
+            await LoadSceneAsyncInternal(() => SceneManager.LoadSceneAsync(sceneName, additive ? LoadSceneMode.Additive : LoadSceneMode.Single));
         }
 
-        public async UniTask OnLoadSceneAsync(int sceneIndex)
+        public async UniTask OnLoadSceneAsync(int sceneIndex, bool additive = false)
         {
             if (IsCurrentScene(sceneIndex))
                 return;
-            await LoadSceneAsyncInternal(() => SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single));
+            await LoadSceneAsyncInternal(() => SceneManager.LoadSceneAsync(sceneIndex, additive ? LoadSceneMode.Additive : LoadSceneMode.Single));
         }
 
         private async UniTask LoadSceneAsyncInternal(Func<AsyncOperation> loadSceneFunc)
         {
-            _cts?.Cancel();
-            _cts = new CancellationTokenSource();
-
             try
             {
-                await LoadingSceneAsync(loadSceneFunc, _cts.Token);
+                var asyncOperation = loadSceneFunc();
+                asyncOperation.allowSceneActivation = false;
+
+                while (asyncOperation.progress < 0.9f)
+                {
+                    await UniTask.Yield();
+                }
+
+                asyncOperation.allowSceneActivation = true;
+                await asyncOperation;
             }
-            catch (OperationCanceledException exp) when (exp.CancellationToken == _cts.Token)
+            catch (Exception ex)
             {
-                Debug.LogWarning("Task cancelled");
+                Debug.LogError($"Error loading scene: {ex.Message}");
             }
-            finally
-            {
-                _cts.Cancel();
-                _cts = null;
-            }
-        }
-
-        private async Task LoadingSceneAsync(Func<AsyncOperation> loadSceneFunc, CancellationToken token)
-        {
-            token.ThrowIfCancellationRequested();
-
-            var asyncOperation = loadSceneFunc();
-            asyncOperation.allowSceneActivation = false;
-
-            while (asyncOperation.progress < 0.9f)
-            {
-                token.ThrowIfCancellationRequested();
-                UpdateProgress(asyncOperation.progress);
-                await UniTask.Yield();
-            }
-
-            asyncOperation.allowSceneActivation = true;
-            await asyncOperation;
-        }
-
-        private void UpdateProgress(float progress)
-        {
-            float percentage = progress * 100;
-            int percentageInt = (int)Math.Round(percentage, 0);
-            //Debug.Log($"Loading progress: {percentageInt}%");
         }
     }
 }

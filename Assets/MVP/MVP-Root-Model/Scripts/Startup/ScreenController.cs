@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
@@ -14,31 +15,40 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         [Inject] private ScreenTypeMapper _screenTypeMapper;
         [Inject] private SceneService _sceneService;
         
-        private readonly SemaphoreSlim _semaphoreSlim = new (1, 1);
+        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         private IScreenModel _currentModel;
 
         public void Start()
         {
             Scene activeScene = SceneManager.GetActiveScene();
-
             string currentSceneName = activeScene.name;
-
             ScreenModelMap screenModelMap = SceneNameToEnum(currentSceneName);
-
             RunModel(screenModelMap).Forget();
         }
 
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
         {
             Debug.Log("Run Model: " + screenModelMap);
-
             await _semaphoreSlim.WaitAsync();
 
             try
             {
-                string newSceneName = screenModelMap.ToString();
-                Debug.Log("Open Scene: " + newSceneName);
-                await _sceneService.OnLoadSceneAsync(newSceneName);
+                string mainSceneName = screenModelMap.ToString();
+                List<string> additionalScenes = GetAdditionalScenes(screenModelMap);
+
+                List<UniTask> loadTasks = new List<UniTask>();
+
+                Debug.Log("Loading main scene: " + mainSceneName);
+                loadTasks.Add(_sceneService.OnLoadSceneAsync(mainSceneName, false));
+
+                if (additionalScenes != null)
+                {
+                    Debug.Log("Loading additional scenes: " + string.Join(", ", additionalScenes));
+                    foreach (var scene in additionalScenes)
+                        loadTasks.Add(_sceneService.OnLoadSceneAsync(scene, true));
+                }
+
+                await UniTask.WhenAll(loadTasks);
 
                 ISceneInstaller sceneInstaller = FindSceneInstaller();
                 var sceneLifetimeScope = sceneInstaller.CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
@@ -50,7 +60,22 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                 _currentModel.Dispose();
                 sceneLifetimeScope.Dispose();
             }
-            finally { _semaphoreSlim.Release(); }
+            finally 
+            {
+                _semaphoreSlim.Release();
+            }
+        }
+
+        private static List<string> GetAdditionalScenes(ScreenModelMap screenModelMap)
+        {
+            return screenModelMap switch
+            {
+                ScreenModelMap.StartGame => null,
+                ScreenModelMap.Converter => new List<string> { "BellGUI" },
+                ScreenModelMap.MainMenu => null,
+                ScreenModelMap.TicTac => new List<string> { "BellGUI", "MeteoritesGUI" },
+                _ => null
+            };
         }
 
         private static ISceneInstaller FindSceneInstaller()
