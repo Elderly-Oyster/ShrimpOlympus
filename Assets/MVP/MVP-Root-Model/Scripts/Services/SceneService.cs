@@ -21,46 +21,30 @@ namespace MVP.MVP_Root_Model.Scripts.Services
 
         public async UniTask OnLoadSceneAsync(string sceneName)
         {
-            if (IsCurrentScene(sceneName)) return;
-
-            _cts?.Cancel();
-            _cts = new CancellationTokenSource();
-
-            try
-            {
-                await LoadingSceneAsync(sceneName, _cts.Token);
-            }
-            catch (OperationCanceledException exp)
-            {
-                if (exp.CancellationToken == _cts.Token)
-                {
-                    Debug.LogWarning("Task cancelled");
-                }
-            }
-            finally
-            {
-                _cts.Cancel();
-                _cts = null;
-            }
+            if (IsCurrentScene(sceneName))
+                return;
+            await LoadSceneAsyncInternal(() => SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single));
         }
 
         public async UniTask OnLoadSceneAsync(int sceneIndex)
         {
-            if (IsCurrentScene(sceneIndex)) return;
+            if (IsCurrentScene(sceneIndex))
+                return;
+            await LoadSceneAsyncInternal(() => SceneManager.LoadSceneAsync(sceneIndex, LoadSceneMode.Single));
+        }
 
+        private async UniTask LoadSceneAsyncInternal(Func<AsyncOperation> loadSceneFunc)
+        {
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
 
             try
             {
-                await LoadingSceneAsync(sceneIndex, _cts.Token);
+                await LoadingSceneAsync(loadSceneFunc, _cts.Token);
             }
-            catch (OperationCanceledException exp)
+            catch (OperationCanceledException exp) when (exp.CancellationToken == _cts.Token)
             {
-                if (exp.CancellationToken == _cts.Token)
-                {
-                    Debug.LogWarning("Task cancelled");
-                }
+                Debug.LogWarning("Task cancelled");
             }
             finally
             {
@@ -69,11 +53,11 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             }
         }
 
-        private async Task LoadingSceneAsync(string sceneName, CancellationToken token)
+        private async Task LoadingSceneAsync(Func<AsyncOperation> loadSceneFunc, CancellationToken token)
         {
             token.ThrowIfCancellationRequested();
 
-            var asyncOperation = SceneManager.LoadSceneAsync(sceneName);
+            var asyncOperation = loadSceneFunc();
             asyncOperation.allowSceneActivation = false;
 
             while (asyncOperation.progress < 0.9f)
@@ -83,26 +67,6 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                 await UniTask.Yield();
             }
 
-            //await UniTask.Delay(1500, cancellationToken: token);
-            asyncOperation.allowSceneActivation = true;
-            await asyncOperation;
-        }
-
-        private async Task LoadingSceneAsync(int sceneIndex, CancellationToken token)
-        {
-            token.ThrowIfCancellationRequested();
-
-            var asyncOperation = SceneManager.LoadSceneAsync(sceneIndex);
-            asyncOperation.allowSceneActivation = false;
-
-            while (asyncOperation.progress < 0.9f)
-            {
-                token.ThrowIfCancellationRequested();
-                UpdateProgress(asyncOperation.progress);
-                await UniTask.Yield();
-            }
-
-            //await UniTask.Delay(1500, cancellationToken: token);
             asyncOperation.allowSceneActivation = true;
             await asyncOperation;
         }
