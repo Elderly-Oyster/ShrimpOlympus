@@ -14,7 +14,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
     public class SceneService
     {
         private CancellationTokenSource _cts;
-        private List<string> _loadedScenes = new List<string>();
+        private List<string> _loadedScenes = new();
 
         public async UniTask LoadScenesForModule(ScreenModelMap screenModelMap)
         {
@@ -35,9 +35,9 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             return screenModelMap switch
             {
                 ScreenModelMap.StartGame => null,
-                ScreenModelMap.Converter => new List<string> { "BellGUI" },
+                ScreenModelMap.Converter => new List<string> { "RulesGUI" },
                 ScreenModelMap.MainMenu => null,
-                ScreenModelMap.TicTac => new List<string> { "BellGUI", "MeteoritesGUI" },
+                ScreenModelMap.TicTac => new List<string> { "RulesGUI", "PromotionGUI" },
                 _ => null
             };
         }

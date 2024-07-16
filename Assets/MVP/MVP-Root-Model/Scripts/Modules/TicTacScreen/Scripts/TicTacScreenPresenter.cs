@@ -49,7 +49,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
         {
             _ticTacScreenModel.InitializeGame();
             _ticTacScreenView.ClearBoard();
-            _ticTacScreenView.UnblockBoard();
+            _ticTacScreenView.UnblockBoard(); 
             _ticTacScreenView.StopAnimateRestartButton();
         }
 

@@ -1,7 +1,6 @@
 ﻿using MVP.MVP_Root_Model.Scripts.Core.Views;
 using MVP.MVP_Root_Model.Scripts.Startup;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VContainer;
 using VContainer.Unity;
 

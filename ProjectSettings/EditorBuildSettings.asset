@@ -18,9 +18,9 @@ EditorBuildSettings:
     path: Assets/MVP/MVP-Root-Model/Scenes/TicTac.unity
     guid: da7fbbe19be543541b43cc4121ba7dbd
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/BellGUI.unity
+    path: Assets/MVP/MVP-Root-Model/Scenes/RulesGUI.unity
     guid: a323033c6a8a4d64ea7feb1457643ced
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/MeteoritesGUI.unity
+    path: Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity
     guid: a6bd9d0d239c5c9408cc3d2cbd350e18
   m_configObjects: {}
