@@ -13,7 +13,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             RegisterServices(builder);
 
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
-            
+
             builder.Register<ScreenController>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
@@ -22,10 +22,13 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         private void RegisterServices(IContainerBuilder builder)
         {
             builder.Register<SceneService>(Lifetime.Singleton);
-            
+
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
+
+            builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>();
+            builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>();
         }
     }
 }

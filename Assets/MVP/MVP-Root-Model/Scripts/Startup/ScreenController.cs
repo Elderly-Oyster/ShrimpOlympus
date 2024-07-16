@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
+using System;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -14,6 +14,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     {
         [Inject] private ScreenTypeMapper _screenTypeMapper;
         [Inject] private SceneService _sceneService;
+
+        public event Action ModuleChanged;
 
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         private IScreenModel _currentModel;
@@ -33,13 +35,14 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
             try
             {
-                
                 await _sceneService.LoadScenesForModule(screenModelMap);
 
                 ISceneInstaller sceneInstaller = FindSceneInstaller();
                 var sceneLifetimeScope = sceneInstaller.CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
 
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope);
+
+                ModuleChanged?.Invoke(); 
 
                 await _currentModel.Run(param);
                 await _currentModel.Stop();
