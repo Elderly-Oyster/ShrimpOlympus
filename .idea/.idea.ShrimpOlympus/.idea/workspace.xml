@@ -5,26 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/RulesGUI.unity" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/PromotionAdditionalScene.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/PromotionAdditionalScene/PromotionADView.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/PromotionAdditionalScene/PromotionADView.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/PromotionAdditionalScene/PromotionPopup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/PromotionAdditionalScene/PromotionPopup.cs.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/RulesAdditionalScene.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/RulesAdditionalScene/RulesPopup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/RulesAdditionalScene/RulesPopup.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/BellGUI.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/BellGUI.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/RulesGUI.unity.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/MeteoritesGUI.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/MeteoritesGUI.unity.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/RootLifetimeScope.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/RootLifetimeScope.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenPresenter.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +159,7 @@
       <workItem from="1720665859701" duration="20672000" />
       <workItem from="1721147479265" duration="440000" />
       <workItem from="1721148027749" duration="1945000" />
-      <workItem from="1721150117773" duration="352000" />
+      <workItem from="1721150117773" duration="376000" />
     </task>
     <servers />
   </component>
