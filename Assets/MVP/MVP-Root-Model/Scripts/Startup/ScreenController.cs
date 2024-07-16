@@ -14,6 +14,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     {
         [Inject] private ScreenTypeMapper _screenTypeMapper;
         [Inject] private SceneService _sceneService;
+        [Inject] private readonly IObjectResolver _resolver;
+        [Inject] private SceneInstallerManager _sceneInstallerManager;
 
         public event Action ModuleChanged;
 
@@ -37,12 +39,12 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             {
                 await _sceneService.LoadScenesForModule(screenModelMap);
 
-                ISceneInstaller sceneInstaller = FindSceneInstaller();
-                var sceneLifetimeScope = sceneInstaller.CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
+                var sceneLifetimeScope = _sceneInstallerManager.
+                    CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
 
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope);
 
-                ModuleChanged?.Invoke(); 
+                ModuleChanged?.Invoke();
 
                 await _currentModel.Run(param);
                 await _currentModel.Stop();
@@ -55,23 +57,9 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             }
         }
 
-        private static ISceneInstaller FindSceneInstaller()
-        {
-            GameObject[] rootObjects = SceneManager.GetActiveScene().GetRootGameObjects();
-
-            foreach (GameObject rootObject in rootObjects)
-            {
-                ISceneInstaller sceneInstaller = rootObject.GetComponent<ISceneInstaller>();
-                if (sceneInstaller != null)
-                    return sceneInstaller;
-            }
-
-            return null;
-        }
-
         private static ScreenModelMap SceneNameToEnum(string sceneName)
         {
-            if (System.Enum.TryParse(sceneName, out ScreenModelMap result))
+            if (Enum.TryParse(sceneName, out ScreenModelMap result))
                 return result;
             else
             {

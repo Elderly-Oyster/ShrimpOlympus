@@ -1,6 +1,5 @@
 using MVP.MVP_Root_Model.Scripts.Services;
 using MVP.MVP_Root_Model.Scripts.Services.LongInitializationServices;
-using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -22,6 +21,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         private void RegisterServices(IContainerBuilder builder)
         {
             builder.Register<SceneService>(Lifetime.Singleton);
+            builder.Register<SceneInstallerManager>(Lifetime.Singleton);  
 
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);

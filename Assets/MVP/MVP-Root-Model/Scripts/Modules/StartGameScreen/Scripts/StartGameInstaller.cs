@@ -12,18 +12,14 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 
-        public LifetimeScope CreateSceneLifetimeScope(LifetimeScope currentScope)
+        public void RegisterDependencies(IContainerBuilder builder)
         {
-            LifetimeScope instantScope = currentScope.CreateChild(builder =>
-            {
-                builder.RegisterComponent(rootCanvas);
-                builder.RegisterInstance(mainCamera);
+            builder.RegisterComponent(rootCanvas);
+            builder.RegisterInstance(mainCamera);
 
-                builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
-                builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
-                builder.Register<StartGameScreenModel>(Lifetime.Singleton);
-            });
-            return instantScope;
+            builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
+            builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
+            builder.Register<StartGameScreenModel>(Lifetime.Singleton);
         }
     }
 }
