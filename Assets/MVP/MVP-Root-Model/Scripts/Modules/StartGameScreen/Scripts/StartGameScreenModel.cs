@@ -6,6 +6,7 @@ using DG.Tweening;
 using DG.Tweening.Core.Enums;
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
+using MVP.MVP_Root_Model.Scripts.Services.LongInitializationServices;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {

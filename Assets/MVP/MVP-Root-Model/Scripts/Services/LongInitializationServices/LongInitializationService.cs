@@ -1,11 +1,12 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
-namespace MVP.MVP_Root_Model.Scripts.Services
+namespace MVP.MVP_Root_Model.Scripts.Services.LongInitializationServices
 {
-    public class ThirdLongInitializationService
+    public abstract class LongInitializationService
     {
         private bool _isInitialized;
+        protected static int DelayTime = 1;
 
         public Task Init()
         {
@@ -18,7 +19,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
 
         private async Task InitializeAsync()
         {
-            await Task.Delay(TimeSpan.FromSeconds(1)); // Задержка на 1 секунду для имитации
+            await Task.Delay(TimeSpan.FromSeconds(DelayTime));
             _isInitialized = true;
         }
     }

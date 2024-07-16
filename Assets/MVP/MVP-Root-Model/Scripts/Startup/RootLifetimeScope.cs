@@ -1,4 +1,5 @@
 using MVP.MVP_Root_Model.Scripts.Services;
+using MVP.MVP_Root_Model.Scripts.Services.LongInitializationServices;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
