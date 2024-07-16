@@ -14,7 +14,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     {
         [Inject] private ScreenTypeMapper _screenTypeMapper;
         [Inject] private SceneService _sceneService;
-        
+
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         private IScreenModel _currentModel;
 
@@ -33,22 +33,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
             try
             {
-                string mainSceneName = screenModelMap.ToString();
-                List<string> additionalScenes = GetAdditionalScenes(screenModelMap);
-
-                List<UniTask> loadTasks = new List<UniTask>();
-
-                Debug.Log("Loading main scene: " + mainSceneName);
-                loadTasks.Add(_sceneService.OnLoadSceneAsync(mainSceneName, false));
-
-                if (additionalScenes != null)
-                {
-                    Debug.Log("Loading additional scenes: " + string.Join(", ", additionalScenes));
-                    foreach (var scene in additionalScenes)
-                        loadTasks.Add(_sceneService.OnLoadSceneAsync(scene, true));
-                }
-
-                await UniTask.WhenAll(loadTasks);
+                
+                await _sceneService.LoadScenesForModule(screenModelMap);
 
                 ISceneInstaller sceneInstaller = FindSceneInstaller();
                 var sceneLifetimeScope = sceneInstaller.CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
@@ -60,22 +46,10 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                 _currentModel.Dispose();
                 sceneLifetimeScope.Dispose();
             }
-            finally 
+            finally
             {
                 _semaphoreSlim.Release();
             }
-        }
-
-        private static List<string> GetAdditionalScenes(ScreenModelMap screenModelMap)
-        {
-            return screenModelMap switch
-            {
-                ScreenModelMap.StartGame => null,
-                ScreenModelMap.Converter => new List<string> { "BellGUI" },
-                ScreenModelMap.MainMenu => null,
-                ScreenModelMap.TicTac => new List<string> { "BellGUI", "MeteoritesGUI" },
-                _ => null
-            };
         }
 
         private static ISceneInstaller FindSceneInstaller()
@@ -94,12 +68,12 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         private static ScreenModelMap SceneNameToEnum(string sceneName)
         {
-            if (System.Enum.TryParse(sceneName, out ScreenModelMap result)) 
-                return result;            
+            if (System.Enum.TryParse(sceneName, out ScreenModelMap result))
+                return result;
             else
             {
                 Debug.LogError($"Failed to convert scene name {sceneName} to ScreenModelMap");
-                return ScreenModelMap.StartGame; 
+                return ScreenModelMap.StartGame;
             }
         }
     }
