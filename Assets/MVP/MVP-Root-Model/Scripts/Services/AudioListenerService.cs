@@ -15,10 +15,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             _screenController.ModuleChanged += OnModuleChanged;
         }
 
-        private void OnModuleChanged()
-        {
-            EnsureAudioListenerExists();
-        }
+        private void OnModuleChanged() => EnsureAudioListenerExists();
 
         private void EnsureAudioListenerExists()
         {

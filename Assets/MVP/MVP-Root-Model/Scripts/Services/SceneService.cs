@@ -7,6 +7,7 @@ using MVP.MVP_Root_Model.Scripts.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
+using Object = UnityEngine.Object;
 
 namespace MVP.MVP_Root_Model.Scripts.Services
 {
@@ -25,6 +26,8 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             Debug.Log("Loading scenes: " + string.Join(", ", scenes));
             await LoadScenesAsync(scenes);
             await UnloadUnusedScenesAsync(scenes);
+            
+            RemoveExtraCameras();
         }
 
         private IEnumerable<string> GetAdditionalScenes(ScreenModelMap screenModelMap)
@@ -112,6 +115,15 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             await UniTask.WhenAll(unloadTasks);
 
             _loadedScenes = _loadedScenes.Except(scenesToUnload).ToList();
+        }
+        
+        private void RemoveExtraCameras()
+        {
+            foreach (var camera in Camera.allCameras)
+            {
+                if (camera.name != "ModuleCamera")
+                    Object.Destroy(camera.gameObject);
+            }
         }
     }
 }
