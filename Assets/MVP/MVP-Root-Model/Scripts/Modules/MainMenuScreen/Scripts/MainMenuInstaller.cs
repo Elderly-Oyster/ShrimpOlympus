@@ -6,13 +6,13 @@ using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 {
-    public class MainMenuInstaller : MonoBehaviour, ISceneInstaller
+    public class MainMenuInstaller : SceneInstaller
     {
         [SerializeField] private MainMenuScreenView mainMenuScreenView;
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 
-        public void RegisterDependencies(IContainerBuilder builder)
+        public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);

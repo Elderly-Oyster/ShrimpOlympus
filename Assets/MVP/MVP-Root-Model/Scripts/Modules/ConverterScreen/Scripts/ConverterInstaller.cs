@@ -6,13 +6,13 @@ using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 {
-    public class ConverterInstaller : MonoBehaviour, ISceneInstaller
+    public class ConverterInstaller : SceneInstaller
     {
         [SerializeField] private ConverterScreenView converterScreenView;
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 
-        public void RegisterDependencies(IContainerBuilder builder)
+        public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);

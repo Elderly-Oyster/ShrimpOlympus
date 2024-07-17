@@ -20,7 +20,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                     GameObject[] rootObjects = scene.GetRootGameObjects();
                     foreach (GameObject rootObject in rootObjects)
                     {
-                        ISceneInstaller[] installersInRoot = rootObject.GetComponentsInChildren<ISceneInstaller>(true);
+                        ISceneInstaller[] installersInRoot = rootObject.
+                            GetComponentsInChildren<ISceneInstaller>(true);
                         sceneInstallers.AddRange(installersInRoot);
                     }
                 }
@@ -35,7 +36,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             return parentScope.CreateChild(builder =>
             {
                 foreach (var installer in newInstallers)
-                    installer.RegisterDependencies(builder);
+                    installer.RegisterSceneDependencies(builder);
             });
         }
     }

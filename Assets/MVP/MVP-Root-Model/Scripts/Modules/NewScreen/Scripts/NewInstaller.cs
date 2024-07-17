@@ -6,13 +6,13 @@ using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.NewScreen.Scripts
 {
-    public class NewInstaller : MonoBehaviour, ISceneInstaller
+    public class NewInstaller : SceneInstaller
     {
         [SerializeField] private NewScreenView ticTacScreenView;
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 
-        public void RegisterDependencies(IContainerBuilder builder)
+        public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
