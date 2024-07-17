@@ -1,6 +1,6 @@
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Startup
+namespace MVP.MVP_Root_Model.Scripts.Core
 {
     public interface ISceneInstaller
     {

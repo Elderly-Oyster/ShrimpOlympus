@@ -1,3 +1,4 @@
+using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Startup;
 using VContainer;
 

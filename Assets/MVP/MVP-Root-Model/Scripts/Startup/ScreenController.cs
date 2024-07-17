@@ -17,7 +17,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         [Inject] private readonly IObjectResolver _resolver;
         [Inject] private SceneInstallerManager _sceneInstallerManager;
 
-        public event Action ModuleChanged;
+        public event Action<IObjectResolver> ModuleChanged;
 
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         private IScreenModel _currentModel;
@@ -44,7 +44,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope.Container);
 
-                ModuleChanged?.Invoke();
+                ModuleChanged?.Invoke(sceneLifetimeScope.Container);
 
                 await _currentModel.Run(param);
                 await _currentModel.Stop();

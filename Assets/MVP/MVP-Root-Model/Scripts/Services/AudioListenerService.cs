@@ -9,25 +9,22 @@ namespace MVP.MVP_Root_Model.Scripts.Services
     {
         [Inject] private ScreenController _screenController;
 
-        public void Start()
-        {
-            EnsureAudioListenerExists();
-            _screenController.ModuleChanged += OnModuleChanged;
-        }
+        public void Start() => _screenController.ModuleChanged += OnModuleChanged;
 
-        private void OnModuleChanged() => EnsureAudioListenerExists();
+        private void OnModuleChanged(IObjectResolver resolver) => EnsureAudioListenerExists(resolver);
 
-        private void EnsureAudioListenerExists()
+        private void EnsureAudioListenerExists(IObjectResolver resolver)
         {
-            var mainCamera = Camera.main;
+            var mainCamera = resolver.Resolve<Camera>();
             if (mainCamera == null)
+            {
                 mainCamera = new GameObject("MainCamera").AddComponent<Camera>();
+                resolver.Inject(mainCamera);
+            }
 
             var audioListener = mainCamera.GetComponent<AudioListener>();
             if (audioListener == null)
-                audioListener = mainCamera.gameObject.AddComponent<AudioListener>();
-
-            Object.DontDestroyOnLoad(audioListener.gameObject);
+                mainCamera.gameObject.AddComponent<AudioListener>();
         }
     }
 }

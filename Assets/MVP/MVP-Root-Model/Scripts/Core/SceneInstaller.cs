@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Startup
+namespace MVP.MVP_Root_Model.Scripts.Core
 {
     public abstract class SceneInstaller : MonoBehaviour, ISceneInstaller
     {
