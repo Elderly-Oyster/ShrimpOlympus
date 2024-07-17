@@ -131,6 +131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 14842537}
+  - component: {fileID: 14842538}
   m_Layer: 0
   m_Name: SceneInstaller
   m_TagString: Untagged
@@ -153,6 +154,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &14842538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14842536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f22ac747f47f46caa2ca990059c97fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToDelete:
+  - {fileID: 1465985585}
 --- !u!1 &214328028
 GameObject:
   m_ObjectHideFlags: 0
@@ -700,6 +715,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeButton: {fileID: 530976859}
+  animationDuration: 0.5
 --- !u!1 &1449328287
 GameObject:
   m_ObjectHideFlags: 0

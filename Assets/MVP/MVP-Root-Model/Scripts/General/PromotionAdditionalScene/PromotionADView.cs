@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.General.PromotionAdditionalScene
+namespace MVP.MVP_Root_Model.Scripts.General.PromotionAdditionalScene
 {
     public class PromotionADView : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
-using MVP.MVP_Root_Model.Scripts.Modules.General.DynamicBackgroundScene;
+using MVP.MVP_Root_Model.Scripts.General.DynamicBackgroundScene;
 using UnityEngine;
 using VContainer;
 
@@ -9,8 +9,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 {
     public class ConverterScreenPresenter : IPresenter
     {
-        [Inject] private readonly ConverterScreenView _converterScreenView;
         [Inject] private readonly DynamicParticleController _dynamicParticleController;
+        [Inject] private readonly ConverterScreenView _converterScreenView;
         private ConverterScreenModel _converterScreenModel;
 
         private readonly Dictionary<string, Currencies> _currencyToName = new()
@@ -52,10 +52,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 
         private void OnSourceAmountChanged(string value)
         {
-            if (float.TryParse(value, out var amount))
-            {
+            if (float.TryParse(value, out var amount)) 
                 CountTargetMoney(amount);
-            }
         }
 
         private void OnTargetAmountChanged(string value)

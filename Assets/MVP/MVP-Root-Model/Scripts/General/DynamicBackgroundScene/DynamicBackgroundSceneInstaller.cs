@@ -2,7 +2,7 @@ using MVP.MVP_Root_Model.Scripts.Startup;
 using UnityEngine;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.General.DynamicBackgroundScene
+namespace MVP.MVP_Root_Model.Scripts.General.DynamicBackgroundScene
 {
     public class DynamicBackgroundSceneInstaller : SceneInstaller
     {
