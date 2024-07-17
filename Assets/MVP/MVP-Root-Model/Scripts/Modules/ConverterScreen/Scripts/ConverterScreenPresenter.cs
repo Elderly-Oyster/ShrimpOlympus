@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
+using MVP.MVP_Root_Model.Scripts.Modules.General.DynamicBackgroundScene;
 using UnityEngine;
 using VContainer;
 
@@ -9,7 +10,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
     public class ConverterScreenPresenter : IPresenter
     {
         [Inject] private readonly ConverterScreenView _converterScreenView;
-        //[Inject] private readonly DynamicParticleController _dynamicParticleController;
+        [Inject] private readonly DynamicParticleController _dynamicParticleController;
         private ConverterScreenModel _converterScreenModel;
 
         private readonly Dictionary<string, Currencies> _currencyToName = new()
@@ -59,10 +60,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 
         private void OnTargetAmountChanged(string value)
         {
-            if (float.TryParse(value, out var amount))
-            {
+            if (float.TryParse(value, out var amount)) 
                 CountSourceMoney(amount);
-            }
         }
 
         private void CountTargetMoney(float count) =>
@@ -73,9 +72,10 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
 
         private void HandleAmountScrollBarChanged(float scrollValue)
         {
+            _dynamicParticleController.parameter = scrollValue;
             var intValue = Mathf.RoundToInt(scrollValue * 200);
             _converterScreenView.UpdateSourceText(intValue);
-            CountTargetMoney(intValue); // Добавлено: пересчет целевого значения валюты
+            CountTargetMoney(intValue); 
         }
 
         private void OnExitButtonClicked() => _converterScreenModel.RunMainMenuModel();

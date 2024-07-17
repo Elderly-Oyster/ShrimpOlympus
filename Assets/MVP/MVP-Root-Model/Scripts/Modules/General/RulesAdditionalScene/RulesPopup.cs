@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.AdditionalScene
+namespace MVP.MVP_Root_Model.Scripts.Modules.General.RulesAdditionalScene
 {
     public class RulesPopup : MonoBehaviour
     {
