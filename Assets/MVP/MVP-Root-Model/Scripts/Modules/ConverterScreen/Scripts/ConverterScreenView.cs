@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using MVP.MVP_Root_Model.Scripts.Core.Views;
 using TMPro;
 using UnityEngine;
@@ -17,52 +16,42 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
 
-        public float currentSourceAmount => 
+        public float currentSourceAmount =>
             float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
 
-        public void UpdateSourceText(float amount) => 
+        public void UpdateSourceText(float amount) =>
             sourceAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
 
-        public void UpdateTargetText(float amount) => 
+        public void UpdateTargetText(float amount) =>
             targetAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
-        
+
         public void SetupEventListeners(
             UnityAction<string> onSourceCurrencySelected,
             UnityAction<string> onTargetCurrencySelected,
-            UnityAction<float> onSourceAmountChanged,
-            UnityAction<float> onTargetAmountChanged,
+            UnityAction<string> onSourceAmountChanged,
+            UnityAction<string> onTargetAmountChanged,
+            UnityAction<float> onScrollBarValueChanged,
             UnityAction onExitButtonClicked)
         {
             sourceAmountInputField.onValueChanged
-                .AddListener(value => AddFloatInputFieldListener(value, onSourceAmountChanged));            
+                .AddListener(onSourceAmountChanged);            
             targetAmountInputField.onValueChanged
-                .AddListener(value => AddFloatInputFieldListener(value, onTargetAmountChanged));
+                .AddListener(onTargetAmountChanged);
             sourceCurrencyDropdown.onValueChanged
                 .AddListener(index => onSourceCurrencySelected(sourceCurrencyDropdown.options[index].text));
             targetCurrencyDropdown.onValueChanged
                 .AddListener(index => onTargetCurrencySelected(targetCurrencyDropdown.options[index].text));
             amountScrollBar.onValueChanged
-                .AddListener(HandleAmountScrollBarChanged);
+                .AddListener(onScrollBarValueChanged);
             exitButton.onClick.AddListener(onExitButtonClicked);
-        }   
+        }
+
         public void RemoveEventListeners()
         {
             sourceAmountInputField.onValueChanged.RemoveAllListeners();
             sourceCurrencyDropdown.onValueChanged.RemoveAllListeners();
             targetCurrencyDropdown.onValueChanged.RemoveAllListeners();
             amountScrollBar.onValueChanged.RemoveAllListeners();
-        }
-
-        private static void AddFloatInputFieldListener(string inputText, UnityAction<float> onMoneyCountSelected)
-        {
-            if (!float.TryParse(inputText, out var fAmount)) return;
-            onMoneyCountSelected(fAmount);
-        }
-        
-        private void HandleAmountScrollBarChanged(float scrollValue)
-        {
-            var intValue = Mathf.RoundToInt(scrollValue * 200);
-            sourceAmountInputField.text = intValue.ToString();
         }
     }
 }
