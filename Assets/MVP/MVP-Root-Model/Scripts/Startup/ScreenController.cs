@@ -42,7 +42,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                 var sceneLifetimeScope = _sceneInstallerManager.
                     CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
 
-                _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope);
+                _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope.Container);
 
                 ModuleChanged?.Invoke();
 

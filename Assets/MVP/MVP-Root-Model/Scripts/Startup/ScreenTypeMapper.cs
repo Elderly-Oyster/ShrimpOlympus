@@ -13,11 +13,9 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     public class ScreenTypeMapper
     {
         private readonly Dictionary<ScreenModelMap, Type> _map;
-        private readonly IObjectResolver _resolver; //Root Resolver
 
-        public ScreenTypeMapper(IObjectResolver resolver)
+        public ScreenTypeMapper()
         {
-            _resolver = resolver;
             _map = new Dictionary<ScreenModelMap, Type>
             {
                 { ScreenModelMap.StartGame, typeof(StartGameScreenModel) },
@@ -27,7 +25,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             };
         }
 
-        public IScreenModel Resolve(ScreenModelMap screenModelMap, LifetimeScope lifetimeScope) =>
-            (IScreenModel)lifetimeScope.Container.Resolve(_map[screenModelMap]);
+        public IScreenModel Resolve(ScreenModelMap screenModelMap, IObjectResolver objectResolver) =>
+            (IScreenModel)objectResolver.Resolve(_map[screenModelMap]);
     }
 }
