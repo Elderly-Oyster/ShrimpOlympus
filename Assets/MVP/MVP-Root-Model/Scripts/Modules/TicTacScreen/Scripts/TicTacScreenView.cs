@@ -22,7 +22,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             ClearBoard();
         }
 
-        public void SetupEventListeners(UnityAction onMainMenuButtonClicked, UnityAction<int, int> onCellClicked, UnityAction onRestartButtonClicked)
+        public void SetupEventListeners(UnityAction onMainMenuButtonClicked,
+            UnityAction<int, int> onCellClicked, UnityAction onRestartButtonClicked)
         {
             mainMenuButton.onClick.AddListener(onMainMenuButtonClicked);
             restartButton.pulsatingButton.onClick.AddListener(onRestartButtonClicked);

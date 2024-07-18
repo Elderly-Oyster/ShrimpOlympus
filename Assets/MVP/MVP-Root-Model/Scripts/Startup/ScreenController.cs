@@ -26,8 +26,9 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         {
             Scene activeScene = SceneManager.GetActiveScene();
             string currentSceneName = activeScene.name;
-            ScreenModelMap screenModelMap = SceneNameToEnum(currentSceneName);
-            RunModel(screenModelMap).Forget();
+            ScreenModelMap? screenModelMap = SceneNameToEnum(currentSceneName);
+            if (screenModelMap != null)
+                RunModel((ScreenModelMap)screenModelMap).Forget();
         }
 
         public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
@@ -40,7 +41,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
                 await _sceneService.LoadScenesForModule(screenModelMap);
 
                 var sceneLifetimeScope = _sceneInstallerManager.
-                    CreateSceneLifetimeScope(LifetimeScope.Find<RootLifetimeScope>());
+                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>());
 
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope.Container);
 
@@ -57,15 +58,11 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             }
         }
 
-        private static ScreenModelMap SceneNameToEnum(string sceneName)
+        private static ScreenModelMap? SceneNameToEnum(string sceneName)
         {
             if (Enum.TryParse(sceneName, out ScreenModelMap result))
                 return result;
-            else
-            {
-                Debug.LogError($"Failed to convert scene name {sceneName} to ScreenModelMap");
-                return ScreenModelMap.StartGame;
-            }
+            return null;
         }
     }
 }

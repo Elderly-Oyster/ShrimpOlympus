@@ -2,13 +2,13 @@ using System.Collections.Generic;
 using MVP.MVP_Root_Model.Scripts.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using VContainer;
 using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Startup
 {
     public class SceneInstallerManager
     {
+        private List<ISceneInstaller> _currentScenesInstallers;
         private static List<ISceneInstaller> FindAllSceneInstallers()
         {
             List<ISceneInstaller> sceneInstallers = new List<ISceneInstaller>();
@@ -31,12 +31,16 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             return sceneInstallers;
         }
 
-        public LifetimeScope CreateSceneLifetimeScope(LifetimeScope parentScope)
+        public LifetimeScope CombineScenes(LifetimeScope parentScope)
         {
-            var newInstallers = FindAllSceneInstallers();
+            _currentScenesInstallers = FindAllSceneInstallers();
+            
+            foreach (var installer in _currentScenesInstallers)
+                installer.RemoveObjectsToDelete();
+
             return parentScope.CreateChild(builder =>
             {
-                foreach (var installer in newInstallers)
+                foreach (var installer in _currentScenesInstallers)
                     installer.RegisterSceneDependencies(builder);
             });
         }
