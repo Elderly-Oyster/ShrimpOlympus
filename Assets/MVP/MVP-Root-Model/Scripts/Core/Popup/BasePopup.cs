@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Core.Popups
+namespace MVP.MVP_Root_Model.Scripts.Core.Popup
 {
     public class BasePopup : MonoBehaviour
     {
