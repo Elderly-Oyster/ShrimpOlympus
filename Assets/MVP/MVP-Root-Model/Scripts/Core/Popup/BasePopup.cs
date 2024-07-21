@@ -12,7 +12,7 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup
     {
         [Inject][HideInInspector] public RootCanvas rootCanvas;
         //[Inject] protected ISoundService soundService;
-        //[Inject] protected PopupHub popupHub;
+        [Inject] protected PopupHub popupHub;
         
         [SerializeField] protected CanvasGroup canvasGroup;
         [SerializeField] protected Transform overlayTransform;

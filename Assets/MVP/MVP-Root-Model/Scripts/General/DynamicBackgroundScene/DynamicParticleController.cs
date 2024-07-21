@@ -6,7 +6,7 @@ namespace MVP.MVP_Root_Model.Scripts.General.DynamicBackgroundScene
     [ExecuteInEditMode]
     public class DynamicParticleController : MonoBehaviour
     {
-        public ParticleSystem particleSystem;
+        public new ParticleSystem particleSystem;
         [Range(0, 1)]
         public float parameter = 0.5f;
         private float _previousParameter;

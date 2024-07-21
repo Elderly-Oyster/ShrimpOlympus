@@ -4,10 +4,7 @@ using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Core.Popup
 {
-    public interface IBasePopupFactory<out T> where T : BasePopup
-    {
-        T Create(Transform transform);
-    }
+    public interface IBasePopupFactory<out T> : IFactory<Transform, T> where T : BasePopup { }
 
     public class BasePopupFactory<T> : IBasePopupFactory<T> where T : BasePopup
     {
