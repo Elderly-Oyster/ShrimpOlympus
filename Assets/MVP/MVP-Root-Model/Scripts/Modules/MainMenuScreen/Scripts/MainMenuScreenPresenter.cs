@@ -18,23 +18,26 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 
             _mainMenuScreenView.SetupEventListeners
             (
-                OnConverterButtonPressed,
-                OnTicTacButtonPressed         
+                OnConverterButtonClicked,
+                OnTicTacButtonClicked,
+                OnFirstPopupButtonClicked
             );
         }
 
-        private void OnConverterButtonPressed()
+        private void OnConverterButtonClicked()
         {
             _mainMenuScreenModel.RunConverterModel();
             _completionSource.TrySetResult(true);
         }
 
-        private void OnTicTacButtonPressed()
+        private void OnTicTacButtonClicked()
         {
             _mainMenuScreenModel.RunTicTacModel();
             _completionSource.TrySetResult(true);
         }
-        
+
+        private void OnFirstPopupButtonClicked() => _mainMenuScreenModel.OpenFirstPopup();
+
         public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 
         public async UniTask ShowView() => await _mainMenuScreenView.Show();

@@ -13,7 +13,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
     }
     public class ConverterScreenModel : IScreenModel
     {
-        private readonly IRootController _rootController;
+        private readonly IScreenController _rootController;
         private readonly ConverterScreenPresenter _converterScreenPresenter;
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
@@ -28,7 +28,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.ConverterScreen.Scripts
             { Currencies.Pr, 0.05f }
         };
 
-        public ConverterScreenModel(IRootController rootController, ConverterScreenPresenter converterScreenPresenter)
+        public ConverterScreenModel(IScreenController rootController, ConverterScreenPresenter converterScreenPresenter)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             _rootController = rootController;

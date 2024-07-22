@@ -1,29 +1,44 @@
 ﻿using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
+using MVP.MVP_Root_Model.Scripts.Core.Popup;
+using MVP.MVP_Root_Model.Scripts.Services;
+using UnityEngine;
+using VContainer;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 {
     public class MainMenuScreenModel : IScreenModel
     {
-        private readonly IRootController _rootController;
+        //private readonly PopupHub _popupHub;
+        private readonly IGlobalService _globalService;
+        private readonly IScreenController _screenController;
         private readonly MainMenuScreenPresenter _mainMenuScreenPresenter;
 
-        public MainMenuScreenModel(IRootController rootController, MainMenuScreenPresenter mainMenuScreenPresenter)
+        public MainMenuScreenModel(IScreenController screenController,
+            MainMenuScreenPresenter mainMenuScreenPresenter,
+            IGlobalService globalService)
         {
-            _rootController = rootController;
             _mainMenuScreenPresenter = mainMenuScreenPresenter;
+            _screenController = screenController;
+            _globalService = globalService;
         }
         
         public async UniTask Run(object param)
         {
+            //Debug.Log(_popupHub);
             _mainMenuScreenPresenter.Initialize(this);
             await _mainMenuScreenPresenter.ShowView();
             await _mainMenuScreenPresenter.WaitForTransitionButtonPress();
         }
 
-        public void RunConverterModel() => _rootController.RunModel(ScreenModelMap.Converter);
+        public void RunConverterModel() => _screenController.RunModel(ScreenModelMap.Converter);
 
-        public void RunTicTacModel() => _rootController.RunModel(ScreenModelMap.TicTac);
+        public void RunTicTacModel() => _screenController.RunModel(ScreenModelMap.TicTac);
+
+        public void OpenFirstPopup()
+        {
+            //_popupHub.OpenFirstPopup();
+        }
 
         public async UniTask Stop() => await _mainMenuScreenPresenter.HideScreenView();
         public void Dispose() => _mainMenuScreenPresenter.RemoveEventListeners();

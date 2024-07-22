@@ -6,7 +6,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
 {
     public class TicTacScreenModel : IScreenModel
     {
-        private readonly IRootController _rootController;
+        private readonly IScreenController _rootController;
         private readonly TicTacScreenPresenter _ticTacScreenPresenter;
         private const int BoardSize = 3;
         private const char PlayerX = 'X';
@@ -28,7 +28,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             new[] {0, 2, 1, 1, 2, 0}  
         };
 
-        public TicTacScreenModel(IRootController rootController, TicTacScreenPresenter ticTacScreenPresenter)
+        public TicTacScreenModel(IScreenController rootController, TicTacScreenPresenter ticTacScreenPresenter)
         {
             _rootController = rootController;
             _ticTacScreenPresenter = ticTacScreenPresenter;

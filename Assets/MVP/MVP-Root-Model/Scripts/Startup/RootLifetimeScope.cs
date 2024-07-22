@@ -1,3 +1,4 @@
+using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Core.EventMediator;
 using MVP.MVP_Root_Model.Scripts.Core.Popup;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
@@ -14,6 +15,11 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         [SerializeField] private FirstPopup firstPopupPrefab;
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.Register<GlobalService>(Lifetime.Singleton)
+                .AsSelf()
+                .AsImplementedInterfaces();
+
+            
             RegisterPopupFactories(builder);
             RegisterServices(builder);
 
@@ -22,22 +28,26 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             builder.Register<ScreenController>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
+
+            builder.Register<PopupHub>(Lifetime.Singleton);
         }
 
         private void RegisterServices(IContainerBuilder builder)
         {
-            builder.Register<EventMediator>(Lifetime.Singleton);
-            builder.Register<PopupHub>(Lifetime.Singleton);
+            builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
+                .AsSelf();
+
+            builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>()
+                .AsSelf();
             
-            builder.Register<SceneService>(Lifetime.Singleton);
-            builder.Register<SceneInstallerManager>(Lifetime.Singleton);  
+            builder.Register<EventMediator>(Lifetime.Singleton);
 
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
-
-            builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>();
-            builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>();
+            
+            builder.Register<SceneService>(Lifetime.Singleton);
+            builder.Register<SceneInstallerManager>(Lifetime.Singleton);  
         }
 
         private void RegisterPopupFactories(IContainerBuilder builder)

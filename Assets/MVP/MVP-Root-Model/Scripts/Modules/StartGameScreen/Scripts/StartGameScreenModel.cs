@@ -12,7 +12,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {
-        private readonly IRootController _rootController;
+        private readonly IScreenController _rootController;
         private readonly StartGameScreenPresenter _startGameScreenPresenter;
         private readonly Dictionary<string, Func<Task>> _commands;
 
@@ -23,7 +23,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.StartGameScreen.Scripts
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
 
-        public StartGameScreenModel(IRootController rootController, StartGameScreenPresenter startGameScreenPresenter,
+        public StartGameScreenModel(IScreenController rootController, StartGameScreenPresenter startGameScreenPresenter,
             FirstLongInitializationService firstLongInitializationService,
             SecondLongInitializationService secondLongInitializationService,
             ThirdLongInitializationService thirdLongInitializationService)

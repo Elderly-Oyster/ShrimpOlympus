@@ -5,10 +5,10 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.NewScreen.Scripts
 {
     public class NewScreenModel : IScreenModel
     {
-        private readonly IRootController _rootController;
+        private readonly IScreenController _rootController;
         private readonly NewScreenPresenter _ticTacScreenPresenter;
 
-        public NewScreenModel(IRootController rootController, NewScreenPresenter ticTacScreenPresenter)
+        public NewScreenModel(IScreenController rootController, NewScreenPresenter ticTacScreenPresenter)
         {
             _rootController = rootController;
             _ticTacScreenPresenter = ticTacScreenPresenter;

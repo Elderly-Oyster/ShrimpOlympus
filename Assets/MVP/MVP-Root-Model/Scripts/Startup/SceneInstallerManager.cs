@@ -34,9 +34,12 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         public LifetimeScope CombineScenes(LifetimeScope parentScope)
         {
             _currentScenesInstallers = FindAllSceneInstallers();
-            
+
             foreach (var installer in _currentScenesInstallers)
+            {
+                Debug.Log(installer);
                 installer.RemoveObjectsToDelete();
+            }
 
             return parentScope.CreateChild(builder =>
             {
