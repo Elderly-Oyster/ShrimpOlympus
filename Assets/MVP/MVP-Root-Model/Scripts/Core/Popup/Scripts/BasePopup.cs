@@ -2,15 +2,16 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using MVP.MVP_Root_Model.Scripts.Core.Views;
+using MVP.MVP_Root_Model.Scripts.Core.Views.ProgressBars;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Core.Popup
+namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
 {
     public class BasePopup : MonoBehaviour
     {
-        [Inject][HideInInspector] public RootCanvas rootCanvas;
+        [Inject][HideInInspector] public PopupRootCanvas rootCanvas;
         //[Inject] protected ISoundService soundService;
         [Inject] protected PopupHub popupHub;
         

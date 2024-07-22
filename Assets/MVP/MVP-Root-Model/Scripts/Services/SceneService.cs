@@ -12,7 +12,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
     public class SceneService
     {
         private CancellationTokenSource _cts;
-        private List<string> _loadedScenes = new();
+        private List<string> _loadedModuleScenes = new();
 
         public async UniTask LoadScenesForModule(ScreenModelMap screenModelMap)
         {
@@ -30,10 +30,10 @@ namespace MVP.MVP_Root_Model.Scripts.Services
         {
             return screenModelMap switch
             {
-                ScreenModelMap.StartGame => null,
-                ScreenModelMap.Converter => new List<string> { "PromotionGUI", "DynamicBackground"},
-                ScreenModelMap.MainMenu => null,
-                ScreenModelMap.TicTac => new List<string> { "PromotionGUI" },
+                ScreenModelMap.StartGame => new List<string> { "PopupsManager"},
+                ScreenModelMap.Converter => new List<string> { "PromotionGUI", "DynamicBackground", "PopupsManager"},
+                ScreenModelMap.MainMenu => new List<string> { "PopupsManager"},
+                ScreenModelMap.TicTac => new List<string> { "PromotionGUI", "PopupsManager" },
                 _ => null
             };
         }
@@ -51,8 +51,8 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                     loadTasks.Add(LoadSceneAsync(scene, true));
                 else
                 {
-                    if (!_loadedScenes.Contains(scene))
-                        _loadedScenes.Add(scene);
+                    if (!_loadedModuleScenes.Contains(scene))
+                        _loadedModuleScenes.Add(scene);
                 }
             }
 
@@ -65,8 +65,8 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                 SceneManager.LoadSceneAsync(sceneName,
                     additive ? LoadSceneMode.Additive : LoadSceneMode.Single));
 
-            if (!_loadedScenes.Contains(sceneName))
-                _loadedScenes.Add(sceneName);
+            if (!_loadedModuleScenes.Contains(sceneName))
+                _loadedModuleScenes.Add(sceneName);
         }
 
         private async UniTask LoadSceneAsyncInternal(Func<AsyncOperation> loadSceneFunc)
@@ -96,7 +96,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                 return;
             }
 
-            var scenesToUnload = _loadedScenes.Except(scenesToLoad).ToList();
+            var scenesToUnload = _loadedModuleScenes.Except(scenesToLoad).ToList();
             List<UniTask> unloadTasks = new List<UniTask>();
 
             foreach (var scene in scenesToUnload)
@@ -110,7 +110,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
 
             await UniTask.WhenAll(unloadTasks);
 
-            _loadedScenes = _loadedScenes.Except(scenesToUnload).ToList();
+            _loadedModuleScenes = _loadedModuleScenes.Except(scenesToUnload).ToList();
         }
     }
 }

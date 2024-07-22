@@ -2,10 +2,9 @@
 using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
 using System;
-using System.Runtime.InteropServices;
 using System.Threading;
-using MVP.MVP_Root_Model.Scripts.Core.Popup;
-using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
+using MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem;
+using MVP.MVP_Root_Model.Scripts.Core.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -16,6 +15,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     public class ScreenController : IScreenController, IStartable
     {
         //[Inject] private readonly PopupHub _popupHub;
+        //[Inject] private RootCanvas _rootCanvas;
+
         [Inject] private readonly SceneInstallerManager _sceneInstallerManager;
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
@@ -29,9 +30,9 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         public void Start()
         {
             /*var x = _resolver.TryResolve(out BasePopupFactory<FirstPopup> y);
-            Debug.Log(y);*/
-            //Debug.Log(_popupHub);
-            
+            Debug.Log(y);*/ 
+            //Debug.Log(_rootCanvas);
+
             Scene activeScene = SceneManager.GetActiveScene();
             string currentSceneName = activeScene.name;
             ScreenModelMap? screenModelMap = SceneNameToEnum(currentSceneName);

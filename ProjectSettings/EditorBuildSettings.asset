@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MVP/MVP-Root-Model/Scenes/DynamicBackground.unity
     guid: d502e3d7e375cac4dabf03194eddeed6
+  - enabled: 1
+    path: Assets/MVP/MVP-Root-Model/Scenes/PopupsManager.unity
+    guid: 0fd8d7b6ee230064aa06ea08bcb21331
   m_configObjects: {}

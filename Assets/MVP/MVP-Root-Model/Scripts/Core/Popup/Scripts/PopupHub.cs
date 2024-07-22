@@ -2,22 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using MVP.MVP_Root_Model.Scripts.Core.EventMediator;
+using MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
 using MVP.MVP_Root_Model.Scripts.Core.Views;
+using MVP.MVP_Root_Model.Scripts.Core.Views.ProgressBars;
 using UnityEngine;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Core.Popup
+namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
 {
     public class PopupHub
     {
         [NonSerialized] public BasePopup CurrentPopup;
 
-        [Inject] private RootCanvas _rootCanvas;
+        [Inject] private PopupRootCanvas _rootCanvas;
 
-        [Inject] private BasePopupFactory<FirstPopup> _firstPopupFactory;
-        [Inject] private EventMediator.EventMediator _eventMediator;
+        [Inject] private IBasePopupFactory<FirstPopup> _firstPopupFactory;
+        [Inject] private EventMediator _eventMediator;
 
         private readonly Stack<BasePopup> _popups = new();
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);

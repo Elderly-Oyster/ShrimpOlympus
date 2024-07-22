@@ -1,6 +1,7 @@
-using MVP.MVP_Root_Model.Scripts.Core.EventMediator;
+using MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem;
 using MVP.MVP_Root_Model.Scripts.Core.Popup;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
+using MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts;
 using MVP.MVP_Root_Model.Scripts.Services;
 using MVP.MVP_Root_Model.Scripts.Services.LongInitializationServices;
 using UnityEngine;
@@ -11,14 +12,12 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 {
     public class RootLifetimeScope : LifetimeScope
     {
-        [SerializeField] private FirstPopup firstPopupPrefab;
         protected override void Configure(IContainerBuilder builder)
         {
             builder.Register<GlobalService>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
             
-            RegisterPopupFactories(builder);
             RegisterServices(builder);
             
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
@@ -30,9 +29,6 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
 
         private void RegisterServices(IContainerBuilder builder)
         {
-            builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
-                .AsSelf();
-
             builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>()
                 .AsSelf();
             
@@ -43,16 +39,7 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
             
             builder.Register<SceneService>(Lifetime.Singleton);
-            builder.Register<SceneInstallerManager>(Lifetime.Singleton);  
-            
-            builder.Register<PopupHub>(Lifetime.Singleton);
-        }
-
-        private void RegisterPopupFactories(IContainerBuilder builder)
-        {
-            builder.Register<BasePopupFactory<FirstPopup>>(Lifetime.Transient)
-                .WithParameter(firstPopupPrefab)
-                .AsImplementedInterfaces(); 
+            builder.Register<SceneInstallerManager>(Lifetime.Singleton);
         }
     }
 }

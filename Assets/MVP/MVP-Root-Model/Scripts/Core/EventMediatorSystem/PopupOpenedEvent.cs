@@ -1,4 +1,4 @@
-namespace MVP.MVP_Root_Model.Scripts.Core.EventMediator
+namespace MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem
 {
     public class PopupOpenedEvent
     {
