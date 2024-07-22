@@ -1,4 +1,3 @@
-using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Core.EventMediator;
 using MVP.MVP_Root_Model.Scripts.Core.Popup;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
@@ -18,18 +17,15 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             builder.Register<GlobalService>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
-
             
             RegisterPopupFactories(builder);
             RegisterServices(builder);
-
+            
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
 
             builder.Register<ScreenController>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
-
-            builder.Register<PopupHub>(Lifetime.Singleton);
         }
 
         private void RegisterServices(IContainerBuilder builder)
@@ -48,12 +44,15 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             
             builder.Register<SceneService>(Lifetime.Singleton);
             builder.Register<SceneInstallerManager>(Lifetime.Singleton);  
+            
+            builder.Register<PopupHub>(Lifetime.Singleton);
         }
 
         private void RegisterPopupFactories(IContainerBuilder builder)
         {
             builder.Register<BasePopupFactory<FirstPopup>>(Lifetime.Transient)
-                .WithParameter(firstPopupPrefab);
+                .WithParameter(firstPopupPrefab)
+                .AsImplementedInterfaces(); 
         }
     }
 }

@@ -1,6 +1,5 @@
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Core.Popup
 {
@@ -9,20 +8,20 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup
     public class BasePopupFactory<T> : IBasePopupFactory<T> where T : BasePopup
     {
         private readonly IObjectResolver _resolver;
-        private readonly BasePopup _basePopupFactoryPrefab;
+        private readonly T _basePopupFactoryPrefab;
 
-        public BasePopupFactory(IObjectResolver resolver, BasePopup basePopupFactoryPrefab)
+        public BasePopupFactory(IObjectResolver resolver, T basePopupFactoryPrefab)
         {
             _resolver = resolver;
             _basePopupFactoryPrefab = basePopupFactoryPrefab;
         }
 
-        public virtual T Create(Transform transform)
+        public virtual T Create(Transform parentTransform)
         {
-            var popupInstance = Object.Instantiate(_basePopupFactoryPrefab, transform);
+            var popupInstance = Object.Instantiate(_basePopupFactoryPrefab, parentTransform);
             _resolver.Inject(popupInstance);
             popupInstance.gameObject.SetActive(false);
-            return popupInstance as T;
+            return popupInstance;
         }
     }
 }
