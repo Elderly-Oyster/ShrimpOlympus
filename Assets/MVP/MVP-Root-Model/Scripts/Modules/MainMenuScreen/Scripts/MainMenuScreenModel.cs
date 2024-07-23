@@ -10,23 +10,23 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 {
     public class MainMenuScreenModel : IScreenModel
     {
-        [Inject] readonly PopupHub _popupHub;
+        private readonly PopupHub _popupHub;
         private readonly IGlobalService _globalService;
         private readonly IScreenController _screenController;
         private readonly MainMenuScreenPresenter _mainMenuScreenPresenter;
 
         public MainMenuScreenModel(IScreenController screenController,
             MainMenuScreenPresenter mainMenuScreenPresenter,
-            IGlobalService globalService)
+            IGlobalService globalService, PopupHub popupHub)
         {
             _mainMenuScreenPresenter = mainMenuScreenPresenter;
             _screenController = screenController;
             _globalService = globalService;
+            _popupHub = popupHub;
         }
         
         public async UniTask Run(object param)
         {
-            Debug.Log(_popupHub);
             _mainMenuScreenPresenter.Initialize(this);
             await _mainMenuScreenPresenter.ShowView();
             await _mainMenuScreenPresenter.WaitForTransitionButtonPress();

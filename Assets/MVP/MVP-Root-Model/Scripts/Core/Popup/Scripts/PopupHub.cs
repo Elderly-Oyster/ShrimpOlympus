@@ -18,6 +18,7 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
         [Inject] private PopupRootCanvas _rootCanvas;
 
         [Inject] private IBasePopupFactory<FirstPopup> _firstPopupFactory;
+        [Inject] private IBasePopupFactory<PromotionPopup> _promotionPopupFactory;
         [Inject] private EventMediator _eventMediator;
 
         private readonly Stack<BasePopup> _popups = new();
@@ -50,6 +51,7 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
         }
 
         public void OpenFirstPopup() => CreateAndOpenPopup(_firstPopupFactory);
+        public void OpenPromotionPopup() => CreateAndOpenPopup(_promotionPopupFactory);
 
         private async UniTask OpenDynamicPopup<TParam>(BasePopup popup, TParam param, string id)
         {

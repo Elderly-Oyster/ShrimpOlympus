@@ -1,18 +1,20 @@
+using MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 namespace MVP.MVP_Root_Model.Scripts.General.PromotionAdditionalScene
 {
     public class PromotionADView : MonoBehaviour
     {
+        [Inject] private PopupHub _popupHub;
         [SerializeField] private Button openPopupButton;
-        [SerializeField] private PromotionPopup popup;
 
         private void Awake()
         {
-            openPopupButton.onClick.AddListener(OpenPopup);
+            openPopupButton.onClick.AddListener(OpenPromotionPopup);
         }
 
-        private void OpenPopup() => popup.OpenPopup();
+        private void OpenPromotionPopup() => _popupHub.OpenPromotionPopup();
     }
 }

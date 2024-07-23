@@ -1,7 +1,6 @@
 ﻿using MVP.MVP_Root_Model.Scripts.Core.Views;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
@@ -9,7 +8,6 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
     public class MainMenuScreenView : UIView
     {
         [SerializeField] private Button firstPopupButton;
-
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
 

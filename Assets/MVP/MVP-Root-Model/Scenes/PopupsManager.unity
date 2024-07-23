@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -275,6 +276,7 @@ MonoBehaviour:
   - {fileID: 1651321770}
   popupRootCanvas: {fileID: 9784021}
   firstPopupPrefab: {fileID: 1803823270298938150, guid: 79ebeff0743ce3042bab5430d2d14089, type: 3}
+  promotionPopup: {fileID: 6515424066706802128, guid: d8ab23c1588c9594e851968055d5f1bd, type: 3}
 --- !u!4 &921238154
 Transform:
   m_ObjectHideFlags: 0

@@ -13,7 +13,26 @@ namespace MVP.MVP_Root_Model.Scripts.Services
     {
         private CancellationTokenSource _cts;
         private List<string> _loadedModuleScenes = new();
+        private List<string> _staticModuleScenes = new()
+        {
+            "PopupsManager"
+        };
 
+        public SceneService()
+        {
+            LoadStaticScenes().Forget();
+        }
+        
+        public async UniTask LoadStaticScenes() //TODO Invoke from ScreenController?
+        {
+            await LoadScenesAsync(_staticModuleScenes);
+        }
+        
+        public async UniTask LoadStaticScene(string sceneName) //TODO
+        {
+            
+        }
+        
         public async UniTask LoadScenesForModule(ScreenModelMap screenModelMap)
         {
             List<string> scenes = new List<string> { screenModelMap.ToString() };
@@ -25,15 +44,16 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             await LoadScenesAsync(scenes);
             await UnloadUnusedScenesAsync(scenes);
         }
-
+        
+        
         private IEnumerable<string> GetAdditionalScenes(ScreenModelMap screenModelMap)
         {
             return screenModelMap switch
             {
-                ScreenModelMap.StartGame => new List<string> { "PopupsManager"},
-                ScreenModelMap.Converter => new List<string> { "PromotionGUI", "DynamicBackground", "PopupsManager"},
-                ScreenModelMap.MainMenu => new List<string> { "PopupsManager"},
-                ScreenModelMap.TicTac => new List<string> { "PromotionGUI", "PopupsManager" },
+                ScreenModelMap.StartGame => new List<string>(),
+                ScreenModelMap.Converter => new List<string> { "PromotionGUI", "DynamicBackground"},
+                ScreenModelMap.MainMenu => new List<string>(),
+                ScreenModelMap.TicTac => new List<string> { "PromotionGUI"},
                 _ => null
             };
         }
@@ -96,7 +116,11 @@ namespace MVP.MVP_Root_Model.Scripts.Services
                 return;
             }
 
-            var scenesToUnload = _loadedModuleScenes.Except(scenesToLoad).ToList();
+            var scenesToUnload = _loadedModuleScenes
+                .Except(scenesToLoad)
+                .Except(_staticModuleScenes) // Исключение постоянных сцен
+                .ToList();
+
             List<UniTask> unloadTasks = new List<UniTask>();
 
             foreach (var scene in scenesToUnload)

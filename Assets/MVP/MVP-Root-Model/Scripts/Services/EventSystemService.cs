@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using VContainer;
 using VContainer.Unity;
 
 namespace MVP.MVP_Root_Model.Scripts.Services
