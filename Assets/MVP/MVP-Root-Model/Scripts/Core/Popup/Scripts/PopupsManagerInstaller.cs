@@ -1,6 +1,6 @@
+using MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
 using MVP.MVP_Root_Model.Scripts.Core.Views.ProgressBars;
-using MVP.MVP_Root_Model.Scripts.Services;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -16,8 +16,8 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
         {
             builder.RegisterComponent(popupRootCanvas);
 
-            builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
-                .AsSelf();
+            builder.Register<EventMediator>(Lifetime.Singleton);
+
             RegisterPopupFactories(builder);
             builder.Register<PopupHub>(Lifetime.Singleton);
         }

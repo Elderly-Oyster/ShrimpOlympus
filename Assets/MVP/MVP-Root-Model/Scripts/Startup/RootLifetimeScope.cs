@@ -28,8 +28,9 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
             builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>()
                 .AsSelf();
             
-            builder.Register<EventMediator>(Lifetime.Singleton);
-
+            builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
+                .AsSelf();
+            
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
