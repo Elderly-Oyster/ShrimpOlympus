@@ -11,17 +11,14 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
     public class MainMenuScreenModel : IScreenModel
     {
         private readonly PopupHub _popupHub;
-        private readonly IGlobalService _globalService;
         private readonly IScreenController _screenController;
         private readonly MainMenuScreenPresenter _mainMenuScreenPresenter;
 
         public MainMenuScreenModel(IScreenController screenController,
-            MainMenuScreenPresenter mainMenuScreenPresenter,
-            IGlobalService globalService, PopupHub popupHub)
+            MainMenuScreenPresenter mainMenuScreenPresenter, PopupHub popupHub)
         {
             _mainMenuScreenPresenter = mainMenuScreenPresenter;
             _screenController = screenController;
-            _globalService = globalService;
             _popupHub = popupHub;
         }
         

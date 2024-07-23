@@ -14,10 +14,6 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
     {
         protected override void Configure(IContainerBuilder builder)
         {
-            builder.Register<GlobalService>(Lifetime.Singleton)
-                .AsSelf()
-                .AsImplementedInterfaces();
-            
             RegisterServices(builder);
             
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
