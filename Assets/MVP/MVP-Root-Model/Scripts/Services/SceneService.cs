@@ -13,13 +13,11 @@ namespace MVP.MVP_Root_Model.Scripts.Services
     {
         private CancellationTokenSource _cts;
         private List<string> _loadedModuleScenes = new();
-        private List<string> _staticModuleScenes = new()
-        {
-            "PopupsManager"
-        };
+        private List<string> _staticModuleScenes = new();
 
         public SceneService()
         {
+            AddStaticAdditiveScene(AdditiveModulesMap.PopupsManager);
             LoadStaticScenes().Forget();
         }
         
@@ -28,32 +26,34 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             await LoadScenesAsync(_staticModuleScenes);
         }
         
-        public async UniTask LoadStaticScene(string sceneName) //TODO
+        public void AddStaticAdditiveScene(AdditiveModulesMap sceneName)
         {
-            
+            _staticModuleScenes.Add(sceneName.ToString());
         }
         
         public async UniTask LoadScenesForModule(ScreenModelMap screenModelMap)
         {
             List<string> scenes = new List<string> { screenModelMap.ToString() };
-            IEnumerable<string> additionalScenes = GetAdditionalScenes(screenModelMap);
+            IEnumerable<AdditiveModulesMap> additionalScenes = GetAdditionalScenes(screenModelMap);
             if (additionalScenes != null)
-                scenes.AddRange(additionalScenes);
+            {
+                var sceneNames = additionalScenes.Select(scene => scene.ToString());
+                scenes.AddRange(sceneNames);
+            }
 
             Debug.Log("Loading scenes: " + string.Join(", ", scenes));
             await LoadScenesAsync(scenes);
             await UnloadUnusedScenesAsync(scenes);
         }
         
-        
-        private IEnumerable<string> GetAdditionalScenes(ScreenModelMap screenModelMap)
+        private IEnumerable<AdditiveModulesMap> GetAdditionalScenes(ScreenModelMap screenModelMap)
         {
             return screenModelMap switch
             {
-                ScreenModelMap.StartGame => new List<string>(),
-                ScreenModelMap.Converter => new List<string> {"DynamicBackground"},
-                ScreenModelMap.MainMenu => new List<string>(),
-                ScreenModelMap.TicTac => new List<string>(),
+                ScreenModelMap.StartGame => new List<AdditiveModulesMap>(),
+                ScreenModelMap.Converter => new List<AdditiveModulesMap> {AdditiveModulesMap.DynamicBackground},
+                ScreenModelMap.MainMenu => new List<AdditiveModulesMap>(),
+                ScreenModelMap.TicTac => new List<AdditiveModulesMap>(),
                 _ => null
             };
         }

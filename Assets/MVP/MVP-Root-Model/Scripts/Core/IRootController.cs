@@ -15,9 +15,16 @@ namespace MVP.MVP_Root_Model.Scripts.Core
     
     public enum ScreenModelMap
     {
-        StartGame = 0,
-        MainMenu = 1,
-        Converter = 2,
-        TicTac = 3
+        StartGame,
+        MainMenu,
+        Converter,
+        TicTac
+    }
+
+    public enum AdditiveModulesMap
+    {
+        PopupsManager,
+        DynamicBackground
     }
 }
+
