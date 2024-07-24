@@ -3,8 +3,6 @@ using MVP.MVP_Root_Model.Scripts.Core;
 using MVP.MVP_Root_Model.Scripts.Services;
 using System;
 using System.Threading;
-using MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem;
-using MVP.MVP_Root_Model.Scripts.Core.Views;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;

@@ -10,6 +10,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
     public class TicTacScreenView : UIView
     {
         [SerializeField] private Button mainMenuButton;
+        [SerializeField] private Button thirdPopupButton;
         [SerializeField] private PulsatingButton restartButton;
         [SerializeField] private CellUIView[] cellViews;
         [SerializeField] private TMP_Text winnerText;
@@ -22,10 +23,11 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             ClearBoard();
         }
 
-        public void SetupEventListeners(UnityAction onMainMenuButtonClicked,
-            UnityAction<int, int> onCellClicked, UnityAction onRestartButtonClicked)
+        public void SetupEventListeners(UnityAction onMainMenuButtonClicked, UnityAction<int, int> onCellClicked, 
+            UnityAction onRestartButtonClicked, UnityAction onThirdPopupButtonClicked)
         {
             mainMenuButton.onClick.AddListener(onMainMenuButtonClicked);
+            thirdPopupButton.onClick.AddListener(onThirdPopupButtonClicked);
             restartButton.pulsatingButton.onClick.AddListener(onRestartButtonClicked);
             for (int i = 0; i < BoardSize; i++)
             {
@@ -34,7 +36,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
                     int index = i * BoardSize + j;
                     cellViews[index].Initialize(i, j, onCellClicked);
                 }
-            }
+            } 
         }
 
         public void RemoveEventListeners()

@@ -20,7 +20,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
             (
                 OnConverterButtonClicked,
                 OnTicTacButtonClicked,
-                OnFirstPopupButtonClicked
+                OnFirstPopupButtonClicked,
+                OnSecondPopupButtonClicked
             );
         }
 
@@ -37,6 +38,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
         }
 
         private void OnFirstPopupButtonClicked() => _mainMenuScreenModel.OpenFirstPopup();
+        private void OnSecondPopupButtonClicked() => _mainMenuScreenModel.OpenSecondPopup();
 
         public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 

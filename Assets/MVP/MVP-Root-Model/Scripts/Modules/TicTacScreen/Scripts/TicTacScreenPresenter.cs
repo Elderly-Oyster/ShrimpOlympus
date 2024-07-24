@@ -14,7 +14,8 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
         {
             _ticTacScreenModel = ticTacScreenModel;
             _ticTacScreenView.gameObject.SetActive(false);
-            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked, OnRestartButtonClicked);
+            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked, OnRestartButtonClicked, 
+                OnThirdPopupButtonClicked);
             _ticTacScreenView.ClearBoard();
         }
 
@@ -52,6 +53,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             _ticTacScreenView.UnblockBoard(); 
             _ticTacScreenView.StopAnimateRestartButton();
         }
+        private void OnThirdPopupButtonClicked() => _ticTacScreenModel.OpenThirdPopup();
 
         public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 

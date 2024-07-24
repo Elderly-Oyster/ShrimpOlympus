@@ -51,9 +51,9 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             return screenModelMap switch
             {
                 ScreenModelMap.StartGame => new List<string>(),
-                ScreenModelMap.Converter => new List<string> { "PromotionGUI", "DynamicBackground"},
+                ScreenModelMap.Converter => new List<string> {"DynamicBackground"},
                 ScreenModelMap.MainMenu => new List<string>(),
-                ScreenModelMap.TicTac => new List<string> { "PromotionGUI"},
+                ScreenModelMap.TicTac => new List<string>(),
                 _ => null
             };
         }

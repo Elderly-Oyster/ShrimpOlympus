@@ -11,7 +11,8 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
     {
         [SerializeField] private PopupRootCanvas popupRootCanvas;
         [SerializeField] private FirstPopup firstPopupPrefab;
-        [SerializeField] private PromotionPopup promotionPopup;
+        [SerializeField] private SecondPopup secondPopup;
+        [SerializeField] private ThirdPopup thirdPopup;
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterComponent(popupRootCanvas);
@@ -27,8 +28,11 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
             builder.Register<BasePopupFactory<FirstPopup>>(Lifetime.Transient)
                 .WithParameter(firstPopupPrefab)
                 .AsImplementedInterfaces(); 
-            builder.Register<BasePopupFactory<PromotionPopup>>(Lifetime.Transient)
-                .WithParameter(promotionPopup)
+            builder.Register<BasePopupFactory<SecondPopup>>(Lifetime.Transient)
+                .WithParameter(secondPopup)
+                .AsImplementedInterfaces();             
+            builder.Register<BasePopupFactory<ThirdPopup>>(Lifetime.Transient)
+                .WithParameter(thirdPopup)
                 .AsImplementedInterfaces(); 
         }
     }

@@ -10,9 +10,9 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 {
     public class MainMenuScreenModel : IScreenModel
     {
-        private readonly PopupHub _popupHub;
         private readonly IScreenController _screenController;
         private readonly MainMenuScreenPresenter _mainMenuScreenPresenter;
+        private readonly PopupHub _popupHub;
 
         public MainMenuScreenModel(IScreenController screenController,
             MainMenuScreenPresenter mainMenuScreenPresenter, PopupHub popupHub)
@@ -34,6 +34,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
         public void RunTicTacModel() => _screenController.RunModel(ScreenModelMap.TicTac);
 
         public void OpenFirstPopup() => _popupHub.OpenFirstPopup();
+        public void OpenSecondPopup() => _popupHub.OpenSecondPopup();
 
         public async UniTask Stop() => await _mainMenuScreenPresenter.HideScreenView();
         public void Dispose() => _mainMenuScreenPresenter.RemoveEventListeners();

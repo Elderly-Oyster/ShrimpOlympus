@@ -1,6 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
 using System;
+using MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
 {
@@ -8,6 +9,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
     {
         private readonly IScreenController _rootController;
         private readonly TicTacScreenPresenter _ticTacScreenPresenter;
+        private readonly PopupHub _popupHub;
         private const int BoardSize = 3;
         private const char PlayerX = 'X';
         private const char PlayerO = 'O';
@@ -16,8 +18,7 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
         public char currentPlayer { get; private set; }
         public bool isGameOver { get; private set; }
 
-        private static readonly int[][] WinPositions = new int[][]
-        {
+        private static readonly int[][] WinPositions = {
             new[] {0, 0, 0, 1, 0, 2},
             new[] {1, 0, 1, 1, 1, 2}, 
             new[] {2, 0, 2, 1, 2, 2}, 
@@ -28,10 +29,11 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             new[] {0, 2, 1, 1, 2, 0}  
         };
 
-        public TicTacScreenModel(IScreenController rootController, TicTacScreenPresenter ticTacScreenPresenter)
+        public TicTacScreenModel(IScreenController rootController, TicTacScreenPresenter ticTacScreenPresenter, PopupHub popupHub)
         {
             _rootController = rootController;
             _ticTacScreenPresenter = ticTacScreenPresenter;
+            _popupHub = popupHub;
         }
 
         public async UniTask Run(object param)
@@ -87,8 +89,10 @@ namespace MVP.MVP_Root_Model.Scripts.Modules.TicTacScreen.Scripts
             return true;
         }
 
+        public void OpenThirdPopup() => _popupHub.OpenThirdPopup();
+        
         public void RunMainMenuModel() => _rootController.RunModel(ScreenModelMap.MainMenu);
-
+        
         public async UniTask Stop() => await _ticTacScreenPresenter.HideScreenView();
         public void Dispose() => _ticTacScreenPresenter.RemoveEventListeners();
     }

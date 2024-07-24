@@ -4,7 +4,6 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core.EventMediatorSystem;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts;
-using MVP.MVP_Root_Model.Scripts.Core.Views;
 using MVP.MVP_Root_Model.Scripts.Core.Views.ProgressBars;
 using UnityEngine;
 using VContainer;
@@ -18,7 +17,8 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
         [Inject] private PopupRootCanvas _rootCanvas;
 
         [Inject] private IBasePopupFactory<FirstPopup> _firstPopupFactory;
-        [Inject] private IBasePopupFactory<PromotionPopup> _promotionPopupFactory;
+        [Inject] private IBasePopupFactory<SecondPopup> _secondPopupFactory;
+        [Inject] private IBasePopupFactory<ThirdPopup> _thirdPopupFactory;
         [Inject] private EventMediator _eventMediator;
 
         private readonly Stack<BasePopup> _popups = new();
@@ -51,7 +51,10 @@ namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
         }
 
         public void OpenFirstPopup() => CreateAndOpenPopup(_firstPopupFactory);
-        public void OpenPromotionPopup() => CreateAndOpenPopup(_promotionPopupFactory);
+        public void OpenSecondPopup() => CreateAndOpenPopup(_secondPopupFactory);
+
+        public void OpenThirdPopup() => CreateAndOpenPopup(_thirdPopupFactory);
+
 
         private async UniTask OpenDynamicPopup<TParam>(BasePopup popup, TParam param, string id)
         {

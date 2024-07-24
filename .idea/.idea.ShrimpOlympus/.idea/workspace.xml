@@ -5,26 +5,45 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Prefab/PromotionPopup.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Prefab/PromotionPopup.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Scripts.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Scripts/PromotionPopup.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Scripts/PromotionPopup.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup/Prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup/Prefab/ThirdPopup.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup/Prefab/ThirdPopup.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup/Scripts.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup/Scripts/ThirdPopup.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/ThirdPopup/Scripts/ThirdPopup.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PopupsManager.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PopupsManager.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/TicTac.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scenes/TicTac.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/IRootController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/IRootController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup/Prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Prefab/PromotionPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup/Prefab/SecondPopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Prefab/PromotionPopup.prefab.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup/Prefab/SecondPopup.prefab.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Scripts.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup/Scripts.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Scripts/PromotionPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup/Scripts/SecondPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/PromotionPopup/Scripts/PromotionPopup.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Popups/SecondPopup/Scripts/SecondPopup.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupHub.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupHub.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupsManagerInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupsManagerInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/DynamicBackgroundScene/DynamicBackgroundSceneInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/DynamicBackgroundScene/DynamicBackgroundSceneInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionADView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionADView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionGUISceneInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionGUISceneInstaller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionPopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionPopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionADView.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionADView.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionGUISceneInstaller.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionGUISceneInstaller.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionPopup.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/General/PromotionAdditionalScene/PromotionPopup.cs.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenPresenter.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/EventSystemService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/EventSystemService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/View/MainMenuScreen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/View/MainMenuScreen.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/View/TicTacUIView.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/View/TicTacUIView.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -181,6 +200,7 @@
       <workItem from="1721150117773" duration="376000" />
       <workItem from="1721676801604" duration="7069000" />
       <workItem from="1721692595872" duration="2634000" />
+      <workItem from="1721781331763" duration="7438000" />
     </task>
     <servers />
   </component>

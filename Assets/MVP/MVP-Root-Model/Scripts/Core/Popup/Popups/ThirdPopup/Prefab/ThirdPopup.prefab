@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8086381072867663321}
-  - component: {fileID: 6515424066706802128}
   - component: {fileID: 5174382048390765935}
+  - component: {fileID: 3060886368752268745}
   m_Layer: 5
-  m_Name: PromotionPopup
+  m_Name: ThirdPopup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,23 +41,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &6515424066706802128
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1205736250353615017}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba05c1f458b841a39bebf7ebf98cae9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rootCanvas: {fileID: 0}
-  canvasGroup: {fileID: 5174382048390765935}
-  overlayTransform: {fileID: 0}
-  spinnerTransform: {fileID: 0}
-  closeButton: {fileID: 4144867254674005391}
 --- !u!225 &5174382048390765935
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -70,6 +53,23 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &3060886368752268745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205736250353615017}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7fdd663e8af4df39f4c8f1be02a3bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rootCanvas: {fileID: 0}
+  canvasGroup: {fileID: 5174382048390765935}
+  overlayTransform: {fileID: 0}
+  spinnerTransform: {fileID: 0}
+  closeButton: {fileID: 4144867254674005391}
 --- !u!1 &1241662088061580750
 GameObject:
   m_ObjectHideFlags: 0

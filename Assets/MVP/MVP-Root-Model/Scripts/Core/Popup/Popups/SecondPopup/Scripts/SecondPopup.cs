@@ -5,10 +5,9 @@ using UnityEngine;
 
 namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Popups.FirstPopup.Scripts
 {
-    public class PromotionPopup : BasePopup
+    public class SecondPopup : BasePopup
     {
         // [SerializeField] private float animationDuration = 0.5f;
-        
         
         // private async UniTask AnimateOpen()
         // {
