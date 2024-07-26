@@ -18,7 +18,7 @@ namespace MVP.MVP_Root_Model.Scripts.Core
         StartGame,
         MainMenu,
         Converter,
-        TicTac
+        TicTac,
     }
 }
 

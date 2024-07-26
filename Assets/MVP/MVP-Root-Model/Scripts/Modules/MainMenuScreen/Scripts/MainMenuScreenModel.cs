@@ -1,10 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using MVP.MVP_Root_Model.Scripts.Core;
-using MVP.MVP_Root_Model.Scripts.Core.Popup;
 using MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts;
-using MVP.MVP_Root_Model.Scripts.Services;
-using UnityEngine;
-using VContainer;
 
 namespace MVP.MVP_Root_Model.Scripts.Modules.MainMenuScreen.Scripts
 {

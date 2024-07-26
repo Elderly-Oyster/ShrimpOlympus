@@ -5,9 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupTest.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupTest/PopupTestSceneInstaller.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupTest/PopupTestSceneInstaller.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupTest/PopupTestScreenView.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/Popup/Scripts/PopupTest/PopupTestScreenView.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/IRootController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Core/IRootController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Services/SceneService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/ScreenController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +175,9 @@
       <workItem from="1721835254747" duration="5273000" />
       <workItem from="1721863381012" duration="2187000" />
       <workItem from="1721957648950" duration="1674000" />
-      <workItem from="1721963494457" duration="1969000" />
+      <workItem from="1721963494457" duration="1985000" />
+      <workItem from="1722015628734" duration="2581000" />
+      <workItem from="1722027697961" duration="4310000" />
     </task>
     <servers />
   </component>
