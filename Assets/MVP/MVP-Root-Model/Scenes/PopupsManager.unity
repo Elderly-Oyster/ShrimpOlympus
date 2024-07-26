@@ -277,7 +277,7 @@ MonoBehaviour:
   popupRootCanvas: {fileID: 9784021}
   firstPopupPrefab: {fileID: 1803823270298938150, guid: 79ebeff0743ce3042bab5430d2d14089, type: 3}
   secondPopup: {fileID: 5518397903346506616, guid: 79ae47d08eef4c1f9e6b46b222a1d4e8, type: 3}
-  thirdPopup: {fileID: 3060886368752268745, guid: d8ab23c1588c9594e851968055d5f1bd, type: 3}
+  thirdPopup: {fileID: 846265134927218408, guid: 94043e3fef5fc9246bc8e75d9b024d28, type: 3}
 --- !u!4 &921238154
 Transform:
   m_ObjectHideFlags: 0

@@ -9,6 +9,12 @@ using UnityEngine.SceneManagement;
 
 namespace MVP.MVP_Root_Model.Scripts.Services
 {
+    public enum AdditiveScenesMap
+    {
+        PopupsManager,
+        DynamicBackground
+    }
+    
     public class SceneService
     {
         private CancellationTokenSource _cts;
@@ -17,7 +23,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
 
         public SceneService()
         {
-            AddStaticAdditiveScene(AdditiveModulesMap.PopupsManager);
+            AddStaticAdditiveScene(AdditiveScenesMap.PopupsManager);
             LoadStaticScenes().Forget();
         }
         
@@ -26,7 +32,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             await LoadScenesAsync(_staticModuleScenes);
         }
         
-        public void AddStaticAdditiveScene(AdditiveModulesMap sceneName)
+        public void AddStaticAdditiveScene(AdditiveScenesMap sceneName)
         {
             _staticModuleScenes.Add(sceneName.ToString());
         }
@@ -34,7 +40,7 @@ namespace MVP.MVP_Root_Model.Scripts.Services
         public async UniTask LoadScenesForModule(ScreenModelMap screenModelMap)
         {
             List<string> scenes = new List<string> { screenModelMap.ToString() };
-            IEnumerable<AdditiveModulesMap> additionalScenes = GetAdditionalScenes(screenModelMap);
+            IEnumerable<AdditiveScenesMap> additionalScenes = GetAdditionalScenes(screenModelMap);
             if (additionalScenes != null)
             {
                 var sceneNames = additionalScenes.Select(scene => scene.ToString());
@@ -46,14 +52,14 @@ namespace MVP.MVP_Root_Model.Scripts.Services
             await UnloadUnusedScenesAsync(scenes);
         }
         
-        private IEnumerable<AdditiveModulesMap> GetAdditionalScenes(ScreenModelMap screenModelMap)
+        private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenModelMap screenModelMap)
         {
             return screenModelMap switch
             {
-                ScreenModelMap.StartGame => new List<AdditiveModulesMap>(),
-                ScreenModelMap.Converter => new List<AdditiveModulesMap> {AdditiveModulesMap.DynamicBackground},
-                ScreenModelMap.MainMenu => new List<AdditiveModulesMap>(),
-                ScreenModelMap.TicTac => new List<AdditiveModulesMap>(),
+                ScreenModelMap.StartGame => new List<AdditiveScenesMap>(),
+                ScreenModelMap.Converter => new List<AdditiveScenesMap> {AdditiveScenesMap.DynamicBackground},
+                ScreenModelMap.MainMenu => new List<AdditiveScenesMap>(),
+                ScreenModelMap.TicTac => new List<AdditiveScenesMap>(),
                 _ => null
             };
         }

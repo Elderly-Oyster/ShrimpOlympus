@@ -20,11 +20,5 @@ namespace MVP.MVP_Root_Model.Scripts.Core
         Converter,
         TicTac
     }
-
-    public enum AdditiveModulesMap
-    {
-        PopupsManager,
-        DynamicBackground
-    }
 }
 
