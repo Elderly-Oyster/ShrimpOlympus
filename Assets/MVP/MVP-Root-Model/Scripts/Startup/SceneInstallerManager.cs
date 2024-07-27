@@ -35,11 +35,8 @@ namespace MVP.MVP_Root_Model.Scripts.Startup
         {
             _currentScenesInstallers = FindAllSceneInstallers();
 
-            foreach (var installer in _currentScenesInstallers)
-            {
-                Debug.Log(installer);
+            foreach (var installer in _currentScenesInstallers) 
                 installer.RemoveObjectsToDelete();
-            }
 
             return parentScope.CreateChild(builder =>
             {

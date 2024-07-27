@@ -2,17 +2,20 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts
+namespace MVP.MVP_Root_Model.Scripts.Core.Popup.Scripts.PopupTest
 {
     public class PopupTestScreenView : MonoBehaviour
     {
-        [Inject] private PopupHub _popupHub;
+        private PopupHub _popupHub;
         [SerializeField] private Button firstPopupButton;
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button thirdPopupButton;
         
-        private void Awake()
+        [Inject] public void Run(PopupHub popupHub)
         {
+            _popupHub = popupHub;
+            Debug.Log(_popupHub);
+
             firstPopupButton.onClick.AddListener(OpenFirstPopup);
             secondPopupButton.onClick.AddListener(OpenSecondPopup);
             thirdPopupButton.onClick.AddListener(OpenThirdPopup);
