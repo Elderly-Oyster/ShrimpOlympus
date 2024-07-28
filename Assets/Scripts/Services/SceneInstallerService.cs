@@ -1,14 +1,17 @@
 using System.Collections.Generic;
 using Core;
+using Core.Popup.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using VContainer;
 using VContainer.Unity;
 
-namespace Startup
+namespace Services
 {
-    public class SceneInstallerManager
+    public class SceneInstallerService
     {
         private List<ISceneInstaller> _currentScenesInstallers;
+        
         private static List<ISceneInstaller> FindAllSceneInstallers()
         {
             List<ISceneInstaller> sceneInstallers = new List<ISceneInstaller>();
@@ -30,7 +33,7 @@ namespace Startup
 
             return sceneInstallers;
         }
-
+        
         public LifetimeScope CombineScenes(LifetimeScope parentScope)
         {
             _currentScenesInstallers = FindAllSceneInstallers();
@@ -38,11 +41,16 @@ namespace Startup
             foreach (var installer in _currentScenesInstallers) 
                 installer.RemoveObjectsToDelete();
 
-            return parentScope.CreateChild(builder =>
+            var sceneScope = parentScope.CreateChild(builder =>
             {
                 foreach (var installer in _currentScenesInstallers)
                     installer.RegisterSceneDependencies(builder);
             });
+            
+            foreach (var installer in _currentScenesInstallers) 
+                installer.InjectSceneViews(sceneScope.Container);
+
+            return sceneScope;
         }
     }
 }

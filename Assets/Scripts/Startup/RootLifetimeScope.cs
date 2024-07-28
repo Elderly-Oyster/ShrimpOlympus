@@ -31,7 +31,7 @@ namespace Startup
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
             
             builder.Register<SceneService>(Lifetime.Singleton);
-            builder.Register<SceneInstallerManager>(Lifetime.Singleton);
+            builder.Register<SceneInstallerService>(Lifetime.Singleton);
         }
     }
 }

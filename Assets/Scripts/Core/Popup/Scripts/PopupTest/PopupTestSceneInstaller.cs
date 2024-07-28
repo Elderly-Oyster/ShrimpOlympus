@@ -11,5 +11,8 @@ namespace Core.Popup.Scripts.PopupTest
             Debug.Log("PopupTestSceneInstaller Init");
             builder.RegisterInstance(testView).As<PopupTestScreenView>();
         }
+
+        public override void InjectSceneViews(IObjectResolver resolver) => 
+            resolver.Inject(testView);
     }
 }

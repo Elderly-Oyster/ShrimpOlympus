@@ -15,5 +15,7 @@ namespace Core
             foreach (var objectToDelete in objectsToDelete) 
                 Destroy(objectToDelete);
         }
+
+        public virtual void InjectSceneViews(IObjectResolver resolver) { }
     }
 }

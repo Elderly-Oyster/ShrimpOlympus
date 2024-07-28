@@ -7,5 +7,7 @@ namespace Core
         public void RegisterSceneDependencies(IContainerBuilder builder);
 
         public void RemoveObjectsToDelete();
+
+        public void InjectSceneViews(IObjectResolver resolver);
     }
 }

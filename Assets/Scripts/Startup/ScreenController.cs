@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Core;
+using Core.Popup.Scripts;
 using Core.Popup.Scripts.PopupTest;
 using Cysharp.Threading.Tasks;
 using Services;
@@ -13,18 +14,22 @@ namespace Startup
 {
     public class ScreenController : IScreenController, IStartable
     {
-        [Inject] private readonly SceneInstallerManager _sceneInstallerManager;
+        [Inject] private readonly SceneInstallerService _sceneInstallerService;
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
-
+        
         public event Action<IObjectResolver> ModuleChanged;
+
 
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         private IScreenModel _currentModel;
 
         public void Start()
         {
+            /*_sceneService.AddStaticAdditiveScene(AdditiveScenesMap.PopupsManager);
+            _sceneService.LoadStaticScenes().Forget();*/
+            
             Scene activeScene = SceneManager.GetActiveScene();
             string currentSceneName = activeScene.name;
             ScreenModelMap? screenModelMap = SceneNameToEnum(currentSceneName);
@@ -32,11 +37,8 @@ namespace Startup
                 RunModel((ScreenModelMap)screenModelMap).Forget();
             else
             {
-                var sceneLifetimeScope = _sceneInstallerManager.
+                _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>());
-
-                if (sceneLifetimeScope.Container.TryResolve(out PopupTestScreenView view))
-                    sceneLifetimeScope.Container.Inject(view);
             }
         }
 
@@ -49,7 +51,7 @@ namespace Startup
             {
                 await _sceneService.LoadScenesForModule(screenModelMap);
 
-                var sceneLifetimeScope = _sceneInstallerManager.
+                var sceneLifetimeScope = _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>());
 
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope.Container);
@@ -61,12 +63,9 @@ namespace Startup
                 _currentModel.Dispose();
                 sceneLifetimeScope.Dispose();
             }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
+            finally { _semaphoreSlim.Release(); }
         }
-
+        
         private static ScreenModelMap? SceneNameToEnum(string sceneName)
         {
             if (Enum.TryParse(sceneName, out ScreenModelMap result))

@@ -1,10 +1,14 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
+using VContainer;
 
 namespace Core
 {
     public interface  IScreenController
     {
         UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null);
+        
+        public event Action<IObjectResolver> ModuleChanged;
     }
     
     public static class RootControllerExtension
