@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 using VContainer;
 
 namespace Scripts.Core.Popup.Scripts.PopupTest
@@ -7,27 +7,25 @@ namespace Scripts.Core.Popup.Scripts.PopupTest
     public class PopupTestScreenView : MonoBehaviour
     {
         private PopupHub _popupHub;
-        [SerializeField] private Button firstPopupButton;
-        [SerializeField] private Button secondPopupButton;
-        [SerializeField] private Button thirdPopupButton;
+        [SerializeField] private TestButtonView buttonPrefab;
+        [SerializeField] private Transform buttonsParent;
+        
         
         [Inject] public void Run(PopupHub popupHub)
         {
             _popupHub = popupHub;
-            Debug.Log(_popupHub);
-
-            firstPopupButton.onClick.AddListener(OpenFirstPopup);
-            secondPopupButton.onClick.AddListener(OpenSecondPopup);
-            thirdPopupButton.onClick.AddListener(OpenThirdPopup);
+            
+            CreateButton("FirstPopup", _popupHub.OpenFirstPopup);
+            CreateButton("SecondPopup", _popupHub.OpenSecondPopup);
+            CreateButton("ThirdPopup", _popupHub.OpenThirdPopup);
         }
 
-        private void OpenThirdPopup() => _popupHub.OpenThirdPopup();
-        private void OpenSecondPopup() => _popupHub.OpenSecondPopup();
-
-        private void OpenFirstPopup()
+        private void CreateButton(string popupName, UnityAction action)
         {
-            Debug.Log(_popupHub);
-            _popupHub.OpenFirstPopup();
-        } 
+            var testButton = Instantiate(buttonPrefab, buttonsParent).GetComponent<TestButtonView>();
+            testButton.gameObject.SetActive(true);
+            testButton.label.text = popupName;
+            testButton.button.onClick.AddListener(action);
+        }
     }
 }
