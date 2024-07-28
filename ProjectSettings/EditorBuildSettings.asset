@@ -6,24 +6,24 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/StartGame.unity
+    path: Assets/Scenes/StartGame.unity
     guid: 2ccec45666a9743428ff3206922df110
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/MainMenu.unity
+    path: Assets/Scenes/MainMenu.unity
     guid: 6c1b24bd33fa328499eebad74527aa27
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/Converter.unity
+    path: Assets/Scenes/Converter.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/TicTac.unity
+    path: Assets/Scenes/TicTac.unity
     guid: da7fbbe19be543541b43cc4121ba7dbd
   - enabled: 1
     path: Assets/MVP/MVP-Root-Model/Scenes/PromotionGUI.unity
     guid: a6bd9d0d239c5c9408cc3d2cbd350e18
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/DynamicBackground.unity
+    path: Assets/Scenes/DynamicBackground.unity
     guid: d502e3d7e375cac4dabf03194eddeed6
   - enabled: 1
-    path: Assets/MVP/MVP-Root-Model/Scenes/PopupsManager.unity
+    path: Assets/Scenes/PopupsManager.unity
     guid: 0fd8d7b6ee230064aa06ea08bcb21331
   m_configObjects: {}
