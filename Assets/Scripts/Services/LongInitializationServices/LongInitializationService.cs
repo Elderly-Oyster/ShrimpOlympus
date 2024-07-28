@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace Scripts.Services.LongInitializationServices
+namespace Services.LongInitializationServices
 {
     public abstract class LongInitializationService
     {

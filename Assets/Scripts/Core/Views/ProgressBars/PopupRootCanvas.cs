@@ -1,4 +1,4 @@
-namespace Scripts.Core.Views.ProgressBars
+namespace Core.Views.ProgressBars
 {
     public class PopupRootCanvas : RootCanvas
     {

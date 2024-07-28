@@ -1,10 +1,10 @@
-﻿using Scripts.Core;
-using Scripts.Core.Views;
+﻿using Core;
+using Core.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Modules.ConverterScreen.Scripts
+namespace Modules.ConverterScreen.Scripts
 {
     public class ConverterInstaller : SceneInstaller
     {

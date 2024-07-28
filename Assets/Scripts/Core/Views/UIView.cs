@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Scripts.Core.Views
+namespace Core.Views
 {
     public class UIView : MonoBehaviour, IDisposable
     {

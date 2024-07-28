@@ -1,4 +1,4 @@
-﻿namespace Scripts.Services.LongInitializationServices
+﻿namespace Services.LongInitializationServices
 {
     public class SecondLongInitializationService : LongInitializationService
     {

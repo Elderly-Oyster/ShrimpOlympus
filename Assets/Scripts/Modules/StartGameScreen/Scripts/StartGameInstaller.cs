@@ -1,10 +1,10 @@
-﻿using Scripts.Core;
-using Scripts.Core.Views;
+﻿using Core;
+using Core.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Modules.StartGameScreen.Scripts
+namespace Modules.StartGameScreen.Scripts
 {
     public class StartGameInstaller : SceneInstaller
     {

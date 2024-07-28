@@ -1,13 +1,13 @@
-using Scripts.Core.EventMediatorSystem;
-using Scripts.Core.Popup.Popups.FirstPopup.Scripts;
-using Scripts.Core.Popup.Popups.SecondPopup.Scripts;
-using Scripts.Core.Popup.Popups.ThirdPopup.Scripts;
-using Scripts.Core.Views.ProgressBars;
+using Core.EventMediatorSystem;
+using Core.Popup.Popups.FirstPopup.Scripts;
+using Core.Popup.Popups.SecondPopup.Scripts;
+using Core.Popup.Popups.ThirdPopup.Scripts;
+using Core.Views.ProgressBars;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Core.Popup.Scripts
+namespace Core.Popup.Scripts
 {
     public class PopupsManagerInstaller : SceneInstaller
     {

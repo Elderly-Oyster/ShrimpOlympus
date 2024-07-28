@@ -1,10 +1,10 @@
 using System.Collections.Generic;
-using Scripts.Core;
+using Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer.Unity;
 
-namespace Scripts.Startup
+namespace Startup
 {
     public class SceneInstallerManager
     {

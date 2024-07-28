@@ -1,8 +1,8 @@
-using Scripts.Core;
+using Core;
 using UnityEngine;
 using VContainer;
 
-namespace Scripts.General.DynamicBackgroundScene
+namespace General.DynamicBackgroundScene
 {
     public class DynamicBackgroundSceneInstaller : SceneInstaller
     {

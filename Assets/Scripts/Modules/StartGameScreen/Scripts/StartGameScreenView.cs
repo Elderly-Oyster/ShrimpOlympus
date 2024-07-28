@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
+using Core.Views;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Scripts.Core.Views;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace Scripts.Modules.StartGameScreen.Scripts
+namespace Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenView : UIView
     {

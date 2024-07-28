@@ -1,8 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
-using Scripts.Core;
-using Scripts.Core.Popup.Scripts;
+﻿using Core;
+using Core.Popup.Scripts;
+using Cysharp.Threading.Tasks;
 
-namespace Scripts.Modules.TicTacScreen.Scripts
+namespace Modules.TicTacScreen.Scripts
 {
     public class TicTacScreenModel : IScreenModel
     {

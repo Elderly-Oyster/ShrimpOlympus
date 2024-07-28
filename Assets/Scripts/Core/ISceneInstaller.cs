@@ -1,6 +1,6 @@
 using VContainer;
 
-namespace Scripts.Core
+namespace Core
 {
     public interface ISceneInstaller
     {

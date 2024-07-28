@@ -1,9 +1,9 @@
-﻿using Scripts.Core.Views;
+﻿using Core.Views;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Scripts.Modules.NewScreen.Scripts
+namespace Modules.NewScreen.Scripts
 {
     public class NewScreenView : UIView
     {

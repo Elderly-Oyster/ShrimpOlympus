@@ -1,10 +1,10 @@
-﻿using Scripts.Core;
-using Scripts.Core.Views;
+﻿using Core;
+using Core.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Modules.MainMenuScreen.Scripts
+namespace Modules.MainMenuScreen.Scripts
 {
     public class MainMenuInstaller : SceneInstaller
     {

@@ -1,7 +1,7 @@
 using UnityEngine;
 using VContainer;
 
-namespace Scripts.Core.Popup.Scripts
+namespace Core.Popup.Scripts
 {
     public interface IBasePopupFactory<out T> : IFactory<Transform, T> where T : BasePopup { }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Core;
 using Cysharp.Threading.Tasks;
-using Scripts.Core;
 
-namespace Scripts.Modules.ConverterScreen.Scripts
+namespace Modules.ConverterScreen.Scripts
 {
     public enum Currencies
     {

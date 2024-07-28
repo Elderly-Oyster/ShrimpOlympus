@@ -1,9 +1,9 @@
-using Scripts.Startup;
+using Startup;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Services
+namespace Services
 {
     public class AudioListenerService : IStartable
     {

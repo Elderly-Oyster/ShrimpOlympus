@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading;
+using Core;
 using Cysharp.Threading.Tasks;
-using Scripts.Core;
 using UnityEngine;
 using VContainer;
 
-namespace Scripts.Modules.StartGameScreen.Scripts
+namespace Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IPresenter
     {

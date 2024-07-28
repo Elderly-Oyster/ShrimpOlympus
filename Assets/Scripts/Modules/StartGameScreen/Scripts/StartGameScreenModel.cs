@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Core;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
-using Scripts.Core;
-using Scripts.Services.LongInitializationServices;
+using Services.LongInitializationServices;
 
-namespace Scripts.Modules.StartGameScreen.Scripts
+namespace Modules.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {

@@ -1,10 +1,10 @@
-﻿using Scripts.Core;
-using Scripts.Core.Views;
+﻿using Core;
+using Core.Views;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Modules.TicTacScreen.Scripts
+namespace Modules.TicTacScreen.Scripts
 {
     public class TicTacInstaller : SceneInstaller
     {

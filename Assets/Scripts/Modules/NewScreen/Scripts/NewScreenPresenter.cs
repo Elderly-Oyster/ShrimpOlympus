@@ -1,8 +1,8 @@
-﻿using Cysharp.Threading.Tasks;
-using Scripts.Core;
+﻿using Core;
+using Cysharp.Threading.Tasks;
 using VContainer;
 
-namespace Scripts.Modules.NewScreen.Scripts
+namespace Modules.NewScreen.Scripts
 {
     public class NewScreenPresenter : IPresenter
     {

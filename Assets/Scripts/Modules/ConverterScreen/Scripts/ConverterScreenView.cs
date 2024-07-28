@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
-using Scripts.Core.Views;
+using Core.Views;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Scripts.Modules.ConverterScreen.Scripts
+namespace Modules.ConverterScreen.Scripts
 {
     public class ConverterScreenView : UIView
     {

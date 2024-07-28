@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
+using Core;
 using Cysharp.Threading.Tasks;
-using Scripts.Core;
-using Scripts.General.DynamicBackgroundScene;
+using General.DynamicBackgroundScene;
 using UnityEngine;
 using VContainer;
 
-namespace Scripts.Modules.ConverterScreen.Scripts
+namespace Modules.ConverterScreen.Scripts
 {
     public class ConverterScreenPresenter : IPresenter
     {

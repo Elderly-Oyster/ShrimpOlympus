@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Threading;
+using Core;
+using Core.Popup.Scripts.PopupTest;
 using Cysharp.Threading.Tasks;
-using Scripts.Core;
-using Scripts.Core.Popup.Scripts.PopupTest;
-using Scripts.Services;
+using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Startup
+namespace Startup
 {
     public class ScreenController : IScreenController, IStartable
     {

@@ -1,6 +1,6 @@
-using Scripts.Core.Popup.Scripts;
+using Core.Popup.Scripts;
 
-namespace Scripts.Core.Popup.Popups.ThirdPopup.Scripts
+namespace Core.Popup.Popups.ThirdPopup.Scripts
 {
     public class ThirdPopup : BasePopup { }
 }

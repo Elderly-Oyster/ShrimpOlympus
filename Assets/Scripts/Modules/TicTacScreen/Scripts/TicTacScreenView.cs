@@ -1,11 +1,11 @@
-﻿using Scripts.Core.Views;
-using Scripts.Core.Views.Buttons;
+﻿using Core.Views;
+using Core.Views.Buttons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Scripts.Modules.TicTacScreen.Scripts
+namespace Modules.TicTacScreen.Scripts
 {
     public class TicTacScreenView : UIView
     {

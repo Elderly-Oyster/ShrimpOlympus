@@ -2,7 +2,7 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Scripts.Core.Views.ProgressBars
+namespace Core.Views.ProgressBars
 {
     public abstract class BaseProgressBarView : MonoBehaviour, IProgress<float>
     {

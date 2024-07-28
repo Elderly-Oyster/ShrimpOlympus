@@ -1,12 +1,12 @@
 using System.Threading.Tasks;
+using Core.Views.ProgressBars;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using Scripts.Core.Views.ProgressBars;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Scripts.Core.Popup.Scripts
+namespace Core.Popup.Scripts
 {
     public class BasePopup : MonoBehaviour
     {

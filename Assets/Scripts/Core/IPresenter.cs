@@ -1,4 +1,4 @@
-﻿namespace Scripts.Core
+﻿namespace Core
 {
     public interface IPresenter { }
 }

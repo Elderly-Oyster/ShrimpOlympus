@@ -1,7 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace Scripts.Core
+namespace Core
 {
     public interface IScreenModel : IModel, IDisposable
     {

@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Core.Popup.Scripts.PopupTest
+namespace Core.Popup.Scripts.PopupTest
 {
     public class TestButtonView : MonoBehaviour
     {

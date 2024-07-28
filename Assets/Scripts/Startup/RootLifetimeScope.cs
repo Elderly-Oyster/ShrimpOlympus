@@ -1,9 +1,9 @@
-using Scripts.Services;
-using Scripts.Services.LongInitializationServices;
+using Services;
+using Services.LongInitializationServices;
 using VContainer;
 using VContainer.Unity;
 
-namespace Scripts.Startup
+namespace Startup
 {
     public class RootLifetimeScope : LifetimeScope
     {

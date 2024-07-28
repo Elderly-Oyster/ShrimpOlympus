@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using Core;
 using Cysharp.Threading.Tasks;
-using Scripts.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Scripts.Services
+namespace Services
 {
     public enum AdditiveScenesMap
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Scripts.Core.Views
+namespace Core.Views
 {
     public class RootCanvas : MonoBehaviour
     {

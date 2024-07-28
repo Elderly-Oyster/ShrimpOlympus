@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using Scripts.Core;
-using Scripts.Modules.ConverterScreen.Scripts;
-using Scripts.Modules.MainMenuScreen.Scripts;
-using Scripts.Modules.StartGameScreen.Scripts;
-using Scripts.Modules.TicTacScreen.Scripts;
+using Core;
+using Modules.ConverterScreen.Scripts;
+using Modules.MainMenuScreen.Scripts;
+using Modules.StartGameScreen.Scripts;
+using Modules.TicTacScreen.Scripts;
 using VContainer;
 
-namespace Scripts.Startup   
+namespace Startup   
 {
     public class ScreenTypeMapper
     {

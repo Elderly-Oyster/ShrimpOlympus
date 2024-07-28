@@ -1,6 +1,6 @@
 using System;
 
-namespace Scripts.Core.EventMediatorSystem
+namespace Core.EventMediatorSystem
 {
     public class EventMediator
     {

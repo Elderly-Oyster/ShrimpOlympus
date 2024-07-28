@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Scripts.Modules.TicTacScreen.Scripts
+namespace Modules.TicTacScreen.Scripts
 {
     public class CellUIView : MonoBehaviour
     {

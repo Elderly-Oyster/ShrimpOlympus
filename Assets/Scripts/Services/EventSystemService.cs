@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using VContainer.Unity;
 
-namespace Scripts.Services
+namespace Services
 {
     public class EventSystemService : IStartable
     {

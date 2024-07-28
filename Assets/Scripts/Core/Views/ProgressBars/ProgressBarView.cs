@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine.UI;
 
-namespace Scripts.Core.Views.ProgressBars
+namespace Core.Views.ProgressBars
 {
     public class ProgressBarView : BaseProgressBarView
     {
