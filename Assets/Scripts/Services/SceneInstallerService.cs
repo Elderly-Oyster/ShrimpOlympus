@@ -34,13 +34,16 @@ namespace Services
             return sceneInstallers;
         }
         
-        public LifetimeScope CombineScenes(LifetimeScope parentScope)
+        public LifetimeScope CombineScenes(LifetimeScope parentScope, bool removeObjectsToDelete)
         {
             _currentScenesInstallers = FindAllSceneInstallers();
 
-            foreach (var installer in _currentScenesInstallers) 
-                installer.RemoveObjectsToDelete();
-
+            if (removeObjectsToDelete)
+            {
+                foreach (var installer in _currentScenesInstallers) 
+                    installer.RemoveObjectsToDelete();
+            }
+            
             var sceneScope = parentScope.CreateChild(builder =>
             {
                 foreach (var installer in _currentScenesInstallers)

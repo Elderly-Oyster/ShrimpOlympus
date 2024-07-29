@@ -27,18 +27,16 @@ namespace Startup
 
         public void Start()
         {
-            /*_sceneService.AddStaticAdditiveScene(AdditiveScenesMap.PopupsManager);
-            _sceneService.LoadStaticScenes().Forget();*/
-            
             Scene activeScene = SceneManager.GetActiveScene();
             string currentSceneName = activeScene.name;
             ScreenModelMap? screenModelMap = SceneNameToEnum(currentSceneName);
+            
             if (screenModelMap != null)
                 RunModel((ScreenModelMap)screenModelMap).Forget();
             else
             {
                 _sceneInstallerService.
-                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>());
+                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
             }
         }
 
@@ -52,7 +50,7 @@ namespace Startup
                 await _sceneService.LoadScenesForModule(screenModelMap);
 
                 var sceneLifetimeScope = _sceneInstallerService.
-                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>());
+                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
 
                 _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope.Container);
 
