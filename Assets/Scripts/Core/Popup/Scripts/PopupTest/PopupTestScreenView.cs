@@ -1,3 +1,5 @@
+using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 using VContainer;
@@ -9,15 +11,22 @@ namespace Core.Popup.Scripts.PopupTest
         private PopupHub _popupHub;
         [SerializeField] private TestButtonView buttonPrefab;
         [SerializeField] private Transform buttonsParent;
-        
-        
+
+        private UnityAction[] _popupActions;
+
         [Inject] public void Run(PopupHub popupHub)
         {
             _popupHub = popupHub;
-            
-            CreateButton("FirstPopup", _popupHub.OpenFirstPopup);
-            CreateButton("SecondPopup", _popupHub.OpenSecondPopup);
-            CreateButton("ThirdPopup", _popupHub.OpenThirdPopup);
+
+            _popupActions = new UnityAction[]
+            {
+                _popupHub.OpenFirstPopup,
+                _popupHub.OpenSecondPopup,
+                _popupHub.OpenThirdPopup
+            };
+
+            foreach (var action in _popupActions)
+                CreateButton(GetMethodName(action), action);
         }
 
         private void CreateButton(string popupName, UnityAction action)
@@ -27,5 +36,7 @@ namespace Core.Popup.Scripts.PopupTest
             testButton.label.text = popupName;
             testButton.button.onClick.AddListener(action);
         }
+
+        private string GetMethodName(UnityAction action) => action.Method.Name;
     }
 }
