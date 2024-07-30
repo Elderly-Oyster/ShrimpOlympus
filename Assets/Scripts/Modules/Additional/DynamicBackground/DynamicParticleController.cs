@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace General.DynamicBackgroundScene
+namespace Modules.Additional.DynamicBackground
 {
     [ExecuteInEditMode]
     public class DynamicParticleController : MonoBehaviour

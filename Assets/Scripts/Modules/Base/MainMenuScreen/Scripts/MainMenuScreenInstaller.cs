@@ -4,11 +4,11 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class StartGameInstaller : SceneInstaller
+    public class MainMenuScreenInstaller : SceneInstaller
     {
-        [SerializeField] private StartGameScreenView startGameScreenView;
+        [SerializeField] private MainMenuScreenView mainMenuScreenView;
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,9 +17,9 @@ namespace Modules.Base.StartGameScreen.Scripts
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
-            builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
-            builder.Register<StartGameScreenModel>(Lifetime.Singleton);
+            builder.RegisterInstance(mainMenuScreenView).As<MainMenuScreenView>();
+            builder.Register<MainMenuScreenPresenter>(Lifetime.Singleton);
+            builder.Register<MainMenuScreenModel>(Lifetime.Singleton);
         }
     }
 }

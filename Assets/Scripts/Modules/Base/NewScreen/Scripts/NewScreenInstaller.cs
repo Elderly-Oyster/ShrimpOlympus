@@ -6,7 +6,7 @@ using VContainer.Unity;
 
 namespace Modules.Base.NewScreen.Scripts
 {
-    public class NewInstaller : SceneInstaller
+    public class NewScreenInstaller : SceneInstaller
     {
         [SerializeField] private NewScreenView ticTacScreenView;
         [SerializeField] private RootCanvas rootCanvas;

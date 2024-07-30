@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Modules.Test.PopupTest
 {
-    public class PopupTestScreenView : MonoBehaviour
+    public class PopupTestSceneView : MonoBehaviour
     {
         private PopupHub _popupHub;
         [SerializeField] private TestButtonView buttonPrefab;

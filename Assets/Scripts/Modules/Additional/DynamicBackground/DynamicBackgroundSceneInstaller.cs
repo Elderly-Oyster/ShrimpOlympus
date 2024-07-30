@@ -1,5 +1,4 @@
 using Core;
-using General.DynamicBackgroundScene;
 using UnityEngine;
 using VContainer;
 

@@ -4,11 +4,11 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Base.TicTacScreen.Scripts
+namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class TicTacInstaller : SceneInstaller
+    public class ConverterScreenInstaller : SceneInstaller
     {
-        [SerializeField] private TicTacScreenView ticTacScreenView;
+        [SerializeField] private ConverterScreenView converterScreenView;
         [SerializeField] private RootCanvas rootCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,9 +17,9 @@ namespace Modules.Base.TicTacScreen.Scripts
             builder.RegisterComponent(rootCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(ticTacScreenView).As<TicTacScreenView>();
-            builder.Register<TicTacScreenPresenter>(Lifetime.Singleton);
-            builder.Register<TicTacScreenModel>(Lifetime.Singleton);
+            builder.RegisterInstance(converterScreenView).As<ConverterScreenView>();
+            builder.Register<ConverterScreenPresenter>(Lifetime.Singleton);
+            builder.Register<ConverterScreenModel>(Lifetime.Singleton);
         }
     }
 }

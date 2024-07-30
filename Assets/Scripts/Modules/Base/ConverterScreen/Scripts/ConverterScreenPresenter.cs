@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Core;
 using Cysharp.Threading.Tasks;
-using General.DynamicBackgroundScene;
+using Modules.Additional.DynamicBackground;
 using UnityEngine;
 using VContainer;
 
