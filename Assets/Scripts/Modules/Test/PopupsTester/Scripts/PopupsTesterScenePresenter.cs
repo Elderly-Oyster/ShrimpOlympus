@@ -1,6 +1,7 @@
-using Core;
 using Cysharp.Threading.Tasks;
 using VContainer;
+using System.Collections.Generic;
+using Core;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
@@ -12,6 +13,7 @@ namespace Modules.Test.PopupsTester.Scripts
         public void Initialize(PopupsTesterSceneModel popupsTesterSceneModel)
         {
             _popupsTesterSceneModel = popupsTesterSceneModel;
+            _popupsTesterSceneView.SetupEventListeners(_popupsTesterSceneModel.GetButtons());
             _popupsTesterSceneView.gameObject.SetActive(false);
         }
         
