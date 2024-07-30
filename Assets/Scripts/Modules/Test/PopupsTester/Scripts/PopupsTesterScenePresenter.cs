@@ -1,6 +1,5 @@
 using Cysharp.Threading.Tasks;
 using VContainer;
-using System.Collections.Generic;
 using Core;
 
 namespace Modules.Test.PopupsTester.Scripts

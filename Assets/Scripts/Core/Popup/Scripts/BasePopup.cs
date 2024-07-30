@@ -22,6 +22,8 @@ namespace Core.Popup.Scripts
         
         private TaskCompletionSource<bool> tcs => _tcs ??= new TaskCompletionSource<bool>();
 
+        [SerializeField] protected PopupPriority priority = PopupPriority.Medium;
+        public PopupPriority Priority => priority;
 
         protected const float CloseTime = 0.2f;
         private bool _isClosed;
@@ -33,7 +35,7 @@ namespace Core.Popup.Scripts
             if(canvasGroup == null)
                 canvasGroup = GetComponent<CanvasGroup>();
             if(closeButton != null)
-                closeButton.onClick.AddListener( () => Close().Forget());
+                closeButton.onClick.AddListener(() => Close().Forget());
         }
         
         protected void ShowSpinner()
@@ -74,6 +76,7 @@ namespace Core.Popup.Scripts
             {
                 tcs?.TrySetResult(true);
                 Destroy(gameObject);
+                popupHub.NotifyPopupClosed(); 
             }
         }
         

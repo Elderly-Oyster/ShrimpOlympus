@@ -23,56 +23,101 @@ namespace Core.Popup.Scripts
         [Inject] private IBasePopupFactory<ThirdPopup> _thirdPopupFactory;
         [Inject] private EventMediator _eventMediator;
 
+        private readonly PopupsPriorityQueue _popupQueue = new(); 
         private readonly Stack<BasePopup> _popups = new();
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
 
         private void CreateAndOpenPopup(IFactory<Transform, BasePopup> basePopupFactory)
         {
-            CurrentPopup = basePopupFactory.Create(_rootCanvas.PopupParent);
-            OpenCurrentPopup<object>(null);
+            var popup = basePopupFactory.Create(_rootCanvas.PopupParent);
+            EnqueuePopup(popup);
         }
 
         private void CreateAndOpenPopup<T>(IFactory<Transform, BasePopup> basePopupFactory, T param)
         {
-            CurrentPopup = basePopupFactory.Create(_rootCanvas.PopupParent);
-            OpenCurrentPopup(param);
+            var popup = basePopupFactory.Create(_rootCanvas.PopupParent);
+            EnqueuePopup(popup, param);
         }
 
-        private void OpenCurrentPopup<T>(T param)
+        private void EnqueuePopup(BasePopup popup)
         {
-            _popups.Push(CurrentPopup);
-            CurrentPopup.gameObject.SetActive(true);
-            CurrentPopup.Open<T>(param);
-            _eventMediator.Publish(new PopupOpenedEvent(CurrentPopup.GetType().Name));
+            _popupQueue.Enqueue(popup); 
+            TryOpenNextPopup().Forget();
         }
 
-        public async UniTask CloseCurrentPopup()
+        private void EnqueuePopup<T>(BasePopup popup, T param)
         {
-            if (_popups.TryPop(out CurrentPopup) && CurrentPopup != null)
-                await CurrentPopup.Close();
+            _popupQueue.Enqueue(popup);  
+            TryOpenNextPopup(param).Forget();
         }
 
-        public void OpenFirstPopup() => CreateAndOpenPopup(_firstPopupFactory);
-        public void OpenSecondPopup() => CreateAndOpenPopup(_secondPopupFactory);
-
-        public void OpenThirdPopup() => CreateAndOpenPopup(_thirdPopupFactory);
-
-
-        private async UniTask OpenDynamicPopup<TParam>(BasePopup popup, TParam param, string id)
+        private async UniTaskVoid TryOpenNextPopup()
         {
+            await _semaphoreSlim.WaitAsync();
+
             try
             {
-                await _semaphoreSlim.WaitAsync();
-                CurrentPopup = popup;
-                _popups.Push(CurrentPopup);
-
-                _eventMediator.Publish(new PopupOpenedEvent(id));
-                await CurrentPopup.Open(param);
+                if (CurrentPopup == null && _popupQueue.TryDequeue(out var nextPopup)) 
+                {
+                    CurrentPopup = nextPopup;
+                    _popups.Push(CurrentPopup);
+                    CurrentPopup.gameObject.SetActive(true);
+                    await CurrentPopup.Open<object>(null);
+                    _eventMediator.Publish(new PopupOpenedEvent(CurrentPopup.GetType().Name));
+                }
             }
             finally
             {
                 _semaphoreSlim.Release();
             }
         }
+
+        private async UniTaskVoid TryOpenNextPopup<T>(T param)
+        {
+            await _semaphoreSlim.WaitAsync();
+
+            try
+            {
+                if (CurrentPopup == null && _popupQueue.TryDequeue(out var nextPopup)) 
+                {
+                    CurrentPopup = nextPopup;
+                    _popups.Push(CurrentPopup);
+                    CurrentPopup.gameObject.SetActive(true);
+                    await CurrentPopup.Open(param);
+                    _eventMediator.Publish(new PopupOpenedEvent(CurrentPopup.GetType().Name));
+                }
+            }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
+        }
+
+        public async UniTask CloseCurrentPopup()
+        {
+            if (CurrentPopup != null)
+            {
+                await CurrentPopup.Close();
+                CurrentPopup = null;
+                TryOpenNextPopup().Forget();  
+            }
+        }
+
+        public void NotifyPopupClosed()
+        {
+            CurrentPopup = null;
+            TryOpenNextPopup().Forget();
+        }
+
+        public void OpenFirstPopup() => CreateAndOpenPopup(_firstPopupFactory);
+        public void OpenSecondPopup() => CreateAndOpenPopup(_secondPopupFactory);
+        public void OpenThirdPopup() => CreateAndOpenPopup(_thirdPopupFactory);
+    }
+    
+    public enum PopupPriority
+    {
+        Low,
+        Medium,
+        High
     }
 }

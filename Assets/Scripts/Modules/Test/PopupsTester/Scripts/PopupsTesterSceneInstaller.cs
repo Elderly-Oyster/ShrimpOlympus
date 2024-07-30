@@ -10,7 +10,6 @@ namespace Modules.Test.PopupsTester.Scripts
     {
         [SerializeField] private PopupsTesterSceneView popupsTesterSceneView;
         [SerializeField] private TestButtonView buttonPrefab;
-        [SerializeField] private Transform popupButtonsParent;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
@@ -20,9 +19,9 @@ namespace Modules.Test.PopupsTester.Scripts
                 .As<IStartable>()
                 .AsSelf();
             
-            builder.RegisterFactory<UnityAction, TestButtonView>((action) =>
+            builder.RegisterFactory<UnityAction, TestButtonView>(action =>
             {
-                var testButton = Instantiate(buttonPrefab, popupButtonsParent);
+                var testButton = Instantiate(buttonPrefab, popupsTesterSceneView.buttonsParent);
                 testButton.gameObject.SetActive(true);
                 testButton.label.text = action.Method.Name;
                 testButton.button.onClick.AddListener(action);
