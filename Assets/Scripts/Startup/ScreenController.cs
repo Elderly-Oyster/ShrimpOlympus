@@ -2,7 +2,6 @@
 using System.Threading;
 using Core;
 using Core.Popup.Scripts;
-using Core.Popup.Scripts.PopupTest;
 using Cysharp.Threading.Tasks;
 using Services;
 using UnityEngine;

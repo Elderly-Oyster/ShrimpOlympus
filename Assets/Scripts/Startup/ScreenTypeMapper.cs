@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core;
-using Modules.ConverterScreen.Scripts;
-using Modules.MainMenuScreen.Scripts;
-using Modules.StartGameScreen.Scripts;
-using Modules.TicTacScreen.Scripts;
+using Modules.Base.ConverterScreen.Scripts;
+using Modules.Base.MainMenuScreen.Scripts;
+using Modules.Base.StartGameScreen.Scripts;
+using Modules.Base.TicTacScreen.Scripts;
 using VContainer;
 
 namespace Startup   
