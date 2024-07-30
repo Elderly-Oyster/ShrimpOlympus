@@ -113,11 +113,4 @@ namespace Core.Popup.Scripts
         public void OpenSecondPopup() => CreateAndOpenPopup(_secondPopupFactory);
         public void OpenThirdPopup() => CreateAndOpenPopup(_thirdPopupFactory);
     }
-    
-    public enum PopupPriority
-    {
-        Low,
-        Medium,
-        High
-    }
 }

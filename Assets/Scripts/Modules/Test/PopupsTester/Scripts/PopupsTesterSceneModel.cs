@@ -12,9 +12,9 @@ namespace Modules.Test.PopupsTester.Scripts
     {
         private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
         private readonly PopupsTesterScenePresenter _popupsTesterScenePresenter;
+        private readonly List<TestButtonView> _buttons;
         private readonly UnityAction[] _popupActions;
         private readonly PopupHub _popupHub;
-        private readonly List<TestButtonView> _buttons;
 
         [Inject] 
         public PopupsTesterSceneModel(

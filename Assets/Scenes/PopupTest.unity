@@ -783,7 +783,6 @@ MonoBehaviour:
   objectsToDelete: []
   popupsTesterSceneView: {fileID: 1967170981}
   buttonPrefab: {fileID: 1570141035125433216, guid: a9f32d98a09829545af1d5d69e65182c, type: 3}
-  popupButtonsParent: {fileID: 106455366}
 --- !u!1 &1758062029
 GameObject:
   m_ObjectHideFlags: 0
@@ -877,6 +876,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1967170980}
   - component: {fileID: 1967170981}
+  - component: {fileID: 1967170982}
   m_Layer: 5
   m_Name: PopupTestScreenView
   m_TagString: Untagged
@@ -917,6 +917,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonsParent: {fileID: 106455366}
+--- !u!225 &1967170982
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1967170979}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

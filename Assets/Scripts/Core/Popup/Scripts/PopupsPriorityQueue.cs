@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Core.Popup.Scripts;
 
 namespace Core.Popup.Scripts
 {
@@ -29,5 +28,12 @@ namespace Core.Popup.Scripts
             popup = null;
             return false;
         }
+    }
+    
+    public enum PopupPriority
+    {
+        High,
+        Medium,
+        Low
     }
 }
