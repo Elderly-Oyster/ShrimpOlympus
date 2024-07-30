@@ -6,18 +6,18 @@ namespace Modules.Base.NewScreen.Scripts
 {
     public class NewScreenPresenter : IPresenter
     {
-        [Inject] private readonly NewScreenView _ticTacScreenView;
+        [Inject] private readonly NewScreenView _newScreenView;
         private NewScreenModel _ticTacScreenModel; 
         private readonly UniTaskCompletionSource<bool> _completionSource = new();
 
         public void Initialize(NewScreenModel ticTacScreenModel)
         {
             _ticTacScreenModel = ticTacScreenModel;
-            _ticTacScreenView.gameObject.SetActive(false);
-            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked);
+            _newScreenView.gameObject.SetActive(false);
+            _newScreenView.SetupEventListeners(OnMainMenuButtonClicked);
         }
 
-        public async UniTask ShowView() => await _ticTacScreenView.Show();
+        public async UniTask ShowView() => await _newScreenView.Show();
         
         private void OnMainMenuButtonClicked()
         {
@@ -26,7 +26,7 @@ namespace Modules.Base.NewScreen.Scripts
         }
         public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
 
-        public void RemoveEventListeners() => _ticTacScreenView.RemoveEventListeners();
-        public async UniTask HideScreenView() => await _ticTacScreenView.Hide();
+        public void RemoveEventListeners() => _newScreenView.RemoveEventListeners();
+        public async UniTask HideScreenView() => await _newScreenView.Hide();
     }
 }
