@@ -19,7 +19,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
             builder.RegisterInstance(ticTacScreenView).As<TicTacScreenView>();
             builder.Register<TicTacScreenPresenter>(Lifetime.Singleton);
-            builder.Register<TicTacScreenModel>(Lifetime.Singleton).As<IStartable>();
+            builder.Register<TicTacScreenModel>(Lifetime.Singleton);
         }
     }
 }
