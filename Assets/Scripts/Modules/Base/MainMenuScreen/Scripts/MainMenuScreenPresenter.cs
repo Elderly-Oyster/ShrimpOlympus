@@ -9,7 +9,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [Inject] private readonly MainMenuScreenView _mainMenuScreenView;
         private MainMenuScreenModel _mainMenuScreenModel; 
         
-        private readonly UniTaskCompletionSource<bool> _completionSource = new();
 
         public void Initialize(MainMenuScreenModel mainMenuScreenModel)
         {
@@ -25,23 +24,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
             );
         }
 
-        private void OnConverterButtonClicked()
-        {
-            _mainMenuScreenModel.RunConverterModel();
-            _completionSource.TrySetResult(true);
-        }
-
-        private void OnTicTacButtonClicked()
-        {
-            _mainMenuScreenModel.RunTicTacModel();
-            _completionSource.TrySetResult(true);
-        }
-
+        private void OnConverterButtonClicked() => _mainMenuScreenModel.RunConverterModel();
+        private void OnTicTacButtonClicked() => _mainMenuScreenModel.RunTicTacModel();
         private void OnFirstPopupButtonClicked() => _mainMenuScreenModel.OpenFirstPopup();
         private void OnSecondPopupButtonClicked() => _mainMenuScreenModel.OpenSecondPopup();
-
-        public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
-
         public async UniTask ShowView() => await _mainMenuScreenView.Show();
         public void RemoveEventListeners() => _mainMenuScreenView.RemoveEventListeners();
         public async UniTask HideScreenView() => await _mainMenuScreenView.Hide();

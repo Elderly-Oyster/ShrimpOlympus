@@ -7,22 +7,30 @@ namespace Modules.Base.NewScreen.Scripts
     {
         private readonly IScreenController _rootController;
         private readonly NewScreenPresenter _ticTacScreenPresenter;
+        
+        private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        public NewScreenModel(IScreenController rootController, NewScreenPresenter ticTacScreenPresenter)
+        public NewScreenModel(IScreenController rootController,
+            NewScreenPresenter ticTacScreenPresenter)
         {
-            _rootController = rootController;
+            _completionSource = new UniTaskCompletionSource<bool>();
             _ticTacScreenPresenter = ticTacScreenPresenter;
+            _rootController = rootController;
         }
         
         public async UniTask Run(object param)
         {
             _ticTacScreenPresenter.Initialize(this);
             await _ticTacScreenPresenter.ShowView();
-            await _ticTacScreenPresenter.WaitForTransitionButtonPress();
+            await _completionSource.Task;
         }
 
-        public void RunMainMenuModel() => _rootController.RunModel(ScreenModelMap.MainMenu);
-        
+        public void RunMainMenuModel()
+        {
+            _completionSource.TrySetResult(true);
+            _rootController.RunModel(ScreenModelMap.MainMenu);
+        }
+
         public async UniTask Stop() => await _ticTacScreenPresenter.HideScreenView();
         public void Dispose() => _ticTacScreenPresenter.RemoveEventListeners();
     }

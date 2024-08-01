@@ -8,7 +8,6 @@ namespace Modules.Base.TicTacScreen.Scripts
     {
         [Inject] private readonly TicTacScreenView _ticTacScreenView;
         private TicTacScreenModel _ticTacScreenModel;
-        private readonly UniTaskCompletionSource<bool> _completionSource = new();
 
         public void Initialize(TicTacScreenModel ticTacScreenModel)
         {
@@ -21,11 +20,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         public async UniTask ShowView() => await _ticTacScreenView.Show();
 
-        private void OnMainMenuButtonClicked()
-        {
-            _ticTacScreenModel.RunMainMenuModel();
-            _completionSource.TrySetResult(true);
-        }
+        private void OnMainMenuButtonClicked() => _ticTacScreenModel.RunMainMenuModel();
 
         private void OnCellClicked(int x, int y)
         {
@@ -54,9 +49,7 @@ namespace Modules.Base.TicTacScreen.Scripts
             _ticTacScreenView.StopAnimateRestartButton();
         }
         private void OnThirdPopupButtonClicked() => _ticTacScreenModel.OpenThirdPopup();
-
-        public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
-
+        
         public void RemoveEventListeners() => _ticTacScreenView.RemoveEventListeners();
 
         public async UniTask HideScreenView() => await _ticTacScreenView.Hide();

@@ -8,7 +8,6 @@ namespace Modules.Base.NewScreen.Scripts
     {
         [Inject] private readonly NewScreenView _newScreenView;
         private NewScreenModel _ticTacScreenModel; 
-        private readonly UniTaskCompletionSource<bool> _completionSource = new();
 
         public void Initialize(NewScreenModel ticTacScreenModel)
         {
@@ -19,12 +18,7 @@ namespace Modules.Base.NewScreen.Scripts
 
         public async UniTask ShowView() => await _newScreenView.Show();
         
-        private void OnMainMenuButtonClicked()
-        {
-            _ticTacScreenModel.RunMainMenuModel();
-            _completionSource.TrySetResult(true);
-        }
-        public async UniTask WaitForTransitionButtonPress() => await _completionSource.Task;
+        private void OnMainMenuButtonClicked() => _ticTacScreenModel.RunMainMenuModel();
 
         public void RemoveEventListeners() => _newScreenView.RemoveEventListeners();
         public async UniTask HideScreenView() => await _newScreenView.Hide();

@@ -19,6 +19,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
         
+        private readonly UniTaskCompletionSource<bool> _completionSource;
+
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
 
@@ -34,6 +36,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _startGameScreenPresenter = startGameScreenPresenter;
             _rootController = rootController;
 
+            _completionSource = new UniTaskCompletionSource<bool>();
             _commands = new Dictionary<string, Func<Task>>();
             
             _tooltips = new []
@@ -82,7 +85,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             
             _startGameScreenPresenter.ShowAnimations();
             
-            await _startGameScreenPresenter.WaitForContinueButtonPress();
+            await _completionSource.Task;
         }
         
         
@@ -93,8 +96,12 @@ namespace Modules.Base.StartGameScreen.Scripts
             return tooltip;
         }
 
-        public void RunMainMenuModel() => _rootController.RunModel(ScreenModelMap.MainMenu);
-        
+        public void RunMainMenuModel()
+        {
+            _completionSource.TrySetResult(true);
+            _rootController.RunModel(ScreenModelMap.MainMenu);
+        }
+
         public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();
         public void Dispose() => _startGameScreenPresenter.RemoveEventListeners();
     }

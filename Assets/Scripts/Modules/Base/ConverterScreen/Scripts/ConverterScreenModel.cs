@@ -13,9 +13,9 @@ namespace Modules.Base.ConverterScreen.Scripts
     }
     public class ConverterScreenModel : IScreenModel
     {
-        private readonly IScreenController _rootController;
         private readonly ConverterScreenPresenter _converterScreenPresenter;
         private readonly UniTaskCompletionSource<bool> _completionSource;
+        private readonly IScreenController _rootController;
 
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
@@ -39,7 +39,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         {
             _converterScreenPresenter.Initialize(this);
             await _converterScreenPresenter.ShowView();
-            var result = await _completionSource.Task;
+            await _completionSource.Task;
         }
         
         public void SelectSourceCurrency(Currencies currency) => _sourceCurrency = currency;

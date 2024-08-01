@@ -6,8 +6,9 @@ namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenModel : IScreenModel
     {
-        private readonly IScreenController _rootController;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly TicTacScreenPresenter _ticTacScreenPresenter;
+        private readonly IScreenController _rootController;
         private readonly PopupHub _popupHub;
         private const int BoardSize = 3;
         private const char PlayerX = 'X';
@@ -30,8 +31,9 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         public TicTacScreenModel(IScreenController rootController, TicTacScreenPresenter ticTacScreenPresenter, PopupHub popupHub)
         {
-            _rootController = rootController;
+            _completionSource = new UniTaskCompletionSource<bool>();
             _ticTacScreenPresenter = ticTacScreenPresenter;
+            _rootController = rootController;
             _popupHub = popupHub;
         }
 
@@ -40,7 +42,7 @@ namespace Modules.Base.TicTacScreen.Scripts
             InitializeGame();
             _ticTacScreenPresenter.Initialize(this);
             await _ticTacScreenPresenter.ShowView();
-            await _ticTacScreenPresenter.WaitForTransitionButtonPress();
+            await _completionSource.Task;
         }
 
         public void InitializeGame()
@@ -90,8 +92,12 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         public void OpenThirdPopup() => _popupHub.OpenThirdPopup();
         
-        public void RunMainMenuModel() => _rootController.RunModel(ScreenModelMap.MainMenu);
-        
+        public void RunMainMenuModel()
+        {
+            _completionSource.TrySetResult(true);
+            _rootController.RunModel(ScreenModelMap.MainMenu);
+        }
+
         public async UniTask Stop() => await _ticTacScreenPresenter.HideScreenView();
         public void Dispose() => _ticTacScreenPresenter.RemoveEventListeners();
     }

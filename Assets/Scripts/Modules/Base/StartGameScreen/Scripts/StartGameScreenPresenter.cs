@@ -10,7 +10,6 @@ namespace Modules.Base.StartGameScreen.Scripts
     public class StartGameScreenPresenter : IPresenter
     {
         [Inject] private readonly StartGameScreenView _startGameScreenView;
-        private readonly UniTaskCompletionSource<bool> _continueButtonPressed = new();
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
@@ -27,13 +26,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
         }
 
-        private void OnContinueButtonPressed()
-        {
-            _startGameScreenModel.RunMainMenuModel();
-            _continueButtonPressed.TrySetResult(true);
-        } 
-
-        public async UniTask WaitForContinueButtonPress() => await _continueButtonPressed.Task;
+        private void OnContinueButtonPressed() => _startGameScreenModel.RunMainMenuModel();
 
         public void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
 
