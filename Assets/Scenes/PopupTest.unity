@@ -916,6 +916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e2a4f768674beb8f46c7d610e266ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 1967170982}
   buttonsParent: {fileID: 106455366}
 --- !u!225 &1967170982
 CanvasGroup:

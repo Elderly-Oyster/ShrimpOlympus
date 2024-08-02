@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Core.Views.ProgressBars;
+using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -8,13 +9,12 @@ using VContainer;
 
 namespace Core.Popup.Scripts
 {
-    public class BasePopup : MonoBehaviour
+    public class BasePopup : FadeUIView
     {
         [Inject][HideInInspector] public PopupRootCanvas rootCanvas;
         //[Inject] protected ISoundService soundService;
         [Inject] protected PopupHub popupHub;
         
-        [SerializeField] protected CanvasGroup canvasGroup;
         [SerializeField] protected Transform overlayTransform;
         [SerializeField] protected Transform spinnerTransform;
         
@@ -29,12 +29,12 @@ namespace Core.Popup.Scripts
         private bool _isClosed;
         private TaskCompletionSource<bool> _tcs;
 
-        protected virtual void Awake()
+        protected new virtual void Awake()
         {
             gameObject.SetActive(false);
-            if(canvasGroup == null)
+            if (canvasGroup == null)
                 canvasGroup = GetComponent<CanvasGroup>();
-            if(closeButton != null)
+            if (closeButton != null)
                 closeButton.onClick.AddListener(() => Close().Forget());
         }
         
@@ -57,7 +57,8 @@ namespace Core.Popup.Scripts
         {
             canvasGroup.alpha = 0;
             gameObject.SetActive(true);
-            return canvasGroup.DOFade(1, CloseTime).ToUniTask();
+
+            return base.Show();
         }
 
         public virtual async UniTask Close()
@@ -68,7 +69,7 @@ namespace Core.Popup.Scripts
             {
                 _isClosed = true;
                 //soundService.Play(GeneralSoundTypes.GeneralPopupClose).Forget();
-                await canvasGroup.DOFade(0, CloseTime);
+                await base.Hide();
                 await UniTask.WaitForSeconds(CloseTime);
                 transform.DOKill();
             }

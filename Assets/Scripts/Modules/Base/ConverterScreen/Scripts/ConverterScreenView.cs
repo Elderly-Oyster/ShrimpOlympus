@@ -1,5 +1,7 @@
 ﻿using System.Globalization;
 using Core.Views;
+using Core.Views.UIViews;
+using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +9,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenView : UIView
+    public class ConverterScreenView : FadeUIView
     {
         [SerializeField] private TMP_InputField sourceAmountInputField;
         [SerializeField] private TMP_InputField targetAmountInputField;
@@ -16,15 +18,12 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
 
-        public float currentSourceAmount =>
-            float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
-
-        public void UpdateSourceText(float amount) =>
-            sourceAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
-
-        public void UpdateTargetText(float amount) =>
-            targetAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
-
+        private new void Awake()
+        {
+            base.Awake();
+            HideInstantly();
+        }
+        
         public void SetupEventListeners(
             UnityAction<string> onSourceCurrencySelected,
             UnityAction<string> onTargetCurrencySelected,
@@ -45,6 +44,15 @@ namespace Modules.Base.ConverterScreen.Scripts
                 .AddListener(onScrollBarValueChanged);
             exitButton.onClick.AddListener(onExitButtonClicked);
         }
+        
+        public float currentSourceAmount =>
+            float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
+
+        public void UpdateSourceText(float amount) =>
+            sourceAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
+
+        public void UpdateTargetText(float amount) =>
+            targetAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
 
         public void RemoveEventListeners()
         {

@@ -13,8 +13,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void Initialize(MainMenuScreenModel mainMenuScreenModel)
         {
             _mainMenuScreenModel = mainMenuScreenModel;
-            _mainMenuScreenView.gameObject.SetActive(false);
-
             _mainMenuScreenView.SetupEventListeners
             (
                 OnConverterButtonClicked,

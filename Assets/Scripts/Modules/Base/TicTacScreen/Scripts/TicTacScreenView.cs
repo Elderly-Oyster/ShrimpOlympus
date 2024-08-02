@@ -1,5 +1,6 @@
 ﻿using Core.Views;
 using Core.Views.Buttons;
+using Core.Views.UIViews;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenView : UIView
+    public class TicTacScreenView : FadeUIView
     {
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button thirdPopupButton;
@@ -16,11 +17,14 @@ namespace Modules.Base.TicTacScreen.Scripts
         [SerializeField] private TMP_Text winnerText;
         private const int BoardSize = 3;
 
-        private void Awake()
+        private new void Awake()
         {
             if (cellViews.Length != BoardSize * BoardSize)
                 Debug.LogError("The number of cell views should be equal to " + (BoardSize * BoardSize));
             ClearBoard();
+            
+            base.Awake();
+            HideInstantly();
         }
 
         public void SetupEventListeners(UnityAction onMainMenuButtonClicked, UnityAction<int, int> onCellClicked, 

@@ -39,11 +39,11 @@ namespace Modules.Test.PopupsTester.Scripts
 
         public async UniTask Run(object param)
         {
-            _popupsTesterScenePresenter.Initialize(this);
-
             foreach (var action in _popupActions)
                 CreateButton(action);
             
+            _popupsTesterScenePresenter.Initialize(this);
+
             await _popupsTesterScenePresenter.ShowView();
         }
         

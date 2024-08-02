@@ -845,6 +845,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d5edf14a853c94b8a4c2e0b1dc6769, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectsToDelete: []
   startGameScreenView: {fileID: 2097883545}
   rootCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
@@ -1312,7 +1313,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e375cb934942e7a19cb06e1f091837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <PopupParent>k__BackingField: {fileID: 1609517737}
+  canvasScaler: {fileID: 0}
+  contentParent: {fileID: 0}
+  popupParent: {fileID: 0}
+  rewardParent: {fileID: 0}
+  notificationParent: {fileID: 0}
+  uiCamera: {fileID: 0}
 --- !u!114 &1609517734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1892,6 +1898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd52333733b44748a2fd10cc161bcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 2097883544}
   continueButton: {fileID: 2097883543}
   progressValueText: {fileID: 1624380901}
   progressText: {fileID: 956352712}

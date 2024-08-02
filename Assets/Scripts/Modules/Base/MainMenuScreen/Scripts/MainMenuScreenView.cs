@@ -1,17 +1,24 @@
 ﻿using Core.Views;
+using Core.Views.UIViews;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenView : UIView
+    public class MainMenuScreenView : FadeUIView
     {
         [SerializeField] private Button firstPopupButton;
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
-
+        
+        private new void Awake()
+        {
+            base.Awake();
+            HideInstantly();
+        }
+        
         public void SetupEventListeners(
             UnityAction onConverterButtonClicked,
             UnityAction onTicTacButtonClicked,

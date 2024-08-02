@@ -12,7 +12,6 @@ namespace Modules.Base.NewScreen.Scripts
         public void Initialize(NewScreenModel ticTacScreenModel)
         {
             _ticTacScreenModel = ticTacScreenModel;
-            _newScreenView.gameObject.SetActive(false);
             _newScreenView.SetupEventListeners(OnMainMenuButtonClicked);
         }
 

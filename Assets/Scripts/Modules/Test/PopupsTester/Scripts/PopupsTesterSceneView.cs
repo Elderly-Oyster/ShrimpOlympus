@@ -1,15 +1,32 @@
 using Core.Views;
 using UnityEngine;
 using System.Collections.Generic;
+using Core.Views.UIViews;
+using Cysharp.Threading.Tasks;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterSceneView : UIView
+    public class PopupsTesterSceneView : FadeUIView
     {
         private List<TestButtonView> _testButtonViews;
         [SerializeField] public Transform buttonsParent;
+        
+        private new void Awake()
+        {
+            base.Awake();
+            HideInstantly();
+        }
 
-        public void SetupEventListeners(List<TestButtonView> testButtons) => _testButtonViews = testButtons;
+        public void GetPopupsButtons(List<TestButtonView> testButtons)
+        {
+            _testButtonViews = testButtons;
+            foreach (var testButton in _testButtonViews)
+            {
+                testButton.HideInstantly();
+                testButton.Show().Forget();
+                testButton.button.onClick.AddListener(() => testButton.Show().Forget());
+            }
+        }
 
         public void RemoveEventListeners()
         {

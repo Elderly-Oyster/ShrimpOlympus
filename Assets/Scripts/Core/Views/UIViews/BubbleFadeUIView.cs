@@ -1,15 +1,25 @@
-﻿using System;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace Core.Views
+namespace Core.Views.UIViews
 {
-    public class UIView : MonoBehaviour, IDisposable
+    [RequireComponent(typeof(CanvasGroup))]
+    public class BubbleFadeUIView : MonoBehaviour, IUIView
     {
+        [SerializeField] protected CanvasGroup canvasGroup;
+
         private const float ScaleUpFactor = 1.1f;
-        private const float ScaleDuration = 0.25f;
-        private const float FadeDuration = 0.25f;
+        private const float ScaleDuration = 0.4f;
+        private const float FadeDuration = 0.4f;
+
+        protected void Awake()
+        {
+            if (!canvasGroup)
+                canvasGroup = GetComponent<CanvasGroup>();
+            if (!canvasGroup) 
+                canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
 
         public virtual async UniTask Show()
         {
@@ -19,7 +29,7 @@ namespace Core.Views
 
             var sequence = DOTween.Sequence();
             sequence.Append(transform.DOScale(ScaleUpFactor, ScaleDuration / 2))
-                .Join(transform.GetComponent<CanvasGroup>().DOFade(1, FadeDuration))
+                .Join(canvasGroup.DOFade(1, FadeDuration))
                 .Append(transform.DOScale(1, ScaleDuration / 2));
 
             await sequence;
@@ -29,13 +39,20 @@ namespace Core.Views
         {
             var sequence = DOTween.Sequence();
             sequence.Append(transform.DOScale(ScaleUpFactor, ScaleDuration / 2))
-                .Join(transform.GetComponent<CanvasGroup>().DOFade(0, FadeDuration))
+                .Join(canvasGroup.DOFade(0, FadeDuration))
                 .Append(transform.DOScale(0, ScaleDuration / 2))
                 .OnComplete(() => gameObject.SetActive(false));
 
             await sequence;
         }
-        
+
+        public void HideInstantly()
+        {
+            transform.localScale = Vector3.zero;
+            canvasGroup.alpha = 0;
+            gameObject.SetActive(false);
+        }
+
         public void Dispose() => Destroy(gameObject);
     }
 }

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3320557693289663241}
   - component: {fileID: 8605043606676987184}
   - component: {fileID: 1570141035125433216}
+  - component: {fileID: 6002469763638375495}
   m_Layer: 5
   m_Name: PopupButton
   m_TagString: Untagged
@@ -150,8 +151,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 027abcb885b5408090822b60bf52b499, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 6002469763638375495}
   button: {fileID: 3320557693289663241}
   label: {fileID: 2175459969066568903}
+--- !u!225 &6002469763638375495
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038285193083169523}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8692184112682583708
 GameObject:
   m_ObjectHideFlags: 0

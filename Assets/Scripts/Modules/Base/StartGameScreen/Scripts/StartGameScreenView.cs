@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Core.Views;
+using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenView : UIView
+    public class StartGameScreenView : FadeUIView
     {
         [Header("UI Interaction Components")]
         [SerializeField] private Button continueButton;
@@ -36,7 +36,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         private const float ProgressBarAnimDuration = 0.5f;
         private const float FlickerDuration = .2f;
 
-        private void Awake() => ResetProgressBar();
+        private new void Awake() => ResetProgressBar();
         
         private void ResetProgressBar() => progressBar.fillAmount = 0;
 

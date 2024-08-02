@@ -24,7 +24,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         public void Initialize(ConverterScreenModel converterScreenModel)
         {
             _converterScreenModel = converterScreenModel;
-            _converterScreenView.gameObject.SetActive(false);
+            //_converterScreenView.HideInstantly();
             _converterScreenView.SetupEventListeners
             (
                 DetermineSourceCurrency,
