@@ -14,10 +14,10 @@ namespace Modules.Test.PopupsTester.Scripts
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterInstance(popupsTesterSceneView).As<PopupsTesterSceneView>();
-            builder.Register<PopupsTesterScenePresenter>(Lifetime.Singleton);
-            builder.Register<PopupsTesterSceneModel>(Lifetime.Singleton)
+            builder.Register<PopupsTesterScenePresenter>(Lifetime.Singleton)
                 .As<IStartable>()
                 .AsSelf();
+            builder.Register<PopupsTesterSceneModel>(Lifetime.Singleton);
             
             builder.RegisterFactory<UnityAction, TestButtonView>(action =>
             {
