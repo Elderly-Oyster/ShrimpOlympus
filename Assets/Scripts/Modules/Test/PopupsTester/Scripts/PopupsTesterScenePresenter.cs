@@ -12,6 +12,14 @@ namespace Modules.Test.PopupsTester.Scripts
         [Inject] private readonly PopupsTesterSceneView _popupsTesterSceneView;
         [Inject] private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
         [Inject] private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
+
+        public PopupsTesterScenePresenter( System.Func<UnityAction, TestButtonView> buttonFactory,
+            PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
+        {
+            _popupsTesterSceneView = popupsTesterSceneView;
+            _popupsTesterSceneModel = popupsTesterSceneModel;
+            _buttonFactory = buttonFactory;
+        }
         
         private readonly List<TestButtonView> _buttons = new();
 
