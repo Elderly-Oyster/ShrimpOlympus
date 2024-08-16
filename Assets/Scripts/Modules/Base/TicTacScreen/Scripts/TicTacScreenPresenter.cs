@@ -1,10 +1,11 @@
 ﻿using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenPresenter : IPresenter
+    public class TicTacScreenPresenter : IScreenViewModel
     {
         [Inject] private readonly TicTacScreenView _ticTacScreenView;
         private TicTacScreenModel _ticTacScreenModel;

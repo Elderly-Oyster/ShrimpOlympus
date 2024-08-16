@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground;
 using UnityEngine;
@@ -7,7 +8,7 @@ using VContainer;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenPresenter : IPresenter
+    public class ConverterScreenPresenter : IScreenViewModel
     {
         [Inject] private readonly DynamicParticleController _dynamicParticleController;
         [Inject] private readonly ConverterScreenView _converterScreenView;

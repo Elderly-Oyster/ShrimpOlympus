@@ -1,21 +1,22 @@
 ﻿using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Base.NewScreen.Scripts
 {
     public class NewScreenModel : IScreenModel
     {
-        private readonly IScreenController _rootController;
+        private readonly IScreenStateMachine _rootStateMachine;
         private readonly NewScreenPresenter _ticTacScreenPresenter;
         
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        public NewScreenModel(IScreenController rootController,
+        public NewScreenModel(IScreenStateMachine rootStateMachine,
             NewScreenPresenter ticTacScreenPresenter)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             _ticTacScreenPresenter = ticTacScreenPresenter;
-            _rootController = rootController;
+            _rootStateMachine = rootStateMachine;
         }
         
         public async UniTask Run(object param)
@@ -28,7 +29,7 @@ namespace Modules.Base.NewScreen.Scripts
         public void RunMainMenuModel()
         {
             _completionSource.TrySetResult(true);
-            _rootController.RunModel(ScreenModelMap.MainMenu);
+            _rootStateMachine.RunViewModel(ScreenModelMap.MainMenu);
         }
 
         public async UniTask Stop() => await _ticTacScreenPresenter.HideScreenView();

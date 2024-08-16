@@ -1,9 +1,9 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace Core
+namespace Core.MVVM
 {
-    public interface IScreenModel : IModel, IDisposable
+    public interface IScreenViewModel : IDisposable
     {
         UniTask Run(object param);
         

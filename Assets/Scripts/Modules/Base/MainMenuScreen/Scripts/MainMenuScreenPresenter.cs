@@ -1,10 +1,11 @@
 ﻿using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenPresenter : IPresenter
+    public class MainMenuScreenPresenter : IScreenViewModel
     {
         [Inject] private readonly MainMenuScreenView _mainMenuScreenView;
         private MainMenuScreenModel _mainMenuScreenModel; 

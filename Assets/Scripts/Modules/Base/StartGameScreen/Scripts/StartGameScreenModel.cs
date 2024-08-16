@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
@@ -11,7 +12,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {
-        private readonly IScreenController _rootController;
+        private readonly IScreenStateMachine _rootStateMachine;
         private readonly StartGameScreenPresenter _startGameScreenPresenter;
         private readonly Dictionary<string, Func<Task>> _commands;
 
@@ -24,7 +25,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
 
-        public StartGameScreenModel(IScreenController rootController, StartGameScreenPresenter startGameScreenPresenter,
+        public StartGameScreenModel(IScreenStateMachine rootStateMachine, StartGameScreenPresenter startGameScreenPresenter,
             FirstLongInitializationService firstLongInitializationService,
             SecondLongInitializationService secondLongInitializationService,
             ThirdLongInitializationService thirdLongInitializationService)
@@ -34,7 +35,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _thirdLongInitializationService = thirdLongInitializationService;
 
             _startGameScreenPresenter = startGameScreenPresenter;
-            _rootController = rootController;
+            _rootStateMachine = rootStateMachine;
 
             _completionSource = new UniTaskCompletionSource<bool>();
             _commands = new Dictionary<string, Func<Task>>();
@@ -99,7 +100,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         public void RunMainMenuModel()
         {
             _completionSource.TrySetResult(true);
-            _rootController.RunModel(ScreenModelMap.MainMenu);
+            _rootStateMachine.RunViewModel(ScreenModelMap.MainMenu);
         }
 
         public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();

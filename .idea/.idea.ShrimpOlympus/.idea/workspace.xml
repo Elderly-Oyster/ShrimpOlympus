@@ -5,17 +5,64 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Scripts/PopupTest/TestButtonView.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Scripts/PopupTest/TestButtonView.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IModel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IScreenModel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IScreenViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IScreenViewModel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IUIView.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IUIView.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenInstaller.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenInstaller.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenModel.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenView.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenView.cs.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenViewModel.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenViewModel.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PopupTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PopupTest.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Scripts/PopupTest/PopupTestScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Scripts/PopupTest/PopupTestScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/LiberationSans SDF - Fallback.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IModel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IPresenter.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IPresenter.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IRootController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/IRootController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVVM/IScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/IScreenModel.cs.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Views/UIViews/BubbleFadeUIView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Views/UIViews/BubbleFadeUIView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenInstaller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenInstaller.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenInstaller.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenInstaller.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenModel.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenModel.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenPresenter.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenPresenter.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewScreen/Scripts/NewScreenView.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/OldNewScreen/Scripts/NewScreenView.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Test/PopupsTester/Scripts/PopupsTesterSceneModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Test/PopupsTester/Scripts/PopupsTesterSceneModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Services/AudioListenerService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Services/AudioListenerService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Startup/RootLifetimeScope.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Startup/RootLifetimeScope.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenStateMachine.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenController.cs.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenStateMachine.cs.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenTypeMapper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Startup/ScreenTypeMapper.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51fded79cd284d4d911c5949aff4cb2146ac00/42/21148047/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
@@ -72,6 +119,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.45884147&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;mvvm-root-viewmodel&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
@@ -175,6 +223,7 @@
       <workItem from="1721963494457" duration="1985000" />
       <workItem from="1722015628734" duration="2581000" />
       <workItem from="1722027697961" duration="4310000" />
+      <workItem from="1723807823875" duration="1106000" />
     </task>
     <servers />
   </component>

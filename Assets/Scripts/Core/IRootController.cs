@@ -4,17 +4,18 @@ using VContainer;
 
 namespace Core
 {
-    public interface  IScreenController
+    //TODO Переделать систему под рутовую ViewModel
+    public interface  IScreenStateMachine
     {
-        UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null);
+        UniTaskVoid RunViewModel(ScreenModelMap screenModelMap, object param = null);
         
         public event Action<IObjectResolver> ModuleChanged;
     }
     
     public static class RootControllerExtension
     {
-        public static UniTaskVoid RunModel(this IScreenController self, ScreenModelMap screenModelMap) => 
-            self.RunModel(screenModelMap);
+        public static UniTaskVoid RunModel(this IScreenStateMachine self, ScreenModelMap screenModelMap) => 
+            self.RunViewModel(screenModelMap);
     }
     
     public enum ScreenModelMap

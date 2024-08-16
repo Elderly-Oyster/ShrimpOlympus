@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.MVVM;
 using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Modules.Base.TicTacScreen.Scripts
     {
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly TicTacScreenPresenter _ticTacScreenPresenter;
-        private readonly IScreenController _rootController;
+        private readonly IScreenStateMachine _rootStateMachine;
         private readonly PopupHub _popupHub;
         private const int BoardSize = 3;
         private const char PlayerX = 'X';
@@ -29,11 +30,11 @@ namespace Modules.Base.TicTacScreen.Scripts
             new[] {0, 2, 1, 1, 2, 0}  
         };
 
-        public TicTacScreenModel(IScreenController rootController, TicTacScreenPresenter ticTacScreenPresenter, PopupHub popupHub)
+        public TicTacScreenModel(IScreenStateMachine rootStateMachine, TicTacScreenPresenter ticTacScreenPresenter, PopupHub popupHub)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             _ticTacScreenPresenter = ticTacScreenPresenter;
-            _rootController = rootController;
+            _rootStateMachine = rootStateMachine;
             _popupHub = popupHub;
         }
 
@@ -95,7 +96,7 @@ namespace Modules.Base.TicTacScreen.Scripts
         public void RunMainMenuModel()
         {
             _completionSource.TrySetResult(true);
-            _rootController.RunModel(ScreenModelMap.MainMenu);
+            _rootStateMachine.RunViewModel(ScreenModelMap.MainMenu);
         }
 
         public async UniTask Stop() => await _ticTacScreenPresenter.HideScreenView();

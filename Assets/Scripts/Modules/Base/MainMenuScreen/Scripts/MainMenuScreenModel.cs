@@ -1,4 +1,5 @@
 ﻿using Core;
+using Core.MVVM;
 using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
 
@@ -6,18 +7,18 @@ namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenModel : IScreenModel
     {
-        private readonly IScreenController _screenController;
+        private readonly IScreenStateMachine _screenStateMachine;
         private readonly MainMenuScreenPresenter _mainMenuScreenPresenter;
         private readonly PopupHub _popupHub;
 
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        public MainMenuScreenModel(IScreenController screenController,
+        public MainMenuScreenModel(IScreenStateMachine screenStateMachine,
             MainMenuScreenPresenter mainMenuScreenPresenter, PopupHub popupHub)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             _mainMenuScreenPresenter = mainMenuScreenPresenter;
-            _screenController = screenController;
+            _screenStateMachine = screenStateMachine;
             _popupHub = popupHub;
         }
         
@@ -31,13 +32,13 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void RunConverterModel()
         {
             _completionSource.TrySetResult(true);
-            _screenController.RunModel(ScreenModelMap.Converter);
+            _screenStateMachine.RunViewModel(ScreenModelMap.Converter);
         }
 
         public void RunTicTacModel()
         {
             _completionSource.TrySetResult(true);
-            _screenController.RunModel(ScreenModelMap.TicTac);
+            _screenStateMachine.RunViewModel(ScreenModelMap.TicTac);
         }
 
         public void OpenFirstPopup() => _popupHub.OpenFirstPopup();

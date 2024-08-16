@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using VContainer;
 using VContainer.Unity;
 using System.Collections.Generic;
+using Core.MVVM;
 
 namespace Modules.Test.PopupsTester.Scripts
 {

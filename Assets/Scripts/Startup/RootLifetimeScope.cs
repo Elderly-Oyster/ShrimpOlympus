@@ -13,7 +13,7 @@ namespace Startup
             
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
 
-            builder.Register<ScreenController>(Lifetime.Singleton)
+            builder.Register<ScreenStateMachine>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
         }

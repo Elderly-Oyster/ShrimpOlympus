@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading;
 using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenPresenter : IPresenter
+    public class StartGameScreenPresenter : IScreenViewModel
     {
         [Inject] private readonly StartGameScreenView _startGameScreenView;
         private readonly CancellationTokenSource _cancellationTokenSource = new();

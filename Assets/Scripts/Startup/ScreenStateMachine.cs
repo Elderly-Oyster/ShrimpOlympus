@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Core;
+using Core.MVVM;
 using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
 using Services;
@@ -11,7 +12,7 @@ using VContainer.Unity;
 
 namespace Startup
 {
-    public class ScreenController : IScreenController, IStartable
+    public class ScreenStateMachine : IScreenStateMachine, IStartable
     {
         [Inject] private readonly SceneInstallerService _sceneInstallerService;
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
@@ -31,7 +32,7 @@ namespace Startup
             ScreenModelMap? screenModelMap = SceneNameToEnum(currentSceneName);
             
             if (screenModelMap != null)
-                RunModel((ScreenModelMap)screenModelMap).Forget();
+                RunViewModel((ScreenModelMap)screenModelMap).Forget();
             else
             {
                 _sceneInstallerService.
@@ -39,7 +40,7 @@ namespace Startup
             }
         }
 
-        public async UniTaskVoid RunModel(ScreenModelMap screenModelMap, object param = null)
+        public async UniTaskVoid RunViewModel(ScreenModelMap screenModelMap, object param = null)
         {
             Debug.Log("Run Model: " + screenModelMap);
             await _semaphoreSlim.WaitAsync();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core;
+using Core.MVVM;
 using Modules.Base.ConverterScreen.Scripts;
 using Modules.Base.MainMenuScreen.Scripts;
 using Modules.Base.StartGameScreen.Scripts;

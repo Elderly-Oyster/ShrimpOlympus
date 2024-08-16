@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Base.ConverterScreen.Scripts
@@ -15,7 +16,7 @@ namespace Modules.Base.ConverterScreen.Scripts
     {
         private readonly ConverterScreenPresenter _converterScreenPresenter;
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly IScreenController _rootController;
+        private readonly IScreenStateMachine _rootStateMachine;
 
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
@@ -28,10 +29,10 @@ namespace Modules.Base.ConverterScreen.Scripts
             { Currencies.Pr, 0.05f }
         };
 
-        public ConverterScreenModel(IScreenController rootController, ConverterScreenPresenter converterScreenPresenter)
+        public ConverterScreenModel(IScreenStateMachine rootStateMachine, ConverterScreenPresenter converterScreenPresenter)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
-            _rootController = rootController;
+            _rootStateMachine = rootStateMachine;
             _converterScreenPresenter = converterScreenPresenter;
         }
         
@@ -61,7 +62,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         public void RunMainMenuModel()
         {
             _completionSource.TrySetResult(true);
-            _rootController.RunModel(ScreenModelMap.MainMenu);
+            _rootStateMachine.RunViewModel(ScreenModelMap.MainMenu);
         }
 
         public async UniTask Stop() => await _converterScreenPresenter.HideScreenView();

@@ -7,9 +7,9 @@ namespace Services
 {
     public class AudioListenerService : IStartable
     {
-        [Inject] private ScreenController _screenController;
+        [Inject] private ScreenStateMachine _screenStateMachine;
 
-        public void Start() => _screenController.ModuleChanged += OnModuleChanged;
+        public void Start() => _screenStateMachine.ModuleChanged += OnModuleChanged;
 
         private void OnModuleChanged(IObjectResolver resolver) => EnsureAudioListenerExists(resolver);
 
