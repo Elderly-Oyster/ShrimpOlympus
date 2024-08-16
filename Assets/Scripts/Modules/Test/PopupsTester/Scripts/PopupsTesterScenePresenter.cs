@@ -9,9 +9,9 @@ namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterScenePresenter : ISmartPresenter, IStartable
     {
-        [Inject] private readonly PopupsTesterSceneView _popupsTesterSceneView;
-        [Inject] private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
-        [Inject] private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
+        private readonly PopupsTesterSceneView _popupsTesterSceneView;
+        private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
+        private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
 
         public PopupsTesterScenePresenter( System.Func<UnityAction, TestButtonView> buttonFactory,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
