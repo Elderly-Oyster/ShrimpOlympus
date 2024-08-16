@@ -1,31 +1,20 @@
-using Core;
 using Core.Popup.Scripts;
-using Cysharp.Threading.Tasks;
 using UnityEngine.Events;
 using VContainer;
-using VContainer.Unity;
-using System.Collections.Generic;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterSceneModel : IScreenModel, IStartable
+    public class PopupsTesterSceneModel
     {
         private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
-        private readonly PopupsTesterScenePresenter _popupsTesterScenePresenter;
-        private readonly List<TestButtonView> _buttons;
         private readonly UnityAction[] _popupActions;
         private readonly PopupHub _popupHub;
 
         [Inject] 
         public PopupsTesterSceneModel(
-            PopupsTesterScenePresenter popupsTesterScenePresenter,
-            PopupHub popupHub,
-            System.Func<UnityAction, TestButtonView> buttonFactory)
+            PopupHub popupHub, System.Func<UnityAction, TestButtonView> buttonFactory)
         {
-            _popupsTesterScenePresenter = popupsTesterScenePresenter;
             _popupHub = popupHub;
-            _buttonFactory = buttonFactory;
-            _buttons = new List<TestButtonView>();
 
             _popupActions = new UnityAction[]
             {
@@ -35,28 +24,6 @@ namespace Modules.Test.PopupsTester.Scripts
             };
         }
 
-        public void Start() => Run(null).Forget();
-
-        public async UniTask Run(object param)
-        {
-            foreach (var action in _popupActions)
-                CreateButton(action);
-            
-            _popupsTesterScenePresenter.Initialize(this);
-
-            await _popupsTesterScenePresenter.ShowView();
-        }
-        
-        private void CreateButton(UnityAction action)
-        {
-            var button = _buttonFactory(action);
-            _buttons.Add(button);
-        }
-
-        public List<TestButtonView> GetButtons() => _buttons;
-
-        public async UniTask Stop() => await _popupsTesterScenePresenter.HideScreenView();
-
-        public void Dispose() => _popupsTesterScenePresenter.RemoveEventListeners();
+        public UnityAction[] GetPopupHubActions() => _popupActions;
     }
 }
