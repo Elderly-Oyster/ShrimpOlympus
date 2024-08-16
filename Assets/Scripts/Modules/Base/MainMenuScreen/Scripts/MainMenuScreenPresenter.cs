@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenPresenter : IScreenViewModel
+    public class MainMenuScreenPresenter : IScreenPresenter
     {
         [Inject] private readonly MainMenuScreenView _mainMenuScreenView;
         private MainMenuScreenModel _mainMenuScreenModel; 

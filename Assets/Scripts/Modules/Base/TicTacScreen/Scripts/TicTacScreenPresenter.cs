@@ -5,7 +5,7 @@ using VContainer;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenPresenter : IScreenViewModel
+    public class TicTacScreenPresenter : IScreenPresenter
     {
         [Inject] private readonly TicTacScreenView _ticTacScreenView;
         private TicTacScreenModel _ticTacScreenModel;

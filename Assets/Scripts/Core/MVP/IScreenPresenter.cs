@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace Core.MVVM
 {
-    public interface IScreenViewModel : IDisposable
+    public interface IScreenPresenter : IDisposable
     {
         UniTask Run(object param);
         

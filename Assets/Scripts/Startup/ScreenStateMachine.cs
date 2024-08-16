@@ -2,7 +2,6 @@
 using System.Threading;
 using Core;
 using Core.MVVM;
-using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
 using Services;
 using UnityEngine;
@@ -21,18 +20,17 @@ namespace Startup
         
         public event Action<IObjectResolver> ModuleChanged;
 
-
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
-        private IScreenModel _currentModel;
+        private IScreenModel _currentPresenter; //TODO Вот эта сущность главная
 
         public void Start()
         {
             Scene activeScene = SceneManager.GetActiveScene();
             string currentSceneName = activeScene.name;
-            ScreenModelMap? screenModelMap = SceneNameToEnum(currentSceneName);
+            ScreenPresenterMap? screenModelMap = SceneNameToEnum(currentSceneName);
             
             if (screenModelMap != null)
-                RunViewModel((ScreenModelMap)screenModelMap).Forget();
+                RunViewModel((ScreenPresenterMap)screenModelMap).Forget();
             else
             {
                 _sceneInstallerService.
@@ -40,33 +38,33 @@ namespace Startup
             }
         }
 
-        public async UniTaskVoid RunViewModel(ScreenModelMap screenModelMap, object param = null)
+        public async UniTaskVoid RunViewModel(ScreenPresenterMap screenPresenterMap, object param = null)
         {
-            Debug.Log("Run Model: " + screenModelMap);
+            Debug.Log("Run Model: " + screenPresenterMap);
             await _semaphoreSlim.WaitAsync();
 
             try
             {
-                await _sceneService.LoadScenesForModule(screenModelMap);
+                await _sceneService.LoadScenesForModule(screenPresenterMap);
 
                 var sceneLifetimeScope = _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
 
-                _currentModel = _screenTypeMapper.Resolve(screenModelMap, sceneLifetimeScope.Container);
+                _currentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
 
-                await _currentModel.Run(param);
-                await _currentModel.Stop();
-                _currentModel.Dispose();
+                await _currentPresenter.Run(param);
+                await _currentPresenter.Stop();
+                _currentPresenter.Dispose();
                 sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
         }
         
-        private static ScreenModelMap? SceneNameToEnum(string sceneName)
+        private static ScreenPresenterMap? SceneNameToEnum(string sceneName)
         {
-            if (Enum.TryParse(sceneName, out ScreenModelMap result))
+            if (Enum.TryParse(sceneName, out ScreenPresenterMap result))
                 return result;
             return null;
         }

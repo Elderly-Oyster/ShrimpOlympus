@@ -37,10 +37,10 @@ namespace Services
             _staticModuleScenes.Add(sceneName.ToString());
         }
         
-        public async UniTask LoadScenesForModule(ScreenModelMap screenModelMap)
+        public async UniTask LoadScenesForModule(ScreenPresenterMap screenPresenterMap)
         {
-            List<string> scenes = new List<string> { screenModelMap.ToString() };
-            IEnumerable<AdditiveScenesMap> additionalScenes = GetAdditionalScenes(screenModelMap);
+            List<string> scenes = new List<string> { screenPresenterMap.ToString() };
+            IEnumerable<AdditiveScenesMap> additionalScenes = GetAdditionalScenes(screenPresenterMap);
             if (additionalScenes != null)
             {
                 var sceneNames = additionalScenes.Select(scene => scene.ToString());
@@ -52,14 +52,14 @@ namespace Services
             await UnloadUnusedScenesAsync(scenes);
         }
         
-        private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenModelMap screenModelMap)
+        private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
         {
-            return screenModelMap switch
+            return screenPresenterMap switch
             {
-                ScreenModelMap.StartGame => new List<AdditiveScenesMap>(),
-                ScreenModelMap.Converter => new List<AdditiveScenesMap> {AdditiveScenesMap.DynamicBackground},
-                ScreenModelMap.MainMenu => new List<AdditiveScenesMap>(),
-                ScreenModelMap.TicTac => new List<AdditiveScenesMap>(),
+                ScreenPresenterMap.StartGame => new List<AdditiveScenesMap>(),
+                ScreenPresenterMap.Converter => new List<AdditiveScenesMap> {AdditiveScenesMap.DynamicBackground},
+                ScreenPresenterMap.MainMenu => new List<AdditiveScenesMap>(),
+                ScreenPresenterMap.TicTac => new List<AdditiveScenesMap>(),
                 _ => null
             };
         }

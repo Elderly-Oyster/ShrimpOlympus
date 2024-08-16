@@ -62,7 +62,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         public void RunMainMenuModel()
         {
             _completionSource.TrySetResult(true);
-            _rootStateMachine.RunViewModel(ScreenModelMap.MainMenu);
+            _rootStateMachine.RunViewModel(ScreenPresenterMap.MainMenu);
         }
 
         public async UniTask Stop() => await _converterScreenPresenter.HideScreenView();

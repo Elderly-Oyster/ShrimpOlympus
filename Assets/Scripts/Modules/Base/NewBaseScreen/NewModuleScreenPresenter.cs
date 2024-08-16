@@ -1,16 +1,17 @@
+using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Base.NewBaseScreen
 {
-    public class NewModuleScreenViewModel : IScreenViewModel
+    public class NewModuleScreenPresenter : IScreenPresenter
     {
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly NewModuleScreenModel _newModuleScreenModel;
         private readonly NewModuleScreenView _newModuleScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         
-        public NewModuleScreenViewModel(IScreenStateMachine screenStateMachine, 
+        public NewModuleScreenPresenter(IScreenStateMachine screenStateMachine, 
             NewModuleScreenModel newModuleScreenModel, NewModuleScreenView newModuleScreenView)
         {
             _screenStateMachine = screenStateMachine;
@@ -39,7 +40,7 @@ namespace Modules.Base.NewBaseScreen
             _newModuleScreenModel.Dispose();
         }
 
-        private void RunNewScreen(ScreenViewModelMap screen)
+        private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunViewModel(screen);

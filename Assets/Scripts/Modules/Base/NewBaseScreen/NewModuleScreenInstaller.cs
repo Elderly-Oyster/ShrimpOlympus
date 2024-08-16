@@ -18,7 +18,7 @@ namespace Modules.Base.NewBaseScreen
             builder.RegisterInstance(mainCamera);
 
             builder.RegisterInstance(newModuleScreenView).As<NewModuleScreenView>();
-            builder.Register<NewModuleScreenViewModel>(Lifetime.Singleton);
+            builder.Register<NewModuleScreenPresenter>(Lifetime.Singleton);
             builder.Register<NewModuleScreenModel>(Lifetime.Singleton);
         }
     }

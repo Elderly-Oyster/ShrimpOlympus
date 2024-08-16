@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenPresenter : IScreenViewModel
+    public class ConverterScreenPresenter : IScreenPresenter
     {
         [Inject] private readonly DynamicParticleController _dynamicParticleController;
         [Inject] private readonly ConverterScreenView _converterScreenView;

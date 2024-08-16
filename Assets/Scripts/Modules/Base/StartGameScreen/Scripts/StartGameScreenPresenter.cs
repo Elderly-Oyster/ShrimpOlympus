@@ -8,7 +8,7 @@ using VContainer;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenPresenter : IScreenViewModel
+    public class StartGameScreenPresenter : IScreenPresenter
     {
         [Inject] private readonly StartGameScreenView _startGameScreenView;
         private readonly CancellationTokenSource _cancellationTokenSource = new();

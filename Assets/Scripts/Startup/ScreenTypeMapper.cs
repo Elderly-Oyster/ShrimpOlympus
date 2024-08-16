@@ -12,20 +12,20 @@ namespace Startup
 {
     public class ScreenTypeMapper
     {
-        private readonly Dictionary<ScreenModelMap, Type> _map;
+        private readonly Dictionary<ScreenPresenterMap, Type> _map;
 
         public ScreenTypeMapper()
         {
-            _map = new Dictionary<ScreenModelMap, Type>
+            _map = new Dictionary<ScreenPresenterMap, Type> //TODO Заменить модели на презентеры
             {
-                { ScreenModelMap.StartGame, typeof(StartGameScreenModel) },
-                { ScreenModelMap.Converter, typeof(ConverterScreenModel) },
-                { ScreenModelMap.MainMenu, typeof(MainMenuScreenModel) },
-                { ScreenModelMap.TicTac, typeof(TicTacScreenModel) }
+                { ScreenPresenterMap.StartGame, typeof(StartGameScreenModel) },
+                { ScreenPresenterMap.Converter, typeof(ConverterScreenModel) },
+                { ScreenPresenterMap.MainMenu, typeof(MainMenuScreenModel) },
+                { ScreenPresenterMap.TicTac, typeof(TicTacScreenModel) }
             };
         }
 
-        public IScreenModel Resolve(ScreenModelMap screenModelMap, IObjectResolver objectResolver) =>
-            (IScreenModel)objectResolver.Resolve(_map[screenModelMap]);
+        public IScreenModel Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) =>
+            (IScreenModel)objectResolver.Resolve(_map[screenPresenterMap]);
     }
 }
