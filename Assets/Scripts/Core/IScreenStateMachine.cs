@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
@@ -7,9 +8,11 @@ namespace Core
     //TODO Переделать систему под рутовую ViewModel
     public interface  IScreenStateMachine
     {
-        UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null);
-        
+        public IScreenPresenter CurrentPresenter { get; }
+
         public event Action<IObjectResolver> ModuleChanged;
+        
+        UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null);
     }
     
     public static class RootControllerExtension

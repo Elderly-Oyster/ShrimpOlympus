@@ -17,12 +17,11 @@ namespace Startup
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
-        
-        public event Action<IObjectResolver> ModuleChanged;
 
         // SemaphoreSlim to ensure only one thread can execute the RunPresenter method at a time
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
-        private IScreenPresenter _currentPresenter; //TODO Вот эта сущность главная
+        public event Action<IObjectResolver> ModuleChanged;
+        public IScreenPresenter CurrentPresenter { get; private set; } //TODO Вот эта сущность главная
 
         public void Start()
         {
@@ -52,14 +51,14 @@ namespace Startup
                 var sceneLifetimeScope = _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
 
-                _currentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
+                CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
 
-                await _currentPresenter.Enter(param);
-                await _currentPresenter.Execute();
-                await _currentPresenter.Exit();
-                _currentPresenter.Dispose();
+                await CurrentPresenter.Enter(param);
+                await CurrentPresenter.Execute();
+                await CurrentPresenter.Exit();
+                CurrentPresenter.Dispose();
                 sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
