@@ -20,18 +20,19 @@ namespace Modules.Base.NewBaseScreen
             _completionSource = new UniTaskCompletionSource<bool>();
         }
         
-        public async UniTask Run(object param)
+        public async UniTask Enter(object param)
         {
             _newModuleScreenView.gameObject.SetActive(false);
             _newModuleScreenView.SetupEventListeners
             (
-                
+                //Here send UnityActions(Methods from this class) to view
             );
             await _newModuleScreenView.Show();
-            await _completionSource.Task;
         }
 
-        public async UniTask Stop() => await _newModuleScreenView.Hide();
+        public async UniTask Execute() => await _completionSource.Task;
+
+        public async UniTask Exit() => await _newModuleScreenView.Hide();
 
         public void Dispose()
         {
@@ -43,7 +44,7 @@ namespace Modules.Base.NewBaseScreen
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunViewModel(screen);
+            _screenStateMachine.RunPresenter(screen);
         }
     }
 }

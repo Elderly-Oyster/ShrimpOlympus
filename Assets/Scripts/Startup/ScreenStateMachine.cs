@@ -20,8 +20,9 @@ namespace Startup
         
         public event Action<IObjectResolver> ModuleChanged;
 
+        // SemaphoreSlim to ensure only one thread can execute the RunPresenter method at a time
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
-        private IScreenModel _currentPresenter; //TODO Вот эта сущность главная
+        private IScreenPresenter _currentPresenter; //TODO Вот эта сущность главная
 
         public void Start()
         {
@@ -30,7 +31,7 @@ namespace Startup
             ScreenPresenterMap? screenModelMap = SceneNameToEnum(currentSceneName);
             
             if (screenModelMap != null)
-                RunViewModel((ScreenPresenterMap)screenModelMap).Forget();
+                RunPresenter((ScreenPresenterMap)screenModelMap).Forget();
             else
             {
                 _sceneInstallerService.
@@ -38,9 +39,10 @@ namespace Startup
             }
         }
 
-        public async UniTaskVoid RunViewModel(ScreenPresenterMap screenPresenterMap, object param = null)
+        public async UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null)
         {
-            Debug.Log("Run Model: " + screenPresenterMap);
+            Debug.Log("Run Presenter: " + screenPresenterMap);
+            // Wait until the semaphore is available (only one thread can pass)
             await _semaphoreSlim.WaitAsync();
 
             try
@@ -54,8 +56,9 @@ namespace Startup
 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
 
-                await _currentPresenter.Run(param);
-                await _currentPresenter.Stop();
+                await _currentPresenter.Enter(param);
+                await _currentPresenter.Execute();
+                await _currentPresenter.Exit();
                 _currentPresenter.Dispose();
                 sceneLifetimeScope.Dispose();
             }

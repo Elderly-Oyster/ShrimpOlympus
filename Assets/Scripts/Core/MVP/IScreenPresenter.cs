@@ -5,8 +5,8 @@ namespace Core.MVVM
 {
     public interface IScreenPresenter : IDisposable
     {
-        UniTask Run(object param);
-        
-        UniTask Stop();
+        UniTask Enter(object param);
+        UniTask Execute();
+        UniTask Exit();
     }
 }

@@ -18,14 +18,14 @@ namespace Startup
         {
             _map = new Dictionary<ScreenPresenterMap, Type> //TODO Заменить модели на презентеры
             {
-                { ScreenPresenterMap.StartGame, typeof(StartGameScreenModel) },
-                { ScreenPresenterMap.Converter, typeof(ConverterScreenModel) },
-                { ScreenPresenterMap.MainMenu, typeof(MainMenuScreenModel) },
-                { ScreenPresenterMap.TicTac, typeof(TicTacScreenModel) }
+                { ScreenPresenterMap.StartGame, typeof(StartGameScreenPresenter) },
+                { ScreenPresenterMap.Converter, typeof(ConverterScreenPresenter) },
+                { ScreenPresenterMap.MainMenu, typeof(MainMenuScreenPresenter) },
+                { ScreenPresenterMap.TicTac, typeof(TicTacScreenPresenter) }
             };
         }
 
-        public IScreenModel Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) =>
-            (IScreenModel)objectResolver.Resolve(_map[screenPresenterMap]);
+        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) =>
+            (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
     }
 }

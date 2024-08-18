@@ -100,7 +100,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         public void RunMainMenuModel()
         {
             _completionSource.TrySetResult(true);
-            _rootStateMachine.RunViewModel(ScreenPresenterMap.MainMenu);
+            _rootStateMachine.RunPresenter(ScreenPresenterMap.MainMenu);
         }
 
         public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();

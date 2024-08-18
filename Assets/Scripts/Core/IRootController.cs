@@ -7,7 +7,7 @@ namespace Core
     //TODO Переделать систему под рутовую ViewModel
     public interface  IScreenStateMachine
     {
-        UniTaskVoid RunViewModel(ScreenPresenterMap screenPresenterMap, object param = null);
+        UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null);
         
         public event Action<IObjectResolver> ModuleChanged;
     }
@@ -15,7 +15,7 @@ namespace Core
     public static class RootControllerExtension
     {
         public static UniTaskVoid RunModel(this IScreenStateMachine self, ScreenPresenterMap screenPresenterMap) => 
-            self.RunViewModel(screenPresenterMap);
+            self.RunPresenter(screenPresenterMap);
     }
     
     public enum ScreenPresenterMap

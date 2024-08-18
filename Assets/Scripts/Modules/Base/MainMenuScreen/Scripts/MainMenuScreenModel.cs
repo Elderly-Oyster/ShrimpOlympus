@@ -32,13 +32,13 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void RunConverterModel()
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunViewModel(ScreenPresenterMap.Converter);
+            _screenStateMachine.RunPresenter(ScreenPresenterMap.Converter);
         }
 
         public void RunTicTacModel()
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunViewModel(ScreenPresenterMap.TicTac);
+            _screenStateMachine.RunPresenter(ScreenPresenterMap.TicTac);
         }
 
         public void OpenFirstPopup() => _popupHub.OpenFirstPopup();
