@@ -14,9 +14,6 @@ namespace Modules.Base.ConverterScreen.Scripts
     }
     public class ConverterScreenModel : IScreenModel
     {
-        private readonly ConverterScreenPresenter _converterScreenPresenter;
-        private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly IScreenStateMachine _rootStateMachine;
 
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
@@ -29,19 +26,9 @@ namespace Modules.Base.ConverterScreen.Scripts
             { Currencies.Pr, 0.05f }
         };
 
-        public ConverterScreenModel(IScreenStateMachine rootStateMachine, ConverterScreenPresenter converterScreenPresenter)
-        {
-            _completionSource = new UniTaskCompletionSource<bool>();
-            _rootStateMachine = rootStateMachine;
-            _converterScreenPresenter = converterScreenPresenter;
-        }
+        public ConverterScreenModel() { }
         
-        public async UniTask Run(object param)
-        {
-            _converterScreenPresenter.Initialize(this);
-            await _converterScreenPresenter.ShowView();
-            await _completionSource.Task;
-        }
+
         
         public void SelectSourceCurrency(Currencies currency) => _sourceCurrency = currency;
         public void SelectTargetCurrency(Currencies currency) => _targetCurrency = currency;
@@ -58,14 +45,10 @@ namespace Modules.Base.ConverterScreen.Scripts
             var convertedAmount = amountInEuro * _currencyToEuroRate[to];
             return convertedAmount;
         }
-
-        public void RunMainMenuModel()
-        {
-            _completionSource.TrySetResult(true);
-            _rootStateMachine.RunPresenter(ScreenPresenterMap.MainMenu);
+        
+        public void Dispose()
+        { 
+            
         }
-
-        public async UniTask Stop() => await _converterScreenPresenter.HideScreenView();
-        public void Dispose() => _converterScreenPresenter.RemoveEventListeners();
     }
 }

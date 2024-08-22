@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.MVVM;
+using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
@@ -7,21 +8,52 @@ namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenPresenter : IScreenPresenter
     {
-        [Inject] private readonly TicTacScreenView _ticTacScreenView;
-        private TicTacScreenModel _ticTacScreenModel;
+        private readonly TicTacScreenView _ticTacScreenView;
+        
+        private readonly IScreenStateMachine _screenStateMachine;
+        private readonly TicTacScreenModel _newModuleScreenModel;
+        private readonly TicTacScreenView _newModuleScreenView;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
+        private readonly TicTacScreenModel _ticTacScreenModel;
+        private readonly PopupHub _popupHub;
 
-        public void Initialize(TicTacScreenModel ticTacScreenModel)
+        public TicTacScreenPresenter(IScreenStateMachine screenStateMachine, TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, UniTaskCompletionSource<bool> completionSource, TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel)
         {
+            _screenStateMachine = screenStateMachine;
+            _newModuleScreenModel = newModuleScreenModel;
+            _newModuleScreenView = newModuleScreenView;
+            _ticTacScreenView = ticTacScreenView;
             _ticTacScreenModel = ticTacScreenModel;
-            _ticTacScreenView.gameObject.SetActive(false);
+            _completionSource = new UniTaskCompletionSource<bool>();
+        }
+
+        public async UniTask Enter(object param)
+        {
+            _ticTacScreenModel.InitializeGame();
+            _newModuleScreenView.gameObject.SetActive(false);
             _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked, OnRestartButtonClicked, 
                 OnThirdPopupButtonClicked);
             _ticTacScreenView.ClearBoard();
+            await _newModuleScreenView.Show();
         }
 
-        public async UniTask ShowView() => await _ticTacScreenView.Show();
+        public async UniTask Execute() => await _completionSource.Task;
 
-        private void OnMainMenuButtonClicked() => _ticTacScreenModel.RunMainMenuModel();
+        public async UniTask Exit() => await _ticTacScreenView.Hide();
+
+        public void Dispose()
+        {
+            _newModuleScreenView.Dispose();
+            _newModuleScreenModel.Dispose();
+        }
+
+        private void RunNewScreen(ScreenPresenterMap screen)
+        {
+            _completionSource.TrySetResult(true);
+            _screenStateMachine.RunPresenter(screen);
+        }
+
+        private void OnMainMenuButtonClicked() => RunNewScreen(ScreenPresenterMap.MainMenu);
 
         private void OnCellClicked(int x, int y)
         {
@@ -49,10 +81,7 @@ namespace Modules.Base.TicTacScreen.Scripts
             _ticTacScreenView.UnblockBoard(); 
             _ticTacScreenView.StopAnimateRestartButton();
         }
-        private void OnThirdPopupButtonClicked() => _ticTacScreenModel.OpenThirdPopup();
-        
-        public void RemoveEventListeners() => _ticTacScreenView.RemoveEventListeners();
 
-        public async UniTask HideScreenView() => await _ticTacScreenView.Hide();
+        private void OnThirdPopupButtonClicked() => _popupHub.OpenThirdPopup();
     }
 }

@@ -10,22 +10,22 @@ namespace Modules.Base.ConverterScreen.Scripts
 {
     public class ConverterScreenPresenter : IScreenPresenter
     {
-        [Inject] private readonly DynamicParticleController _dynamicParticleController;
-        [Inject] private readonly ConverterScreenView _converterScreenView;
-        private ConverterScreenModel _converterScreenModel;
+        private readonly IScreenStateMachine _screenStateMachine;
+        private readonly ConverterScreenModel _converterScreenModel;
+        private readonly ConverterScreenView _converterScreenView;
+        private readonly DynamicParticleController _dynamicParticleController;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        private readonly Dictionary<string, Currencies> _currencyToName = new()
-        {
-            { "EUR", Currencies.Eur },
-            { "USD", Currencies.Usd },
-            { "PLN", Currencies.Pln },
-            { "PR", Currencies.Pr }
-        };
 
-        public void Initialize(ConverterScreenModel converterScreenModel)
+        public void Dispose()
         {
-            _converterScreenModel = converterScreenModel;
-            //_converterScreenView.HideInstantly();
+            _converterScreenView.Dispose();
+            _converterScreenModel.Dispose();
+        }
+
+        public async UniTask Enter(object param)
+        {
+            _converterScreenView.gameObject.SetActive(false);
             _converterScreenView.SetupEventListeners
             (
                 DetermineSourceCurrency,
@@ -35,6 +35,31 @@ namespace Modules.Base.ConverterScreen.Scripts
                 HandleAmountScrollBarChanged,
                 OnExitButtonClicked
             );
+            await _converterScreenView.Show();
+        }
+
+        public async UniTask Execute() => await _completionSource.Task;
+
+
+        public async UniTask Exit() => await _converterScreenView.Hide();
+
+
+        private readonly Dictionary<string, Currencies> _currencyToName = new()
+        {
+            { "EUR", Currencies.Eur },
+            { "USD", Currencies.Usd },
+            { "PLN", Currencies.Pln },
+            { "PR", Currencies.Pr }
+        };
+
+
+        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, ConverterScreenView converterScreenView, UniTaskCompletionSource<bool> completionSource, DynamicParticleController dynamicParticleController)
+        {
+            _screenStateMachine = screenStateMachine;
+            _converterScreenModel = converterScreenModel;
+            _converterScreenView = converterScreenView;
+            _dynamicParticleController = dynamicParticleController;
+            _completionSource = new UniTaskCompletionSource<bool>();
         }
 
         public async UniTask ShowView() => await _converterScreenView.Show();
@@ -77,9 +102,15 @@ namespace Modules.Base.ConverterScreen.Scripts
             CountTargetMoney(intValue); 
         }
 
-        private void OnExitButtonClicked() => _converterScreenModel.RunMainMenuModel();
+        private void OnExitButtonClicked() => 
+            RunNewScreen(ScreenPresenterMap.MainMenu);
 
-        public void RemoveEventListeners() => _converterScreenView.RemoveEventListeners();
         public async UniTask HideScreenView() => await _converterScreenView.Hide();
+        
+        private void RunNewScreen(ScreenPresenterMap screen)
+        {
+            _completionSource.TrySetResult(true);
+            _screenStateMachine.RunPresenter(screen);
+        }
     }
 }

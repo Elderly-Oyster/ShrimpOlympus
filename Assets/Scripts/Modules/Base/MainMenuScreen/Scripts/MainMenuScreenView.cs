@@ -31,10 +31,16 @@ namespace Modules.Base.MainMenuScreen.Scripts
             secondPopupButton.onClick.AddListener(onSecondPopupButtonClicked);
         }
 
-        public void RemoveEventListeners()
+        private void RemoveEventListeners()
         {
             converterButton.onClick.RemoveAllListeners();
             ticTacButton.onClick.RemoveAllListeners();
+        }
+        
+        public override void Dispose()
+        {
+            RemoveEventListeners();
+            base.Dispose();
         }
     }
 }

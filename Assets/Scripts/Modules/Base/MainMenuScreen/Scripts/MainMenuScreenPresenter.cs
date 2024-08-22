@@ -1,5 +1,6 @@
 ﻿using Core;
 using Core.MVVM;
+using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
@@ -7,13 +8,25 @@ namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenPresenter : IScreenPresenter
     {
-        [Inject] private readonly MainMenuScreenView _mainMenuScreenView;
-        private MainMenuScreenModel _mainMenuScreenModel; 
-        
+        private readonly IScreenStateMachine _screenStateMachine;
+        private readonly MainMenuScreenModel _mainMenuScreenModel;
+        private readonly MainMenuScreenView _mainMenuScreenView;
+        private readonly PopupHub _popupHub;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        public void Initialize(MainMenuScreenModel mainMenuScreenModel)
+        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine,
+            MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView, PopupHub popupHub)
         {
+            _screenStateMachine = screenStateMachine;
             _mainMenuScreenModel = mainMenuScreenModel;
+            _mainMenuScreenView = mainMenuScreenView;
+            _popupHub = popupHub;
+            _completionSource = new UniTaskCompletionSource<bool>();
+        }
+        
+        public async UniTask Enter(object param)
+        {
+            _mainMenuScreenView.gameObject.SetActive(false);
             _mainMenuScreenView.SetupEventListeners
             (
                 OnConverterButtonClicked,
@@ -21,14 +34,28 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 OnFirstPopupButtonClicked,
                 OnSecondPopupButtonClicked
             );
+            await _mainMenuScreenView.Show();
+        }
+        public async UniTask Execute() => await _completionSource.Task;
+
+        public async UniTask Exit() => await _mainMenuScreenView.Hide();
+        
+        public void Dispose()
+        {
+            _mainMenuScreenView.Dispose();
+            _mainMenuScreenModel.Dispose();
         }
 
-        private void OnConverterButtonClicked() => _mainMenuScreenModel.RunConverterModel();
-        private void OnTicTacButtonClicked() => _mainMenuScreenModel.RunTicTacModel();
-        private void OnFirstPopupButtonClicked() => _mainMenuScreenModel.OpenFirstPopup();
-        private void OnSecondPopupButtonClicked() => _mainMenuScreenModel.OpenSecondPopup();
-        public async UniTask ShowView() => await _mainMenuScreenView.Show();
-        public void RemoveEventListeners() => _mainMenuScreenView.RemoveEventListeners();
-        public async UniTask HideScreenView() => await _mainMenuScreenView.Hide();
+        private void OnConverterButtonClicked() => RunNewScreen(ScreenPresenterMap.Converter);
+        private void OnTicTacButtonClicked() => RunNewScreen(ScreenPresenterMap.TicTac);
+        private void OnFirstPopupButtonClicked() => _popupHub.OpenFirstPopup();
+        private void OnSecondPopupButtonClicked() => _popupHub.OpenSecondPopup();
+       
+        private void RunNewScreen(ScreenPresenterMap screen)
+        {
+            _completionSource.TrySetResult(true);
+            _screenStateMachine.RunPresenter(screen);
+        }
+        
     }
 }

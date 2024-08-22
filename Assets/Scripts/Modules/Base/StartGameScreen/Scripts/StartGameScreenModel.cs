@@ -12,9 +12,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {
-        private readonly IScreenStateMachine _rootStateMachine;
-        private readonly StartGameScreenPresenter _startGameScreenPresenter;
-        private readonly Dictionary<string, Func<Task>> _commands;
+        public readonly Dictionary<string, Func<Task>> _commands;
 
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
@@ -25,17 +23,13 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
 
-        public StartGameScreenModel(IScreenStateMachine rootStateMachine, StartGameScreenPresenter startGameScreenPresenter,
-            FirstLongInitializationService firstLongInitializationService,
+        public StartGameScreenModel(FirstLongInitializationService firstLongInitializationService,
             SecondLongInitializationService secondLongInitializationService,
             ThirdLongInitializationService thirdLongInitializationService)
         {
             _firstLongInitializationService = firstLongInitializationService;
             _secondLongInitializationService = secondLongInitializationService;
             _thirdLongInitializationService = thirdLongInitializationService;
-
-            _startGameScreenPresenter = startGameScreenPresenter;
-            _rootStateMachine = rootStateMachine;
 
             _completionSource = new UniTaskCompletionSource<bool>();
             _commands = new Dictionary<string, Func<Task>>();
@@ -50,7 +44,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             };
         }
         
-        private void DoTweenInit()
+        public void DoTweenInit()
         {
             DOTween.Init().SetCapacity(240, 30);
             DOTween.safeModeLogBehaviour = SafeModeLogBehaviour.None;
@@ -59,36 +53,12 @@ namespace Modules.Base.StartGameScreen.Scripts
             DOTween.useSmoothDeltaTime = true;
         }
 
-        private void RegisterCommands()
+        public void RegisterCommands()
         {
             _commands.Add("First Service", _firstLongInitializationService.Init);
             _commands.Add("Second Service", _secondLongInitializationService.Init);
             _commands.Add("Third Service", _thirdLongInitializationService.Init);
         }
-
-        public async UniTask Run(object param)
-        {
-            _startGameScreenPresenter.Initialize(this);
-            _startGameScreenPresenter.SetVersionText(_startGameScreenPresenter.GetAppVersion());
-            _startGameScreenPresenter.ShowTooltips().Forget();
-            DoTweenInit();
-            RegisterCommands();
-
-            var timing = 1f / _commands.Count;
-            var currentTiming = timing;
-
-            foreach (var (serviceName, initFunction) in _commands)
-            {
-                await Task.WhenAll(initFunction.Invoke(), 
-                    _startGameScreenPresenter.UpdateViewWithModelData(currentTiming, serviceName).AsTask());
-                currentTiming += timing;
-            }
-            
-            _startGameScreenPresenter.ShowAnimations();
-            
-            await _completionSource.Task;
-        }
-        
         
         public string GetNextTooltip()
         {
@@ -97,13 +67,9 @@ namespace Modules.Base.StartGameScreen.Scripts
             return tooltip;
         }
 
-        public void RunMainMenuModel()
+        public void Dispose()
         {
-            _completionSource.TrySetResult(true);
-            _rootStateMachine.RunPresenter(ScreenPresenterMap.MainMenu);
+            
         }
-
-        public async UniTask Stop() => await _startGameScreenPresenter.HideScreenView();
-        public void Dispose() => _startGameScreenPresenter.RemoveEventListeners();
     }
 }

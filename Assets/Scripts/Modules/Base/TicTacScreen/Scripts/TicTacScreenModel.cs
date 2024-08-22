@@ -7,10 +7,6 @@ namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenModel : IScreenModel
     {
-        private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly TicTacScreenPresenter _ticTacScreenPresenter;
-        private readonly IScreenStateMachine _rootStateMachine;
-        private readonly PopupHub _popupHub;
         private const int BoardSize = 3;
         private const char PlayerX = 'X';
         private const char PlayerO = 'O';
@@ -30,20 +26,8 @@ namespace Modules.Base.TicTacScreen.Scripts
             new[] {0, 2, 1, 1, 2, 0}  
         };
 
-        public TicTacScreenModel(IScreenStateMachine rootStateMachine, TicTacScreenPresenter ticTacScreenPresenter, PopupHub popupHub)
+        public TicTacScreenModel()
         {
-            _completionSource = new UniTaskCompletionSource<bool>();
-            _ticTacScreenPresenter = ticTacScreenPresenter;
-            _rootStateMachine = rootStateMachine;
-            _popupHub = popupHub;
-        }
-
-        public async UniTask Run(object param)
-        {
-            InitializeGame();
-            _ticTacScreenPresenter.Initialize(this);
-            await _ticTacScreenPresenter.ShowView();
-            await _completionSource.Task;
         }
 
         public void InitializeGame()
@@ -90,16 +74,6 @@ namespace Modules.Base.TicTacScreen.Scripts
             isGameOver = true;
             return true;
         }
-
-        public void OpenThirdPopup() => _popupHub.OpenThirdPopup();
-        
-        public void RunMainMenuModel()
-        {
-            _completionSource.TrySetResult(true);
-            _rootStateMachine.RunPresenter(ScreenPresenterMap.MainMenu);
-        }
-
-        public async UniTask Stop() => await _ticTacScreenPresenter.HideScreenView();
-        public void Dispose() => _ticTacScreenPresenter.RemoveEventListeners();
+        public void Dispose() {}
     }
 }

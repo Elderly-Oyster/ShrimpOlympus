@@ -51,6 +51,8 @@ namespace Startup
                 var sceneLifetimeScope = _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
 
+                Debug.Log(screenPresenterMap);
+                Debug.Log(sceneLifetimeScope.Container);
                 CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
