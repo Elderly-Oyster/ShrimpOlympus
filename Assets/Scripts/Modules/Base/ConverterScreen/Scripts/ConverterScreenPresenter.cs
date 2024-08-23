@@ -15,12 +15,14 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly ConverterScreenView _converterScreenView;
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
-
-
-        public void Dispose()
+        
+        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, ConverterScreenView converterScreenView, UniTaskCompletionSource<bool> completionSource, DynamicParticleController dynamicParticleController)
         {
-            _converterScreenView.Dispose();
-            _converterScreenModel.Dispose();
+            _screenStateMachine = screenStateMachine;
+            _converterScreenModel = converterScreenModel;
+            _converterScreenView = converterScreenView;
+            _dynamicParticleController = dynamicParticleController;
+            _completionSource = new UniTaskCompletionSource<bool>();
         }
 
         public async UniTask Enter(object param)
@@ -40,9 +42,13 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Execute() => await _completionSource.Task;
 
-
         public async UniTask Exit() => await _converterScreenView.Hide();
 
+        public void Dispose()
+        {
+            _converterScreenView.Dispose();
+            _converterScreenModel.Dispose();
+        }
 
         private readonly Dictionary<string, Currencies> _currencyToName = new()
         {
@@ -51,17 +57,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PLN", Currencies.Pln },
             { "PR", Currencies.Pr }
         };
-
-
-        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, ConverterScreenView converterScreenView, UniTaskCompletionSource<bool> completionSource, DynamicParticleController dynamicParticleController)
-        {
-            _screenStateMachine = screenStateMachine;
-            _converterScreenModel = converterScreenModel;
-            _converterScreenView = converterScreenView;
-            _dynamicParticleController = dynamicParticleController;
-            _completionSource = new UniTaskCompletionSource<bool>();
-        }
-
+        
         public async UniTask ShowView() => await _converterScreenView.Show();
 
         private void DetermineSourceCurrency(string name)

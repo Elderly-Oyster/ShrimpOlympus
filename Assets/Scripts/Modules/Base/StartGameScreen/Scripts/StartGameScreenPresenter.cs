@@ -15,15 +15,21 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly StartGameScreenView _startGameScreenView;
         private readonly StartGameScreenModel _startGameScreenModel;
         private readonly UniTaskCompletionSource<bool> _completionSource;
-
-
+        
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
-
         private static string appVersion;
         private static int appFrameRate = 60;
+
+        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel, StartGameScreenView startGameScreenView, UniTaskCompletionSource<bool> completionSource, StartGameScreenModel startGameScreenModel)
+        {
+            _screenStateMachine = screenStateMachine;
+            _startGameScreenModel = gameScreenModel;
+            _startGameScreenView = startGameScreenView;
+            _completionSource = new UniTaskCompletionSource<bool>();
+        }
 
         public async UniTask Enter(object param)
         {
@@ -62,16 +68,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _startGameScreenModel.Dispose();
             _cancellationTokenSource?.Dispose();
         }
-
-        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel, StartGameScreenView startGameScreenView, UniTaskCompletionSource<bool> completionSource, StartGameScreenModel startGameScreenModel)
-        {
-            _screenStateMachine = screenStateMachine;
-            _startGameScreenModel = gameScreenModel;
-            _startGameScreenView = startGameScreenView;
-            _completionSource = new UniTaskCompletionSource<bool>();
-        }
-
-
+        
         private void OnContinueButtonPressed()
         {
             RunNewScreen(ScreenPresenterMap.MainMenu);
@@ -122,10 +119,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         private void SetApplicationFrameRate() => Application.targetFrameRate = appFrameRate;
 
         public string GetAppVersion() => Application.version;
-
-        public void RemoveEventListeners() => _startGameScreenView.RemoveEventListeners();
-
-
+        
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
