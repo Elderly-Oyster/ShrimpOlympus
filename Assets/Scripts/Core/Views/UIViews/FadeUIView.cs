@@ -38,6 +38,10 @@ namespace Core.Views.UIViews
             gameObject.SetActive(false);
         }
         
-        public virtual void Dispose() => Destroy(gameObject);
+        public virtual void Dispose()
+        {
+            if (this != null && gameObject != null) 
+                Destroy(gameObject);
+        }
     }
 }
