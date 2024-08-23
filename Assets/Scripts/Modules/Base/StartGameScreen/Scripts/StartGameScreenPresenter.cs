@@ -5,7 +5,6 @@ using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using VContainer;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
@@ -20,8 +19,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
-        private static string appVersion;
-        private static int appFrameRate = 60;
+        private static string _appVersion;
+        private const int AppFrameRate = 60;
 
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel,
             StartGameScreenView startGameScreenView)
@@ -53,32 +52,30 @@ namespace Modules.Base.StartGameScreen.Scripts
                     UpdateViewWithModelData(currentTiming, serviceName).AsTask());
                 currentTiming += timing;
             }
-            ShowAnimations();           
-
-        }
-
-        public async UniTask Execute() => await _completionSource.Task;
-
-
-        public async UniTask Exit() => await _startGameScreenView.Hide();
-
-        public void Dispose()
-        {
-            _startGameScreenView.Dispose();
-            _startGameScreenModel.Dispose();
-            _cancellationTokenSource?.Dispose();
+            ShowAnimations();
         }
         
-        private void OnContinueButtonPressed()
+        public async UniTask Execute() => await _completionSource.Task;
+
+        public async UniTask Exit() => await _startGameScreenView.Hide();
+        
+        private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
+
+        private string GetAppVersion() => Application.version;
+        
+        private void RunMainMenuScreen(ScreenPresenterMap screen)
         {
-            RunNewScreen(ScreenPresenterMap.MainMenu);
+            _completionSource.TrySetResult(true);
+            _screenStateMachine.RunPresenter(screen);
         }
 
-        public void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
+        private void OnContinueButtonPressed() => RunMainMenuScreen(ScreenPresenterMap.MainMenu);
 
-        public void ShowAnimations() => _startGameScreenView.ShowAnimations(_cancellationTokenSource.Token);
+        private void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
 
-        public async UniTaskVoid ShowTooltips()
+        private void ShowAnimations() => _startGameScreenView.ShowAnimations(_cancellationTokenSource.Token);
+
+        private async UniTaskVoid ShowTooltips()
         {
             var token = _cancellationTokenSource.Token;
             try
@@ -94,7 +91,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             catch (Exception ex) { Debug.LogError($"ShowTooltips Error: {ex.Message}"); }
         }
 
-        public UniTask UpdateViewWithModelData(float progress, string serviceName)
+        private UniTask UpdateViewWithModelData(float progress, string serviceName)
         {
             UpdateProgress(progress, serviceName);
             return _startGameScreenView.
@@ -115,15 +112,12 @@ namespace Modules.Base.StartGameScreen.Scripts
             var maxExp = Math.Exp(1);
             return (float)((expValue - minExp) / (maxExp - minExp));
         }
-
-        private void SetApplicationFrameRate() => Application.targetFrameRate = appFrameRate;
-
-        public string GetAppVersion() => Application.version;
         
-        private void RunNewScreen(ScreenPresenterMap screen)
+        public void Dispose()
         {
-            _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _startGameScreenView.Dispose();
+            _startGameScreenModel.Dispose();
+            _cancellationTokenSource?.Dispose();
         }
     }
 }

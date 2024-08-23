@@ -45,7 +45,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         public void SetupEventListeners(UnityAction onStartButtonClicked) => 
             continueButton.onClick.AddListener(onStartButtonClicked);
 
-        public void RemoveEventListeners() => continueButton.onClick.RemoveAllListeners();
+        private void RemoveEventListeners() => continueButton.onClick.RemoveAllListeners();
 
         public void SetVersionText(string version) => versionText.text = version;
 
@@ -103,6 +103,12 @@ namespace Modules.Base.StartGameScreen.Scripts
                 await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(.2f, .8f)),
                     cancellationToken: cancellationToken);
             }
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            RemoveEventListeners();
         }
     }
 }

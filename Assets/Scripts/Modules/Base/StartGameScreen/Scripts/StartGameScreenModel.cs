@@ -67,9 +67,6 @@ namespace Modules.Base.StartGameScreen.Scripts
             return tooltip;
         }
 
-        public void Dispose()
-        {
-            
-        }
+        public void Dispose() { }
     }
 }
