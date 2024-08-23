@@ -49,8 +49,6 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         public void SetVersionText(string version) => versionText.text = version;
 
-        public override UniTask Show() => UniTask.CompletedTask;
-
         public UniTask ReportProgress(float expProgress, string progressStatus)
         {
             progressText.text = progressStatus;

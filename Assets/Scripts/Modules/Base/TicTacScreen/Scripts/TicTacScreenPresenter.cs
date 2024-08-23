@@ -17,13 +17,14 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly TicTacScreenModel _ticTacScreenModel;
         private readonly PopupHub _popupHub;
 
-        public TicTacScreenPresenter(IScreenStateMachine screenStateMachine, TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, UniTaskCompletionSource<bool> completionSource, TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel)
+        public TicTacScreenPresenter(IScreenStateMachine screenStateMachine, TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, PopupHub popupHub)
         {
             _screenStateMachine = screenStateMachine;
             _newModuleScreenModel = newModuleScreenModel;
             _newModuleScreenView = newModuleScreenView;
             _ticTacScreenView = ticTacScreenView;
             _ticTacScreenModel = ticTacScreenModel;
+            _popupHub = popupHub;
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 

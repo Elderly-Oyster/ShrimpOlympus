@@ -16,7 +16,8 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         
-        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, ConverterScreenView converterScreenView, UniTaskCompletionSource<bool> completionSource, DynamicParticleController dynamicParticleController)
+        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
+            ConverterScreenView converterScreenView, DynamicParticleController dynamicParticleController)
         {
             _screenStateMachine = screenStateMachine;
             _converterScreenModel = converterScreenModel;

@@ -42,6 +42,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             ShowTooltips().Forget();
             _startGameScreenModel.DoTweenInit();
             _startGameScreenModel.RegisterCommands();
+            await _startGameScreenView.Show();
 
             var timing = 1f / _startGameScreenModel._commands.Count;
             var currentTiming = timing;
@@ -52,10 +53,8 @@ namespace Modules.Base.StartGameScreen.Scripts
                     UpdateViewWithModelData(currentTiming, serviceName).AsTask());
                 currentTiming += timing;
             }
-            
-            ShowAnimations();
-            
-            await _startGameScreenView.Show();
+            ShowAnimations();           
+
         }
 
         public async UniTask Execute() => await _completionSource.Task;

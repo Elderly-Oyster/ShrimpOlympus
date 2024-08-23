@@ -6,6 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenPresenter.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenPresenter.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenPresenter.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,20 +20,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/51fded79cd284d4d911c5949aff4cb2146ac00/42/21148047/Dictionary`2.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/be171d7d8c074db0ad0937de56b02b593c00/0a/f62f7b0b/NativeInputSystem.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1e29a71158e46cdb750140a667aea01175e00/30/4b12abc3/Scene.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1e29a71158e46cdb750140a667aea01175e00/81/ed8a6e3f/Object.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1e29a71158e46cdb750140a667aea01175e00/bc/7e1360b4/InvokableCall.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f1e29a71158e46cdb750140a667aea01175e00/fe/0d41c028/UnityEvent.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/MainMenuScreen/Scripts/MainMenuScreenModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/StartGameScreen/Scripts/StartGameInstaller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/CellUIView.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacInstaller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenModel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenPresenter.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Modules/TicTacScreen/Scripts/TicTacScreenView.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/MVP/MVP-Root-Model/Scripts/Startup/RootLifetimeScope.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8a522b806eac9bb894e6e4c5fe87f353457535e769447e79c6b396beecb5d0/System.Threading.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@5cc97c7f00/Runtime/Internal/ContinuationQueue.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@5cc97c7f00/Runtime/Internal/Error.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.cysharp.unitask@5cc97c7f00/Runtime/Internal/PlayerLoopRunner.cs" root0="SKIP_HIGHLIGHTING" />
@@ -80,9 +71,9 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\Puvel\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Puvel\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\Puvel\\AppData\\Local\\Symbols\\src"
+      "/Users/ilyapospelov/Library/Application Support/JetBrains/Rider2024.1/resharper-host/DecompilerCache",
+      "/Users/ilyapospelov/Library/Application Support/JetBrains/Rider2024.1/resharper-host/SourcesCache",
+      "/Users/ilyapospelov/Library/Application Support/Symbols/src"
     ]
   }
 }]]></component>
@@ -177,7 +168,7 @@
       <workItem from="1723807823875" duration="1106000" />
       <workItem from="1723832374542" duration="1137000" />
       <workItem from="1723944247741" duration="1068000" />
-      <workItem from="1724359958126" duration="712000" />
+      <workItem from="1724359952034" duration="13684000" />
     </task>
     <servers />
   </component>
