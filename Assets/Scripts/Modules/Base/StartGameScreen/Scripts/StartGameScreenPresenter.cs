@@ -23,7 +23,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private static string appVersion;
         private static int appFrameRate = 60;
 
-        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel, StartGameScreenView startGameScreenView, UniTaskCompletionSource<bool> completionSource, StartGameScreenModel startGameScreenModel)
+        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel,
+            StartGameScreenView startGameScreenView)
         {
             _screenStateMachine = screenStateMachine;
             _startGameScreenModel = gameScreenModel;

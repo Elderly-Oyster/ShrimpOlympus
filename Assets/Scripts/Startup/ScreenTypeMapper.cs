@@ -16,7 +16,7 @@ namespace Startup
 
         public ScreenTypeMapper()
         {
-            _map = new Dictionary<ScreenPresenterMap, Type> //TODO Заменить модели на презентеры
+            _map = new Dictionary<ScreenPresenterMap, Type> 
             {
                 { ScreenPresenterMap.StartGame, typeof(StartGameScreenPresenter) },
                 { ScreenPresenterMap.Converter, typeof(ConverterScreenPresenter) },
@@ -25,12 +25,7 @@ namespace Startup
             };
         }
 
-        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver)
-        {
-            var x = objectResolver.TryResolve(out StartGameScreenView startGameScreenView);
-            var y = objectResolver.TryResolve(out StartGameScreenModel startGameScreenModel);
-            var z = objectResolver.TryResolve(out StartGameScreenPresenter StartGameScreenPresenter);
-        }
-            // (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
+        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) => 
+            (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
     }
 }
