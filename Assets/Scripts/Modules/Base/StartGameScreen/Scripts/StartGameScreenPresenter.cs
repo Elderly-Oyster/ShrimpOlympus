@@ -12,9 +12,8 @@ namespace Modules.Base.StartGameScreen.Scripts
     public class StartGameScreenPresenter : IScreenPresenter
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly StartGameScreenModel _gameScreenModel;
         private readonly StartGameScreenView _startGameScreenView;
-        private readonly StartGameScreenModel startGameScreenModel;
+        private readonly StartGameScreenModel _startGameScreenModel;
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
 
@@ -22,14 +21,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         private const int TooltipDelay = 3000;
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
-        private StartGameScreenModel _startGameScreenModel; //Без инжекта, т.к. появлялась Circle Dependency Exception
 
         private static string appVersion;
         private static int appFrameRate = 60;
 
         public async UniTask Enter(object param)
         {
-            _startGameScreenModel = startGameScreenModel;
             SetApplicationFrameRate();
             _startGameScreenView.gameObject.SetActive(false);
             _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
@@ -69,9 +66,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel, StartGameScreenView startGameScreenView, UniTaskCompletionSource<bool> completionSource, StartGameScreenModel startGameScreenModel)
         {
             _screenStateMachine = screenStateMachine;
-            _gameScreenModel = gameScreenModel;
+            _startGameScreenModel = gameScreenModel;
             _startGameScreenView = startGameScreenView;
-            this.startGameScreenModel = startGameScreenModel;
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 
