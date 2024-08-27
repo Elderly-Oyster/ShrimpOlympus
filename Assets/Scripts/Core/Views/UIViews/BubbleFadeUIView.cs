@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
@@ -28,6 +29,7 @@ namespace Core.Views.UIViews
             transform.localScale = Vector3.zero;
 
             var sequence = DOTween.Sequence();
+            
             sequence.Append(transform.DOScale(ScaleUpFactor, ScaleDuration / 2))
                 .Join(canvasGroup.DOFade(1, FadeDuration))
                 .Append(transform.DOScale(1, ScaleDuration / 2));
@@ -42,8 +44,9 @@ namespace Core.Views.UIViews
                 .Join(canvasGroup.DOFade(0, FadeDuration))
                 .Append(transform.DOScale(0, ScaleDuration / 2))
                 .OnComplete(() => gameObject.SetActive(false));
-
+            
             await sequence;
+            gameObject.SetActive(false);
         }
 
         public void HideInstantly()
@@ -54,5 +57,18 @@ namespace Core.Views.UIViews
         }
 
         public virtual void Dispose() => Destroy(gameObject);
+
+        // private void StopAnimation()
+        // {
+        //     if (DOTween.Sequence() != null && DOTween.Sequence().IsActive())
+        //     {
+        //         DOTween.Sequence().Kill();
+        //     }
+        // }
+
+        // private void OnDestroy()
+        // {
+        //     StopAnimation();
+        // }
     }
 }

@@ -15,7 +15,7 @@ namespace Core.Views.Buttons
             _animationSequence.Append(pulsatingButton.transform.DOScale(1.2f, 0.3f).SetEase(Ease.OutQuad))
                 .Append(pulsatingButton.transform.DOScale(1.0f, 0.3f).SetEase(Ease.OutQuad))
                 .SetLoops(-1, LoopType.Restart);
-
+            
             _animationSequence.Play();
         }
 
@@ -26,6 +26,11 @@ namespace Core.Views.Buttons
                 _animationSequence.Kill();
                 pulsatingButton.transform.localScale = Vector3.one; // Сброс масштаба до исходного
             }
+        }
+
+        private void OnDestroy()
+        {
+            StopAnimation();
         }
     }
 }

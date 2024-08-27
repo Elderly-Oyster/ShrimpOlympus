@@ -1,7 +1,4 @@
-﻿using Core;
-using Core.MVVM;
-using Core.Popup.Scripts;
-using Cysharp.Threading.Tasks;
+﻿using Core.MVVM;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {

@@ -72,10 +72,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         public void ShowAnimations(CancellationToken cancellationToken)
         {
             progressText.text = TapToContinueText;
+            progressText.transform
+                .DOScale(1.2f, ProgressBarAnimDuration)
+                .SetLoops(-1, LoopType.Yoyo);
+            
             progressBarCanvasGroup.DOFade(0, ProgressBarAnimDuration);
-            progressText.transform.DOScale(1.2f, ProgressBarAnimDuration).
-                SetLoops(-1, LoopType.Yoyo);
-
+            
             StartFlickering(cancellationToken).Forget();
         }
 
@@ -88,16 +90,24 @@ namespace Modules.Base.StartGameScreen.Scripts
                 var opacity = Random.Range(0f, .3f);
                 
                 await UniTask.WhenAll(
-                    lightingCanvasGroup.DOFade(opacity, FlickerDuration).SetEase(easy)
+                    lightingCanvasGroup
+                        .DOFade(opacity, FlickerDuration)
+                        .SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken),
-                    overlay.DOFade(1 - opacity, FlickerDuration).SetEase(easy)
+                    overlay
+                        .DOFade(1 - opacity, FlickerDuration)
+                        .SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken)
                 );
 
                 await UniTask.WhenAll(
-                    lightingCanvasGroup.DOFade(1, FlickerDuration).SetEase(easy)
+                    lightingCanvasGroup
+                        .DOFade(1, FlickerDuration)
+                        .SetEase(easy)
                         .ToUniTask(cancellationToken: cancellationToken),
-                    overlay.DOFade(0, FlickerDuration).SetEase(easy).
+                    overlay
+                        .DOFade(0, FlickerDuration)
+                        .SetEase(easy).
                         ToUniTask(cancellationToken: cancellationToken)
                 );
                 await UniTask.Delay(TimeSpan.FromSeconds(Random.Range(.2f, .8f)),
@@ -109,6 +119,19 @@ namespace Modules.Base.StartGameScreen.Scripts
         {
             base.Dispose();
             RemoveEventListeners();
+        }
+
+        private void StopAnimation()
+        {
+            if (DOTween.Sequence() != null && DOTween.Sequence().IsActive())
+            {
+                DOTween.Sequence().Kill();
+            }
+        }
+
+        private void OnDestroy()
+        {
+            StopAnimation();
         }
     }
 }

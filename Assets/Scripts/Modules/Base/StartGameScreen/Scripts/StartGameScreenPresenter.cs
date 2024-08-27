@@ -43,10 +43,10 @@ namespace Modules.Base.StartGameScreen.Scripts
             _startGameScreenModel.RegisterCommands();
             await _startGameScreenView.Show();
 
-            var timing = 1f / _startGameScreenModel._commands.Count;
+            var timing = 1f / _startGameScreenModel.Commands.Count;
             var currentTiming = timing;
 
-            foreach (var (serviceName, initFunction) in _startGameScreenModel._commands)
+            foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
             {
                 await Task.WhenAll(initFunction.Invoke(), 
                     UpdateViewWithModelData(currentTiming, serviceName).AsTask());
@@ -57,8 +57,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         public async UniTask Execute() => await _completionSource.Task;
 
-        public async UniTask Exit() => await _startGameScreenView.Hide();
-        
+        public async UniTask Exit()
+        {
+            _cancellationTokenSource?.Cancel();
+            await _startGameScreenView.Hide();
+        }
+
         private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
 
         private string GetAppVersion() => Application.version;

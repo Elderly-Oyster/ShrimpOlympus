@@ -6,6 +6,7 @@ using Modules.Base.ConverterScreen.Scripts;
 using Modules.Base.MainMenuScreen.Scripts;
 using Modules.Base.StartGameScreen.Scripts;
 using Modules.Base.TicTacScreen.Scripts;
+using UnityEngine;
 using VContainer;
 
 namespace Startup   
@@ -25,7 +26,11 @@ namespace Startup
             };
         }
 
-        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) => 
-            (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
+        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver)
+        {
+            Debug.Log(objectResolver);
+            Debug.Log(screenPresenterMap);
+            return (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
+        }
     }
 }

@@ -45,12 +45,6 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Exit() => await _converterScreenView.Hide();
 
-        public void Dispose()
-        {
-            _converterScreenView.Dispose();
-            _converterScreenModel.Dispose();
-        }
-
         private readonly Dictionary<string, Currencies> _currencyToName = new()
         {
             { "EUR", Currencies.Eur },
@@ -58,19 +52,25 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PLN", Currencies.Pln },
             { "PR", Currencies.Pr }
         };
-        
+
         public async UniTask ShowView() => await _converterScreenView.Show();
+
+        public void Dispose()
+        {
+            _converterScreenView.Dispose();
+            _converterScreenModel.Dispose();
+        }
 
         private void DetermineSourceCurrency(string name)
         {
             _converterScreenModel.SelectSourceCurrency(_currencyToName[name]);
-            CountTargetMoney(_converterScreenView.currentSourceAmount);
+            CountTargetMoney(_converterScreenView.CurrentSourceAmount);
         }
 
         private void DetermineTargetCurrency(string name) 
         {
             _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
-            CountTargetMoney(_converterScreenView.currentSourceAmount);
+            CountTargetMoney(_converterScreenView.CurrentSourceAmount);
         }
 
         private void OnSourceAmountChanged(string value)
@@ -103,7 +103,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             RunNewScreen(ScreenPresenterMap.MainMenu);
 
         public async UniTask HideScreenView() => await _converterScreenView.Hide();
-        
+
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);

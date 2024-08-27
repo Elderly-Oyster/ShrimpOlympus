@@ -2,7 +2,6 @@
 using Core.MVVM;
 using Core.Popup.Scripts;
 using Cysharp.Threading.Tasks;
-using VContainer;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
@@ -23,7 +22,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _popupHub = popupHub;
             _completionSource = new UniTaskCompletionSource<bool>();
         }
-        
+
         public async UniTask Enter(object param)
         {
             _mainMenuScreenView.gameObject.SetActive(false);
@@ -36,10 +35,11 @@ namespace Modules.Base.MainMenuScreen.Scripts
             );
             await _mainMenuScreenView.Show();
         }
+
         public async UniTask Execute() => await _completionSource.Task;
 
         public async UniTask Exit() => await _mainMenuScreenView.Hide();
-        
+
         public void Dispose()
         {
             _mainMenuScreenView.Dispose();
@@ -50,12 +50,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void OnTicTacButtonClicked() => RunNewScreen(ScreenPresenterMap.TicTac);
         private void OnFirstPopupButtonClicked() => _popupHub.OpenFirstPopup();
         private void OnSecondPopupButtonClicked() => _popupHub.OpenSecondPopup();
-       
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunPresenter(screen);
         }
-        
     }
 }

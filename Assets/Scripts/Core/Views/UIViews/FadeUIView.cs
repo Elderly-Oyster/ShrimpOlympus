@@ -28,7 +28,8 @@ namespace Core.Views.UIViews
 
         public virtual async UniTask Hide()
         {
-            await canvasGroup.DOFade(0, FadeDuration).
+            await canvasGroup
+                .DOFade(0, FadeDuration).
                 OnComplete(() => gameObject.SetActive(false));
         }
         

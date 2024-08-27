@@ -1,7 +1,5 @@
 ﻿using System.Globalization;
-using Core.Views;
 using Core.Views.UIViews;
-using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -45,7 +43,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             exitButton.onClick.AddListener(onExitButtonClicked);
         }
         
-        public float currentSourceAmount =>
+        public float CurrentSourceAmount =>
             float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
 
         public void UpdateSourceText(float amount) =>

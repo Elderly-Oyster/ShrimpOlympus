@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using Core;
 using Core.MVVM;
-using Cysharp.Threading.Tasks;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -18,6 +16,8 @@ namespace Modules.Base.ConverterScreen.Scripts
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
 
+        public ConverterScreenModel() { }
+
         private readonly Dictionary<Currencies, float> _currencyToEuroRate = new()
         {
             { Currencies.Eur, 1.0f },
@@ -26,10 +26,6 @@ namespace Modules.Base.ConverterScreen.Scripts
             { Currencies.Pr, 0.05f }
         };
 
-        public ConverterScreenModel() { }
-        
-
-        
         public void SelectSourceCurrency(Currencies currency) => _sourceCurrency = currency;
         public void SelectTargetCurrency(Currencies currency) => _targetCurrency = currency;
 

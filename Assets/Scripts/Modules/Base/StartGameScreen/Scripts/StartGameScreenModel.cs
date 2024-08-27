@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
@@ -12,7 +11,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {
-        public readonly Dictionary<string, Func<Task>> _commands;
+        public readonly Dictionary<string, Func<Task>> Commands;
 
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
@@ -32,7 +31,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _thirdLongInitializationService = thirdLongInitializationService;
 
             _completionSource = new UniTaskCompletionSource<bool>();
-            _commands = new Dictionary<string, Func<Task>>();
+            Commands = new Dictionary<string, Func<Task>>();
             
             _tooltips = new []
             {
@@ -55,9 +54,9 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         public void RegisterCommands()
         {
-            _commands.Add("First Service", _firstLongInitializationService.Init);
-            _commands.Add("Second Service", _secondLongInitializationService.Init);
-            _commands.Add("Third Service", _thirdLongInitializationService.Init);
+            Commands.Add("First Service", _firstLongInitializationService.Init);
+            Commands.Add("Second Service", _secondLongInitializationService.Init);
+            Commands.Add("Third Service", _thirdLongInitializationService.Init);
         }
         
         public string GetNextTooltip()

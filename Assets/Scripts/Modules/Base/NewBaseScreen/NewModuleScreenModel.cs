@@ -1,4 +1,3 @@
-using Core;
 using Core.MVVM;
 
 namespace Modules.Base.NewBaseScreen
