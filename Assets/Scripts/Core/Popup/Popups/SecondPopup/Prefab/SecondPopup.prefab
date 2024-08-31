@@ -417,6 +417,7 @@ GameObject:
   - component: {fileID: 2115179515970575175}
   - component: {fileID: 7008133320630727752}
   - component: {fileID: 5518397903346506616}
+  - component: {fileID: 4036631737046662527}
   m_Layer: 0
   m_Name: SecondPopup
   m_TagString: Untagged
@@ -470,10 +471,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rootCanvas: {fileID: 0}
-  canvasGroup: {fileID: 7008133320630727752}
   overlayTransform: {fileID: 0}
   spinnerTransform: {fileID: 0}
+  animationElement: {fileID: 4036631737046662527}
   closeButton: {fileID: 8048413988039265251}
+  priority: 1
+--- !u!114 &4036631737046662527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335789949373171186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c93b6eb56a724c39b815c1206ae175e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 7008133320630727752}
+  scaleUpFactor: 1.1
+  scaleDuration: 0.25
+  fadeDuration: 0.25
 --- !u!1 &2644443266120451836
 GameObject:
   m_ObjectHideFlags: 0

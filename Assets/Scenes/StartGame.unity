@@ -38,6 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1796,6 +1797,7 @@ GameObject:
   - component: {fileID: 2097883545}
   - component: {fileID: 2097883544}
   - component: {fileID: 2097883543}
+  - component: {fileID: 2097883547}
   m_Layer: 5
   m_Name: StartGameUIView
   m_TagString: Untagged
@@ -1898,7 +1900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd52333733b44748a2fd10cc161bcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasGroup: {fileID: 2097883544}
+  animationElement: {fileID: 2097883547}
   continueButton: {fileID: 2097883543}
   progressValueText: {fileID: 1624380901}
   progressText: {fileID: 956352712}
@@ -1917,6 +1919,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2097883541}
   m_CullTransparentMesh: 1
+--- !u!114 &2097883547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097883541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d4c63c39374ea2977d276a9142466e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 2097883544}
+  fadeDuration: 0.4
 --- !u!1 &2115247161
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using CodeBase.Core.MVVM.View;
 using Core.Views.UIViews;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenView : FadeUIView
+    public class ConverterScreenView : BaseScreenView
     {
         [SerializeField] private TMP_InputField sourceAmountInputField;
         [SerializeField] private TMP_InputField targetAmountInputField;
@@ -16,7 +17,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
 
-        private new void Awake()
+        protected override void Awake()
         {
             base.Awake();
             HideInstantly();
@@ -58,6 +59,12 @@ namespace Modules.Base.ConverterScreen.Scripts
             sourceCurrencyDropdown.onValueChanged.RemoveAllListeners();
             targetCurrencyDropdown.onValueChanged.RemoveAllListeners();
             amountScrollBar.onValueChanged.RemoveAllListeners();
+        }
+        
+        public override void Dispose()
+        {
+            RemoveEventListeners();
+            base.Dispose();
         }
     }
 }

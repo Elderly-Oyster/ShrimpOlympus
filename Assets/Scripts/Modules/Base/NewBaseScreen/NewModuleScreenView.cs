@@ -1,8 +1,8 @@
-using Core.Views.UIViews;
+using CodeBase.Core.MVVM.View;
 
 namespace Modules.Base.NewBaseScreen
 {
-    public class NewModuleScreenView : BubbleFadeUIView
+    public class NewModuleScreenView : BaseScreenView
     {
         public void SetupEventListeners()
         {

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using Core.Views.UIViews;
+using CodeBase.Core.MVVM.View;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenView : FadeUIView
+    public class StartGameScreenView : BaseScreenView
     {
         [Header("UI Interaction Components")]
         [SerializeField] private Button continueButton;
@@ -31,12 +31,11 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
         
+        private Sequence _sequence;
         
         private const string TapToContinueText = "Tap to continue";
         private const float ProgressBarAnimDuration = 0.5f;
         private const float FlickerDuration = .2f;
-
-        private new void Awake() => ResetProgressBar();
         
         private void ResetProgressBar() => progressBar.fillAmount = 0;
 
@@ -72,9 +71,13 @@ namespace Modules.Base.StartGameScreen.Scripts
         public void ShowAnimations(CancellationToken cancellationToken)
         {
             progressText.text = TapToContinueText;
-            progressText.transform
-                .DOScale(1.2f, ProgressBarAnimDuration)
-                .SetLoops(-1, LoopType.Yoyo);
+
+            _sequence = DOTween.Sequence();
+            _sequence
+                .Append(progressText.transform
+                    .DOScale(1.2f, ProgressBarAnimDuration))
+                .SetLoops(-1, LoopType.Yoyo); // Переместили SetLoops к последовательности
+
             
             progressBarCanvasGroup.DOFade(0, ProgressBarAnimDuration);
             
@@ -114,24 +117,27 @@ namespace Modules.Base.StartGameScreen.Scripts
                     cancellationToken: cancellationToken);
             }
         }
+        
+        public override UniTask Show()
+        {
+            SetActive(true);
+            ResetProgressBar();
+            return UniTask.CompletedTask;
+        }
 
         public override void Dispose()
         {
-            base.Dispose();
+            StopAnimation();
             RemoveEventListeners();
+            base.Dispose();
         }
 
         private void StopAnimation()
         {
-            if (DOTween.Sequence() != null && DOTween.Sequence().IsActive())
+            if (_sequence != null && _sequence.IsActive())
             {
-                DOTween.Sequence().Kill();
+                _sequence.Kill();
             }
-        }
-
-        private void OnDestroy()
-        {
-            StopAnimation();
         }
     }
 }

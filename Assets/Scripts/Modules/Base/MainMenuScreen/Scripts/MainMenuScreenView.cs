@@ -1,18 +1,18 @@
-﻿using Core.Views.UIViews;
+﻿using CodeBase.Core.MVVM.View;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenView : FadeUIView
+    public class MainMenuScreenView : BaseScreenView
     {
         [SerializeField] private Button firstPopupButton;
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
         
-        private new void Awake()
+        protected override void Awake()
         {
             base.Awake();
             HideInstantly();

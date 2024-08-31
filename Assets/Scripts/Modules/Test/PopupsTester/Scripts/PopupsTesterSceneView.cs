@@ -1,12 +1,13 @@
 using Core.Views;
 using UnityEngine;
 using System.Collections.Generic;
+using CodeBase.Core.MVVM.View;
 using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterSceneView : FadeUIView
+    public class PopupsTesterSceneView : BaseScreenView
     {
         private List<TestButtonView> _testButtonViews;
         [SerializeField] public Transform buttonsParent;

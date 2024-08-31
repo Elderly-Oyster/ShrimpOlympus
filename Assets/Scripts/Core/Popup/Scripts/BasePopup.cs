@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
+using CodeBase.Core.UI.Views.Animations;
 using Core.Views.ProgressBars;
-using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
@@ -9,14 +9,15 @@ using VContainer;
 
 namespace Core.Popup.Scripts
 {
-    public class BasePopup : FadeUIView
+    public class BasePopup : MonoBehaviour
     {
         [Inject][HideInInspector] public PopupRootCanvas rootCanvas;
         //[Inject] protected ISoundService soundService;
-        [Inject] protected PopupHub popupHub;
+        [Inject] protected PopupHub PopupHub;
         
         [SerializeField] protected Transform overlayTransform;
         [SerializeField] protected Transform spinnerTransform;
+        [SerializeField] private BaseAnimationElement animationElement;
         
         public Button closeButton;
         
@@ -25,15 +26,13 @@ namespace Core.Popup.Scripts
         [SerializeField] protected PopupPriority priority = PopupPriority.Medium;
         public PopupPriority Priority => priority;
 
-        protected const float CloseTime = 0.2f;
         private bool _isClosed;
         private TaskCompletionSource<bool> _tcs;
 
         protected new virtual void Awake()
         {
             gameObject.SetActive(false);
-            if (canvasGroup == null)
-                canvasGroup = GetComponent<CanvasGroup>();
+     
             if (closeButton != null)
                 closeButton.onClick.AddListener(() => Close().Forget());
         }
@@ -55,10 +54,9 @@ namespace Core.Popup.Scripts
 
         public virtual UniTask Open<T>(T param)
         {
-            canvasGroup.alpha = 0;
             gameObject.SetActive(true);
 
-            return base.Show();
+            return animationElement.Show();
         }
 
         public virtual async UniTask Close()
@@ -69,15 +67,14 @@ namespace Core.Popup.Scripts
             {
                 _isClosed = true;
                 //soundService.Play(GeneralSoundTypes.GeneralPopupClose).Forget();
-                await base.Hide();
-                await UniTask.WaitForSeconds(CloseTime);
+                await animationElement.Hide();
                 transform.DOKill();
             }
             finally
             {
                 tcs?.TrySetResult(true);
                 Destroy(gameObject);
-                popupHub.NotifyPopupClosed(); 
+                PopupHub.NotifyPopupClosed(); 
             }
         }
         

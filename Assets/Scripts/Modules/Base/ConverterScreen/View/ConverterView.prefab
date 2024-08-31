@@ -1115,6 +1115,7 @@ GameObject:
   - component: {fileID: 1269878823724244595}
   - component: {fileID: 4474734653127942602}
   - component: {fileID: 2232499529049980557}
+  - component: {fileID: 5062243789545450104}
   m_Layer: 5
   m_Name: ConverterView
   m_TagString: Untagged
@@ -1159,6 +1160,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a88229c1d56649458657c022a37dc63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationElement: {fileID: 5062243789545450104}
   sourceAmountInputField: {fileID: 5512189252795495846}
   targetAmountInputField: {fileID: 2489398857735269802}
   sourceCurrencyDropdown: {fileID: 6427101617318191958}
@@ -1177,6 +1179,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &5062243789545450104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749864789209108957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d4c63c39374ea2977d276a9142466e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 2232499529049980557}
+  fadeDuration: 0.4
 --- !u!1 &1820334730385710777
 GameObject:
   m_ObjectHideFlags: 0
