@@ -68,6 +68,10 @@ namespace Core.Popup.Base
                     _eventMediator.Publish(new PopupOpenedEvent(CurrentPopup.GetType().Name));
                 }
             }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error while opening popup '{CurrentPopup.name}' : {ex.Message}");
+            }
             finally { _semaphoreSlim.Release(); }
         }
 
