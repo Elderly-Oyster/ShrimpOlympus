@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Core.EventMediatorSystem;
-using Core.Popup.Popups.FirstPopup.Scripts;
-using Core.Popup.Popups.SecondPopup.Scripts;
-using Core.Popup.Popups.ThirdPopup.Scripts;
+using Core.Popup.Types.FirstPopup.Scripts;
+using Core.Popup.Types.SecondPopup.Scripts;
+using Core.Popup.Types.ThirdPopup.Scripts;
 using Core.Views.ProgressBars;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using VContainer;
 
-namespace Core.Popup.Scripts
+namespace Core.Popup.Base
 {
     public class PopupHub
     {

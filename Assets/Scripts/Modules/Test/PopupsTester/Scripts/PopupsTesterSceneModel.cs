@@ -1,4 +1,4 @@
-using Core.Popup.Scripts;
+using Core.Popup.Base;
 using UnityEngine.Events;
 using VContainer;
 

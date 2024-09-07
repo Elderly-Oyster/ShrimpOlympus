@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Core.Popup.Scripts
+namespace Core.Popup.Base
 {
     public class PopupsPriorityQueue
     {

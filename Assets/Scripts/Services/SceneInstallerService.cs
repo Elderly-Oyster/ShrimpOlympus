@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Core;
-using Core.Popup.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;

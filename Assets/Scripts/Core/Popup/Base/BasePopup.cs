@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Core.Popup.Scripts
+namespace Core.Popup.Base
 {
     public class BasePopup : MonoBehaviour
     {

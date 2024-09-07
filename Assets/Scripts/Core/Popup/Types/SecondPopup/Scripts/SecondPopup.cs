@@ -1,6 +1,6 @@
-using Core.Popup.Scripts;
+using Core.Popup.Base;
 
-namespace Core.Popup.Popups.SecondPopup.Scripts
+namespace Core.Popup.Types.SecondPopup.Scripts
 {
     public class SecondPopup : BasePopup
     {

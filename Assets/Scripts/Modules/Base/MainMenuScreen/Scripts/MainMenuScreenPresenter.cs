@@ -1,6 +1,6 @@
 ﻿using Core;
 using Core.MVVM;
-using Core.Popup.Scripts;
+using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Base.MainMenuScreen.Scripts
