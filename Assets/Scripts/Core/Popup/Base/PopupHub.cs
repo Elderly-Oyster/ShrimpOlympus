@@ -51,28 +51,9 @@ namespace Core.Popup.Base
             TryOpenNextPopup(param).Forget();
         }
 
-        private async UniTaskVoid TryOpenNextPopup()
-        {
-            await _semaphoreSlim.WaitAsync();
+        private async UniTask TryOpenNextPopup() => await TryOpenNextPopup<object>(null);
 
-            try
-            {
-                if (CurrentPopup == null && _popupQueue.TryDequeue(out var nextPopup)) 
-                {
-                    CurrentPopup = nextPopup;
-                    _popups.Push(CurrentPopup);
-                    CurrentPopup.gameObject.SetActive(true);
-                    await CurrentPopup.Open<object>(null);
-                    _eventMediator.Publish(new PopupOpenedEvent(CurrentPopup.GetType().Name));
-                }
-            }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
-        }
-
-        private async UniTaskVoid TryOpenNextPopup<T>(T param)
+        private async UniTask TryOpenNextPopup<T>(T param)
         {
             await _semaphoreSlim.WaitAsync();
 
@@ -87,11 +68,9 @@ namespace Core.Popup.Base
                     _eventMediator.Publish(new PopupOpenedEvent(CurrentPopup.GetType().Name));
                 }
             }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
+            finally { _semaphoreSlim.Release(); }
         }
+
 
         public async UniTask CloseCurrentPopup()
         {
