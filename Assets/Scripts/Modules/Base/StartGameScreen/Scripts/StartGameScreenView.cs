@@ -4,6 +4,7 @@ using CodeBase.Core.MVVM.View;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -31,6 +32,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
         
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private Sequence _sequence;
         
         private const string TapToContinueText = "Tap to continue";
@@ -41,11 +43,11 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private void Start() => splashTooltipsText.transform.parent.gameObject.SetActive(true);
 
-        public void SetupEventListeners(UnityAction onStartButtonClicked) => 
-            continueButton.onClick.AddListener(onStartButtonClicked);
-
-        private void RemoveEventListeners() => continueButton.onClick.RemoveAllListeners();
-
+        public void SetupEventListeners(Action onStartButtonClicked) =>
+            continueButton.OnClickAsObservable()
+                .Subscribe(_ => onStartButtonClicked())
+                .AddTo(_disposables);
+        
         public void SetVersionText(string version) => versionText.text = version;
 
         public UniTask ReportProgress(float expProgress, string progressStatus)
@@ -127,17 +129,17 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         public override void Dispose()
         {
-            StopAnimation();
             RemoveEventListeners();
+            StopAnimation();
             base.Dispose();
         }
+        
+        private void RemoveEventListeners() => _disposables.Clear();
 
         private void StopAnimation()
         {
-            if (_sequence != null && _sequence.IsActive())
-            {
+            if (_sequence != null && _sequence.IsActive()) 
                 _sequence.Kill();
-            }
         }
     }
 }

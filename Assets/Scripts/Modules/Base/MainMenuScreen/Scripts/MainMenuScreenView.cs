@@ -1,6 +1,6 @@
 ﻿using CodeBase.Core.MVVM.View;
+using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Modules.Base.MainMenuScreen.Scripts
@@ -12,31 +12,39 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
         
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
         protected override void Awake()
         {
             base.Awake();
             HideInstantly();
         }
-        
+
         public void SetupEventListeners(
-            UnityAction onConverterButtonClicked,
-            UnityAction onTicTacButtonClicked,
-            UnityAction onFirstPopupButtonClicked,
-            UnityAction onSecondPopupButtonClicked)
+            System.Action onConverterButtonClicked,
+            System.Action onTicTacButtonClicked,
+            System.Action onFirstPopupButtonClicked,
+            System.Action onSecondPopupButtonClicked)
         {
-            converterButton.onClick.AddListener(onConverterButtonClicked);
-            ticTacButton.onClick.AddListener(onTicTacButtonClicked);
+            converterButton.OnClickAsObservable()
+                .Subscribe(_ => onConverterButtonClicked())
+                .AddTo(_disposables);
+
+            ticTacButton.OnClickAsObservable()
+                .Subscribe(_ => onTicTacButtonClicked())
+                .AddTo(_disposables);
             
-            firstPopupButton.onClick.AddListener(onFirstPopupButtonClicked);
-            secondPopupButton.onClick.AddListener(onSecondPopupButtonClicked);
+            firstPopupButton.OnClickAsObservable()
+                .Subscribe(_ => onFirstPopupButtonClicked())
+                .AddTo(_disposables);
+
+            secondPopupButton.OnClickAsObservable()
+                .Subscribe(_ => onSecondPopupButtonClicked())
+                .AddTo(_disposables);
         }
 
-        private void RemoveEventListeners()
-        {
-            converterButton.onClick.RemoveAllListeners();
-            ticTacButton.onClick.RemoveAllListeners();
-        }
-        
+        private void RemoveEventListeners() => _disposables.Clear();
+
         public override void Dispose()
         {
             RemoveEventListeners();
