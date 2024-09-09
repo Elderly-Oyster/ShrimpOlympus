@@ -1,4 +1,4 @@
-﻿using CodeBase.Core.MVVM.View;
+﻿using Core.MVP;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;

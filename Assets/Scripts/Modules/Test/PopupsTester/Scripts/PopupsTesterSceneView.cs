@@ -1,7 +1,7 @@
 using Core.Views;
 using UnityEngine;
 using System.Collections.Generic;
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 

@@ -3,29 +3,34 @@ using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CodeBase.Core.MVVM.View
+namespace Core.MVP
 {
     [RequireComponent(typeof(CanvasGroup))]
+    [RequireComponent(typeof(Canvas))]
     public abstract class BaseScreenView : MonoBehaviour, IUIView
     {
         [SerializeField] private BaseAnimationElement animationElement;
         private CanvasGroup _canvasGroup;
+        private Canvas _canvas;
 
         protected virtual void Awake()
         {
             _canvasGroup = GetComponent<CanvasGroup>();
+            _canvas = GetComponent<Canvas>();
         }
-        
+
         public virtual async UniTask Show()
         {
             SetActive(true);
+            _canvas.enabled = true;
             if (animationElement != null) await animationElement.Show();
         }
 
         public virtual async UniTask Hide()
         {
             if (animationElement != null) await animationElement.Hide();
-            SetActive(false);
+            gameObject.SetActive(false);
+            _canvas.enabled = false;
         }
         
         protected void SetActive(bool isActive)

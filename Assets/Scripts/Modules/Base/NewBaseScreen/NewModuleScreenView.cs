@@ -1,4 +1,4 @@
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 
 namespace Modules.Base.NewBaseScreen
 {

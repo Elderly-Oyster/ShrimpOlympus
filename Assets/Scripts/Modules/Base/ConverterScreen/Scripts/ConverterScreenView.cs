@@ -1,5 +1,5 @@
 ﻿using System.Globalization;
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 using Core.Views.UIViews;
 using TMPro;
 using UnityEngine;
