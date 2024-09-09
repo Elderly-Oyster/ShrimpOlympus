@@ -8,19 +8,16 @@ namespace Modules.Test.PopupsTester.Scripts
     {
         private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
         private readonly UnityAction[] _popupActions;
-        private readonly PopupHub _popupHub;
 
-        [Inject] 
-        public PopupsTesterSceneModel(
-            PopupHub popupHub, System.Func<UnityAction, TestButtonView> buttonFactory)
+        [Inject] public PopupsTesterSceneModel(PopupHub popupHub)
         {
-            _popupHub = popupHub;
+            var popupHub1 = popupHub;
 
             _popupActions = new UnityAction[]
             {
-                _popupHub.OpenFirstPopup,
-                _popupHub.OpenSecondPopup,
-                _popupHub.OpenThirdPopup
+                popupHub1.OpenFirstPopup,
+                popupHub1.OpenSecondPopup,
+                popupHub1.OpenThirdPopup
             };
         }
 

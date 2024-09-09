@@ -1,16 +1,15 @@
-using Core.Views;
 using UnityEngine;
 using System.Collections.Generic;
 using CodeBase.Core.MVVM.View;
-using Core.Views.UIViews;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterSceneView : BaseScreenView
     {
-        private List<TestButtonView> _testButtonViews;
         [SerializeField] public Transform buttonsParent;
+        private List<TestButtonView> _testButtonViews;
+        
         
         private new void Awake()
         {
@@ -29,7 +28,13 @@ namespace Modules.Test.PopupsTester.Scripts
             }
         }
 
-        public void RemoveEventListeners()
+        public override void Dispose()
+        {
+            base.Dispose();
+            RemoveEventListeners();
+        }
+
+        private void RemoveEventListeners()
         {
             foreach (var testButton in _testButtonViews)
                 testButton.button.onClick.RemoveAllListeners();
