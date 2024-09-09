@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using CodeBase.Core.MVVM.View;
 using TMPro;
 using UniRx;
@@ -27,12 +28,12 @@ namespace Modules.Base.ConverterScreen.Scripts
         }
         
         public void SetupEventListeners(
-            System.Action<string> onSourceCurrencySelected,
-            System.Action<string> onTargetCurrencySelected,
-            System.Action<string> onSourceAmountChanged,
-            System.Action<string> onTargetAmountChanged,
-            System.Action<float> onScrollBarValueChanged,
-            System.Action onExitButtonClicked)
+            Action<string> onSourceCurrencySelected,
+            Action<string> onTargetCurrencySelected,
+            Action<string> onSourceAmountChanged,
+            Action<string> onTargetAmountChanged,
+            Action<float> onScrollBarValueChanged,
+            Action onExitButtonClicked)
         {
             sourceAmountInputField.OnValueChangedAsObservable()
                 .Subscribe(onSourceAmountChanged)
@@ -59,7 +60,6 @@ namespace Modules.Base.ConverterScreen.Scripts
                 .AddTo(_disposables);
         }
 
-        
         public float CurrentSourceAmount =>
             float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
 

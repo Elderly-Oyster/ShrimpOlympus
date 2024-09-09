@@ -1,4 +1,5 @@
-﻿using CodeBase.Core.MVVM.View;
+﻿using System;
+using CodeBase.Core.MVVM.View;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
+        
         protected override void Awake()
         {
             base.Awake();
@@ -21,10 +23,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
         }
 
         public void SetupEventListeners(
-            System.Action onConverterButtonClicked,
-            System.Action onTicTacButtonClicked,
-            System.Action onFirstPopupButtonClicked,
-            System.Action onSecondPopupButtonClicked)
+            Action onConverterButtonClicked,
+            Action onTicTacButtonClicked,
+            Action onFirstPopupButtonClicked,
+            Action onSecondPopupButtonClicked)
         {
             converterButton.OnClickAsObservable()
                 .Subscribe(_ => onConverterButtonClicked())

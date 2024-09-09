@@ -2,7 +2,6 @@
 using Core.MVVM;
 using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
-using VContainer;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {

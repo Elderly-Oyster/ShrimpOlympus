@@ -1,6 +1,7 @@
+using System;
 using TMPro;
+using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Modules.Base.TicTacScreen.Scripts
@@ -9,24 +10,28 @@ namespace Modules.Base.TicTacScreen.Scripts
     {
         [SerializeField] private Button cellButton;
         [SerializeField] private TMP_Text cellText;
+        
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private Action<int, int> _onCellClicked;
         private int _x, _y;
-        private UnityAction<int, int> _onCellClicked;
 
-        public void Initialize(int x, int y, UnityAction<int, int> onCellClicked)
+        
+        public void Initialize(int x, int y, Action<int, int> onCellClicked)
         {
             _x = x;
             _y = y;
             _onCellClicked = onCellClicked;
-            cellButton.onClick.AddListener(OnCellClicked);
-        }
 
-        private void OnCellClicked() => _onCellClicked.Invoke(_x, _y);
+            cellButton.OnClickAsObservable()
+                .Subscribe(_ => _onCellClicked?.Invoke(_x, _y))
+                .AddTo(_disposables);
+        }
 
         public void SetText(char text) => cellText.text = text == '\0' ? "" : text.ToString();
 
-        public void ClearEventListeners()
+        private void ClearEventListeners()
         {
-            cellButton.onClick.RemoveAllListeners();
+            _disposables.Clear();
             _onCellClicked = null;
         }
 

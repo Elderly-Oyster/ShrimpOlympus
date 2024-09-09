@@ -10,6 +10,7 @@ namespace Modules.Base.NewBaseScreen
         private readonly NewModuleScreenModel _newModuleScreenModel;
         private readonly NewModuleScreenView _newModuleScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
+
         
         public NewModuleScreenPresenter(IScreenStateMachine screenStateMachine, 
             NewModuleScreenModel newModuleScreenModel, NewModuleScreenView newModuleScreenView)
@@ -19,16 +20,24 @@ namespace Modules.Base.NewBaseScreen
             _newModuleScreenView = newModuleScreenView;
             _completionSource = new UniTaskCompletionSource<bool>();
         }
-        
+
         public async UniTask Enter(object param)
         {
             _newModuleScreenView.gameObject.SetActive(false);
-            _newModuleScreenView.SetupEventListeners
-            (
-                //Here send UnityActions(Methods from this class) to view
+            _newModuleScreenView.SetupEventListeners(
+                OnMainMenuButtonClicked
             );
             await _newModuleScreenView.Show();
         }
+        
+        private void RunNewScreen(ScreenPresenterMap screen)
+        {
+            _completionSource.TrySetResult(true);
+            _screenStateMachine.RunPresenter(screen);
+        }
+
+        private void OnMainMenuButtonClicked() => 
+            RunNewScreen(ScreenPresenterMap.MainMenu);
 
         public async UniTask Execute() => await _completionSource.Task;
 
@@ -36,15 +45,8 @@ namespace Modules.Base.NewBaseScreen
 
         public void Dispose()
         {
-            //If model is used, there must be removing event listeners of model
             _newModuleScreenView.Dispose();
             _newModuleScreenModel.Dispose();
-        }
-
-        private void RunNewScreen(ScreenPresenterMap screen)
-        {
-            _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
         }
     }
 }

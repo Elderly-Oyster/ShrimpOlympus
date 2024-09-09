@@ -1,8 +1,9 @@
-﻿using CodeBase.Core.MVVM.View;
+﻿using System;
+using CodeBase.Core.MVVM.View;
 using Core.Views.Buttons;
 using TMPro;
+using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Modules.Base.TicTacScreen.Scripts
@@ -14,6 +15,8 @@ namespace Modules.Base.TicTacScreen.Scripts
         [SerializeField] private PulsatingButton restartButton;
         [SerializeField] private CellUIView[] cellViews;
         [SerializeField] private TMP_Text winnerText;
+        
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private const int BoardSize = 3;
 
         protected override void Awake()
@@ -26,12 +29,21 @@ namespace Modules.Base.TicTacScreen.Scripts
             HideInstantly();
         }
 
-        public void SetupEventListeners(UnityAction onMainMenuButtonClicked, UnityAction<int, int> onCellClicked, 
-            UnityAction onRestartButtonClicked, UnityAction onThirdPopupButtonClicked)
+        public void SetupEventListeners(Action onMainMenuButtonClicked, Action<int, int> onCellClicked, 
+            Action onRestartButtonClicked, Action onThirdPopupButtonClicked)
         {
-            mainMenuButton.onClick.AddListener(onMainMenuButtonClicked);
-            thirdPopupButton.onClick.AddListener(onThirdPopupButtonClicked);
-            restartButton.pulsatingButton.onClick.AddListener(onRestartButtonClicked);
+            mainMenuButton.OnClickAsObservable()
+                .Subscribe(_ => onMainMenuButtonClicked())
+                .AddTo(_disposables);
+
+            thirdPopupButton.OnClickAsObservable()
+                .Subscribe(_ => onThirdPopupButtonClicked())
+                .AddTo(_disposables);
+
+            restartButton.pulsatingButton.OnClickAsObservable()
+                .Subscribe(_ => onRestartButtonClicked())
+                .AddTo(_disposables);
+
             for (int i = 0; i < BoardSize; i++)
             {
                 for (int j = 0; j < BoardSize; j++)
@@ -39,17 +51,9 @@ namespace Modules.Base.TicTacScreen.Scripts
                     int index = i * BoardSize + j;
                     cellViews[index].Initialize(i, j, onCellClicked);
                 }
-            } 
+            }
         }
-
-        public void RemoveEventListeners()
-        {
-            mainMenuButton.onClick.RemoveAllListeners();
-            restartButton.pulsatingButton.onClick.RemoveAllListeners();
-            foreach (var cellView in cellViews) 
-                cellView.ClearEventListeners();
-        }
-
+        
         public void UpdateBoard(char[,] board)
         {
             for (int i = 0; i < BoardSize; i++)
@@ -91,5 +95,13 @@ namespace Modules.Base.TicTacScreen.Scripts
         public void AnimateRestartButton() => restartButton.PlayAnimation();
 
         public void StopAnimateRestartButton() => restartButton.StopAnimation();
+        
+        public override void Dispose()
+        {
+            RemoveEventListeners();
+            base.Dispose();
+        }
+
+        private void RemoveEventListeners() => _disposables.Clear();
     }
 }

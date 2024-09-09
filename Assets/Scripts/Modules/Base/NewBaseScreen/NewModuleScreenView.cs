@@ -1,18 +1,28 @@
+using System;
 using CodeBase.Core.MVVM.View;
+using UniRx;
+using UnityEngine.UI;
+using UnityEngine;
 
 namespace Modules.Base.NewBaseScreen
 {
     public class NewModuleScreenView : BaseScreenView
     {
-        public void SetupEventListeners()
+        [SerializeField] private Button restartButton;
+        [SerializeField] private Button mainMenuButton;
+        
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        public void SetupEventListeners(Action onMainMenuButtonClicked)
         {
-            
+            mainMenuButton.OnClickAsObservable()
+                .Subscribe(_ => onMainMenuButtonClicked())
+                .AddTo(_disposables);
         }
 
-        private void RemoveEventListeners()
-        {
-            
-        }
+        public void ResetView() { }
+
+        private void RemoveEventListeners() => _disposables.Clear();
 
         public override void Dispose()
         {
