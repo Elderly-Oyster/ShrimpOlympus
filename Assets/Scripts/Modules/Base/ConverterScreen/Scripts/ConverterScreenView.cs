@@ -1,10 +1,10 @@
 ﻿using System.Globalization;
 using CodeBase.Core.MVVM.View;
-using Core.Views.UIViews;
 using TMPro;
+using UniRx;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+using static Core.UniRxExtensions.UniRxExtensions;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -17,6 +17,9 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
 
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        
         protected override void Awake()
         {
             base.Awake();
@@ -24,25 +27,38 @@ namespace Modules.Base.ConverterScreen.Scripts
         }
         
         public void SetupEventListeners(
-            UnityAction<string> onSourceCurrencySelected,
-            UnityAction<string> onTargetCurrencySelected,
-            UnityAction<string> onSourceAmountChanged,
-            UnityAction<string> onTargetAmountChanged,
-            UnityAction<float> onScrollBarValueChanged,
-            UnityAction onExitButtonClicked)
+            System.Action<string> onSourceCurrencySelected,
+            System.Action<string> onTargetCurrencySelected,
+            System.Action<string> onSourceAmountChanged,
+            System.Action<string> onTargetAmountChanged,
+            System.Action<float> onScrollBarValueChanged,
+            System.Action onExitButtonClicked)
         {
-            sourceAmountInputField.onValueChanged
-                .AddListener(onSourceAmountChanged);            
-            targetAmountInputField.onValueChanged
-                .AddListener(onTargetAmountChanged);
-            sourceCurrencyDropdown.onValueChanged
-                .AddListener(index => onSourceCurrencySelected(sourceCurrencyDropdown.options[index].text));
-            targetCurrencyDropdown.onValueChanged
-                .AddListener(index => onTargetCurrencySelected(targetCurrencyDropdown.options[index].text));
-            amountScrollBar.onValueChanged
-                .AddListener(onScrollBarValueChanged);
-            exitButton.onClick.AddListener(onExitButtonClicked);
+            sourceAmountInputField.OnValueChangedAsObservable()
+                .Subscribe(onSourceAmountChanged)
+                .AddTo(_disposables);
+        
+            targetAmountInputField.OnValueChangedAsObservable()
+                .Subscribe(onTargetAmountChanged)
+                .AddTo(_disposables);
+        
+            sourceCurrencyDropdown.OnValueChangedAsObservable()
+                .Subscribe(index => onSourceCurrencySelected(sourceCurrencyDropdown.options[index].text))
+                .AddTo(_disposables);
+        
+            targetCurrencyDropdown.OnValueChangedAsObservable()
+                .Subscribe(index => onTargetCurrencySelected(targetCurrencyDropdown.options[index].text))
+                .AddTo(_disposables);
+        
+            amountScrollBar.OnValueChangedAsObservable()
+                .Subscribe(onScrollBarValueChanged)
+                .AddTo(_disposables);
+        
+            exitButton.OnClickAsObservable()
+                .Subscribe(_ => onExitButtonClicked())
+                .AddTo(_disposables);
         }
+
         
         public float CurrentSourceAmount =>
             float.TryParse(sourceAmountInputField.text, out var r) ? r : 0f;
@@ -52,19 +68,13 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public void UpdateTargetText(float amount) =>
             targetAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
-
-        public void RemoveEventListeners()
-        {
-            sourceAmountInputField.onValueChanged.RemoveAllListeners();
-            sourceCurrencyDropdown.onValueChanged.RemoveAllListeners();
-            targetCurrencyDropdown.onValueChanged.RemoveAllListeners();
-            amountScrollBar.onValueChanged.RemoveAllListeners();
-        }
         
         public override void Dispose()
         {
             RemoveEventListeners();
             base.Dispose();
         }
+
+        private void RemoveEventListeners() => _disposables.Clear();
     }
 }
