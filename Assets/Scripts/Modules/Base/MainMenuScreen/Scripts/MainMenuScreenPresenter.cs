@@ -25,7 +25,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _mainMenuScreenView.gameObject.SetActive(false);
+            _mainMenuScreenView.HideInstantly();
             _mainMenuScreenView.SetupEventListeners
             (
                 OnConverterButtonClicked,

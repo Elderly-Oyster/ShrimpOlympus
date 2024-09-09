@@ -34,7 +34,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         public async UniTask Enter(object param)
         {
             SetApplicationFrameRate();
-            _startGameScreenView.gameObject.SetActive(false);
+            _startGameScreenView.HideInstantly();
             _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
             
             SetVersionText(GetAppVersion());

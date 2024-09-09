@@ -71,9 +71,9 @@
   },
   &quot;keyToStringList&quot;: {
     &quot;rider.external.source.directories&quot;: [
-      &quot;/Users/ilyapospelov/Library/Application Support/JetBrains/Rider2024.1/resharper-host/DecompilerCache&quot;,
-      &quot;/Users/ilyapospelov/Library/Application Support/JetBrains/Rider2024.1/resharper-host/SourcesCache&quot;,
-      &quot;/Users/ilyapospelov/Library/Application Support/Symbols/src&quot;
+      &quot;C:\\Users\\user\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\user\\AppData\\Roaming\\JetBrains\\Rider2024.1\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\user\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
 }</component>
@@ -87,7 +87,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.22f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.20f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\[MY]    Repositories\ShrimpOlympus&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\[MY]    Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -95,7 +95,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.22f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.20f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\[MY]    Repositories\ShrimpOlympus&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\[MY]    Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -171,6 +171,7 @@
       <workItem from="1724359952034" duration="16809000" />
       <workItem from="1724696294157" duration="2791000" />
       <workItem from="1724706477084" duration="10007000" />
+      <workItem from="1725890670176" duration="50000" />
     </task>
     <servers />
   </component>

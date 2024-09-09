@@ -28,7 +28,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _converterScreenView.gameObject.SetActive(false);
+            _converterScreenView.HideInstantly();
             _converterScreenView.SetupEventListeners
             (
                 DetermineSourceCurrency,
