@@ -1,6 +1,7 @@
 using Core;
 using UnityEngine;
-using UnityEngine.Events;
+using System;
+using UniRx;
 using VContainer;
 using VContainer.Unity;
 
@@ -19,12 +20,16 @@ namespace Modules.Test.PopupsTester.Scripts
                 .AsSelf();
             builder.Register<PopupsTesterSceneModel>(Lifetime.Singleton);
             
-            builder.RegisterFactory<UnityAction, TestButtonView>(action =>
+            builder.RegisterFactory<Action, TestButtonView>(action =>
             {
                 var testButton = Instantiate(buttonPrefab, popupsTesterSceneView.buttonsParent);
                 testButton.gameObject.SetActive(true);
                 testButton.label.text = action.Method.Name;
-                testButton.button.onClick.AddListener(action);
+
+                testButton.button.OnClickAsObservable()
+                    .Subscribe(_ => action.Invoke())
+                    .AddTo(testButton); 
+
                 return testButton;
             });
         }

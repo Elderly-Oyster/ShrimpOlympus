@@ -15,7 +15,8 @@ namespace Modules.Test.PopupsTester.Scripts
         public virtual async UniTask Show()
         {
             gameObject.SetActive(true);
-            if (animationElement != null) await animationElement.Show();
+            if (animationElement != null)
+                await animationElement.Show();
         }
 
         public virtual async UniTask Hide()

@@ -1,19 +1,19 @@
 using Core.Popup.Base;
-using UnityEngine.Events;
+using System;
 using VContainer;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterSceneModel
     {
-        private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
-        private readonly UnityAction[] _popupActions;
+        private readonly Func<Action, TestButtonView> _buttonFactory;
+        private readonly Action[] _popupActions;
 
         [Inject] public PopupsTesterSceneModel(PopupHub popupHub)
         {
             var popupHub1 = popupHub;
 
-            _popupActions = new UnityAction[]
+            _popupActions = new Action[]
             {
                 popupHub1.OpenFirstPopup,
                 popupHub1.OpenSecondPopup,
@@ -21,6 +21,6 @@ namespace Modules.Test.PopupsTester.Scripts
             };
         }
 
-        public UnityAction[] GetPopupHubActions() => _popupActions;
+        public Action[] GetPopupHubActions() => _popupActions;
     }
 }

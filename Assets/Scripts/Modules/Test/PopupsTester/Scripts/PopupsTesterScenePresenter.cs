@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Core;
-using UnityEngine.Events;
 using VContainer.Unity;
 
 namespace Modules.Test.PopupsTester.Scripts
@@ -10,9 +10,9 @@ namespace Modules.Test.PopupsTester.Scripts
     {
         private readonly PopupsTesterSceneView _popupsTesterSceneView;
         private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
-        private readonly System.Func<UnityAction, TestButtonView> _buttonFactory;
+        private readonly Func<Action, TestButtonView> _buttonFactory;
 
-        public PopupsTesterScenePresenter( System.Func<UnityAction, TestButtonView> buttonFactory,
+        public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
         {
             _popupsTesterSceneView = popupsTesterSceneView;
@@ -41,7 +41,7 @@ namespace Modules.Test.PopupsTester.Scripts
         
         private async UniTask HideScreenView() => await _popupsTesterSceneView.Hide();
 
-        private void CreateButton(UnityAction action)
+        private void CreateButton(Action action)
         {
             var button = _buttonFactory(action);
             _buttons.Add(button);
