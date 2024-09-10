@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Core;
 using Core.EventMediatorSystem;
+using UniRx;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -10,9 +11,11 @@ namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterScenePresenter : ISmartPresenter, IStartable
     {
-        private readonly PopupsTesterSceneView _popupsTesterSceneView;
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
+        private readonly PopupsTesterSceneView _popupsTesterSceneView;
         private readonly Func<Action, TestButtonView> _buttonFactory;
+        private readonly EventMediator _eventMediator;
 
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
@@ -20,14 +23,13 @@ namespace Modules.Test.PopupsTester.Scripts
             _popupsTesterSceneView = popupsTesterSceneView;
             _popupsTesterSceneModel = popupsTesterSceneModel;
             _buttonFactory = buttonFactory;
-
-            eventMediator.Subscribe<PopupOpenedEvent>(OnPopupOpened);
+            _eventMediator = eventMediator;
         }
         
         private readonly List<TestButtonView> _buttons = new();
         
         public void Start() => Run(null).Forget();
-        
+
         public async UniTask Run(object param)
         {
             var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
@@ -35,6 +37,10 @@ namespace Modules.Test.PopupsTester.Scripts
                 CreateButton(action);
             
             Initialize();
+
+            _eventMediator.OnPopupOpenedAsObservable()
+                .Subscribe(OnPopupOpened)
+                .AddTo(_disposables);
 
             await ShowView();
         }
@@ -53,7 +59,11 @@ namespace Modules.Test.PopupsTester.Scripts
             var button = _buttonFactory(action);
             _buttons.Add(button);
         }
-        
-        public async UniTask Stop() => await HideScreenView();
+
+        public async UniTask Stop()
+        {
+            _disposables.Dispose();  
+            await HideScreenView();
+        }
     }
 }

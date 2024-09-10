@@ -1,27 +1,21 @@
+using UniRx;
 using System;
 
 namespace Core.EventMediatorSystem
 {
     public class EventMediator
     {
-        public event Action<PopupOpenedEvent> OnPopupOpened;
+        private readonly Subject<PopupOpenedEvent> _popupOpenedSubject = new Subject<PopupOpenedEvent>();
 
         public void Publish<T>(T eventArgs) where T : class
         {
             if (eventArgs is PopupOpenedEvent popupOpenedEvent) 
-                OnPopupOpened?.Invoke(popupOpenedEvent);
+                _popupOpenedSubject.OnNext(popupOpenedEvent);
         }
 
-        public void Subscribe<T>(Action<T> action) where T : class
-        {
-            if (typeof(T) == typeof(PopupOpenedEvent)) 
-                OnPopupOpened += action as Action<PopupOpenedEvent>;
-        }
+        public IObservable<PopupOpenedEvent> OnPopupOpenedAsObservable() => 
+            _popupOpenedSubject.AsObservable();
 
-        public void Unsubscribe<T>(Action<T> action) where T : class
-        {
-            if (typeof(T) == typeof(PopupOpenedEvent)) 
-                OnPopupOpened -= action as Action<PopupOpenedEvent>;
-        }
+        public void Complete() => _popupOpenedSubject.OnCompleted();
     }
 }
