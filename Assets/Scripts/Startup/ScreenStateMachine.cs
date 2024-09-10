@@ -21,7 +21,7 @@ namespace Startup
         // SemaphoreSlim to ensure only one thread can execute the RunPresenter method at a time
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         public event Action<IObjectResolver> ModuleChanged;
-        public IScreenPresenter CurrentPresenter { get; private set; } //TODO Вот эта сущность главная
+        public IScreenPresenter CurrentPresenter { get; private set; } 
 
         public void Start()
         {

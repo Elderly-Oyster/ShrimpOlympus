@@ -26,11 +26,7 @@ namespace Startup
             };
         }
 
-        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver)
-        {
-            Debug.Log(objectResolver);
-            Debug.Log(screenPresenterMap);
-            return (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
-        }
+        public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) => 
+            (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
     }
 }

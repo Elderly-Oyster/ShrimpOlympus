@@ -21,6 +21,8 @@ namespace Startup
 
         private void RegisterServices(IContainerBuilder builder)
         {
+            RegisterLongInitializationService(builder);
+            
             builder.Register<EventMediator>(Lifetime.Singleton).AsSelf();
 
             builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>()
@@ -28,12 +30,15 @@ namespace Startup
             builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
                 .AsSelf();
             
+            builder.Register<SceneService>(Lifetime.Singleton);
+            builder.Register<SceneInstallerService>(Lifetime.Singleton);
+        }
+
+        private void RegisterLongInitializationService(IContainerBuilder builder)
+        {
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
             builder.Register<ThirdLongInitializationService>(Lifetime.Singleton);
-            
-            builder.Register<SceneService>(Lifetime.Singleton);
-            builder.Register<SceneInstallerService>(Lifetime.Singleton);
         }
     }
 }

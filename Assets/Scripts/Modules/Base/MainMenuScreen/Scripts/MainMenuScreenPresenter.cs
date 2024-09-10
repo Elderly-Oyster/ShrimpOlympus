@@ -15,8 +15,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly PopupHub _popupHub;
 
-        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, EventMediator eventMediator,
-            MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView, PopupHub popupHub)
+        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, PopupHub popupHub,
+            MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView)
         {
             _mainMenuScreenModel = mainMenuScreenModel;
             _screenStateMachine = screenStateMachine;

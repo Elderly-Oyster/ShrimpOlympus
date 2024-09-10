@@ -15,7 +15,9 @@ namespace Modules.Test.PopupsTester.Scripts
         private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
         private readonly PopupsTesterSceneView _popupsTesterSceneView;
         private readonly Func<Action, TestButtonView> _buttonFactory;
+        private readonly List<TestButtonView> _buttons = new();
         private readonly EventMediator _eventMediator;
+        
 
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
@@ -25,8 +27,6 @@ namespace Modules.Test.PopupsTester.Scripts
             _buttonFactory = buttonFactory;
             _eventMediator = eventMediator;
         }
-        
-        private readonly List<TestButtonView> _buttons = new();
         
         public void Start() => Run(null).Forget();
 
