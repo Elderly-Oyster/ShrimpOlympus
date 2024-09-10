@@ -1,23 +1,25 @@
 ﻿using Core;
+using Core.EventMediatorSystem;
 using Core.MVVM;
 using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenPresenter : IScreenPresenter
     {
-        private readonly IScreenStateMachine _screenStateMachine;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly MainMenuScreenModel _mainMenuScreenModel;
+        private readonly IScreenStateMachine _screenStateMachine;
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly PopupHub _popupHub;
-        private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine,
+        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, EventMediator eventMediator,
             MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView, PopupHub popupHub)
         {
-            _screenStateMachine = screenStateMachine;
             _mainMenuScreenModel = mainMenuScreenModel;
+            _screenStateMachine = screenStateMachine;
             _mainMenuScreenView = mainMenuScreenView;
             _popupHub = popupHub;
             _completionSource = new UniTaskCompletionSource<bool>();

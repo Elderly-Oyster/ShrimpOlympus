@@ -1,3 +1,4 @@
+using Core.EventMediatorSystem;
 using Services;
 using Services.LongInitializationServices;
 using VContainer;
@@ -20,9 +21,10 @@ namespace Startup
 
         private void RegisterServices(IContainerBuilder builder)
         {
+            builder.Register<EventMediator>(Lifetime.Singleton).AsSelf();
+
             builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>()
                 .AsSelf();
-            
             builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
                 .AsSelf();
             
