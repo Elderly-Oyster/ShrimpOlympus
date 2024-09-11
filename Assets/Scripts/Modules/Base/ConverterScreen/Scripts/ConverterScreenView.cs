@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 using TMPro;
 using UniRx;
 using UnityEngine;

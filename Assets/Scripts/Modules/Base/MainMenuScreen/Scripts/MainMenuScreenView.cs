@@ -1,5 +1,5 @@
 ﻿using System;
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 using Core.UniRx;
 using UniRx;
 using UnityEngine;

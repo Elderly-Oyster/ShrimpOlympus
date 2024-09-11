@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 
 namespace Modules.Test.PopupsTester.Scripts
