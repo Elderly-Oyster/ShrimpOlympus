@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading;
-using CodeBase.Core.MVVM.View;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -122,6 +122,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         public override UniTask Show()
         {
+            base.Show();
             SetActive(true);
             ResetProgressBar();
             return UniTask.CompletedTask;
