@@ -1,5 +1,6 @@
 ﻿using System;
 using CodeBase.Core.MVVM.View;
+using Core.UniRx;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -12,8 +13,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
-        
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        private readonly DisposableEntity _disposableEntity = new DisposableEntity();
 
         
         protected override void Awake()
@@ -30,22 +31,22 @@ namespace Modules.Base.MainMenuScreen.Scripts
         {
             converterButton.OnClickAsObservable()
                 .Subscribe(_ => onConverterButtonClicked())
-                .AddTo(_disposables);
+                .AddTo(_disposableEntity);
 
             ticTacButton.OnClickAsObservable()
                 .Subscribe(_ => onTicTacButtonClicked())
-                .AddTo(_disposables);
-            
+                .AddTo(_disposableEntity);
+
             firstPopupButton.OnClickAsObservable()
                 .Subscribe(_ => onFirstPopupButtonClicked())
-                .AddTo(_disposables);
+                .AddTo(_disposableEntity);
 
             secondPopupButton.OnClickAsObservable()
                 .Subscribe(_ => onSecondPopupButtonClicked())
-                .AddTo(_disposables);
+                .AddTo(_disposableEntity);
         }
 
-        private void RemoveEventListeners() => _disposables.Clear();
+        private void RemoveEventListeners() => _disposableEntity.Dispose();
 
         public override void Dispose()
         {

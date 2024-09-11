@@ -3,7 +3,7 @@ using TMPro;
 using UniRx;
 using UnityEngine.Events;
 
-namespace Core.UniRxExtensions
+namespace Core.UniRx
 {
     public static class UniRxExtensions
     {

@@ -5,7 +5,7 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using static Core.UniRxExtensions.UniRxExtensions;
+using static Core.UniRx.UniRxExtensions;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
