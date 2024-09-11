@@ -367,7 +367,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1141731889776401104, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
   m_PrefabInstance: {fileID: 8485262377920194197}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8485262377920194199}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2afdae4195a74d91b0a1c3e0b095af8c, type: 3}
@@ -387,7 +387,7 @@ PrefabInstance:
       objectReference: {fileID: 8485262377920194198}
     - target: {fileID: 2423300587383462799, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2423300587383462799, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
@@ -484,38 +484,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3188841569138021983, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8485262377920194200}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
 --- !u!225 &8485262377920194198 stripped
 CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 6781735954023091426, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
   m_PrefabInstance: {fileID: 8485262377920194197}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8485262377920194199 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3188841569138021983, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
-  m_PrefabInstance: {fileID: 8485262377920194197}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8485262377920194200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8485262377920194199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

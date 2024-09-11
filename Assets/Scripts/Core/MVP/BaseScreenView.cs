@@ -22,19 +22,18 @@ namespace Core.MVP
         public virtual async UniTask Show()
         {
             SetActive(true);
-            _canvas.enabled = true;
             if (animationElement != null) await animationElement.Show();
         }
 
         public virtual async UniTask Hide()
         {
             if (animationElement != null) await animationElement.Hide();
-            gameObject.SetActive(false);
-            _canvas.enabled = false;
+            SetActive(false);
         }
         
         protected void SetActive(bool isActive)
         {
+            _canvas.enabled = isActive;
             _canvasGroup.alpha = isActive ? 1 : 0;
             _canvasGroup.blocksRaycasts = isActive;
             _canvasGroup.interactable = isActive;

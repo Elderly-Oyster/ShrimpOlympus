@@ -1354,7 +1354,7 @@ Canvas:
   m_RenderMode: 0
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -1776,12 +1776,12 @@ GameObject:
   m_Component:
   - component: {fileID: 2097883542}
   - component: {fileID: 2097883546}
-  - component: {fileID: 2097883545}
+  - component: {fileID: 2097883548}
   - component: {fileID: 2097883544}
+  - component: {fileID: 2097883549}
+  - component: {fileID: 2097883545}
   - component: {fileID: 2097883543}
   - component: {fileID: 2097883547}
-  - component: {fileID: 2097883548}
-  - component: {fileID: 2097883549}
   m_Layer: 5
   m_Name: StartGameUIView
   m_TagString: Untagged
@@ -1924,7 +1924,7 @@ Canvas:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2097883541}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
   m_Camera: {fileID: 0}

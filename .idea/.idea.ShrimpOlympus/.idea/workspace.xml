@@ -5,17 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9143e35f-18f0-4df4-8133-90c6f401275f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ShrimpOlympus/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/Converter.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Converter.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainMenu.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PopupTest.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PopupTest.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/StartGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/StartGame.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/TicTac.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/TicTac.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/MVP/BaseScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/MVP/BaseScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/Scripts/ConverterScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/Scripts/MainMenuScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/NewBaseScreen/NewModuleScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/StartGameScreen/Scripts/StartGameScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/Scripts/TicTacScreenView.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Test/PopupsTester/Scripts/PopupsTesterSceneView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Test/PopupsTester/Scripts/PopupsTesterSceneView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Base/BasePopup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Base/BasePopup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Types/FirstPopup/Prefab/FirstPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Types/FirstPopup/Prefab/FirstPopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Types/SecondPopup/Prefab/SecondPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Types/SecondPopup/Prefab/SecondPopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Types/ThirdPopup/Prefab/ThirdPopup.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Core/Popup/Types/ThirdPopup/Prefab/ThirdPopup.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/View/ConverterView.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/ConverterScreen/View/ConverterView.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/View/MainMenuScreen.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/MainMenuScreen/View/MainMenuScreen.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/View/TicTacUIView.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Modules/Base/TicTacScreen/View/TicTacUIView.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectVersion.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,9 +87,9 @@
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "/Users/ilyapospelov/Library/Application Support/JetBrains/Rider2024.1/resharper-host/DecompilerCache",
-      "/Users/ilyapospelov/Library/Application Support/JetBrains/Rider2024.1/resharper-host/SourcesCache",
-      "/Users/ilyapospelov/Library/Application Support/Symbols/src"
+      "C:\\Users\\Puvel\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Puvel\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\Puvel\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
@@ -99,7 +103,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.22f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.20f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\[MY]    Repositories\ShrimpOlympus&quot; -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\[MY]    Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -107,7 +111,7 @@
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="/Applications/Unity/Hub/Editor/2022.3.22f1/Unity.app/Contents/MacOS/Unity" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2022.3.20f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\[MY]    Repositories\ShrimpOlympus&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\[MY]    Repositories\ShrimpOlympus" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -184,6 +188,7 @@
       <workItem from="1724696294157" duration="2791000" />
       <workItem from="1724706477084" duration="10007000" />
       <workItem from="1725876568465" duration="2617000" />
+      <workItem from="1726079866453" duration="2844000" />
     </task>
     <servers />
   </component>

@@ -9,6 +9,7 @@ using VContainer;
 
 namespace Core.Popup.Base
 {
+    [RequireComponent(typeof(Canvas))]
     public class BasePopup : MonoBehaviour
     {
         [Inject][HideInInspector] public PopupRootCanvas rootCanvas;
@@ -26,12 +27,14 @@ namespace Core.Popup.Base
         [SerializeField] protected PopupPriority priority = PopupPriority.Medium;
         public PopupPriority Priority => priority;
 
+        private Canvas _canvas;
         private bool _isClosed;
         private TaskCompletionSource<bool> _tcs;
 
-        protected new virtual void Awake()
+        protected virtual void Awake()
         {
             gameObject.SetActive(false);
+            _canvas = GetComponent<Canvas>();
      
             if (closeButton != null)
                 closeButton.onClick.AddListener(() => Close().Forget());
@@ -54,7 +57,7 @@ namespace Core.Popup.Base
 
         public virtual UniTask Open<T>(T param)
         {
-            gameObject.SetActive(true);
+            SetActive(true);
 
             return animationElement.Show();
         }
@@ -76,6 +79,12 @@ namespace Core.Popup.Base
                 Destroy(gameObject);
                 PopupHub.NotifyPopupClosed(); 
             }
+        }
+        
+        protected void SetActive(bool isActive)
+        {
+            _canvas.enabled = isActive;
+            gameObject.SetActive(isActive);
         }
         
         public Task<bool> WaitForCompletion() => tcs.Task;
