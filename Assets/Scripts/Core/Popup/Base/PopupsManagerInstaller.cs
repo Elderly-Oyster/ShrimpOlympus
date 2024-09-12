@@ -11,13 +11,13 @@ namespace Core.Popup.Base
 {
     public class PopupsManagerInstaller : SceneInstaller
     {
-        [SerializeField] private PopupRootCanvas popupRootCanvas;
+        [SerializeField] private PopupCanvas popupCanvas;
         [SerializeField] private FirstPopup firstPopupPrefab;
         [SerializeField] private SecondPopup secondPopup;
         [SerializeField] private ThirdPopup thirdPopup;
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterComponent(popupRootCanvas);
+            builder.RegisterComponent(popupCanvas);
 
             builder.Register<EventMediator>(Lifetime.Singleton);
 

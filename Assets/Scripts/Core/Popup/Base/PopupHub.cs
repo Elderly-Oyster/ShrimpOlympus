@@ -16,7 +16,7 @@ namespace Core.Popup.Base
     {
         [NonSerialized] public BasePopup CurrentPopup;
 
-        [Inject] private PopupRootCanvas _rootCanvas;
+        [Inject] private PopupCanvas _canvas;
 
         [Inject] private IBasePopupFactory<FirstPopup> _firstPopupFactory;
         [Inject] private IBasePopupFactory<SecondPopup> _secondPopupFactory;
@@ -29,13 +29,13 @@ namespace Core.Popup.Base
 
         private void CreateAndOpenPopup(IFactory<Transform, BasePopup> basePopupFactory)
         {
-            var popup = basePopupFactory.Create(_rootCanvas.PopupParent);
+            var popup = basePopupFactory.Create(_canvas.PopupParent);
             EnqueuePopup(popup);
         }
 
         private void CreateAndOpenPopup<T>(IFactory<Transform, BasePopup> basePopupFactory, T param)
         {
-            var popup = basePopupFactory.Create(_rootCanvas.PopupParent);
+            var popup = basePopupFactory.Create(_canvas.PopupParent);
             EnqueuePopup(popup, param);
         }
 

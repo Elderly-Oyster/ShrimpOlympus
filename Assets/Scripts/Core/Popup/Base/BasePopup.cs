@@ -9,10 +9,9 @@ using VContainer;
 
 namespace Core.Popup.Base
 {
-    [RequireComponent(typeof(Canvas))]
     public class BasePopup : MonoBehaviour
     {
-        [Inject][HideInInspector] public PopupRootCanvas rootCanvas;
+        [Inject][HideInInspector] public PopupCanvas canvas;
         //[Inject] protected ISoundService soundService;
         [Inject] protected PopupHub PopupHub;
         
@@ -22,19 +21,17 @@ namespace Core.Popup.Base
         
         public Button closeButton;
         
-        private TaskCompletionSource<bool> tcs => _tcs ??= new TaskCompletionSource<bool>();
+        private TaskCompletionSource<bool> Tcs => _tcs ??= new TaskCompletionSource<bool>();
 
         [SerializeField] protected PopupPriority priority = PopupPriority.Medium;
         public PopupPriority Priority => priority;
 
-        private Canvas _canvas;
         private bool _isClosed;
         private TaskCompletionSource<bool> _tcs;
 
         protected virtual void Awake()
         {
             gameObject.SetActive(false);
-            _canvas = GetComponent<Canvas>();
      
             if (closeButton != null)
                 closeButton.onClick.AddListener(() => Close().Forget());
@@ -57,7 +54,7 @@ namespace Core.Popup.Base
 
         public virtual UniTask Open<T>(T param)
         {
-            SetActive(true);
+            gameObject.SetActive(true);
 
             return animationElement.Show();
         }
@@ -75,19 +72,13 @@ namespace Core.Popup.Base
             }
             finally
             {
-                tcs?.TrySetResult(true);
+                Tcs?.TrySetResult(true);
                 Destroy(gameObject);
                 PopupHub.NotifyPopupClosed(); 
             }
         }
         
-        protected void SetActive(bool isActive)
-        {
-            _canvas.enabled = isActive;
-            gameObject.SetActive(isActive);
-        }
-        
-        public Task<bool> WaitForCompletion() => tcs.Task;
+        public Task<bool> WaitForCompletion() => Tcs.Task;
 
         private void OnDestroy() => _isClosed = true;
     }

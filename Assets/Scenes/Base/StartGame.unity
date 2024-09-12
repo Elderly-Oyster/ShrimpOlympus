@@ -848,7 +848,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToDelete: []
   startGameScreenView: {fileID: 2097883545}
-  rootCanvas: {fileID: 1609517733}
+  screensCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
 --- !u!1 &1381388253
 GameObject:
@@ -1295,7 +1295,7 @@ GameObject:
   - component: {fileID: 1609517735}
   - component: {fileID: 1609517733}
   m_Layer: 5
-  m_Name: RootCanvas
+  m_Name: ScreenCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1314,10 +1314,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasScaler: {fileID: 0}
-  contentParent: {fileID: 0}
-  popupParent: {fileID: 0}
-  rewardParent: {fileID: 0}
-  notificationParent: {fileID: 0}
   uiCamera: {fileID: 0}
 --- !u!114 &1609517735
 MonoBehaviour:

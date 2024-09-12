@@ -9,12 +9,12 @@ namespace Modules.Base.ConverterScreen.Scripts
     public class ConverterScreenInstaller : SceneInstaller
     {
         [SerializeField] private ConverterScreenView converterScreenView;
-        [SerializeField] private RootCanvas rootCanvas;
+        [SerializeField] private ScreensCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterComponent(rootCanvas);
+            builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
             builder.RegisterInstance(converterScreenView).As<ConverterScreenView>();

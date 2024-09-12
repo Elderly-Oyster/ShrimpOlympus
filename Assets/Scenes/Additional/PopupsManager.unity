@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 9784017}
   - component: {fileID: 9784021}
   m_Layer: 5
-  m_Name: PopupRootCanvas
+  m_Name: PopupCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -238,11 +238,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasScaler: {fileID: 9784018}
-  contentParent: {fileID: 0}
+  uiCamera: {fileID: 1651321772}
   popupParent: {fileID: 9784020}
-  rewardParent: {fileID: 0}
-  notificationParent: {fileID: 0}
-  uiCamera: {fileID: 0}
 --- !u!1 &921238152
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,7 +271,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectsToDelete:
   - {fileID: 1651321770}
-  popupRootCanvas: {fileID: 9784021}
+  popupCanvas: {fileID: 9784021}
   firstPopupPrefab: {fileID: 1803823270298938150, guid: 79ebeff0743ce3042bab5430d2d14089, type: 3}
   secondPopup: {fileID: 5518397903346506616, guid: 79ae47d08eef4c1f9e6b46b222a1d4e8, type: 3}
   thirdPopup: {fileID: 846265134927218408, guid: 94043e3fef5fc9246bc8e75d9b024d28, type: 3}

@@ -10,12 +10,12 @@ namespace Modules.Base.MainMenuScreen.Scripts
     public class MainMenuScreenInstaller : SceneInstaller
     {
         [SerializeField] private MainMenuScreenView mainMenuScreenView;
-        [SerializeField] private RootCanvas rootCanvas;
+        [SerializeField] private ScreensCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterComponent(rootCanvas);
+            builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
             builder.RegisterInstance(mainMenuScreenView).As<MainMenuScreenView>();
