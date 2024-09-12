@@ -32,7 +32,6 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
         
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private Sequence _sequence;
         
         private const string TapToContinueText = "Tap to continue";
@@ -43,11 +42,13 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private void Start() => splashTooltipsText.transform.parent.gameObject.SetActive(true);
 
-        public void SetupEventListeners(Action onStartButtonClicked) =>
+        public void SetupEventListeners(ReactiveCommand startCommand)
+        {
             continueButton.OnClickAsObservable()
-                .Subscribe(_ => onStartButtonClicked())
-                .AddTo(_disposables);
-        
+                .Subscribe(_ => startCommand.Execute())
+                .AddTo(this);
+        }
+
         public void SetVersionText(string version) => versionText.text = version;
 
         public UniTask ReportProgress(float expProgress, string progressStatus)
@@ -130,12 +131,10 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         public override void Dispose()
         {
-            RemoveEventListeners();
             StopAnimation();
             base.Dispose();
         }
         
-        private void RemoveEventListeners() => _disposables.Clear();
 
         private void StopAnimation()
         {

@@ -4,38 +4,51 @@ using System.Threading.Tasks;
 using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
+using UniRx;
 using UnityEngine;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IScreenPresenter
     {
-        private readonly IScreenStateMachine _screenStateMachine;
-        private readonly StartGameScreenView _startGameScreenView;
-        private readonly StartGameScreenModel _startGameScreenModel;
-        private readonly UniTaskCompletionSource<bool> _completionSource;
-        
         private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private const int TooltipDelay = 3000;
+        private readonly UniTaskCompletionSource<bool> _completionSource;
+        private readonly StartGameScreenModel _startGameScreenModel;
+        private readonly StartGameScreenView _startGameScreenView;
+        private readonly IScreenStateMachine _screenStateMachine;
+        
+        private ReactiveCommand _startCommand;
+
         private float exponentialProgress { get; set; }
         private string progressStatus { get; set; }
-        private static string _appVersion;
+        private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
+        private static string _appVersion;
 
-        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine, StartGameScreenModel gameScreenModel,
-            StartGameScreenView startGameScreenView)
+        
+        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
+            StartGameScreenModel gameScreenModel, StartGameScreenView startGameScreenView)
         {
             _screenStateMachine = screenStateMachine;
             _startGameScreenModel = gameScreenModel;
             _startGameScreenView = startGameScreenView;
             _completionSource = new UniTaskCompletionSource<bool>();
+            
+            InitializeCommands();
+            SubscribeToCommands();
         }
+        
+        private void InitializeCommands() => 
+            _startCommand = new ReactiveCommand();
+
+        private void SubscribeToCommands() => 
+            _startCommand.Subscribe(_ => OnContinueButtonPressed());
 
         public async UniTask Enter(object param)
         {
             SetApplicationFrameRate();
             _startGameScreenView.HideInstantly();
-            _startGameScreenView.SetupEventListeners(OnContinueButtonPressed);
+            _startGameScreenView.SetupEventListeners(_startCommand);
             
             SetVersionText(GetAppVersion());
             ShowTooltips().Forget();
