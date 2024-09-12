@@ -1,6 +1,4 @@
-﻿using System;
-using Core.MVP;
-using Core.UniRx;
+﻿using Core.MVP;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,8 +12,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
 
-        private readonly DisposableEntity _disposableEntity = new DisposableEntity();
-
         
         protected override void Awake()
         {
@@ -24,34 +20,26 @@ namespace Modules.Base.MainMenuScreen.Scripts
         }
 
         public void SetupEventListeners(
-            Action onConverterButtonClicked,
-            Action onTicTacButtonClicked,
-            Action onFirstPopupButtonClicked,
-            Action onSecondPopupButtonClicked)
+            ReactiveCommand converterCommand,
+            ReactiveCommand ticTacCommand,
+            ReactiveCommand firstPopupCommand,
+            ReactiveCommand secondPopupCommand)
         {
             converterButton.OnClickAsObservable()
-                .Subscribe(_ => onConverterButtonClicked())
-                .AddTo(_disposableEntity);
+                .Subscribe(_ => converterCommand.Execute())
+                .AddTo(this);
 
             ticTacButton.OnClickAsObservable()
-                .Subscribe(_ => onTicTacButtonClicked())
-                .AddTo(_disposableEntity);
+                .Subscribe(_ => ticTacCommand.Execute())
+                .AddTo(this);
 
             firstPopupButton.OnClickAsObservable()
-                .Subscribe(_ => onFirstPopupButtonClicked())
-                .AddTo(_disposableEntity);
+                .Subscribe(_ => firstPopupCommand.Execute())
+                .AddTo(this);
 
             secondPopupButton.OnClickAsObservable()
-                .Subscribe(_ => onSecondPopupButtonClicked())
-                .AddTo(_disposableEntity);
-        }
-
-        private void RemoveEventListeners() => _disposableEntity.Dispose();
-
-        public override void Dispose()
-        {
-            RemoveEventListeners();
-            base.Dispose();
+                .Subscribe(_ => secondPopupCommand.Execute())
+                .AddTo(this);
         }
     }
 }
