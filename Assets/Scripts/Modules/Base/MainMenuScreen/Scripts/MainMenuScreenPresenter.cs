@@ -1,9 +1,8 @@
 ﻿using Core;
-using Core.EventMediatorSystem;
 using Core.MVVM;
 using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
-using UnityEngine;
+using UniRx;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
@@ -15,26 +14,53 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly PopupHub _popupHub;
 
+        private ReactiveCommand _secondPopupCommand;
+        private ReactiveCommand _firstPopupCommand;
+        private ReactiveCommand _converterCommand;
+        private ReactiveCommand _ticTacCommand;
+
+        
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, PopupHub popupHub,
             MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView)
         {
+            _completionSource = new UniTaskCompletionSource<bool>();
+
             _mainMenuScreenModel = mainMenuScreenModel;
             _screenStateMachine = screenStateMachine;
             _mainMenuScreenView = mainMenuScreenView;
             _popupHub = popupHub;
-            _completionSource = new UniTaskCompletionSource<bool>();
+
+            InitializeCommands();
+            SubscribeToCommands();
         }
 
+        private void InitializeCommands()
+        {
+            _ticTacCommand = new ReactiveCommand();
+            _converterCommand = new ReactiveCommand();
+            _firstPopupCommand = new ReactiveCommand();
+            _secondPopupCommand = new ReactiveCommand();
+        }
+
+        private void SubscribeToCommands()
+        {
+            _converterCommand.Subscribe(_ => OnConverterButtonClicked());
+            _ticTacCommand.Subscribe(_ => OnTicTacButtonClicked());
+            _firstPopupCommand.Subscribe(_ => OnFirstPopupButtonClicked());
+            _secondPopupCommand.Subscribe(_ => OnSecondPopupButtonClicked());
+        }
+        
         public async UniTask Enter(object param)
         {
             _mainMenuScreenView.HideInstantly();
-            _mainMenuScreenView.SetupEventListeners
-            (
-                OnConverterButtonClicked,
-                OnTicTacButtonClicked,
-                OnFirstPopupButtonClicked,
-                OnSecondPopupButtonClicked
+
+            _mainMenuScreenView.SetupEventListeners(
+                _converterCommand,
+                _ticTacCommand,
+                _firstPopupCommand,
+                _secondPopupCommand
             );
+
             await _mainMenuScreenView.Show();
         }
 
