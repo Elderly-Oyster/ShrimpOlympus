@@ -2,7 +2,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace CodeBase.Core.UI.Views.Animations
+namespace Core.Views.UIViews.Animations
 {
     public abstract class BaseAnimationElement : MonoBehaviour, IAnimationElement
     {
@@ -11,9 +11,6 @@ namespace CodeBase.Core.UI.Views.Animations
         public abstract UniTask Show();
         public abstract UniTask Hide();
         
-        private void OnDisable()
-        {
-            Sequence.Kill();
-        }
+        private void OnDisable() => Sequence.Kill();
     }
 }

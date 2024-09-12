@@ -1,6 +1,6 @@
 using Cysharp.Threading.Tasks;
 
-namespace CodeBase.Core.UI.Views.Animations
+namespace Core.Views.UIViews.Animations
 {
     public interface IAnimationElement
     {

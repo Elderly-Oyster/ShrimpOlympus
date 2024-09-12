@@ -1,5 +1,5 @@
-﻿using CodeBase.Core.UI.Views.Animations;
-using Core.Views.UIViews;
+﻿using Core.Views.UIViews;
+using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 

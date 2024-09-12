@@ -1,9 +1,8 @@
-﻿using CodeBase.Core.UI.Views.Animations;
-using Cysharp.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 
-namespace CodeBase.Core.UI.Views
+namespace Core.Views.UIViews.Animations
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class BubbleFadeAnimation : BaseAnimationElement
