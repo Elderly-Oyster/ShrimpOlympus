@@ -1313,8 +1313,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e375cb934942e7a19cb06e1f091837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasScaler: {fileID: 0}
-  uiCamera: {fileID: 0}
+  canvasScaler: {fileID: 1609517735}
+  uiCamera: {fileID: 915724101}
 --- !u!114 &1609517735
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1882,10 +1882,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationElement: {fileID: 2097883547}
   continueButton: {fileID: 2097883543}
+  progressBarCanvasGroup: {fileID: 1506299015}
   progressValueText: {fileID: 1624380901}
   progressText: {fileID: 956352712}
   progressBar: {fileID: 1381388255}
-  progressBarCanvasGroup: {fileID: 1506299015}
   lightingCanvasGroup: {fileID: 319951732}
   stuffImage: {fileID: 652377924}
   overlay: {fileID: 2115247163}

@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
@@ -17,57 +17,75 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly StartGameScreenView _startGameScreenView;
         private readonly IScreenStateMachine _screenStateMachine;
         
+        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
+        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private ReactiveCommand _startCommand;
 
-        private float exponentialProgress { get; set; }
-        private string progressStatus { get; set; }
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
-        private static string _appVersion;
 
-        
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
-            StartGameScreenModel gameScreenModel, StartGameScreenView startGameScreenView)
+            StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView)
         {
             _screenStateMachine = screenStateMachine;
-            _startGameScreenModel = gameScreenModel;
+            _startGameScreenModel = startGameScreenModel;
             _startGameScreenView = startGameScreenView;
             _completionSource = new UniTaskCompletionSource<bool>();
-            
+
             InitializeCommands();
             SubscribeToCommands();
         }
         
-        private void InitializeCommands() => 
-            _startCommand = new ReactiveCommand();
+        private void InitializeCommands() => _startCommand = new ReactiveCommand();
 
-        private void SubscribeToCommands() => 
-            _startCommand.Subscribe(_ => OnContinueButtonPressed());
+        private void SubscribeToCommands() =>
+            _startCommand.Subscribe(_ => OnContinueButtonPressed())
+                         .AddTo(_cancellationTokenSource.Token);
+
 
         public async UniTask Enter(object param)
         {
             SetApplicationFrameRate();
-            _startGameScreenView.HideInstantly();
-            _startGameScreenView.SetupEventListeners(_startCommand);
-            
-            SetVersionText(GetAppVersion());
+            InitializeUI();
+    
             ShowTooltips().Forget();
             _startGameScreenModel.DoTweenInit();
             _startGameScreenModel.RegisterCommands();
+
             await _startGameScreenView.Show();
 
-            var timing = 1f / _startGameScreenModel.Commands.Count;
-            var currentTiming = timing;
+            await InitializeServices();
 
-            foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
-            {
-                await Task.WhenAll(initFunction.Invoke(), 
-                    UpdateViewWithModelData(currentTiming, serviceName).AsTask());
-                currentTiming += timing;
-            }
             ShowAnimations();
         }
         
+        private void InitializeUI()
+        {
+            _startGameScreenView.HideInstantly();
+            _startGameScreenView.SetupEventListeners(_startCommand);
+            SetVersionText(Application.version);
+        }
+
+        private async UniTask InitializeServices()
+        {
+            var timing = 1f / _startGameScreenModel.Commands.Count;
+            var currentTiming = timing;
+
+            var initTasks = new List<UniTask>();
+
+            foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
+            {
+                var initTask = initFunction.Invoke().AsUniTask();
+                var viewUpdateTask = UpdateViewWithModelData(currentTiming, serviceName);
+
+                initTasks.Add(UniTask.WhenAll(initTask, viewUpdateTask));
+                currentTiming += timing;
+            }
+
+            await UniTask.WhenAll(initTasks);
+        }
+
+
         public async UniTask Execute() => await _completionSource.Task;
 
         public async UniTask Exit()
@@ -78,8 +96,6 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
 
-        private string GetAppVersion() => Application.version;
-        
         private void RunMainMenuScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
@@ -108,18 +124,16 @@ namespace Modules.Base.StartGameScreen.Scripts
             catch (Exception ex) { Debug.LogError($"ShowTooltips Error: {ex.Message}"); }
         }
 
-        private UniTask UpdateViewWithModelData(float progress, string serviceName)
+        private async UniTask UpdateViewWithModelData(float progress, string serviceName)
         {
             UpdateProgress(progress, serviceName);
-            return _startGameScreenView.
-                ReportProgress(exponentialProgress, progressStatus);
+            await _startGameScreenView.ReportProgress(_exponentialProgress.Value, _progressStatus.Value);
         }
-
 
         private void UpdateProgress(float progress, string serviceName)
         {
-            progressStatus = $"Loading: {serviceName}";
-            exponentialProgress = CalculateExponentialProgress(progress);
+            _progressStatus.Value = $"Loading: {serviceName}";
+            _exponentialProgress.Value = CalculateExponentialProgress(progress);
         }
 
         private float CalculateExponentialProgress(float progress)
@@ -129,12 +143,15 @@ namespace Modules.Base.StartGameScreen.Scripts
             var maxExp = Math.Exp(1);
             return (float)((expValue - minExp) / (maxExp - minExp));
         }
-        
+
         public void Dispose()
         {
+            if (_cancellationTokenSource is {IsCancellationRequested: false}) 
+                _cancellationTokenSource.Cancel();
+            _cancellationTokenSource?.Dispose();
+            
             _startGameScreenView.Dispose();
             _startGameScreenModel.Dispose();
-            _cancellationTokenSource?.Dispose();
         }
     }
 }

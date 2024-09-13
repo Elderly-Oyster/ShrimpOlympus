@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.MVVM;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
 using Services.LongInitializationServices;
@@ -17,8 +16,6 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
         
-        private readonly UniTaskCompletionSource<bool> _completionSource;
-
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
 
@@ -30,7 +27,6 @@ namespace Modules.Base.StartGameScreen.Scripts
             _secondLongInitializationService = secondLongInitializationService;
             _thirdLongInitializationService = thirdLongInitializationService;
 
-            _completionSource = new UniTaskCompletionSource<bool>();
             Commands = new Dictionary<string, Func<Task>>();
             
             _tooltips = new []

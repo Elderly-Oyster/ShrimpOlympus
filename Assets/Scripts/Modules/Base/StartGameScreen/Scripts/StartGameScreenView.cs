@@ -17,10 +17,10 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private Button continueButton;
 
         [Header("Progress UI Components")]
+        [SerializeField] private CanvasGroup progressBarCanvasGroup;
         [SerializeField] private TMP_Text progressValueText;
         [SerializeField] private TMP_Text progressText;
         [SerializeField] private Image progressBar;
-        [SerializeField] private CanvasGroup progressBarCanvasGroup;
 
         [Header("Dynamic UI Visuals")]
         [SerializeField] private CanvasGroup lightingCanvasGroup;
@@ -31,13 +31,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
 
-        private Sequence _sequence;
         private FlickerAnimation _flickerAnimation;
+        private Sequence _sequence;
 
         private const string TapToContinueText = "Tap to continue";
         private const float ProgressBarAnimDuration = 0.5f;
 
-        
         private void Start()
         {
             splashTooltipsText.transform.parent.gameObject.SetActive(true);
@@ -98,7 +97,10 @@ namespace Modules.Base.StartGameScreen.Scripts
         private void StopAnimation()
         {
             if (_sequence != null && _sequence.IsActive())
+            {
                 _sequence.Kill();
+                _sequence = null;
+            }
         }
     }
 }
