@@ -14,10 +14,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly PopupHub _popupHub;
 
-        private ReactiveCommand _secondPopupCommand;
-        private ReactiveCommand _firstPopupCommand;
-        private ReactiveCommand _converterCommand;
-        private ReactiveCommand _ticTacCommand;
+        private readonly ReactiveCommand _secondPopupCommand = new ReactiveCommand();
+        private readonly ReactiveCommand _firstPopupCommand = new ReactiveCommand();
+        private readonly ReactiveCommand _converterCommand = new ReactiveCommand();
+        private readonly ReactiveCommand _ticTacCommand = new ReactiveCommand();
 
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, PopupHub popupHub,
@@ -30,16 +30,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _mainMenuScreenView = mainMenuScreenView;
             _popupHub = popupHub;
 
-            InitializeCommands();
             SubscribeToCommands();
-        }
-
-        private void InitializeCommands()
-        {
-            _ticTacCommand = new ReactiveCommand();
-            _converterCommand = new ReactiveCommand();
-            _firstPopupCommand = new ReactiveCommand();
-            _secondPopupCommand = new ReactiveCommand();
         }
 
         private void SubscribeToCommands()

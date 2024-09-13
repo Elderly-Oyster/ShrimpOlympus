@@ -19,28 +19,28 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
-        private ReactiveCommand _startCommand;
+        private readonly ReactiveCommand _startCommand = new ReactiveCommand();
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
 
+        
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
             StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView)
         {
+            _completionSource = new UniTaskCompletionSource<bool>();
+            
             _screenStateMachine = screenStateMachine;
             _startGameScreenModel = startGameScreenModel;
             _startGameScreenView = startGameScreenView;
-            _completionSource = new UniTaskCompletionSource<bool>();
 
-            InitializeCommands();
             SubscribeToCommands();
         }
         
-        private void InitializeCommands() => _startCommand = new ReactiveCommand();
 
         private void SubscribeToCommands() =>
             _startCommand.Subscribe(_ => OnContinueButtonPressed())
-                         .AddTo(_cancellationTokenSource.Token);
+                .AddTo(_cancellationTokenSource.Token);
 
 
         public async UniTask Enter(object param)
