@@ -2,6 +2,7 @@
 using Core.MVVM;
 using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
+using UniRx;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
@@ -16,6 +17,11 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly TicTacScreenModel _ticTacScreenModel;
         private readonly PopupHub _popupHub;
 
+        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<int[]> _cellCommand = new ReactiveCommand<int[]>();
+        private readonly ReactiveCommand _restartCommand = new ReactiveCommand();
+        private readonly ReactiveCommand _thirdPopupCommand = new ReactiveCommand();
+
         public TicTacScreenPresenter(IScreenStateMachine screenStateMachine, TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, PopupHub popupHub)
         {
             _screenStateMachine = screenStateMachine;
@@ -27,12 +33,21 @@ namespace Modules.Base.TicTacScreen.Scripts
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 
+        private void SubscribeToUIUpdates()
+        {
+            _mainMenuCommand.Subscribe(_ => OnMainMenuButtonClicked());
+            _cellCommand.Subscribe(position => OnCellClicked(position[0], position[1]));
+            _restartCommand.Subscribe(_ => OnRestartButtonClicked());
+            _thirdPopupCommand.Subscribe(_ => OnThirdPopupButtonClicked());
+        }
+
         public async UniTask Enter(object param)
         {
             _ticTacScreenModel.InitializeGame();
             _newModuleScreenView.gameObject.SetActive(false);
-            _ticTacScreenView.SetupEventListeners(OnMainMenuButtonClicked, OnCellClicked, OnRestartButtonClicked, 
-                OnThirdPopupButtonClicked);
+            SubscribeToUIUpdates();
+            _ticTacScreenView.SetupEventListeners(_mainMenuCommand, _cellCommand, _restartCommand, 
+                _thirdPopupCommand);
             _ticTacScreenView.ClearBoard();
             await _newModuleScreenView.Show();
         }

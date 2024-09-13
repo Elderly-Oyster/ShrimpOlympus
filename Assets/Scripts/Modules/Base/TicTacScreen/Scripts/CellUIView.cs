@@ -12,18 +12,19 @@ namespace Modules.Base.TicTacScreen.Scripts
         [SerializeField] private TMP_Text cellText;
         
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        private Action<int, int> _onCellClicked;
+        private ReactiveCommand<int[]> _onCellClicked;
         private int _x, _y;
 
         
-        public void Initialize(int x, int y, Action<int, int> onCellClicked)
+        public void Initialize(int x, int y, ReactiveCommand<int[]> cellCommand)
         {
             _x = x;
             _y = y;
-            _onCellClicked = onCellClicked;
+            int[] array = {x, y};
+            _onCellClicked = cellCommand;
 
             cellButton.OnClickAsObservable()
-                .Subscribe(_ => _onCellClicked?.Invoke(_x, _y))
+                .Subscribe(_ => _onCellClicked?.Execute(array))
                 .AddTo(_disposables);
         }
 

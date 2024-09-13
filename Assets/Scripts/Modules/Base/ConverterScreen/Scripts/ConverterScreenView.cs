@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 using Core.MVP;
 using TMPro;
 using UniRx;
@@ -26,38 +25,39 @@ namespace Modules.Base.ConverterScreen.Scripts
             base.Awake();
             HideInstantly();
         }
-        
+
         public void SetupEventListeners(
-            Action<string> onSourceCurrencySelected,
-            Action<string> onTargetCurrencySelected,
-            Action<string> onSourceAmountChanged,
-            Action<string> onTargetAmountChanged,
-            Action<float> onScrollBarValueChanged,
-            Action onExitButtonClicked)
+            ReactiveCommand<string> determineSourceCurrencyCommand,
+            ReactiveCommand<string> determineTargetCurrencyCommand,
+            ReactiveCommand<string> sourceAmountChangedCommand,
+            ReactiveCommand<string> targetAmountChangedCommand,
+            ReactiveCommand<float> handleAmountScrollBarChangedCommand,
+            ReactiveCommand backButtonCommand)
+
         {
             sourceAmountInputField.OnValueChangedAsObservable()
-                .Subscribe(onSourceAmountChanged)
-                .AddTo(_disposables);
-        
+                .Subscribe(name => sourceAmountChangedCommand.Execute(name))
+                .AddTo(this);
+
             targetAmountInputField.OnValueChangedAsObservable()
-                .Subscribe(onTargetAmountChanged)
-                .AddTo(_disposables);
-        
+                .Subscribe(name => targetAmountChangedCommand.Execute(name))
+                .AddTo(this);
+
             sourceCurrencyDropdown.OnValueChangedAsObservable()
-                .Subscribe(index => onSourceCurrencySelected(sourceCurrencyDropdown.options[index].text))
-                .AddTo(_disposables);
-        
+                .Subscribe(index => determineSourceCurrencyCommand.Execute(sourceCurrencyDropdown.options[index].text))
+                .AddTo(this);
+
             targetCurrencyDropdown.OnValueChangedAsObservable()
-                .Subscribe(index => onTargetCurrencySelected(targetCurrencyDropdown.options[index].text))
-                .AddTo(_disposables);
-        
+                .Subscribe(index => determineTargetCurrencyCommand.Execute(targetCurrencyDropdown.options[index].text))
+                .AddTo(this);
+
             amountScrollBar.OnValueChangedAsObservable()
-                .Subscribe(onScrollBarValueChanged)
-                .AddTo(_disposables);
-        
+                .Subscribe(value => handleAmountScrollBarChangedCommand.Execute(value))
+                .AddTo(this);
+
             exitButton.OnClickAsObservable()
-                .Subscribe(_ => onExitButtonClicked())
-                .AddTo(_disposables);
+                .Subscribe(_ => backButtonCommand.Execute())
+                .AddTo(this);
         }
 
         public float CurrentSourceAmount =>

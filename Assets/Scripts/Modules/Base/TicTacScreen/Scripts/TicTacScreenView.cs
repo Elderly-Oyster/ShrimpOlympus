@@ -29,19 +29,19 @@ namespace Modules.Base.TicTacScreen.Scripts
             HideInstantly();
         }
 
-        public void SetupEventListeners(Action onMainMenuButtonClicked, Action<int, int> onCellClicked, 
-            Action onRestartButtonClicked, Action onThirdPopupButtonClicked)
+        public void SetupEventListeners(ReactiveCommand onMainMenuButtonClicked, ReactiveCommand<int[]> onCellClicked, 
+            ReactiveCommand onRestartButtonClicked, ReactiveCommand onThirdPopupButtonClicked)
         {
             mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => onMainMenuButtonClicked())
+                .Subscribe(_ => onMainMenuButtonClicked.Execute())
                 .AddTo(_disposables);
 
             thirdPopupButton.OnClickAsObservable()
-                .Subscribe(_ => onThirdPopupButtonClicked())
+                .Subscribe(_ => onThirdPopupButtonClicked.Execute())
                 .AddTo(_disposables);
 
             restartButton.pulsatingButton.OnClickAsObservable()
-                .Subscribe(_ => onRestartButtonClicked())
+                .Subscribe(_ => onRestartButtonClicked.Execute())
                 .AddTo(_disposables);
 
             for (int i = 0; i < BoardSize; i++)

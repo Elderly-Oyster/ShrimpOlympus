@@ -18,6 +18,8 @@ namespace Modules.Test.PopupsTester.Scripts
         private readonly List<TestButtonView> _buttons = new();
         private readonly EventMediator _eventMediator;
         
+        
+        
 
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)

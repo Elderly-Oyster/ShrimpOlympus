@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
+using UniRx;
 
 namespace Modules.Test.PopupsTester.Scripts
 {

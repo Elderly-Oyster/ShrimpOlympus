@@ -3,6 +3,7 @@ using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground;
+using UniRx;
 using UnityEngine;
 using VContainer;
 
@@ -15,6 +16,14 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly ConverterScreenView _converterScreenView;
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
+        
+        private readonly ReactiveCommand _backButtonCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<string> _determineSourceCurrencyCommand = new ReactiveCommand<string>();
+        private readonly ReactiveCommand<string> _determineTargetCurrencyCommand = new ReactiveCommand<string>();
+        private readonly ReactiveCommand<string> _sourceAmountChangedCommand= new ReactiveCommand<string>();
+        private readonly ReactiveCommand<string> _targetAmountChangedCommand = new ReactiveCommand<string>();
+        private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new ReactiveCommand<float>();
+
         
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
             ConverterScreenView converterScreenView, DynamicParticleController dynamicParticleController)
@@ -29,16 +38,28 @@ namespace Modules.Base.ConverterScreen.Scripts
         public async UniTask Enter(object param)
         {
             _converterScreenView.HideInstantly();
+            SubscribeToUIUpdates();
             _converterScreenView.SetupEventListeners
             (
-                DetermineSourceCurrency,
-                DetermineTargetCurrency,
-                OnSourceAmountChanged,
-                OnTargetAmountChanged,
-                HandleAmountScrollBarChanged,
-                OnExitButtonClicked
+                _determineSourceCurrencyCommand,
+                _determineTargetCurrencyCommand,
+                _sourceAmountChangedCommand,
+                _targetAmountChangedCommand,
+                _handleAmountScrollBarChangedCommand,
+                _backButtonCommand
             );
+            
             await _converterScreenView.Show();
+        }
+        
+        private void SubscribeToUIUpdates()
+        {
+            _backButtonCommand.Subscribe(_ => OnExitButtonClicked());
+            _determineSourceCurrencyCommand.Subscribe(name => DetermineSourceCurrency(name));
+            _determineTargetCurrencyCommand.Subscribe(name => DetermineTargetCurrency(name));
+            _sourceAmountChangedCommand.Subscribe(name => OnSourceAmountChanged(name));
+            _targetAmountChangedCommand.Subscribe(name => OnTargetAmountChanged(name));
+            _handleAmountScrollBarChangedCommand.Subscribe(value => HandleAmountScrollBarChanged(value));
         }
 
         public async UniTask Execute() => await _completionSource.Task;
@@ -69,6 +90,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         private void DetermineTargetCurrency(string name) 
         {
+            
             _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
             CountTargetMoney(_converterScreenView.CurrentSourceAmount);
         }
@@ -99,8 +121,10 @@ namespace Modules.Base.ConverterScreen.Scripts
             CountTargetMoney(intValue); 
         }
 
-        private void OnExitButtonClicked() => 
+        private void OnExitButtonClicked()
+        {
             RunNewScreen(ScreenPresenterMap.MainMenu);
+        }
 
         public async UniTask HideScreenView() => await _converterScreenView.Hide();
 
