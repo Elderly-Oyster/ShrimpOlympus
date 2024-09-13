@@ -30,15 +30,15 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _mainMenuScreenView = mainMenuScreenView;
             _popupHub = popupHub;
 
-            SubscribeToCommands();
+            SubscribeToUIUpdates();
         }
 
-        private void SubscribeToCommands()
+        private void SubscribeToUIUpdates()
         {
+            _secondPopupCommand.Subscribe(_ => OnSecondPopupButtonClicked());
+            _firstPopupCommand.Subscribe(_ => OnFirstPopupButtonClicked());
             _converterCommand.Subscribe(_ => OnConverterButtonClicked());
             _ticTacCommand.Subscribe(_ => OnTicTacButtonClicked());
-            _firstPopupCommand.Subscribe(_ => OnFirstPopupButtonClicked());
-            _secondPopupCommand.Subscribe(_ => OnSecondPopupButtonClicked());
         }
         
         public async UniTask Enter(object param)

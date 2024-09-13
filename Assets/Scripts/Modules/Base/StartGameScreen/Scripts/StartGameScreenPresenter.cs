@@ -17,8 +17,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly StartGameScreenView _startGameScreenView;
         private readonly IScreenStateMachine _screenStateMachine;
         
-        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
+        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
         private readonly ReactiveCommand _startCommand = new ReactiveCommand();
 
         private const int TooltipDelay = 3000;
@@ -34,15 +34,25 @@ namespace Modules.Base.StartGameScreen.Scripts
             _startGameScreenModel = startGameScreenModel;
             _startGameScreenView = startGameScreenView;
 
-            SubscribeToCommands();
+            SubscribeToUIUpdates();
         }
         
-
-        private void SubscribeToCommands() =>
+        private void SubscribeToUIUpdates()
+        {
             _startCommand.Subscribe(_ => OnContinueButtonPressed())
                 .AddTo(_cancellationTokenSource.Token);
 
+            _exponentialProgress.Subscribe(progress =>
+            {
+                _startGameScreenView.ReportProgress(progress,
+                    _progressStatus.Value).Forget();
+            }).AddTo(_cancellationTokenSource.Token);
 
+            _progressStatus.Subscribe(status => 
+                _startGameScreenView.SetTooltipText(status))
+                .AddTo(_cancellationTokenSource.Token);
+        }
+        
         public async UniTask Enter(object param)
         {
             SetApplicationFrameRate();
@@ -76,14 +86,25 @@ namespace Modules.Base.StartGameScreen.Scripts
             foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
             {
                 var initTask = initFunction.Invoke().AsUniTask();
-                var viewUpdateTask = UpdateViewWithModelData(currentTiming, serviceName);
 
-                initTasks.Add(UniTask.WhenAll(initTask, viewUpdateTask));
+                _progressStatus.Value = $"Loading: {serviceName}";
+                _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
+
+                initTasks.Add(initTask);
                 currentTiming += timing;
             }
 
             await UniTask.WhenAll(initTasks);
         }
+
+        private float CalculateExponentialProgress(float progress)
+        {
+            var expValue = Math.Exp(progress);
+            var minExp = Math.Exp(0);
+            var maxExp = Math.Exp(1);
+            return (float)((expValue - minExp) / (maxExp - minExp));
+        }
+
 
 
         public async UniTask Execute() => await _completionSource.Task;
@@ -122,26 +143,6 @@ namespace Modules.Base.StartGameScreen.Scripts
             }
             catch (OperationCanceledException) { }
             catch (Exception ex) { Debug.LogError($"ShowTooltips Error: {ex.Message}"); }
-        }
-
-        private async UniTask UpdateViewWithModelData(float progress, string serviceName)
-        {
-            UpdateProgress(progress, serviceName);
-            await _startGameScreenView.ReportProgress(_exponentialProgress.Value, _progressStatus.Value);
-        }
-
-        private void UpdateProgress(float progress, string serviceName)
-        {
-            _progressStatus.Value = $"Loading: {serviceName}";
-            _exponentialProgress.Value = CalculateExponentialProgress(progress);
-        }
-
-        private float CalculateExponentialProgress(float progress)
-        {
-            var expValue = Math.Exp(progress);
-            var minExp = Math.Exp(0);
-            var maxExp = Math.Exp(1);
-            return (float)((expValue - minExp) / (maxExp - minExp));
         }
 
         public void Dispose()
