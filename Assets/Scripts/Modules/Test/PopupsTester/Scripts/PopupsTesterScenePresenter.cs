@@ -72,18 +72,11 @@ namespace Modules.Test.PopupsTester.Scripts
         public void RegisterButton(TestButtonView button, int index)
         {
             if (index == 1)
-            {
                 _firstPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
-            }
             else if (index == 2)
-            {
                 _secondPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
-            }
-            else if (index == 3)
-            {
+            else if (index == 3) 
                 _thirdPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
-            }
         }
-
     }
 }

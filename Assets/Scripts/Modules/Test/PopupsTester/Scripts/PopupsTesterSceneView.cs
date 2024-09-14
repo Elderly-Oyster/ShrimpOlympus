@@ -19,13 +19,11 @@ namespace Modules.Test.PopupsTester.Scripts
         public void GetPopupsButtons(List<TestButtonView> testButtons, PopupsTesterScenePresenter presenter)
         {
             _testButtonViews = testButtons;
-            for (int i = 0; i < _testButtonViews.Count; i++)
-            {
+            for (int i = 0; i < _testButtonViews.Count; i++) 
                 presenter.RegisterButton(_testButtonViews[i], i);
-            }
         }
 
-        public void SetupListeners(ReactiveCommand firstPopupCommand,
+        public void SetupListeners(ReactiveCommand firstPopupCommand, // Not Invoked
                 ReactiveCommand secondPopupCommand,
                 ReactiveCommand thirdPopupCommand)
         {
