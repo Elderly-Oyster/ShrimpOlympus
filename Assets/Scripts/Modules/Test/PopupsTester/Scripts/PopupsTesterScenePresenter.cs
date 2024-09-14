@@ -17,10 +17,12 @@ namespace Modules.Test.PopupsTester.Scripts
         private readonly Func<Action, TestButtonView> _buttonFactory;
         private readonly List<TestButtonView> _buttons = new();
         private readonly EventMediator _eventMediator;
-        
-        
-        
 
+        private readonly ReactiveCommand _firstPopupCommand = new ReactiveCommand();
+        private readonly ReactiveCommand _secondPopupCommand = new ReactiveCommand();
+        private readonly ReactiveCommand _thirdPopupCommand = new ReactiveCommand();
+
+        
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
         {
@@ -29,7 +31,6 @@ namespace Modules.Test.PopupsTester.Scripts
             _buttonFactory = buttonFactory;
             _eventMediator = eventMediator;
         }
-        
         public void Start() => Run(null).Forget();
 
         public async UniTask Run(object param)
@@ -50,7 +51,7 @@ namespace Modules.Test.PopupsTester.Scripts
         private void OnPopupOpened(PopupOpenedEvent popupEvent) => 
             Debug.Log($"Open Popup: {popupEvent.PopupName}");
 
-        private void Initialize() => _popupsTesterSceneView.GetPopupsButtons(_buttons);
+        private void Initialize() => _popupsTesterSceneView.GetPopupsButtons(_buttons, this);
 
         private async UniTask ShowView() => await _popupsTesterSceneView.Show();
         
@@ -67,5 +68,22 @@ namespace Modules.Test.PopupsTester.Scripts
             _disposables.Dispose();  
             await HideScreenView();
         }
+
+        public void RegisterButton(TestButtonView button, int index)
+        {
+            if (index == 1)
+            {
+                _firstPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
+            }
+            else if (index == 2)
+            {
+                _secondPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
+            }
+            else if (index == 3)
+            {
+                _thirdPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
+            }
+        }
+
     }
 }

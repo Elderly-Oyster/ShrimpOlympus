@@ -1,6 +1,7 @@
 using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
+using UniRx;
 
 namespace Modules.Base.NewBaseScreen
 {
@@ -10,6 +11,9 @@ namespace Modules.Base.NewBaseScreen
         private readonly NewModuleScreenModel _newModuleScreenModel;
         private readonly NewModuleScreenView _newModuleScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
+
+        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
+
 
         
         public NewModuleScreenPresenter(IScreenStateMachine screenStateMachine, 
@@ -21,11 +25,17 @@ namespace Modules.Base.NewBaseScreen
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 
+        private void SubscribeToUIUpdates()
+        {
+            _mainMenuCommand.Subscribe(_ =>OnMainMenuButtonClicked());
+        }
+
         public async UniTask Enter(object param)
         {
             _newModuleScreenView.gameObject.SetActive(false);
+            SubscribeToUIUpdates();
             _newModuleScreenView.SetupEventListeners(
-                OnMainMenuButtonClicked
+                _mainMenuCommand
             );
             await _newModuleScreenView.Show();
         }

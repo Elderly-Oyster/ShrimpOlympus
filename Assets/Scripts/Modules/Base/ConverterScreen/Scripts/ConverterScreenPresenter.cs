@@ -35,6 +35,16 @@ namespace Modules.Base.ConverterScreen.Scripts
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 
+        private void SubscribeToUIUpdates()
+        {
+            _backButtonCommand.Subscribe(_ => OnExitButtonClicked());
+            _determineSourceCurrencyCommand.Subscribe(name => DetermineSourceCurrency(name));
+            _determineTargetCurrencyCommand.Subscribe(name => DetermineTargetCurrency(name));
+            _sourceAmountChangedCommand.Subscribe(name => OnSourceAmountChanged(name));
+            _targetAmountChangedCommand.Subscribe(name => OnTargetAmountChanged(name));
+            _handleAmountScrollBarChangedCommand.Subscribe(value => HandleAmountScrollBarChanged(value));
+        }
+
         public async UniTask Enter(object param)
         {
             _converterScreenView.HideInstantly();
@@ -50,16 +60,6 @@ namespace Modules.Base.ConverterScreen.Scripts
             );
             
             await _converterScreenView.Show();
-        }
-        
-        private void SubscribeToUIUpdates()
-        {
-            _backButtonCommand.Subscribe(_ => OnExitButtonClicked());
-            _determineSourceCurrencyCommand.Subscribe(name => DetermineSourceCurrency(name));
-            _determineTargetCurrencyCommand.Subscribe(name => DetermineTargetCurrency(name));
-            _sourceAmountChangedCommand.Subscribe(name => OnSourceAmountChanged(name));
-            _targetAmountChangedCommand.Subscribe(name => OnTargetAmountChanged(name));
-            _handleAmountScrollBarChangedCommand.Subscribe(value => HandleAmountScrollBarChanged(value));
         }
 
         public async UniTask Execute() => await _completionSource.Task;

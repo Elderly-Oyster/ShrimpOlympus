@@ -12,11 +12,10 @@ namespace Modules.Base.NewBaseScreen
         [SerializeField] private Button mainMenuButton;
         
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
-        public void SetupEventListeners(Action onMainMenuButtonClicked)
+        public void SetupEventListeners(ReactiveCommand mainMenuCommand)
         {
             mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => onMainMenuButtonClicked())
+                .Subscribe(_ => mainMenuCommand.Execute())
                 .AddTo(_disposables);
         }
 
