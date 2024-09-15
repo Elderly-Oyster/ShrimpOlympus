@@ -16,10 +16,8 @@ namespace Modules.Test.PopupsTester.Scripts
             HideInstantly();
         }
 
-        public void GetPopupsButtons(List<TestButtonView> testButtons)
-        {
+        public void GetPopupsButtons(List<TestButtonView> testButtons) => 
             _testButtonViews = testButtons;
-        }
 
         public void SetupListeners(Dictionary<TestButtonView, ReactiveCommand> buttonCommandMap)
         {

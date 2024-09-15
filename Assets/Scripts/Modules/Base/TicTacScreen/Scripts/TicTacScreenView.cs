@@ -16,7 +16,6 @@ namespace Modules.Base.TicTacScreen.Scripts
         [SerializeField] private CellUIView[] cellViews;
         [SerializeField] private TMP_Text winnerText;
         
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private const int BoardSize = 3;
 
         protected override void Awake()
@@ -34,15 +33,15 @@ namespace Modules.Base.TicTacScreen.Scripts
         {
             mainMenuButton.OnClickAsObservable()
                 .Subscribe(_ => onMainMenuButtonClicked.Execute())
-                .AddTo(_disposables);
+                .AddTo(this);
 
             thirdPopupButton.OnClickAsObservable()
                 .Subscribe(_ => onThirdPopupButtonClicked.Execute())
-                .AddTo(_disposables);
+                .AddTo(this);
 
             restartButton.pulsatingButton.OnClickAsObservable()
                 .Subscribe(_ => onRestartButtonClicked.Execute())
-                .AddTo(_disposables);
+                .AddTo(this);
 
             for (int i = 0; i < BoardSize; i++)
             {
@@ -95,13 +94,5 @@ namespace Modules.Base.TicTacScreen.Scripts
         public void AnimateRestartButton() => restartButton.PlayAnimation();
 
         public void StopAnimateRestartButton() => restartButton.StopAnimation();
-        
-        public override void Dispose()
-        {
-            RemoveEventListeners();
-            base.Dispose();
-        }
-
-        private void RemoveEventListeners() => _disposables.Clear();
     }
 }

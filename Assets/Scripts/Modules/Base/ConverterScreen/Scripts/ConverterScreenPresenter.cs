@@ -31,6 +31,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             _converterScreenModel = converterScreenModel;
             _converterScreenView = converterScreenView;
             _dynamicParticleController = dynamicParticleController;
+            
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 
@@ -73,12 +74,6 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PR", Currencies.Pr }
         };
 
-        public void Dispose()
-        {
-            _converterScreenView.Dispose();
-            _converterScreenModel.Dispose();
-        }
-
         private void DetermineSourceCurrency(string name)
         {
             _converterScreenModel.SelectSourceCurrency(_currencyToName[name]);
@@ -87,7 +82,6 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         private void DetermineTargetCurrency(string name) 
         {
-            
             _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
             CountTargetMoney(_converterScreenView.CurrentSourceAmount);
         }
@@ -104,9 +98,6 @@ namespace Modules.Base.ConverterScreen.Scripts
                 CountSourceMoney(amount);
         }
 
-        private void CountTargetMoney(float count) =>
-            _converterScreenView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
-
         private void CountSourceMoney(float count) =>
             _converterScreenView.UpdateSourceText(_converterScreenModel.ConvertTargetToSource(count));
 
@@ -117,16 +108,23 @@ namespace Modules.Base.ConverterScreen.Scripts
             _converterScreenView.UpdateSourceText(intValue);
             CountTargetMoney(intValue); 
         }
+        
+        private void CountTargetMoney(float count) =>
+            _converterScreenView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
 
-        private void OnExitButtonClicked()
-        {
+        private void OnExitButtonClicked() => 
             RunNewScreen(ScreenPresenterMap.MainMenu);
-        }
 
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunPresenter(screen);
+        }
+
+        public void Dispose()
+        {
+            _converterScreenView.Dispose();
+            _converterScreenModel.Dispose();
         }
     }
 }

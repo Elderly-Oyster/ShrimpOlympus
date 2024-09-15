@@ -16,9 +16,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private TMP_Dropdown targetCurrencyDropdown;
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
-
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
+        
         
         protected override void Awake()
         {
@@ -36,23 +34,26 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         {
             sourceAmountInputField.OnValueChangedAsObservable()
-                .Subscribe(name => sourceAmountChangedCommand.Execute(name))
+                .Subscribe(parameter => sourceAmountChangedCommand.Execute(parameter))
                 .AddTo(this);
 
             targetAmountInputField.OnValueChangedAsObservable()
-                .Subscribe(name => targetAmountChangedCommand.Execute(name))
+                .Subscribe(parameter => targetAmountChangedCommand.Execute(parameter))
                 .AddTo(this);
 
             sourceCurrencyDropdown.OnValueChangedAsObservable()
-                .Subscribe(index => determineSourceCurrencyCommand.Execute(sourceCurrencyDropdown.options[index].text))
+                .Subscribe(index => determineSourceCurrencyCommand.
+                    Execute(sourceCurrencyDropdown.options[index].text))
                 .AddTo(this);
 
             targetCurrencyDropdown.OnValueChangedAsObservable()
-                .Subscribe(index => determineTargetCurrencyCommand.Execute(targetCurrencyDropdown.options[index].text))
+                .Subscribe(index => determineTargetCurrencyCommand.
+                    Execute(targetCurrencyDropdown.options[index].text))
                 .AddTo(this);
 
             amountScrollBar.OnValueChangedAsObservable()
-                .Subscribe(value => handleAmountScrollBarChangedCommand.Execute(value))
+                .Subscribe(value => 
+                    handleAmountScrollBarChangedCommand.Execute(value))
                 .AddTo(this);
 
             exitButton.OnClickAsObservable()
@@ -68,13 +69,5 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public void UpdateTargetText(float amount) =>
             targetAmountInputField.SetTextWithoutNotify(amount.ToString(CultureInfo.InvariantCulture));
-        
-        public override void Dispose()
-        {
-            RemoveEventListeners();
-            base.Dispose();
-        }
-
-        private void RemoveEventListeners() => _disposables.Clear();
     }
 }
