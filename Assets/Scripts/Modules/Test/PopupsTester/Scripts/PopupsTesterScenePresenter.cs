@@ -18,11 +18,8 @@ namespace Modules.Test.PopupsTester.Scripts
         private readonly List<TestButtonView> _buttons = new();
         private readonly EventMediator _eventMediator;
 
-        private readonly ReactiveCommand _firstPopupCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _secondPopupCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _thirdPopupCommand = new ReactiveCommand();
+        private readonly Dictionary<TestButtonView, ReactiveCommand> _buttonCommandMap = new();
 
-        
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
         {
@@ -31,6 +28,7 @@ namespace Modules.Test.PopupsTester.Scripts
             _buttonFactory = buttonFactory;
             _eventMediator = eventMediator;
         }
+
         public void Start() => Run(null).Forget();
 
         public async UniTask Run(object param)
@@ -38,52 +36,42 @@ namespace Modules.Test.PopupsTester.Scripts
             var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
             foreach (var action in popupActions)
                 CreateButton(action);
-            
+
             Initialize();
 
             _eventMediator.OnPopupOpenedAsObservable()
                 .Subscribe(OnPopupOpened)
                 .AddTo(_disposables);
 
+            _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
+
             await ShowView();
         }
-        
+
         private void OnPopupOpened(PopupOpenedEvent popupEvent) => 
             Debug.Log($"Open Popup: {popupEvent.PopupName}");
 
-        private void Initialize() => _popupsTesterSceneView.GetPopupsButtons(_buttons, this);
+        private void Initialize() => _popupsTesterSceneView.GetPopupsButtons(_buttons);
 
         private async UniTask ShowView() => await _popupsTesterSceneView.Show();
-        
+
         private async UniTask HideScreenView() => await _popupsTesterSceneView.Hide();
 
         private void CreateButton(Action action)
         {
             var button = _buttonFactory(action);
             _buttons.Add(button);
+
+            var reactiveCommand = new ReactiveCommand();
+            _buttonCommandMap[button] = reactiveCommand;
+
+            reactiveCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
         }
 
         public async UniTask Stop()
         {
-            _disposables.Dispose();  
+            _disposables.Dispose();
             await HideScreenView();
         }
-
-        public void RegisterButton(TestButtonView button, int index)
-        {
-            if (index == 1)
-            {
-                _firstPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
-            }
-            else if (index == 2)
-            {
-                _secondPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
-            }
-            else if (index == 3)
-            {
-                _thirdPopupCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
-            }
-        }
-
     }
 }
