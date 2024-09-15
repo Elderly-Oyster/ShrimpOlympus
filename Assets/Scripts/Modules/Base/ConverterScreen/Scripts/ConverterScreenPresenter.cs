@@ -17,14 +17,14 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         
-        private readonly ReactiveCommand _backButtonCommand = new ReactiveCommand();
         private readonly ReactiveCommand<string> _determineSourceCurrencyCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _determineTargetCurrencyCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _sourceAmountChangedCommand= new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _targetAmountChangedCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new ReactiveCommand<float>();
+        private readonly ReactiveCommand _backButtonCommand = new ReactiveCommand();
 
-        
+
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
             ConverterScreenView converterScreenView, DynamicParticleController dynamicParticleController)
         {
@@ -38,11 +38,11 @@ namespace Modules.Base.ConverterScreen.Scripts
         private void SubscribeToUIUpdates()
         {
             _backButtonCommand.Subscribe(_ => OnExitButtonClicked());
-            _determineSourceCurrencyCommand.Subscribe(name => DetermineSourceCurrency(name));
-            _determineTargetCurrencyCommand.Subscribe(name => DetermineTargetCurrency(name));
-            _sourceAmountChangedCommand.Subscribe(name => OnSourceAmountChanged(name));
-            _targetAmountChangedCommand.Subscribe(name => OnTargetAmountChanged(name));
-            _handleAmountScrollBarChangedCommand.Subscribe(value => HandleAmountScrollBarChanged(value));
+            _determineSourceCurrencyCommand.Subscribe(DetermineSourceCurrency);
+            _determineTargetCurrencyCommand.Subscribe(DetermineTargetCurrency);
+            _sourceAmountChangedCommand.Subscribe(OnSourceAmountChanged);
+            _targetAmountChangedCommand.Subscribe(OnTargetAmountChanged);
+            _handleAmountScrollBarChangedCommand.Subscribe(HandleAmountScrollBarChanged);
         }
 
         public async UniTask Enter(object param)
@@ -74,7 +74,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PR", Currencies.Pr }
         };
 
-        public async UniTask ShowView() => await _converterScreenView.Show();
+        public async UniTask ShowView() => await _converterScreenView.Show(); // Not Invoked
 
         public void Dispose()
         {
@@ -126,7 +126,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             RunNewScreen(ScreenPresenterMap.MainMenu);
         }
 
-        public async UniTask HideScreenView() => await _converterScreenView.Hide();
+        public async UniTask HideScreenView() => await _converterScreenView.Hide();  // Not Invoked
 
         private void RunNewScreen(ScreenPresenterMap screen)
         {

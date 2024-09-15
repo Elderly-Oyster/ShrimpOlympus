@@ -17,26 +17,29 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly TicTacScreenModel _ticTacScreenModel;
         private readonly PopupHub _popupHub;
 
-        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
         private readonly ReactiveCommand<int[]> _cellCommand = new ReactiveCommand<int[]>();
+        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
         private readonly ReactiveCommand _restartCommand = new ReactiveCommand();
         private readonly ReactiveCommand _thirdPopupCommand = new ReactiveCommand();
 
-        public TicTacScreenPresenter(IScreenStateMachine screenStateMachine, TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, PopupHub popupHub)
+        public TicTacScreenPresenter(IScreenStateMachine screenStateMachine,
+            TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, 
+            TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, PopupHub popupHub)
         {
+            _completionSource = new UniTaskCompletionSource<bool>();
+            
             _screenStateMachine = screenStateMachine;
             _newModuleScreenModel = newModuleScreenModel;
             _newModuleScreenView = newModuleScreenView;
             _ticTacScreenView = ticTacScreenView;
             _ticTacScreenModel = ticTacScreenModel;
             _popupHub = popupHub;
-            _completionSource = new UniTaskCompletionSource<bool>();
         }
 
         private void SubscribeToUIUpdates()
         {
-            _mainMenuCommand.Subscribe(_ => OnMainMenuButtonClicked());
             _cellCommand.Subscribe(position => OnCellClicked(position[0], position[1]));
+            _mainMenuCommand.Subscribe(_ => OnMainMenuButtonClicked());
             _restartCommand.Subscribe(_ => OnRestartButtonClicked());
             _thirdPopupCommand.Subscribe(_ => OnThirdPopupButtonClicked());
         }

@@ -14,7 +14,6 @@ namespace Modules.Base.NewBaseScreen
 
         private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
 
-
         
         public NewModuleScreenPresenter(IScreenStateMachine screenStateMachine, 
             NewModuleScreenModel newModuleScreenModel, NewModuleScreenView newModuleScreenView)
@@ -23,11 +22,6 @@ namespace Modules.Base.NewBaseScreen
             _newModuleScreenModel = newModuleScreenModel;
             _newModuleScreenView = newModuleScreenView;
             _completionSource = new UniTaskCompletionSource<bool>();
-        }
-
-        private void SubscribeToUIUpdates()
-        {
-            _mainMenuCommand.Subscribe(_ =>OnMainMenuButtonClicked());
         }
 
         public async UniTask Enter(object param)
@@ -40,14 +34,17 @@ namespace Modules.Base.NewBaseScreen
             await _newModuleScreenView.Show();
         }
         
+        private void SubscribeToUIUpdates() => 
+            _mainMenuCommand.Subscribe(_ =>OnMainMenuButtonClicked());
+
+        private void OnMainMenuButtonClicked() => 
+            RunNewScreen(ScreenPresenterMap.MainMenu);
+        
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunPresenter(screen);
         }
-
-        private void OnMainMenuButtonClicked() => 
-            RunNewScreen(ScreenPresenterMap.MainMenu);
 
         public async UniTask Execute() => await _completionSource.Task;
 
