@@ -44,7 +44,6 @@ namespace Modules.Test.PopupsTester.Scripts
                 .AddTo(_disposables);
 
             _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
-
             await ShowView();
         }
 

@@ -5,7 +5,6 @@ using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground;
 using UniRx;
 using UnityEngine;
-using VContainer;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -47,6 +46,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Enter(object param)
         {
+            
             _converterScreenView.HideInstantly();
             SubscribeToUIUpdates();
             _converterScreenView.SetupEventListeners
@@ -58,7 +58,6 @@ namespace Modules.Base.ConverterScreen.Scripts
                 _handleAmountScrollBarChangedCommand,
                 _backButtonCommand
             );
-            
             await _converterScreenView.Show();
         }
 
@@ -73,8 +72,6 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PLN", Currencies.Pln },
             { "PR", Currencies.Pr }
         };
-
-        public async UniTask ShowView() => await _converterScreenView.Show(); // Not Invoked
 
         public void Dispose()
         {
@@ -125,8 +122,6 @@ namespace Modules.Base.ConverterScreen.Scripts
         {
             RunNewScreen(ScreenPresenterMap.MainMenu);
         }
-
-        public async UniTask HideScreenView() => await _converterScreenView.Hide();  // Not Invoked
 
         private void RunNewScreen(ScreenPresenterMap screen)
         {
