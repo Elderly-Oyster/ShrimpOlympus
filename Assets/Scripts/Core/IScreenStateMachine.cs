@@ -12,13 +12,13 @@ namespace Core
 
         public event Action<IObjectResolver> ModuleChanged;
         
-        UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null);
+        UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null);
     }
     
     public static class RootControllerExtension
     {
         public static UniTaskVoid RunModel(this IScreenStateMachine self, ScreenPresenterMap screenPresenterMap) => 
-            self.RunPresenter(screenPresenterMap);
+            self.RunScreen(screenPresenterMap);
     }
     
     public enum ScreenPresenterMap

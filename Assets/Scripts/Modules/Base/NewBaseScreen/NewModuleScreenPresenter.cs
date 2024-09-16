@@ -43,7 +43,7 @@ namespace Modules.Base.NewBaseScreen
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
 
         public async UniTask Execute() => await _completionSource.Task;

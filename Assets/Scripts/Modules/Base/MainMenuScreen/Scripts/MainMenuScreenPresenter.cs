@@ -72,7 +72,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
     }
 }

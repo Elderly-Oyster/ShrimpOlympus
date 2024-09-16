@@ -120,7 +120,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         private void RunMainMenuScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
 
         private void OnContinueButtonPressed() => RunMainMenuScreen(ScreenPresenterMap.MainMenu);

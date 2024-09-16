@@ -118,7 +118,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
 
         public void Dispose()

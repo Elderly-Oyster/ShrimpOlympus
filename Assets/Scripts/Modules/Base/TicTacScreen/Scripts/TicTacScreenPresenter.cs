@@ -69,7 +69,7 @@ namespace Modules.Base.TicTacScreen.Scripts
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
 
         private void OnMainMenuButtonClicked() => RunNewScreen(ScreenPresenterMap.MainMenu);

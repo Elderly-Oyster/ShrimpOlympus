@@ -23,14 +23,15 @@ namespace Startup
         public event Action<IObjectResolver> ModuleChanged;
         public IScreenPresenter CurrentPresenter { get; private set; } 
 
-        public void Start()
+        
+        public void Start() => RunScreen(SceneManager.GetActiveScene().name).Forget();
+
+        private async UniTaskVoid RunScreen(string sceneName, object param = null)
         {
-            Scene activeScene = SceneManager.GetActiveScene();
-            string currentSceneName = activeScene.name;
-            ScreenPresenterMap? screenModelMap = SceneNameToEnum(currentSceneName);
+            ScreenPresenterMap? screenModelMap = SceneNameToEnum(sceneName);
             
             if (screenModelMap != null)
-                RunPresenter((ScreenPresenterMap)screenModelMap).Forget();
+                RunScreen((ScreenPresenterMap)screenModelMap, param).Forget();
             else
             {
                 _sceneInstallerService.
@@ -38,10 +39,9 @@ namespace Startup
             }
         }
 
-        public async UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null)
+        public async UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null)
         {
-            Debug.Log("Run Presenter: " + screenPresenterMap);
-            // Wait until the semaphore is available (only one thread can pass)
+            Debug.Log("Run Screen: " + screenPresenterMap);
             await _semaphoreSlim.WaitAsync();
 
             try
