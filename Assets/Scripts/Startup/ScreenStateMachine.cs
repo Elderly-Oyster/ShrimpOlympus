@@ -18,15 +18,14 @@ namespace Startup
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
 
-        // SemaphoreSlim to ensure only one thread can execute the RunPresenter method at a time
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         public event Action<IObjectResolver> ModuleChanged;
-        public IScreenPresenter CurrentPresenter { get; private set; } 
+        public IScreenPresenter CurrentPresenter { get; private set; }
 
-        
-        public void Start() => RunScreen(SceneManager.GetActiveScene().name).Forget();
 
-        private async UniTaskVoid RunScreen(string sceneName, object param = null)
+        public void Start() => RunScreen(SceneManager.GetActiveScene().name);
+
+        private void RunScreen(string sceneName, object param = null)
         {
             ScreenPresenterMap? screenModelMap = SceneNameToEnum(sceneName);
             
@@ -47,6 +46,7 @@ namespace Startup
             try
             {
                 await _sceneService.LoadScenesForModule(screenPresenterMap);
+                await _sceneService.UnloadUnusedScenesAsync();
 
                 var sceneLifetimeScope = _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);

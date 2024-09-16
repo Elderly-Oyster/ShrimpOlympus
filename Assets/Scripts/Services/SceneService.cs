@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Core;
 using Cysharp.Threading.Tasks;
@@ -17,9 +18,10 @@ namespace Services
     
     public class SceneService
     {
-        private CancellationTokenSource _cts;
+        private readonly List<string> _staticModuleScenes = new();
+        private List<string> _activeModuleScenes = new();
         private List<string> _loadedModuleScenes = new();
-        private List<string> _staticModuleScenes = new();
+        private CancellationTokenSource _cts;
 
         public SceneService()
         {
@@ -27,16 +29,11 @@ namespace Services
             LoadStaticScenes().Forget();
         }
         
-        public async UniTask LoadStaticScenes() //TODO Invoke from ScreenController?
-        {
-            await LoadScenesAsync(_staticModuleScenes);
-        }
-        
-        public void AddStaticAdditiveScene(AdditiveScenesMap sceneName)
-        {
+        public async UniTask LoadStaticScenes() => await LoadScenesAsync(_staticModuleScenes);
+
+        public void AddStaticAdditiveScene(AdditiveScenesMap sceneName) =>
             _staticModuleScenes.Add(sceneName.ToString());
-        }
-        
+
         public async UniTask LoadScenesForModule(ScreenPresenterMap screenPresenterMap)
         {
             List<string> scenes = new List<string> { screenPresenterMap.ToString() };
@@ -49,8 +46,10 @@ namespace Services
 
             Debug.Log("Loading scenes: " + string.Join(", ", scenes));
             await LoadScenesAsync(scenes);
-            await UnloadUnusedScenesAsync(scenes);
+            _activeModuleScenes = scenes;
         }
+        
+        
         
         private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
         {
@@ -114,16 +113,16 @@ namespace Services
             }
         }
 
-        private async UniTask UnloadUnusedScenesAsync(List<string> scenesToLoad)
+        public async UniTask UnloadUnusedScenesAsync()
         {
-            if (scenesToLoad == null || scenesToLoad.Count == 0)
+            if (_activeModuleScenes == null || _activeModuleScenes.Count == 0)
             {
                 Debug.LogWarning("No scenes to load.");
                 return;
             }
 
             var scenesToUnload = _loadedModuleScenes
-                .Except(scenesToLoad)
+                .Except(_activeModuleScenes) // Исключение активных сцен
                 .Except(_staticModuleScenes) // Исключение постоянных сцен
                 .ToList();
 
