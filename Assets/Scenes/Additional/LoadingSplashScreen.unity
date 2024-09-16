@@ -416,30 +416,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1461079802}
-  - component: {fileID: 1461079801}
+  - component: {fileID: 1461079803}
   m_Layer: 0
-  m_Name: MainMenuInstaller
+  m_Name: LoadingSplashScreenInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1461079801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1461079800}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26655dd36535e684ca324da0f1707fe7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectsToDelete: []
-  mainMenuScreenView: {fileID: 0}
-  screensCanvas: {fileID: 352199503}
-  mainCamera: {fileID: 838462636}
 --- !u!4 &1461079802
 Transform:
   m_ObjectHideFlags: 0
@@ -455,6 +439,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1461079803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1461079800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3398311afe060b7408ddfd38efa05bd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectsToDelete: []
+  loadingSplashScreenView: {fileID: 1854619368}
+  screensCanvas: {fileID: 352199503}
+  mainCamera: {fileID: 838462636}
+--- !u!114 &1854619368 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3096519313289881947, guid: cc5581175e1f4b74db38a17084f24392, type: 3}
+  m_PrefabInstance: {fileID: 1438903898}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52097bc46074b8b873cfb6b63715582, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

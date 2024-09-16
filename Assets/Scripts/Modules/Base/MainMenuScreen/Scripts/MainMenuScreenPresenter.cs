@@ -19,6 +19,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand _converterCommand = new ReactiveCommand();
         private readonly ReactiveCommand _ticTacCommand = new ReactiveCommand();
 
+        public bool IsNeedServices { get; private set; }
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, PopupHub popupHub,
             MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView)

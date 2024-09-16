@@ -13,7 +13,8 @@ namespace Modules.Base.NewBaseScreen
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
         private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
-
+        
+        public bool IsNeedServices { get; private set; }
         
         public NewModuleScreenPresenter(IScreenStateMachine screenStateMachine, 
             NewModuleScreenModel newModuleScreenModel, NewModuleScreenView newModuleScreenView)

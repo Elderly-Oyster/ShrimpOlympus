@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
     public class LoadingSplashScreenPresenter : IScreenPresenter
     {
@@ -20,13 +20,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
         private readonly ReactiveCommand _startCommand = new ReactiveCommand();
-        
-        private bool _isNeedServices;
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
 
-        
+        public bool IsNeedServices { get; private set; }
+
         public LoadingSplashScreenPresenter(IScreenStateMachine screenStateMachine,
             LoadingSplashScreenModel loadingSplashScreenModel, LoadingSplashScreenView loadingSplashScreenView)
         {
@@ -53,12 +52,6 @@ namespace Modules.Base.StartGameScreen.Scripts
             _progressStatus.Subscribe(status => 
                 _loadingSplashScreenView.SetTooltipText(status))
                 .AddTo(_cancellationTokenSource.Token);
-        }
-
-        bool IScreenPresenter.IsNeedServices
-        {
-            get => _isNeedServices;
-            set => _isNeedServices = value;
         }
 
         public async UniTask Enter(object param)

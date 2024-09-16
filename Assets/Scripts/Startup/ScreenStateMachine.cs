@@ -3,6 +3,7 @@ using System.Threading;
 using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
+using Modules.Additional.LoadingSplashScreen.Scripts;
 using Modules.Base.StartGameScreen.Scripts;
 using Services;
 using UnityEngine;

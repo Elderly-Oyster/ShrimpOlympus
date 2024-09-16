@@ -6,7 +6,7 @@ using DG.Tweening;
 using DG.Tweening.Core.Enums;
 using Services.LongInitializationServices;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
     public class LoadingSplashScreenModel : IScreenModel
     {
@@ -48,11 +48,11 @@ namespace Modules.Base.StartGameScreen.Scripts
             DOTween.useSmoothDeltaTime = true;
         }
 
-        public void RegisterCommands()
+        public void RegisterCommands()  //TODO Должен получать сервисы от презентера
         {
-            Commands.Add("First Service", _firstLongInitializationService.Init);
-            Commands.Add("Second Service", _secondLongInitializationService.Init);
-            Commands.Add("Third Service", _thirdLongInitializationService.Init);
+            // Commands.Add("First Service", _firstLongInitializationService.Init);
+            // Commands.Add("Second Service", _secondLongInitializationService.Init);
+            // Commands.Add("Third Service", _thirdLongInitializationService.Init);
         }
         
         public string GetNextTooltip()

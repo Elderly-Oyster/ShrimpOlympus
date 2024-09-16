@@ -1,15 +1,13 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Core.MVP;
 using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
     public class LoadingSplashScreenView : BaseScreenView
     {

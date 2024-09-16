@@ -22,7 +22,8 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly ReactiveCommand<string> _targetAmountChangedCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new ReactiveCommand<float>();
         private readonly ReactiveCommand _backButtonCommand = new ReactiveCommand();
-
+        
+        public bool IsNeedServices { get; private set; }
 
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
             ConverterScreenView converterScreenView, DynamicParticleController dynamicParticleController)
@@ -73,6 +74,8 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PLN", Currencies.Pln },
             { "PR", Currencies.Pr }
         };
+
+        private IScreenPresenter _screenPresenterImplementation;
 
         private void DetermineSourceCurrency(string name)
         {
