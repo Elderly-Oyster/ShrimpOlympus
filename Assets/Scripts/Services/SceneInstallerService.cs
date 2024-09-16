@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Core;
 using UnityEngine;
@@ -9,18 +10,36 @@ namespace Services
 {
     public class SceneInstallerService
     {
+        [Inject] private SceneService _sceneService;
         private List<ISceneInstaller> _currentScenesInstallers;
         
-        private static List<ISceneInstaller> FindAllSceneInstallers()
+        private List<ISceneInstaller> FindAllSceneInstallers()
+        {
+            int sceneCount = SceneManager.sceneCount;
+            Scene[] activeScenes = new Scene[sceneCount];
+
+            for (int i = 0; i < sceneCount; i++) 
+                activeScenes[i] = SceneManager.GetSceneAt(i);
+
+            return FindSceneInstallersInScenes(activeScenes);
+        }
+
+        private List<ISceneInstaller> FindActiveModulesSceneInstallers()
+        {
+            Scene[] activeScenes = _sceneService.GetActiveModulesScenes();
+            if (activeScenes.Length == 0)
+                return FindAllSceneInstallers();
+            return FindSceneInstallersInScenes(activeScenes);
+        }
+
+        private List<ISceneInstaller> FindSceneInstallersInScenes(Scene[] scenes)
         {
             List<ISceneInstaller> sceneInstallers = new List<ISceneInstaller>();
-
-            for (int i = 0; i < SceneManager.sceneCount; i++)
+            for (int i = 0; i < scenes.Length; i++)
             {
-                Scene scene = SceneManager.GetSceneAt(i);
-                if (scene.isLoaded)
+                if (scenes[i].isLoaded)
                 {
-                    GameObject[] rootObjects = scene.GetRootGameObjects();
+                    GameObject[] rootObjects = scenes[i].GetRootGameObjects();
                     foreach (GameObject rootObject in rootObjects)
                     {
                         ISceneInstaller[] installersInRoot = rootObject.
@@ -35,7 +54,7 @@ namespace Services
         
         public LifetimeScope CombineScenes(LifetimeScope parentScope, bool removeObjectsToDelete)
         {
-            _currentScenesInstallers = FindAllSceneInstallers();
+            _currentScenesInstallers = FindActiveModulesSceneInstallers();
 
             if (removeObjectsToDelete)
             {

@@ -28,6 +28,13 @@ namespace Services
             AddStaticAdditiveScene(AdditiveScenesMap.PopupsManager);
             LoadStaticScenes().Forget();
         }
+
+        public Scene[] GetActiveModulesScenes()
+        {
+            return _activeModuleScenes.Concat(_staticModuleScenes)
+                .Select(SceneManager.GetSceneByName)
+                .ToArray();
+        }
         
         public async UniTask LoadStaticScenes() => await LoadScenesAsync(_staticModuleScenes);
 
@@ -48,9 +55,7 @@ namespace Services
             await LoadScenesAsync(scenes);
             _activeModuleScenes = scenes;
         }
-        
-        
-        
+
         private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
         {
             return screenPresenterMap switch
