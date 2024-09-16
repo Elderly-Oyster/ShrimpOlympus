@@ -3,6 +3,7 @@ using System.Threading;
 using Core;
 using Core.MVVM;
 using Cysharp.Threading.Tasks;
+using Modules.Base.StartGameScreen.Scripts;
 using Services;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,6 +18,7 @@ namespace Startup
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
+        [Inject] private LoadingSplashScreenPresenter _splashScreenPresenter;
 
         // SemaphoreSlim to ensure only one thread can execute the RunPresenter method at a time
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
@@ -55,6 +57,11 @@ namespace Startup
                 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
 
+                if (CurrentPresenter.IsNeedServices)
+                {
+                    await RunLoadingSplashScreen(null);   //TODO Реализовать передачу сервисов для инициализации сюда
+                }
+                
                 await CurrentPresenter.Enter(param);
                 await CurrentPresenter.Execute();
                 await CurrentPresenter.Exit();
@@ -62,6 +69,13 @@ namespace Startup
                 sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
+        }
+
+        private async UniTask RunLoadingSplashScreen(object param)
+        {
+            await _splashScreenPresenter.Enter(param);
+            await _splashScreenPresenter.Execute();
+            await _splashScreenPresenter.Exit();
         }
         
         private static ScreenPresenterMap? SceneNameToEnum(string sceneName)

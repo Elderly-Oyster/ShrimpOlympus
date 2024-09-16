@@ -20,6 +20,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
         private readonly ReactiveCommand _startCommand = new ReactiveCommand();
+        
+        private bool _isNeedServices;
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
@@ -52,7 +54,13 @@ namespace Modules.Base.StartGameScreen.Scripts
                 _loadingSplashScreenView.SetTooltipText(status))
                 .AddTo(_cancellationTokenSource.Token);
         }
-        
+
+        bool IScreenPresenter.IsNeedServices
+        {
+            get => _isNeedServices;
+            set => _isNeedServices = value;
+        }
+
         public async UniTask Enter(object param)
         {
             SetApplicationFrameRate();

@@ -341,7 +341,7 @@ GameObject:
   - component: {fileID: 4300237370034851981}
   - component: {fileID: 4638081352077922004}
   m_Layer: 5
-  m_Name: ProgressText
+  m_Name: ProgressValueText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1300,13 +1300,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationElement: {fileID: 4317131486582699790}
   progressBarCanvasGroup: {fileID: 1802015899562398353}
-  progressValueText: {fileID: 0}
-  progressText: {fileID: 4638081352077922004}
+  progressValueText: {fileID: 4638081352077922004}
+  progressText: {fileID: 2495177131400756202}
   progressBar: {fileID: 5514938749760669630}
   lightingCanvasGroup: {fileID: 1680990670495228086}
   stuffImage: {fileID: 7008782478146840770}
-  overlay: {fileID: 0}
-  splashTooltipsText: {fileID: 0}
+  overlay: {fileID: 5368236219109023966}
+  splashTooltipsText: {fileID: 4573424070984857575}
 --- !u!114 &4317131486582699790
 MonoBehaviour:
   m_ObjectHideFlags: 0
