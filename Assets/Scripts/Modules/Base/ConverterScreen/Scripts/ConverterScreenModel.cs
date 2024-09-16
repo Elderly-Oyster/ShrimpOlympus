@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Core.MVVM;
+using Core.MVP;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {

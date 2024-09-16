@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground;
 using UniRx;

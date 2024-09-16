@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.MVVM;
+using Core.MVP;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
 using Services.LongInitializationServices;

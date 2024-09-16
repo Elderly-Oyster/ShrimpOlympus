@@ -1,5 +1,5 @@
 ﻿using System;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using VContainer;
 

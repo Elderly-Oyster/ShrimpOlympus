@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using Services;
 using UnityEngine;

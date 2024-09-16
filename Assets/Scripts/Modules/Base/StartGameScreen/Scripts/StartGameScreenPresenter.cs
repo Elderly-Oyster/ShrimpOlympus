@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;

@@ -1,5 +1,5 @@
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using UniRx;
 
