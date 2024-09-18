@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
@@ -52,9 +53,11 @@ namespace Startup
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
                 
                 CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
+
+                //await ShowSplashScreen(); //TODO
                 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
-
+                
                 await CurrentPresenter.Enter(param);
                 await CurrentPresenter.Execute();
                 await CurrentPresenter.Exit();
@@ -63,11 +66,17 @@ namespace Startup
             }
             finally { _semaphoreSlim.Release(); }
         }
-        
+
+        private async UniTask ShowSplashScreen()
+        {
+            // await CurrentPresenter.Enter();
+            await CurrentPresenter.Execute();
+            await CurrentPresenter.Exit();
+        }
+
         private static ScreenPresenterMap? SceneNameToEnum(string sceneName)
         {
-            if (Enum.TryParse(sceneName, out ScreenPresenterMap result))
-                return result;
+            if (Enum.TryParse(sceneName, out ScreenPresenterMap result)) return result;
             return null;
         }
     }

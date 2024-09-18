@@ -7,14 +7,14 @@ using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
-    public class StartGameScreenPresenter : IScreenPresenter
+    public class LoadingSplashScreenPresenter : IScreenPresenter
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly StartGameScreenModel _startGameScreenModel;
-        private readonly StartGameScreenView _startGameScreenView;
+        private readonly LoadingSplashScreenModel _loadingSplashScreenModel;
+        private readonly LoadingSplashScreenView _loadingSplashScreenView;
         private readonly IScreenStateMachine _screenStateMachine;
         
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
@@ -23,16 +23,15 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
-
         
-        public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
-            StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView)
+        public LoadingSplashScreenPresenter(IScreenStateMachine screenStateMachine,
+            LoadingSplashScreenModel loadingSplashScreenModel, LoadingSplashScreenView loadingSplashScreenView)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             
             _screenStateMachine = screenStateMachine;
-            _startGameScreenModel = startGameScreenModel;
-            _startGameScreenView = startGameScreenView;
+            _loadingSplashScreenModel = loadingSplashScreenModel;
+            _loadingSplashScreenView = loadingSplashScreenView;
 
             SubscribeToUIUpdates();
         }
@@ -44,60 +43,89 @@ namespace Modules.Base.StartGameScreen.Scripts
 
             _exponentialProgress.Subscribe(progress =>
             {
-                _startGameScreenView.ReportProgress(progress,
+                _loadingSplashScreenView.ReportProgress(progress,
                     _progressStatus.Value).Forget();
             }).AddTo(_cancellationTokenSource.Token);
 
             _progressStatus.Subscribe(status => 
-                _startGameScreenView.SetTooltipText(status))
+                _loadingSplashScreenView.SetTooltipText(status))
                 .AddTo(_cancellationTokenSource.Token);
         }
-        
+
         public async UniTask Enter(object param)
         {
             SetApplicationFrameRate();
             InitializeUI();
     
             ShowTooltips().Forget();
-            _startGameScreenModel.DoTweenInit();
-            _startGameScreenModel.RegisterCommands();
+            _loadingSplashScreenModel.DoTweenInit();
+            _loadingSplashScreenModel.RegisterCommands();
 
-            await _startGameScreenView.Show();
+            await _loadingSplashScreenView.Show();
 
-            await InitializeServices();
+            // await ShowScenesLoadingProgress();
+            // await InitializeServices();  TODO
 
             ShowAnimations();
         }
         
-        private void InitializeUI()
-        {
-            _startGameScreenView.HideInstantly();
-            _startGameScreenView.SetupEventListeners(_startCommand);
-            SetVersionText(Application.version);
-        }
+        private void InitializeUI() => _loadingSplashScreenView.HideInstantly();
 
-        private async UniTask InitializeServices()
+        private async UniTask ShowScenesLoadingProgress(List<UniTask> loadSceneTasks)
         {
-            var timing = 1f / _startGameScreenModel.Commands.Count;
+            var timing = 1f / loadSceneTasks.Count;
             var currentTiming = timing;
-
-            var initTasks = new List<UniTask>();
-
-            foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
+            
+            foreach (var initFunction in loadSceneTasks)
             {
-                var initTask = initFunction.Invoke().AsUniTask();
-
-                await initTask;
-                
-                _progressStatus.Value = $"Loading: {serviceName}";
                 _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
 
-                initTasks.Add(initTask);
+                loadSceneTasks.Add(initFunction);
                 currentTiming += timing;
             }
 
-            // await UniTask.WhenAll(initTasks);
+            await UniTask.WhenAll(loadSceneTasks);
+            
         }
+        // private async UniTask ShowScenesLoadingProgress(List<UniTask> loadSceneTasks)
+        // {
+        //     var timing = 1f / loadSceneTasks.Count;
+        //     var currentTiming = timing;
+        //     
+        //     foreach (var (serviceName, initFunction) in _loadingSplashScreenModel.Commands)
+        //     {
+        //         var initTask = initFunction.Invoke().AsUniTask();
+        //
+        //         _progressStatus.Value = $"Loading: {serviceName}";
+        //         _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
+        //
+        //         loadSceneTasks.Add(initTask);
+        //         currentTiming += timing;
+        //     }
+        //
+        //     await UniTask.WhenAll(loadSceneTasks);
+        // }
+        
+        // private async UniTask InitializeServices()
+        // {
+        //     var timing = 1f / _loadingSplashScreenModel.Commands.Count;
+        //     var currentTiming = timing;
+        //
+        //     var initTasks = new List<UniTask>();
+        //
+        //     foreach (var (serviceName, initFunction) in _loadingSplashScreenModel.Commands)
+        //     {
+        //         var initTask = initFunction.Invoke().AsUniTask();
+        //
+        //         _progressStatus.Value = $"Loading: {serviceName}";
+        //         _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
+        //
+        //         initTasks.Add(initTask);
+        //         currentTiming += timing;
+        //     }
+        //
+        //     await UniTask.WhenAll(initTasks);
+        // }
 
         private float CalculateExponentialProgress(float progress)
         {
@@ -106,15 +134,13 @@ namespace Modules.Base.StartGameScreen.Scripts
             var maxExp = Math.Exp(1);
             return (float)((expValue - minExp) / (maxExp - minExp));
         }
-
-
-
+        
         public async UniTask Execute() => await _completionSource.Task;
 
         public async UniTask Exit()
         {
             _cancellationTokenSource?.Cancel();
-            await _startGameScreenView.Hide();
+            await _loadingSplashScreenView.Hide();
         }
 
         private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
@@ -126,10 +152,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         }
 
         private void OnContinueButtonPressed() => RunMainMenuScreen(ScreenPresenterMap.MainMenu);
-
-        private void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
-
-        private void ShowAnimations() => _startGameScreenView.ShowAnimations(_cancellationTokenSource.Token);
+        
+        private void ShowAnimations() => _loadingSplashScreenView.ShowAnimations(_cancellationTokenSource.Token);
 
         private async UniTaskVoid ShowTooltips()
         {
@@ -138,8 +162,8 @@ namespace Modules.Base.StartGameScreen.Scripts
             {
                 while (!token.IsCancellationRequested)
                 {
-                    var tooltip = _startGameScreenModel.GetNextTooltip();
-                    _startGameScreenView.SetTooltipText(tooltip);
+                    var tooltip = _loadingSplashScreenModel.GetNextTooltip();
+                    _loadingSplashScreenView.SetTooltipText(tooltip);
                     await UniTask.Delay(TooltipDelay, cancellationToken: token);
                 }
             }
@@ -153,8 +177,8 @@ namespace Modules.Base.StartGameScreen.Scripts
                 _cancellationTokenSource.Cancel();
             _cancellationTokenSource?.Dispose();
             
-            _startGameScreenView.Dispose();
-            _startGameScreenModel.Dispose();
+            _loadingSplashScreenView.Dispose();
+            _loadingSplashScreenModel.Dispose();
         }
     }
 }
