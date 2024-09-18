@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Modules.Base.NewBaseScreen
 {
-    public class NewModuleScreenView : BaseScreenView
+    public class TemplateView : BaseScreenView
     {
         [SerializeField] private Button restartButton;
         [SerializeField] private Button mainMenuButton;
