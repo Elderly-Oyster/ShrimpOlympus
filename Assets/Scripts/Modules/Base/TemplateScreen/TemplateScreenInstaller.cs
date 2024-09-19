@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Base.NewBaseScreen
+namespace Modules.Base.TemplateScreen
 {
     public class TemplateInstaller : SceneInstaller
     {

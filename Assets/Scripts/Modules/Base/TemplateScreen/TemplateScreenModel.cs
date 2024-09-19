@@ -1,14 +1,11 @@
-using Core.MVVM;
+using Core.MVP;
 
-namespace Modules.Base.NewBaseScreen
+namespace Modules.Base.TemplateScreen
 {
     public class TemplateModel : IScreenModel
     {
         public TemplateModel() { }
 
-        public void Dispose()
-        {
-            
-        }
+        public void Dispose() { }
     }
 }

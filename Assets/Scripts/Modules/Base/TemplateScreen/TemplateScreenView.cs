@@ -1,13 +1,12 @@
 using Core.MVP;
 using UniRx;
-using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
-namespace Modules.Base.NewBaseScreen
+namespace Modules.Base.TemplateScreen
 {
     public class TemplateView : BaseScreenView
     {
-        [SerializeField] private Button restartButton;
         [SerializeField] private Button mainMenuButton;
         
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
@@ -17,9 +16,7 @@ namespace Modules.Base.NewBaseScreen
                 .Subscribe(_ => mainMenuCommand.Execute())
                 .AddTo(_disposables);
         }
-
-        public void ResetView() { }
-
+        
         private void RemoveEventListeners() => _disposables.Clear();
 
         public override void Dispose()

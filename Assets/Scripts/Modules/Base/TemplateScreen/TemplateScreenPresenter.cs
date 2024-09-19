@@ -1,9 +1,10 @@
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
+using Modules.Base.NewBaseScreen;
 using UniRx;
 
-namespace Modules.Base.NewBaseScreen
+namespace Modules.Base.TemplateScreen
 {
     public class TemplatePresenter : IScreenPresenter
     {
@@ -28,9 +29,8 @@ namespace Modules.Base.NewBaseScreen
         {
             _newModuleScreenView.gameObject.SetActive(false);
             SubscribeToUIUpdates();
-            _newModuleScreenView.SetupEventListeners(
-                _mainMenuCommand
-            );
+            _newModuleScreenView.SetupEventListeners(_mainMenuCommand);
+            
             await _newModuleScreenView.Show();
         }
         
@@ -43,7 +43,7 @@ namespace Modules.Base.NewBaseScreen
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
 
         public async UniTask Execute() => await _completionSource.Task;
