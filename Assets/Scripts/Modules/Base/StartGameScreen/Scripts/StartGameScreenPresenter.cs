@@ -10,15 +10,23 @@ namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IScreenPresenter
     {
+        public ReadOnlyReactiveProperty<string> ProgressStatus => 
+            _progressStatus.ToReadOnlyReactiveProperty();
+        public ReadOnlyReactiveProperty<float> ExponentialProgress => 
+            _exponentialProgress.ToReadOnlyReactiveProperty();
+        public ReactiveCommand<Unit> StartCommand => _startCommand;
+
+        
+        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
+        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
+        private readonly ReactiveCommand<Unit> _startCommand = new ReactiveCommand<Unit>();
+        
+        
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly StartGameScreenModel _startGameScreenModel;
         private readonly StartGameScreenView _startGameScreenView;
         private readonly IScreenStateMachine _screenStateMachine;
-        
-        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
-        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
-        private readonly ReactiveCommand<Unit> _startCommand = new ReactiveCommand<Unit>();
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
@@ -54,6 +62,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         public async UniTask Enter(object param)
         {
+            SetVersionText(Application.version);
             SetApplicationFrameRate();
             InitializeUI();
     
@@ -71,8 +80,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private void InitializeUI()
         {
             _startGameScreenView.HideInstantly();
-            _startGameScreenView.SetupEventListeners(_startCommand);
-            SetVersionText(Application.version);
+            _startGameScreenView.SetupEventListeners(StartCommand,
+                ProgressStatus, ExponentialProgress); 
         }
 
         private async UniTask InitializeServices()

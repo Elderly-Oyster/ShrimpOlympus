@@ -42,19 +42,26 @@ namespace Modules.Base.StartGameScreen.Scripts
             _flickerAnimation = new FlickerAnimation(lightingCanvasGroup, overlay);
         }
 
-        public void SetupEventListeners(ReactiveCommand<Unit> startCommand)
+        public void SetupEventListeners(ReactiveCommand<Unit> startCommand,
+            ReadOnlyReactiveProperty<string> progressStatus,
+            ReadOnlyReactiveProperty<float> exponentialProgress)
         {
             continueButton.OnClickAsObservable()
                 .Subscribe(_ => startCommand.Execute(default))
                 .AddTo(this);
-        }
 
+            Observable.CombineLatest(exponentialProgress, progressStatus,
+                    (progress, status) => new { progress, status })
+                .Subscribe(data => ReportProgress(data.progress, data.status).Forget())
+                .AddTo(this);
+        }
+        
         public void SetVersionText(string version) => versionText.text = version;
 
         public UniTask ReportProgress(float expProgress, string progressStatus)
         {
             progressText.text = progressStatus;
-            
+    
             return DOTween.To(() => progressBar.fillAmount, x =>
             {
                 progressBar.fillAmount = x;
@@ -63,7 +70,6 @@ namespace Modules.Base.StartGameScreen.Scripts
                 lightingCanvasGroup.alpha = expProgress;
                 stuffImage.color = new Color(1, 1, 1, Mathf.Max(.1f, expProgress));
             }, expProgress, 1f).ToUniTask();
-            
         }
 
         public void SetTooltipText(string text) => splashTooltipsText.text = text;
