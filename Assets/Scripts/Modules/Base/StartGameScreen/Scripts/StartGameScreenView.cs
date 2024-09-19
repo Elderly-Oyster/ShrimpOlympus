@@ -30,12 +30,14 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
 
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private FlickerAnimation _flickerAnimation;
         private Sequence _sequence;
 
         private const string TapToContinueText = "Tap to continue";
         private const float ProgressBarAnimDuration = 0.5f;
 
+        
         private void Start()
         {
             splashTooltipsText.transform.parent.gameObject.SetActive(true);
@@ -48,12 +50,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         {
             continueButton.OnClickAsObservable()
                 .Subscribe(_ => startCommand.Execute(default))
-                .AddTo(this);
+                .AddTo(_disposables);
 
             Observable.CombineLatest(exponentialProgress, progressStatus,
                     (progress, status) => new { progress, status })
                 .Subscribe(data => ReportProgress(data.progress, data.status).Forget())
-                .AddTo(this);
+                .AddTo(_disposables);
         }
         
         public void SetVersionText(string version) => versionText.text = version;
@@ -97,6 +99,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         public override void Dispose()
         {
+            _disposables.Dispose();
             StopAnimation();
             base.Dispose();
         }
