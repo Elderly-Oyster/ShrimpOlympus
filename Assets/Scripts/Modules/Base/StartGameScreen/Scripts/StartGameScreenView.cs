@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Core.MVP;
 using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using R3;
 using TMPro;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -43,10 +42,10 @@ namespace Modules.Base.StartGameScreen.Scripts
             _flickerAnimation = new FlickerAnimation(lightingCanvasGroup, overlay);
         }
 
-        public void SetupEventListeners(ReactiveCommand startCommand)
+        public void SetupEventListeners(ReactiveCommand<Unit> startCommand)
         {
             continueButton.OnClickAsObservable()
-                .Subscribe(_ => startCommand.Execute())
+                .Subscribe(_ => startCommand.Execute(default))
                 .AddTo(this);
         }
 
