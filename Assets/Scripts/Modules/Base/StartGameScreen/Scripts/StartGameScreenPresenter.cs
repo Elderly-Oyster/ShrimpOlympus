@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using Core;
 using Core.MVP;
@@ -80,23 +79,15 @@ namespace Modules.Base.StartGameScreen.Scripts
         {
             var timing = 1f / _startGameScreenModel.Commands.Count;
             var currentTiming = timing;
-
-            var initTasks = new List<UniTask>();
-
+            
             foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
             {
-                var initTask = initFunction.Invoke().AsUniTask();
-
-                await initTask;
-                
                 _progressStatus.Value = $"Loading: {serviceName}";
                 _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
-
-                initTasks.Add(initTask);
                 currentTiming += timing;
+                
+                await initFunction.Invoke().AsUniTask();
             }
-
-            // await UniTask.WhenAll(initTasks);
         }
 
         private float CalculateExponentialProgress(float progress)
@@ -106,8 +97,6 @@ namespace Modules.Base.StartGameScreen.Scripts
             var maxExp = Math.Exp(1);
             return (float)((expValue - minExp) / (maxExp - minExp));
         }
-
-
 
         public async UniTask Execute() => await _completionSource.Task;
 
