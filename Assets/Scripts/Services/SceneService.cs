@@ -52,7 +52,7 @@ namespace Services
             await UnloadUnusedScenesAsync(scenes);
         }
         
-        private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
+        public IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
         {
             return screenPresenterMap switch
             {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Core;
 using Core.MVVM;
@@ -18,6 +19,7 @@ namespace Startup
         [Inject] private readonly SceneInstallerService _sceneInstallerService;
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
+        [Inject] private readonly SplashScreenService _splashScreenService;
         [Inject] private readonly IObjectResolver _resolver;
         [Inject] private LoadingSplashScreenPresenter _splashScreenPresenter;
 
@@ -37,7 +39,7 @@ namespace Startup
             else
             {
                 _sceneInstallerService.
-                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
+                    CombineActiveScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
             }
         }
 
@@ -49,19 +51,26 @@ namespace Startup
 
             try
             {
-                await _sceneService.LoadScenesForModule(screenPresenterMap);
+                //TODO Мнимый метод подрузки сцен
+                //TODO Тогда вопрос сервисами
+                //TODO Из мапы взять
+                if (_sceneService.GetAdditionalScenes(screenPresenterMap).Count() != 0 /*|| CurrentPresenter.HaveService*/) 
+                {
+                    // var sceneLifetimeScope = _sceneInstallerService.
+                    //     CombineActiveScenes(LifetimeScope.Find<RootLifetimeScope>(), true); Не нужно, т.к. используется сервис
+                    
+                    await ShowSplashScreen(() => { });
+                }
+                
+                await _sceneService.LoadScenesForModule(screenPresenterMap );
+                await _sceneService.UnloadUnusedScenesAsync();
 
                 var sceneLifetimeScope = _sceneInstallerService.
-                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
+                    CombineActiveScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
                 
                 CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
                 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
-
-                if (CurrentPresenter.IsNeedServices)
-                {
-                    await RunLoadingSplashScreen(null);   //TODO Реализовать передачу сервисов для инициализации сюда
-                }
                 
                 await CurrentPresenter.Enter(param);
                 await CurrentPresenter.Execute();
@@ -71,12 +80,13 @@ namespace Startup
             }
             finally { _semaphoreSlim.Release(); }
         }
-
-        private async UniTask RunLoadingSplashScreen(object param)
+        
+        private async UniTask ShowSplashScreen(Action onProgressUpdate)
         {
-            await _splashScreenPresenter.Enter(param);
-            await _splashScreenPresenter.Execute();
-            await _splashScreenPresenter.Exit();
+            await _sceneService.LoadScenesForModule(screenPresenterMap);
+            await CurrentPresenter.Enter(onProgressUpdate);
+            await CurrentPresenter.Execute();
+            await CurrentPresenter.Exit();
         }
         
         private static ScreenPresenterMap? SceneNameToEnum(string sceneName)
@@ -84,6 +94,14 @@ namespace Startup
             if (Enum.TryParse(sceneName, out ScreenPresenterMap result))
                 return result;
             return null;
+        }
+    }
+
+    internal class SplashScreenService
+    {
+        public void ShowSplashScreen()
+        {
+            
         }
     }
 }

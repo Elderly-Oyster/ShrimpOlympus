@@ -33,7 +33,7 @@ namespace Services
             return sceneInstallers;
         }
         
-        public LifetimeScope CombineScenes(LifetimeScope parentScope, bool removeObjectsToDelete)
+        public LifetimeScope CombineActiveScenes(LifetimeScope parentScope, bool removeObjectsToDelete)
         {
             _currentScenesInstallers = FindAllSceneInstallers();
 

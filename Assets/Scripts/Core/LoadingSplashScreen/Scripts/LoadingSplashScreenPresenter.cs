@@ -24,8 +24,8 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
 
-        public bool IsNeedServices { get; private set; }
-
+        //TODO Самое актуальное. Сначала ожидание метода сцен сервиса по подгрузке всех сцен, а потом
+        //ожидания 
         public LoadingSplashScreenPresenter(IScreenStateMachine screenStateMachine,
             LoadingSplashScreenModel loadingSplashScreenModel, LoadingSplashScreenView loadingSplashScreenView)
         {
@@ -73,28 +73,27 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         private void InitializeUI()
         {
             _loadingSplashScreenView.HideInstantly();
-            // _loadingSplashScreenView.SetupEventListeners(_startCommand); Раньше тут была кнопка, а позже её не будет
         }
 
         private async UniTask InitializeServices()
         {
-            var timing = 1f / _loadingSplashScreenModel.Commands.Count;
-            var currentTiming = timing;
-
-            var initTasks = new List<UniTask>();
-
-            foreach (var (serviceName, initFunction) in _loadingSplashScreenModel.Commands)
-            {
-                var initTask = initFunction.Invoke().AsUniTask();
-
-                _progressStatus.Value = $"Loading: {serviceName}";
-                _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
-
-                initTasks.Add(initTask);
-                currentTiming += timing;
-            }
-
-            await UniTask.WhenAll(initTasks);
+            // // var timing = 1f / _loadingSplashScreenModel.Commands.Count;
+            // var currentTiming = timing;
+            //
+            // var initTasks = new List<UniTask>();
+            //
+            // foreach (var (serviceName, initFunction) in _loadingSplashScreenModel.Commands)
+            // {
+            //     var initTask = initFunction.Invoke().AsUniTask();
+            //
+            //     _progressStatus.Value = $"Loading: {serviceName}";
+            //     _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
+            //
+            //     initTasks.Add(initTask);
+            //     currentTiming += timing;
+            // }
+            //
+            // await UniTask.WhenAll(initTasks);
         }
 
         private float CalculateExponentialProgress(float progress)

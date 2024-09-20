@@ -22,8 +22,6 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly ReactiveCommand _restartCommand = new ReactiveCommand();
         private readonly ReactiveCommand _thirdPopupCommand = new ReactiveCommand();
 
-        public bool IsNeedServices { get; private set; }
-
         public TicTacScreenPresenter(IScreenStateMachine screenStateMachine,
             TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, 
             TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, PopupHub popupHub)
@@ -38,6 +36,8 @@ namespace Modules.Base.TicTacScreen.Scripts
             _popupHub = popupHub;
         }
 
+        //Презентер сам инициализирует свои сервисы. Метод Initialize
+        
         private void SubscribeToUIUpdates()
         {
             _cellCommand.Subscribe(position => OnCellClicked(position[0], position[1]));

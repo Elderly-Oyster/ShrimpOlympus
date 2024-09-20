@@ -1,4 +1,6 @@
 ﻿using Core;
+using Core.Popup.Base;
+using Core.Popup.Types.FirstPopup.Scripts;
 using Core.Views;
 using UnityEngine;
 using VContainer;
@@ -11,6 +13,7 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         [SerializeField] private LoadingSplashScreenView loadingSplashScreenView;
         [SerializeField] private ScreensCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
+        [SerializeField] private FirstPopup firstPopupPrefab;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
@@ -20,6 +23,13 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
             builder.RegisterInstance(loadingSplashScreenView).As<LoadingSplashScreenView>();
             builder.Register<LoadingSplashScreenPresenter>(Lifetime.Singleton);
             builder.Register<LoadingSplashScreenModel>(Lifetime.Singleton);
+        }
+
+        private void RegisterPopupFactories(IContainerBuilder builder)
+        {
+            builder.Register<BasePopupFactory<FirstPopup>>(Lifetime.Transient)
+                .WithParameter(firstPopupPrefab)
+                .AsImplementedInterfaces();
         }
     }
 }

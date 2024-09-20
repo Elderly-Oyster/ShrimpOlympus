@@ -23,9 +23,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
-
-        public bool IsNeedServices { get; private set; }
-
+        
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
             StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView)
         {

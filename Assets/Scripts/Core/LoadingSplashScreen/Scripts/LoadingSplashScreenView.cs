@@ -11,9 +11,6 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
     public class LoadingSplashScreenView : BaseScreenView
     {
-        // [Header("UI Interaction Components")] Для сплэша при переходе сцен это не нужно!
-        // [SerializeField] private Button continueButton;
-
         [Header("Progress UI Components")]
         [SerializeField] private CanvasGroup progressBarCanvasGroup;
         [SerializeField] private TMP_Text progressValueText;

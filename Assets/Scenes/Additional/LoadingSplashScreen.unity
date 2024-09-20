@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasScaler: {fileID: 352199505}
-  uiCamera: {fileID: 0}
+  uiCamera: {fileID: 838462636}
 --- !u!114 &352199505
 MonoBehaviour:
   m_ObjectHideFlags: 0

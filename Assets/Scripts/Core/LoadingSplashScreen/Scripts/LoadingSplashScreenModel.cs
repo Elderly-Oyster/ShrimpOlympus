@@ -10,8 +10,6 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
     public class LoadingSplashScreenModel : IScreenModel
     {
-        public readonly Dictionary<string, Func<Task>> Commands;
-
         private readonly FirstLongInitializationService _firstLongInitializationService;
         private readonly SecondLongInitializationService _secondLongInitializationService;
         private readonly ThirdLongInitializationService _thirdLongInitializationService;
@@ -26,8 +24,6 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
             _firstLongInitializationService = firstLongInitializationService;
             _secondLongInitializationService = secondLongInitializationService;
             _thirdLongInitializationService = thirdLongInitializationService;
-
-            Commands = new Dictionary<string, Func<Task>>();
             
             _tooltips = new []
             {
