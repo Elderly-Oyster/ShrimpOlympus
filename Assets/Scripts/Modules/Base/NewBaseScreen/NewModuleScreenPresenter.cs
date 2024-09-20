@@ -1,7 +1,7 @@
 using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 
 namespace Modules.Base.NewBaseScreen
 {
@@ -12,9 +12,8 @@ namespace Modules.Base.NewBaseScreen
         private readonly NewModuleScreenView _newModuleScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<Unit> _mainMenuCommand = new ReactiveCommand<Unit>();
 
-        
         public NewModuleScreenPresenter(IScreenStateMachine screenStateMachine, 
             NewModuleScreenModel newModuleScreenModel, NewModuleScreenView newModuleScreenView)
         {
@@ -33,13 +32,13 @@ namespace Modules.Base.NewBaseScreen
             );
             await _newModuleScreenView.Show();
         }
-        
-        private void SubscribeToUIUpdates() => 
-            _mainMenuCommand.Subscribe(_ =>OnMainMenuButtonClicked());
 
-        private void OnMainMenuButtonClicked() => 
+        private void SubscribeToUIUpdates() =>
+            _mainMenuCommand.Subscribe(_ => OnMainMenuButtonClicked());
+
+        private void OnMainMenuButtonClicked() =>
             RunNewScreen(ScreenPresenterMap.MainMenu);
-        
+
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);

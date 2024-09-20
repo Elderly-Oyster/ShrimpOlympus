@@ -2,33 +2,31 @@
 using Core.MVP;
 using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenPresenter : IScreenPresenter
     {
         private readonly TicTacScreenView _ticTacScreenView;
-        
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly TicTacScreenModel _newModuleScreenModel;
         private readonly TicTacScreenView _newModuleScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly TicTacScreenModel _ticTacScreenModel;
         private readonly PopupHub _popupHub;
-
-        private readonly ReactiveCommand<int[]> _cellCommand = new ReactiveCommand<int[]>();
-        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _restartCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _thirdPopupCommand = new ReactiveCommand();
-
         
+        private readonly ReactiveCommand<int[]> _cellCommand = new ReactiveCommand<int[]>();
+        private readonly ReactiveCommand<Unit> _mainMenuCommand = new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _restartCommand = new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _thirdPopupCommand = new ReactiveCommand<Unit>();
+
         public TicTacScreenPresenter(IScreenStateMachine screenStateMachine,
             TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, 
             TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, PopupHub popupHub)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
-            
+
             _screenStateMachine = screenStateMachine;
             _newModuleScreenModel = newModuleScreenModel;
             _newModuleScreenView = newModuleScreenView;

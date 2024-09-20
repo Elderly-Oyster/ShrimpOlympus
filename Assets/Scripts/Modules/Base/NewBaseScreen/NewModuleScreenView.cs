@@ -1,6 +1,5 @@
-using System;
 using Core.MVP;
-using UniRx;
+using R3;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -10,18 +9,20 @@ namespace Modules.Base.NewBaseScreen
     {
         [SerializeField] private Button restartButton;
         [SerializeField] private Button mainMenuButton;
-        
+
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        public void SetupEventListeners(ReactiveCommand mainMenuCommand)
+
+        public void SetupEventListeners(ReactiveCommand<Unit> mainMenuCommand)
         {
-            mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => mainMenuCommand.Execute())
-                .AddTo(_disposables);
+            mainMenuButton.onClick.AddListener(() => mainMenuCommand.Execute(Unit.Default));
         }
 
         public void ResetView() { }
 
-        private void RemoveEventListeners() => _disposables.Clear();
+        private void RemoveEventListeners()
+        {
+            mainMenuButton.onClick.RemoveAllListeners();
+        }
 
         public override void Dispose()
         {

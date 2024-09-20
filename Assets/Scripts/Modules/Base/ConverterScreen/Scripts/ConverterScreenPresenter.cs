@@ -3,7 +3,7 @@ using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace Modules.Base.ConverterScreen.Scripts
@@ -18,10 +18,10 @@ namespace Modules.Base.ConverterScreen.Scripts
         
         private readonly ReactiveCommand<string> _determineSourceCurrencyCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _determineTargetCurrencyCommand = new ReactiveCommand<string>();
-        private readonly ReactiveCommand<string> _sourceAmountChangedCommand= new ReactiveCommand<string>();
+        private readonly ReactiveCommand<string> _sourceAmountChangedCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _targetAmountChangedCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new ReactiveCommand<float>();
-        private readonly ReactiveCommand _backButtonCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<Unit> _backButtonCommand = new ReactiveCommand<Unit>();
 
 
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
@@ -33,6 +33,8 @@ namespace Modules.Base.ConverterScreen.Scripts
             _dynamicParticleController = dynamicParticleController;
             
             _completionSource = new UniTaskCompletionSource<bool>();
+
+            SubscribeToUIUpdates();
         }
 
         private void SubscribeToUIUpdates()
@@ -47,18 +49,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            
             _converterScreenView.HideInstantly();
-            SubscribeToUIUpdates();
-            _converterScreenView.SetupEventListeners
-            (
-                _determineSourceCurrencyCommand,
-                _determineTargetCurrencyCommand,
-                _sourceAmountChangedCommand,
-                _targetAmountChangedCommand,
-                _handleAmountScrollBarChangedCommand,
-                _backButtonCommand
-            );
             await _converterScreenView.Show();
         }
 

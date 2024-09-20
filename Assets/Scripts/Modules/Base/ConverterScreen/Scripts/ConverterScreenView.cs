@@ -1,10 +1,9 @@
 ﻿using System.Globalization;
 using Core.MVP;
+using R3;
 using TMPro;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
-using static Core.UniRx.UniRxExtensions;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -16,8 +15,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private TMP_Dropdown targetCurrencyDropdown;
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
-        
-        
+
         protected override void Awake()
         {
             base.Awake();
@@ -30,35 +28,21 @@ namespace Modules.Base.ConverterScreen.Scripts
             ReactiveCommand<string> sourceAmountChangedCommand,
             ReactiveCommand<string> targetAmountChangedCommand,
             ReactiveCommand<float> handleAmountScrollBarChangedCommand,
-            ReactiveCommand backButtonCommand)
-
+            ReactiveCommand<Unit> backButtonCommand)
         {
-            sourceAmountInputField.OnValueChangedAsObservable()
-                .Subscribe(parameter => sourceAmountChangedCommand.Execute(parameter))
-                .AddTo(this);
+            sourceAmountInputField.onValueChanged.AddListener(parameter => sourceAmountChangedCommand.Execute(parameter));
+            targetAmountInputField.onValueChanged.AddListener(parameter => targetAmountChangedCommand.Execute(parameter));
 
-            targetAmountInputField.OnValueChangedAsObservable()
-                .Subscribe(parameter => targetAmountChangedCommand.Execute(parameter))
-                .AddTo(this);
+            sourceCurrencyDropdown.onValueChanged.AddListener(index => determineSourceCurrencyCommand
+                .Execute(sourceCurrencyDropdown.options[index].text));
 
-            sourceCurrencyDropdown.OnValueChangedAsObservable()
-                .Subscribe(index => determineSourceCurrencyCommand.
-                    Execute(sourceCurrencyDropdown.options[index].text))
-                .AddTo(this);
+            targetCurrencyDropdown.onValueChanged.AddListener(index => determineTargetCurrencyCommand
+                .Execute(targetCurrencyDropdown.options[index].text));
 
-            targetCurrencyDropdown.OnValueChangedAsObservable()
-                .Subscribe(index => determineTargetCurrencyCommand.
-                    Execute(targetCurrencyDropdown.options[index].text))
-                .AddTo(this);
+            amountScrollBar.onValueChanged.AddListener(value => 
+                handleAmountScrollBarChangedCommand.Execute(value));
 
-            amountScrollBar.OnValueChangedAsObservable()
-                .Subscribe(value => 
-                    handleAmountScrollBarChangedCommand.Execute(value))
-                .AddTo(this);
-
-            exitButton.OnClickAsObservable()
-                .Subscribe(_ => backButtonCommand.Execute())
-                .AddTo(this);
+            exitButton.onClick.AddListener(() => backButtonCommand.Execute(default));
         }
 
         public float CurrentSourceAmount =>
