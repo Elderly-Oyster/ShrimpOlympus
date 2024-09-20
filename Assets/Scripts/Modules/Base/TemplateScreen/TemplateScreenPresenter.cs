@@ -1,7 +1,6 @@
 using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
-using Modules.Base.NewBaseScreen;
 using UniRx;
 
 namespace Modules.Base.TemplateScreen
