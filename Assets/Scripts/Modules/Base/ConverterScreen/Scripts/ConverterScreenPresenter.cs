@@ -50,6 +50,13 @@ namespace Modules.Base.ConverterScreen.Scripts
         public async UniTask Enter(object param)
         {
             _converterScreenView.HideInstantly();
+            _converterScreenView.SetupEventListeners(
+                _determineSourceCurrencyCommand,
+                _determineTargetCurrencyCommand,
+                _sourceAmountChangedCommand,
+                _targetAmountChangedCommand,
+                _handleAmountScrollBarChangedCommand,
+                _backButtonCommand);
             await _converterScreenView.Show();
         }
 
