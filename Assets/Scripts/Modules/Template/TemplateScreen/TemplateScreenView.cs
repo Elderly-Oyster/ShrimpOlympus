@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Base.TemplateScreen
+namespace Modules.Template.TemplateScreen
 {
     public class TemplateView : BaseScreenView
     {

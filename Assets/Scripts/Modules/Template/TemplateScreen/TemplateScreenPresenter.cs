@@ -3,7 +3,7 @@ using Core.MVP;
 using Cysharp.Threading.Tasks;
 using UniRx;
 
-namespace Modules.Base.TemplateScreen
+namespace Modules.Template.TemplateScreen
 {
     public class TemplatePresenter : IScreenPresenter
     {
