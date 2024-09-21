@@ -93,7 +93,7 @@ namespace Core.ModuleCreator
             return templateContent;
         }
 
-        private void CreateScript(string folderPath, string fileName, string scriptContent)
+        void CreateScript(string folderPath, string fileName, string scriptContent)
         {
             if (string.IsNullOrEmpty(scriptContent))
             {
@@ -103,9 +103,29 @@ namespace Core.ModuleCreator
 
             string filePath = Path.Combine(folderPath, fileName);
 
-            // Write the script file, logging the file content before writing
-            Debug.Log($"Writing script to {filePath} with content:\n{scriptContent}");
-            File.WriteAllText(filePath, scriptContent);
+            if (File.Exists(filePath))
+            {
+                bool overwrite = EditorUtility.DisplayDialog(
+                    "File Exists",
+                    $"File {fileName} already exists. Overwrite?",
+                    "Yes",
+                    "No"
+                );
+
+                if (!overwrite)
+                {
+                    Debug.Log($"Skipped creating file: {fileName}");
+                    return;
+                }
+            }
+
+            try
+            {
+                Debug.Log($"Writing script to {filePath} with content:\n{scriptContent}");
+                File.WriteAllText(filePath, scriptContent);
+            }
+            catch (Exception ex) 
+            { Debug.LogError($"Error writing file {fileName}: {ex.Message}"); }
         }
     }
 }
