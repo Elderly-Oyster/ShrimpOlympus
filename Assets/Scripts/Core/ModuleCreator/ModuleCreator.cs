@@ -95,13 +95,12 @@ namespace Core.ModuleCreator
         {
             string folderPath = Path.Combine(BasePath, folderName);
             if (!AssetDatabase.IsValidFolder(folderPath))
-                AssetDatabase.CreateFolder(Path.Combine(BasePath), folderName);
+                AssetDatabase.CreateFolder(BasePath, folderName);
         }
 
         private bool AreTemplatesAvailable()
         {
-            bool templateFolderExists = AssetDatabase.IsValidFolder(_templateFolderPath);
-            if (!templateFolderExists)
+            if (!AssetDatabase.IsValidFolder(_templateFolderPath))
             {
                 EditorUtility.DisplayDialog("Missing Template Folder",
                     $"Template folder not found at {_templateFolderPath}.\n\nModule creation aborted.",
@@ -172,28 +171,31 @@ namespace Core.ModuleCreator
         {
             string templateFilePath = Path.Combine(_templateFolderPath, templateFileName);
             string content = File.ReadAllText(templateFilePath);
+
             string moduleNameLower = char.ToLower(moduleName[0]) + moduleName.Substring(1);
             string namespaceReplacement = $"namespace Modules.{_selectedFolder}.{moduleName}Screen";
             content = Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
-            content = ReplaceAllTemplateOccurrences(content, moduleName, moduleNameLower);
+
+            content = ReplaceTemplateOccurrences(content, moduleName, moduleNameLower);
             return content;
         }
 
-        private string ReplaceAllTemplateOccurrences(string content, string moduleName, string moduleNameLower)
+        private string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
         {
-            // Заменяем "_Template" на "_ModuleName"
-            content = Regex.Replace(content, @"\b_Template\b", $"_{moduleName}");
+            return Regex.Replace(content, @"(_?)(template)", match =>
+            {
+                string prefix = match.Groups[1].Value;
+                string templateWord = match.Groups[2].Value;
 
-            // Заменяем "Template" на "ModuleName"
-            content = Regex.Replace(content, @"\bTemplate\b", moduleName);
-
-            // Заменяем "_template" на "_moduleNameLower"
-            content = Regex.Replace(content, @"\b_template\b", $"_{moduleNameLower}");
-
-            // Заменяем "template" на "moduleNameLower"
-            content = Regex.Replace(content, @"\btemplate\b", moduleNameLower);
-
-            return content;
+                if (char.IsUpper(templateWord[0]))
+                {
+                    return prefix + moduleName;
+                }
+                else
+                {
+                    return prefix + moduleNameLower;
+                }
+            }, RegexOptions.IgnoreCase);
         }
 
         private void CreateScript(string folderPath, string fileName, string scriptContent)
