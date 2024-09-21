@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Modules.Template.TemplateScreen
 {
-    public class TemplateView : BaseScreenView
+    public class TemplateScreenView : BaseScreenView
     {
         [SerializeField] private Button mainMenuButton;
         

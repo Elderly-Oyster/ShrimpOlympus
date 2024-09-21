@@ -8,7 +8,7 @@ namespace Modules.Template.TemplateScreen
 {
     public class TemplateInstaller : SceneInstaller
     {
-        [SerializeField] private TemplateView newModuleScreenView;
+        [SerializeField] private TemplateScreenView templateScreenView;
         [SerializeField] private ScreensCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,9 +17,9 @@ namespace Modules.Template.TemplateScreen
             builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(newModuleScreenView).As<TemplateView>();
+            builder.RegisterInstance(templateScreenView).As<TemplateScreenView>();
             builder.Register<TemplatePresenter>(Lifetime.Singleton);
-            builder.Register<TemplateModel>(Lifetime.Singleton);
+            builder.Register<TemplateScreenModel>(Lifetime.Singleton);
         }
     }
 }

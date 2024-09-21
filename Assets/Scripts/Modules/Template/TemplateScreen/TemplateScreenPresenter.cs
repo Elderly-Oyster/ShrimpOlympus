@@ -8,29 +8,29 @@ namespace Modules.Template.TemplateScreen
     public class TemplatePresenter : IScreenPresenter
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly TemplateModel _newModuleScreenModel;
-        private readonly TemplateView _newModuleScreenView;
+        private readonly TemplateScreenModel _templateScreenModel;
+        private readonly TemplateScreenView _templateScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
         private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
 
         
         public TemplatePresenter(IScreenStateMachine screenStateMachine, 
-            TemplateModel newModuleScreenModel, TemplateView newModuleScreenView)
+            TemplateScreenModel templateScreenModel, TemplateScreenView templateScreenView)
         {
             _screenStateMachine = screenStateMachine;
-            _newModuleScreenModel = newModuleScreenModel;
-            _newModuleScreenView = newModuleScreenView;
+            _templateScreenModel = templateScreenModel;
+            _templateScreenView = templateScreenView;
             _completionSource = new UniTaskCompletionSource<bool>();
         }
 
         public async UniTask Enter(object param)
         {
-            _newModuleScreenView.gameObject.SetActive(false);
+            _templateScreenView.gameObject.SetActive(false);
             SubscribeToUIUpdates();
-            _newModuleScreenView.SetupEventListeners(_mainMenuCommand);
+            _templateScreenView.SetupEventListeners(_mainMenuCommand);
             
-            await _newModuleScreenView.Show();
+            await _templateScreenView.Show();
         }
         
         private void SubscribeToUIUpdates() => 
@@ -47,12 +47,12 @@ namespace Modules.Template.TemplateScreen
 
         public async UniTask Execute() => await _completionSource.Task;
 
-        public async UniTask Exit() => await _newModuleScreenView.Hide();
+        public async UniTask Exit() => await _templateScreenView.Hide();
 
         public void Dispose()
         {
-            _newModuleScreenView.Dispose();
-            _newModuleScreenModel.Dispose();
+            _templateScreenView.Dispose();
+            _templateScreenModel.Dispose();
         }
     }
 }
