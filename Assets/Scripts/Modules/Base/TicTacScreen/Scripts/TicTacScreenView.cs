@@ -1,8 +1,7 @@
-﻿using System;
-using Core.MVP;
+﻿using Core.MVP;
 using Core.Views.Buttons;
+using R3;
 using TMPro;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +14,7 @@ namespace Modules.Base.TicTacScreen.Scripts
         [SerializeField] private PulsatingButton restartButton;
         [SerializeField] private CellUIView[] cellViews;
         [SerializeField] private TMP_Text winnerText;
-        
+
         private const int BoardSize = 3;
 
         protected override void Awake()
@@ -23,25 +22,21 @@ namespace Modules.Base.TicTacScreen.Scripts
             if (cellViews.Length != BoardSize * BoardSize)
                 Debug.LogError("The number of cell views should be equal to " + (BoardSize * BoardSize));
             ClearBoard();
-            
+
             base.Awake();
             HideInstantly();
         }
 
-        public void SetupEventListeners(ReactiveCommand onMainMenuButtonClicked, ReactiveCommand<int[]> onCellClicked, 
-            ReactiveCommand onRestartButtonClicked, ReactiveCommand onThirdPopupButtonClicked)
+        public void SetupEventListeners(
+            ReactiveCommand<Unit> onMainMenuButtonClicked, ReactiveCommand<int[]> onCellClicked, 
+            ReactiveCommand<Unit> onRestartButtonClicked, 
+            ReactiveCommand<Unit> onThirdPopupButtonClicked)
         {
-            mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => onMainMenuButtonClicked.Execute())
-                .AddTo(this);
+            mainMenuButton.onClick.AddListener(() => onMainMenuButtonClicked.Execute(Unit.Default));
 
-            thirdPopupButton.OnClickAsObservable()
-                .Subscribe(_ => onThirdPopupButtonClicked.Execute())
-                .AddTo(this);
+            thirdPopupButton.onClick.AddListener(() => onThirdPopupButtonClicked.Execute(Unit.Default));
 
-            restartButton.pulsatingButton.OnClickAsObservable()
-                .Subscribe(_ => onRestartButtonClicked.Execute())
-                .AddTo(this);
+            restartButton.pulsatingButton.onClick.AddListener(() => onRestartButtonClicked.Execute(Unit.Default));
 
             for (int i = 0; i < BoardSize; i++)
             {
@@ -52,7 +47,7 @@ namespace Modules.Base.TicTacScreen.Scripts
                 }
             }
         }
-        
+
         public void UpdateBoard(char[,] board)
         {
             for (int i = 0; i < BoardSize; i++)

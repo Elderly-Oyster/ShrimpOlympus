@@ -34,6 +34,7 @@ namespace Startup
                 RunScreen((ScreenPresenterMap)screenModelMap, param).Forget();
             else
             {
+                _sceneService.AddActiveScene(sceneName);
                 _sceneInstallerService.
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
             }

@@ -3,22 +3,30 @@ using System.Threading;
 using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IScreenPresenter
     {
+        public ReadOnlyReactiveProperty<string> ProgressStatus => 
+            _progressStatus.ToReadOnlyReactiveProperty();
+        public ReadOnlyReactiveProperty<float> ExponentialProgress => 
+            _exponentialProgress.ToReadOnlyReactiveProperty();
+        public ReactiveCommand<Unit> StartCommand => _startCommand;
+
+        
+        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
+        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
+        private readonly ReactiveCommand<Unit> _startCommand = new ReactiveCommand<Unit>();
+        
+        
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly StartGameScreenModel _startGameScreenModel;
         private readonly StartGameScreenView _startGameScreenView;
         private readonly IScreenStateMachine _screenStateMachine;
-        
-        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
-        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
-        private readonly ReactiveCommand _startCommand = new ReactiveCommand();
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
@@ -40,20 +48,11 @@ namespace Modules.Base.StartGameScreen.Scripts
         {
             _startCommand.Subscribe(_ => OnContinueButtonPressed())
                 .AddTo(_cancellationTokenSource.Token);
-
-            _exponentialProgress.Subscribe(progress =>
-            {
-                _startGameScreenView.ReportProgress(progress,
-                    _progressStatus.Value).Forget();
-            }).AddTo(_cancellationTokenSource.Token);
-
-            _progressStatus.Subscribe(status => 
-                _startGameScreenView.SetTooltipText(status))
-                .AddTo(_cancellationTokenSource.Token);
         }
         
         public async UniTask Enter(object param)
         {
+            SetVersionText(Application.version);
             SetApplicationFrameRate();
             InitializeUI();
     
@@ -71,8 +70,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         private void InitializeUI()
         {
             _startGameScreenView.HideInstantly();
-            _startGameScreenView.SetupEventListeners(_startCommand);
-            SetVersionText(Application.version);
+            _startGameScreenView.SetupEventListeners(StartCommand,
+                ProgressStatus, ExponentialProgress); 
         }
 
         private async UniTask InitializeServices()
@@ -90,7 +89,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             }
         }
 
-        private float CalculateExponentialProgress(float progress)
+        private static float CalculateExponentialProgress(float progress)
         {
             var expValue = Math.Exp(progress);
             var minExp = Math.Exp(0);
@@ -106,7 +105,8 @@ namespace Modules.Base.StartGameScreen.Scripts
             await _startGameScreenView.Hide();
         }
 
-        private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
+        private static void SetApplicationFrameRate() => 
+            Application.targetFrameRate = AppFrameRate;
 
         private void RunMainMenuScreen(ScreenPresenterMap screen)
         {
