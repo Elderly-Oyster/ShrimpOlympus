@@ -1,7 +1,7 @@
 using Core;
 using UnityEngine;
 using System;
-using UniRx;
+using R3;
 using VContainer;
 using VContainer.Unity;
 

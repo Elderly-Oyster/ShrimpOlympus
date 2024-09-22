@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using Services;
 using UnityEngine;
@@ -17,98 +17,68 @@ namespace Startup
         [Inject] private readonly SceneInstallerService _sceneInstallerService;
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
-        [Inject] private readonly SplashScreenService _splashScreenService;
         [Inject] private readonly IObjectResolver _resolver;
 
-        // SemaphoreSlim to ensure only one thread can execute the RunPresenter method at a time
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
         public event Action<IObjectResolver> ModuleChanged;
-        public IScreenPresenter CurrentPresenter { get; private set; } 
+        public IScreenPresenter CurrentPresenter { get; private set; }
 
-        public void Start()
+
+        public void Start() => RunScreen(SceneManager.GetActiveScene().name);
+
+        private void RunScreen(string sceneName, object param = null)
         {
-            Scene activeScene = SceneManager.GetActiveScene();
-            string currentSceneName = activeScene.name;
-            ScreenPresenterMap? screenModelMap = SceneNameToEnum(currentSceneName);
+            ScreenPresenterMap? screenModelMap = SceneNameToEnum(sceneName);
             
             if (screenModelMap != null)
-                RunPresenter((ScreenPresenterMap)screenModelMap).Forget();
+                RunScreen((ScreenPresenterMap)screenModelMap, param).Forget();
             else
             {
+                _sceneService.AddActiveScene(sceneName);
                 _sceneInstallerService.
-                    CombineActiveScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
+                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
             }
         }
 
-        public async UniTaskVoid RunPresenter(ScreenPresenterMap screenPresenterMap, object param = null)
+        public async UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null)
         {
-            Debug.Log("Run Presenter: " + screenPresenterMap);
-            // Wait until the semaphore is available (only one thread can pass)
+            Debug.Log("Run Screen: " + screenPresenterMap);
             await _semaphoreSlim.WaitAsync();
 
             try
             {
-                if (_sceneService.GetAdditionalScenes(screenPresenterMap).Count() != 0 /*|| CurrentPresenter.HaveService*/)
-                    await RunPresenterWithSplashScreen(screenPresenterMap, param);
-                else
-                    await RunPresenterWithoutSplashScreen(screenPresenterMap, param);
+                await _sceneService.LoadScenesForModule(screenPresenterMap);
+                await _sceneService.UnloadUnusedScenesAsync();
+
+                var sceneLifetimeScope = _sceneInstallerService.
+                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
+                
+                CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
+
+                //await ShowSplashScreen(); //TODO
+                
+                ModuleChanged?.Invoke(sceneLifetimeScope.Container);
+                
+                await CurrentPresenter.Enter(param);
+                await CurrentPresenter.Execute();
+                await CurrentPresenter.Exit();
+                CurrentPresenter.Dispose();
+                sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
         }
 
-        private async UniTask RunPresenterWithoutSplashScreen(ScreenPresenterMap screenPresenterMap, object param = null)
+        private async UniTask ShowSplashScreen()
         {
-            await _sceneService.LoadScenesForModule(screenPresenterMap);
-            // await _sceneService.UnloadUnusedScenesAsync(); //TODO Разобратсья
-
-            var sceneLifetimeScope = _sceneInstallerService.
-                CombineActiveScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
-                
-            CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
-            
-            ModuleChanged?.Invoke(sceneLifetimeScope.Container);
-                
-            await CurrentPresenter.Enter(param);
+            // await CurrentPresenter.Enter();
             await CurrentPresenter.Execute();
             await CurrentPresenter.Exit();
-            CurrentPresenter.Dispose();
-            sceneLifetimeScope.Dispose();
         }
 
-        private async UniTask RunPresenterWithSplashScreen(ScreenPresenterMap screenPresenterMap, object param = null)
-        {
-            await _sceneService.LoadScenesForModule(screenPresenterMap);
-            // await _sceneService.UnloadUnusedScenesAsync(); //TODO Разобратсья
-
-            var sceneLifetimeScope = _sceneInstallerService.
-                CombineActiveScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
-                
-            CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
-
-            //await ShowSplashScreen(); //TODO
-                
-            ModuleChanged?.Invoke(sceneLifetimeScope.Container);
-                
-            await CurrentPresenter.Enter(param);
-            await CurrentPresenter.Execute();
-            await CurrentPresenter.Exit();
-            CurrentPresenter.Dispose();
-            sceneLifetimeScope.Dispose();
-        }
-        
         private static ScreenPresenterMap? SceneNameToEnum(string sceneName)
         {
-            if (Enum.TryParse(sceneName, out ScreenPresenterMap result))
-                return result;
+            if (Enum.TryParse(sceneName, out ScreenPresenterMap result)) return result;
             return null;
-        }
-    }
-
-    internal class SplashScreenService
-    {
-        public void ShowSplashScreen()
-        {
-            
         }
     }
 }

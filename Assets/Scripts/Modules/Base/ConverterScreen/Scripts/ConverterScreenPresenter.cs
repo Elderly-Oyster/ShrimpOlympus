@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using Core;
-using Core.MVVM;
+using Core.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace Modules.Base.ConverterScreen.Scripts
@@ -18,12 +18,11 @@ namespace Modules.Base.ConverterScreen.Scripts
         
         private readonly ReactiveCommand<string> _determineSourceCurrencyCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _determineTargetCurrencyCommand = new ReactiveCommand<string>();
-        private readonly ReactiveCommand<string> _sourceAmountChangedCommand= new ReactiveCommand<string>();
+        private readonly ReactiveCommand<string> _sourceAmountChangedCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<string> _targetAmountChangedCommand = new ReactiveCommand<string>();
         private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new ReactiveCommand<float>();
-        private readonly ReactiveCommand _backButtonCommand = new ReactiveCommand();
-        
-        public bool IsNeedServices { get; private set; }
+        private readonly ReactiveCommand<Unit> _backButtonCommand = new ReactiveCommand<Unit>();
+
 
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
             ConverterScreenView converterScreenView, DynamicParticleController dynamicParticleController)
@@ -34,6 +33,8 @@ namespace Modules.Base.ConverterScreen.Scripts
             _dynamicParticleController = dynamicParticleController;
             
             _completionSource = new UniTaskCompletionSource<bool>();
+
+            SubscribeToUIUpdates();
         }
 
         private void SubscribeToUIUpdates()
@@ -48,18 +49,14 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            
             _converterScreenView.HideInstantly();
-            SubscribeToUIUpdates();
-            _converterScreenView.SetupEventListeners
-            (
+            _converterScreenView.SetupEventListeners(
                 _determineSourceCurrencyCommand,
                 _determineTargetCurrencyCommand,
                 _sourceAmountChangedCommand,
                 _targetAmountChangedCommand,
                 _handleAmountScrollBarChangedCommand,
-                _backButtonCommand
-            );
+                _backButtonCommand);
             await _converterScreenView.Show();
         }
 
@@ -74,8 +71,6 @@ namespace Modules.Base.ConverterScreen.Scripts
             { "PLN", Currencies.Pln },
             { "PR", Currencies.Pr }
         };
-
-        private IScreenPresenter _screenPresenterImplementation;
 
         private void DetermineSourceCurrency(string name)
         {
@@ -121,7 +116,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
 
         public void Dispose()

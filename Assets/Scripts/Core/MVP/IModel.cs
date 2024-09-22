@@ -1,4 +1,4 @@
-﻿namespace Core.MVVM
+﻿namespace Core.MVP
 {
     public interface IModel { }
 }

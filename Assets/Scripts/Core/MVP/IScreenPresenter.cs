@@ -1,7 +1,7 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
 
-namespace Core.MVVM
+namespace Core.MVP
 {
     public interface IScreenPresenter : IDisposable
     {

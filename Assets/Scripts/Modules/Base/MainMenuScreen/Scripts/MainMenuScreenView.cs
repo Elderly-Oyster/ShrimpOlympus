@@ -1,5 +1,5 @@
 ﻿using Core.MVP;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,25 +20,25 @@ namespace Modules.Base.MainMenuScreen.Scripts
         }
 
         public void SetupEventListeners(
-            ReactiveCommand converterCommand,
-            ReactiveCommand ticTacCommand,
-            ReactiveCommand firstPopupCommand,
-            ReactiveCommand secondPopupCommand)
+            ReactiveCommand<Unit> converterCommand,
+            ReactiveCommand<Unit> ticTacCommand,
+            ReactiveCommand<Unit> firstPopupCommand,
+            ReactiveCommand<Unit> secondPopupCommand)
         {
             converterButton.OnClickAsObservable()
-                .Subscribe(_ => converterCommand.Execute())
+                .Subscribe(_ => converterCommand.Execute(default))
                 .AddTo(this);
 
             ticTacButton.OnClickAsObservable()
-                .Subscribe(_ => ticTacCommand.Execute())
+                .Subscribe(_ => ticTacCommand.Execute(default))
                 .AddTo(this);
 
             firstPopupButton.OnClickAsObservable()
-                .Subscribe(_ => firstPopupCommand.Execute())
+                .Subscribe(_ => firstPopupCommand.Execute(default))
                 .AddTo(this);
 
             secondPopupButton.OnClickAsObservable()
-                .Subscribe(_ => secondPopupCommand.Execute())
+                .Subscribe(_ => secondPopupCommand.Execute(default))
                 .AddTo(this);
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.MVVM
+namespace Core.MVP
 {
     public interface IScreenModel : IModel, IDisposable
     {

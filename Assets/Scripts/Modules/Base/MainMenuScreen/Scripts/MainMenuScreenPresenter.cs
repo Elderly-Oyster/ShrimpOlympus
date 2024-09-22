@@ -1,8 +1,8 @@
 ﻿using Core;
-using Core.MVVM;
+using Core.MVP;
 using Core.Popup.Base;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
@@ -14,10 +14,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly PopupHub _popupHub;
 
-        private readonly ReactiveCommand _secondPopupCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _firstPopupCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _converterCommand = new ReactiveCommand();
-        private readonly ReactiveCommand _ticTacCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<Unit> _secondPopupCommand = new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _firstPopupCommand =  new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _converterCommand =  new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _ticTacCommand =  new ReactiveCommand<Unit>();
 
         public bool IsNeedServices { get; private set; }
         
@@ -73,7 +73,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void RunNewScreen(ScreenPresenterMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
+            _screenStateMachine.RunScreen(screen);
         }
     }
 }

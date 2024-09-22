@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Core.MVP;
 using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using R3;
 using TMPro;
-using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -31,30 +30,40 @@ namespace Modules.Base.StartGameScreen.Scripts
         [SerializeField] private TMP_Text splashTooltipsText;
         [SerializeField] private TMP_Text versionText;
 
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private FlickerAnimation _flickerAnimation;
         private Sequence _sequence;
 
         private const string TapToContinueText = "Tap to continue";
         private const float ProgressBarAnimDuration = 0.5f;
 
+        
         private void Start()
         {
             splashTooltipsText.transform.parent.gameObject.SetActive(true);
             _flickerAnimation = new FlickerAnimation(lightingCanvasGroup, overlay);
         }
 
-        public void SetupEventListeners(ReactiveCommand startCommand)
+        public void SetupEventListeners(ReactiveCommand<Unit> startCommand,
+            ReadOnlyReactiveProperty<string> progressStatus,
+            ReadOnlyReactiveProperty<float> exponentialProgress)
         {
             continueButton.OnClickAsObservable()
-                .Subscribe(_ => startCommand.Execute())
-                .AddTo(this);
-        }
+                .Subscribe(_ => startCommand.Execute(default))
+                .AddTo(_disposables);
 
+            Observable.CombineLatest(exponentialProgress, progressStatus,
+                    (progress, status) => new { progress, status })
+                .Subscribe(data => ReportProgress(data.progress, data.status).Forget())
+                .AddTo(_disposables);
+        }
+        
         public void SetVersionText(string version) => versionText.text = version;
 
         public UniTask ReportProgress(float expProgress, string progressStatus)
         {
             progressText.text = progressStatus;
+    
             return DOTween.To(() => progressBar.fillAmount, x =>
             {
                 progressBar.fillAmount = x;
@@ -90,6 +99,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         public override void Dispose()
         {
+            _disposables.Dispose();
             StopAnimation();
             base.Dispose();
         }

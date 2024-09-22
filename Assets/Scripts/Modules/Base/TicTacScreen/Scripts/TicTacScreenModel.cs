@@ -1,4 +1,4 @@
-﻿using Core.MVVM;
+﻿using Core.MVP;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
