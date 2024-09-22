@@ -188,13 +188,9 @@ namespace Core.ModuleCreator
                 string templateWord = match.Groups[2].Value;
 
                 if (char.IsUpper(templateWord[0]))
-                {
                     return prefix + moduleName;
-                }
                 else
-                {
                     return prefix + moduleNameLower;
-                }
             }, RegexOptions.IgnoreCase);
         }
 

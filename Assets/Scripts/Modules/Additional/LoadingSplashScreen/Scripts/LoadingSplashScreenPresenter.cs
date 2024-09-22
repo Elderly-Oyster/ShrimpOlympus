@@ -4,7 +4,7 @@ using System.Threading;
 using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 using UnityEngine;
 
 namespace Modules.Additional.LoadingSplashScreen.Scripts
@@ -19,7 +19,7 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
-        private readonly ReactiveCommand _startCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<Unit> _startCommand = new();
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;

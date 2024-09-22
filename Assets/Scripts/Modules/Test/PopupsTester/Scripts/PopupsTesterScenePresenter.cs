@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Core;
 using Core.EventMediatorSystem;
-using UniRx;
+using R3;
 using UnityEngine;
 using VContainer.Unity;
 
@@ -11,14 +11,14 @@ namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterScenePresenter : ISmartPresenter, IStartable
     {
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly CompositeDisposable _disposables = new();
         private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
         private readonly PopupsTesterSceneView _popupsTesterSceneView;
         private readonly Func<Action, TestButtonView> _buttonFactory;
         private readonly List<TestButtonView> _buttons = new();
         private readonly EventMediator _eventMediator;
 
-        private readonly Dictionary<TestButtonView, ReactiveCommand> _buttonCommandMap = new();
+        private readonly Dictionary<TestButtonView, ReactiveCommand<Unit>> _buttonCommandMap = new();
 
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
             PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
@@ -61,7 +61,7 @@ namespace Modules.Test.PopupsTester.Scripts
             var button = _buttonFactory(action);
             _buttons.Add(button);
 
-            var reactiveCommand = new ReactiveCommand();
+            var reactiveCommand = new ReactiveCommand<Unit>();
             _buttonCommandMap[button] = reactiveCommand;
 
             reactiveCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);

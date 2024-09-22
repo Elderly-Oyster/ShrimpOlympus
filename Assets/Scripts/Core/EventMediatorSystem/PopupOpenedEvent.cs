@@ -4,9 +4,6 @@ namespace Core.EventMediatorSystem
     {
         public string PopupName { get; }
 
-        public PopupOpenedEvent(string popupName)
-        {
-            PopupName = popupName;
-        }
+        public PopupOpenedEvent(string popupName) => PopupName = popupName;
     }
 }

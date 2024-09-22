@@ -1,5 +1,5 @@
 using Core.MVP;
-using UniRx;
+using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,11 +9,11 @@ namespace Modules.Template.TemplateScreen
     {
         [SerializeField] private Button mainMenuButton;
         
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-        public void SetupEventListeners(ReactiveCommand mainMenuCommand)
+        private readonly CompositeDisposable _disposables = new();
+        public void SetupEventListeners(ReactiveCommand<Unit> mainMenuCommand)
         {
             mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => mainMenuCommand.Execute())
+                .Subscribe(_ => mainMenuCommand.Execute(default))
                 .AddTo(_disposables);
         }
         
