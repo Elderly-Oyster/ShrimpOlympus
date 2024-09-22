@@ -5,7 +5,6 @@ using VContainer;
 
 namespace Core
 {
-    //TODO Переделать систему под рутовую ViewModel
     public interface  IScreenStateMachine
     {
         public IScreenPresenter CurrentPresenter { get; }

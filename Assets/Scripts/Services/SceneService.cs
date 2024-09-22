@@ -15,6 +15,11 @@ namespace Services
         PopupsManager,
         DynamicBackground
     }
+
+    public enum TestScenesMap  //TODO 
+    {
+        PopupTester
+    }
     
     public class SceneService
     {
@@ -41,6 +46,8 @@ namespace Services
         public void AddStaticAdditiveScene(AdditiveScenesMap sceneName) =>
             _staticModuleScenes.Add(sceneName.ToString());
 
+        public void AddActiveScene(string sceneName) => _activeModuleScenes.Add(sceneName);
+
         public async UniTask LoadScenesForModule(ScreenPresenterMap screenPresenterMap)
         {
             List<string> scenes = new List<string> { screenPresenterMap.ToString() };
@@ -56,7 +63,7 @@ namespace Services
             _activeModuleScenes = scenes;
         }
 
-        private IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
+        private static IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
         {
             return screenPresenterMap switch
             {
