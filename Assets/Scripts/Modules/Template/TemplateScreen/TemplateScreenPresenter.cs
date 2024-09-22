@@ -1,7 +1,7 @@
 using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
-using UniRx;
+using R3;
 
 namespace Modules.Template.TemplateScreen
 {
@@ -12,7 +12,7 @@ namespace Modules.Template.TemplateScreen
         private readonly TemplateScreenView _templateScreenView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
 
-        private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
+        private readonly ReactiveCommand<Unit> _mainMenuCommand = new();
 
         
         public TemplatePresenter(IScreenStateMachine screenStateMachine, 

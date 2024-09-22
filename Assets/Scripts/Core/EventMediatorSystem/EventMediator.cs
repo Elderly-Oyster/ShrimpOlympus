@@ -1,5 +1,5 @@
-using UniRx;
 using System;
+using R3;
 
 namespace Core.EventMediatorSystem
 {
@@ -13,7 +13,7 @@ namespace Core.EventMediatorSystem
                 _popupOpenedSubject.OnNext(popupOpenedEvent);
         }
 
-        public IObservable<PopupOpenedEvent> OnPopupOpenedAsObservable() => 
+        public Observable<PopupOpenedEvent> OnPopupOpenedAsObservable() => 
             _popupOpenedSubject.AsObservable();
 
         public void Complete() => _popupOpenedSubject.OnCompleted();

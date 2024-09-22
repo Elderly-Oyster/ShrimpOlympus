@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using Core.MVP;
-using UniRx;
+using R3;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
@@ -19,12 +19,12 @@ namespace Modules.Test.PopupsTester.Scripts
         public void GetPopupsButtons(List<TestButtonView> testButtons) => 
             _testButtonViews = testButtons;
 
-        public void SetupListeners(Dictionary<TestButtonView, ReactiveCommand> buttonCommandMap)
+        public void SetupListeners(Dictionary<TestButtonView, ReactiveCommand<Unit>> buttonCommandMap)
         {
             foreach (var button in buttonCommandMap.Keys)
             {
                 button.OnClickAsObservable()
-                    .Subscribe(_ => buttonCommandMap[button].Execute())
+                    .Subscribe(_ => buttonCommandMap[button].Execute(default))
                     .AddTo(this);
             }
         }
