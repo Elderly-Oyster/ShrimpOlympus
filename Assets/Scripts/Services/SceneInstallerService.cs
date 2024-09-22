@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Core;
 using UnityEngine;
@@ -52,7 +51,7 @@ namespace Services
             return sceneInstallers;
         }
         
-        public LifetimeScope CombineActiveScenes(LifetimeScope parentScope, bool removeObjectsToDelete)
+        public LifetimeScope CombineScenes(LifetimeScope parentScope, bool removeObjectsToDelete)
         {
             _currentScenesInstallers = FindActiveModulesSceneInstallers();
 

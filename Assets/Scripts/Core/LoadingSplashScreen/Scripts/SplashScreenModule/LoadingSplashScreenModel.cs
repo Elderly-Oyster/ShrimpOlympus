@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Core.MVVM;
-using DG.Tweening;
-using DG.Tweening.Core.Enums;
+﻿using Core.MVP;
 
 namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
