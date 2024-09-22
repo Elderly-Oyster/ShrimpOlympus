@@ -1,37 +1,29 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
-using Core;
-using Core.MVVM;
 using Cysharp.Threading.Tasks;
 using UniRx;
 using UnityEngine;
 
 namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
-    public class LoadingSplashScreenPresenter : IScreenPresenter
+    public class LoadingSplashScreenPresenter
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly LoadingSplashScreenModel _loadingSplashScreenModel;
         private readonly LoadingSplashScreenView _loadingSplashScreenView;
-        private readonly IScreenStateMachine _screenStateMachine;
         
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
-        private readonly ReactiveCommand _startCommand = new ReactiveCommand();
 
         private const int TooltipDelay = 3000;
-        private const int AppFrameRate = 60;
 
         //TODO Самое актуальное. Сначала ожидание метода сцен сервиса по подгрузке всех сцен, а потом
         //ожидания 
-        public LoadingSplashScreenPresenter(IScreenStateMachine screenStateMachine,
-            LoadingSplashScreenModel loadingSplashScreenModel, LoadingSplashScreenView loadingSplashScreenView)
+        public LoadingSplashScreenPresenter(LoadingSplashScreenModel loadingSplashScreenModel, LoadingSplashScreenView loadingSplashScreenView)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             
-            _screenStateMachine = screenStateMachine;
             _loadingSplashScreenModel = loadingSplashScreenModel;
             _loadingSplashScreenView = loadingSplashScreenView;
 
@@ -40,9 +32,6 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         
         private void SubscribeToUIUpdates()
         {
-            _startCommand.Subscribe(_ => OnContinueButtonPressed())
-                .AddTo(_cancellationTokenSource.Token);
-
             _exponentialProgress.Subscribe(progress =>
             {
                 _loadingSplashScreenView.ReportProgress(progress,
@@ -54,29 +43,45 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
                 .AddTo(_cancellationTokenSource.Token);
         }
 
-        public async UniTask Enter(object param)
+        public async UniTask Enter()
         {
-            SetApplicationFrameRate();
             InitializeUI();
     
             ShowTooltips().Forget();
-            _loadingSplashScreenModel.DoTweenInit();
+            
             _loadingSplashScreenModel.RegisterCommands();
 
             await _loadingSplashScreenView.Show();
-
-            await InitializeServices();
-
-            ShowAnimations();
-        }
-        
-        private void InitializeUI()
-        {
-            _loadingSplashScreenView.HideInstantly();
         }
 
-        private async UniTask InitializeServices()
+        public async UniTask DisplayLoading(Action scenesLoadProgress, Action servicesLoadProgress)
         {
+            await WaitScenesInitialization(scenesLoadProgress);
+            await WaitServicesInitialization(servicesLoadProgress);
+
+            await _completionSource.Task;
+        }
+
+        private void InitializeUI() => _loadingSplashScreenView.HideInstantly();
+
+        //Action - задел на будущее, потом он будет возращать float progress
+        private async UniTask WaitScenesInitialization(Action loadAction)
+        {
+            UniTaskCompletionSource completionSource = new();
+
+            loadAction += () => completionSource.TrySetResult();
+
+            await completionSource.Task;
+        }
+
+        private async UniTask WaitServicesInitialization(Action loadAction)
+        {
+            UniTaskCompletionSource completionSource = new();
+
+            loadAction += () => completionSource.TrySetResult();
+
+            await completionSource.Task;
+            
             // // var timing = 1f / _loadingSplashScreenModel.Commands.Count;
             // var currentTiming = timing;
             //
@@ -96,6 +101,12 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
             // await UniTask.WhenAll(initTasks);
         }
 
+        public async UniTask Hide()
+        {
+            _cancellationTokenSource?.Cancel();
+            await _loadingSplashScreenView.Hide();
+        }
+
         private float CalculateExponentialProgress(float progress)
         {
             var expValue = Math.Exp(progress);
@@ -103,28 +114,6 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
             var maxExp = Math.Exp(1);
             return (float)((expValue - minExp) / (maxExp - minExp));
         }
-
-
-
-        public async UniTask Execute() => await _completionSource.Task;
-
-        public async UniTask Exit()
-        {
-            _cancellationTokenSource?.Cancel();
-            await _loadingSplashScreenView.Hide();
-        }
-
-        private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
-
-        private void RunMainMenuScreen(ScreenPresenterMap screen)
-        {
-            _completionSource.TrySetResult(true);
-            _screenStateMachine.RunPresenter(screen);
-        }
-
-        private void OnContinueButtonPressed() => RunMainMenuScreen(ScreenPresenterMap.MainMenu);
-        
-        private void ShowAnimations() => _loadingSplashScreenView.ShowAnimations(_cancellationTokenSource.Token);
 
         private async UniTaskVoid ShowTooltips()
         {

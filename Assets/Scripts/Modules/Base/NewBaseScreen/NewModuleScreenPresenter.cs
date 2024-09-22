@@ -10,7 +10,7 @@ namespace Modules.Base.NewBaseScreen
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly NewModuleScreenModel _newModuleScreenModel;
         private readonly NewModuleScreenView _newModuleScreenView;
-        private readonly UniTaskCompletionSource<bool> _completionSource;
+        private readonly UniTaskCompletionSource _completionSource;
 
         private readonly ReactiveCommand _mainMenuCommand = new ReactiveCommand();
         
@@ -22,7 +22,7 @@ namespace Modules.Base.NewBaseScreen
             _screenStateMachine = screenStateMachine;
             _newModuleScreenModel = newModuleScreenModel;
             _newModuleScreenView = newModuleScreenView;
-            _completionSource = new UniTaskCompletionSource<bool>();
+            _completionSource = new UniTaskCompletionSource();
         }
 
         public async UniTask Enter(object param)
@@ -43,7 +43,7 @@ namespace Modules.Base.NewBaseScreen
         
         private void RunNewScreen(ScreenPresenterMap screen)
         {
-            _completionSource.TrySetResult(true);
+            _completionSource.TrySetResult();
             _screenStateMachine.RunPresenter(screen);
         }
 

@@ -114,7 +114,7 @@ namespace Services
             }
         }
 
-        private async UniTask UnloadUnusedScenesAsync(List<string> scenesToLoad)
+        public async UniTask UnloadUnusedScenesAsync(List<string> scenesToLoad)
         {
             if (scenesToLoad == null || scenesToLoad.Count == 0)
             {
