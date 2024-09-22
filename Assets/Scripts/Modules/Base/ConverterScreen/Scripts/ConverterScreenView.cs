@@ -16,6 +16,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
 
+        
         protected override void Awake()
         {
             base.Awake();
@@ -30,8 +31,8 @@ namespace Modules.Base.ConverterScreen.Scripts
             ReactiveCommand<float> handleAmountScrollBarChangedCommand,
             ReactiveCommand<Unit> backButtonCommand)
         {
-            sourceAmountInputField.onValueChanged.AddListener(parameter => sourceAmountChangedCommand.Execute(parameter));
-            targetAmountInputField.onValueChanged.AddListener(parameter => targetAmountChangedCommand.Execute(parameter));
+            sourceAmountInputField.onValueChanged.AddListener(sourceAmountChangedCommand.Execute);
+            targetAmountInputField.onValueChanged.AddListener(targetAmountChangedCommand.Execute);
 
             sourceCurrencyDropdown.onValueChanged.AddListener(index => determineSourceCurrencyCommand
                 .Execute(sourceCurrencyDropdown.options[index].text));
@@ -39,8 +40,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             targetCurrencyDropdown.onValueChanged.AddListener(index => determineTargetCurrencyCommand
                 .Execute(targetCurrencyDropdown.options[index].text));
 
-            amountScrollBar.onValueChanged.AddListener(value => 
-                handleAmountScrollBarChangedCommand.Execute(value));
+            amountScrollBar.onValueChanged.AddListener(handleAmountScrollBarChangedCommand.Execute);
 
             exitButton.onClick.AddListener(() => backButtonCommand.Execute(default));
         }

@@ -48,16 +48,6 @@ namespace Modules.Base.StartGameScreen.Scripts
         {
             _startCommand.Subscribe(_ => OnContinueButtonPressed())
                 .AddTo(_cancellationTokenSource.Token);
-
-            _exponentialProgress.Subscribe(progress =>
-            {
-                _startGameScreenView.ReportProgress(progress,
-                    _progressStatus.Value).Forget();
-            }).AddTo(_cancellationTokenSource.Token);
-
-            _progressStatus.Subscribe(status => 
-                _startGameScreenView.SetTooltipText(status))
-                .AddTo(_cancellationTokenSource.Token);
         }
         
         public async UniTask Enter(object param)
@@ -99,7 +89,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             }
         }
 
-        private float CalculateExponentialProgress(float progress)
+        private static float CalculateExponentialProgress(float progress)
         {
             var expValue = Math.Exp(progress);
             var minExp = Math.Exp(0);
@@ -115,7 +105,8 @@ namespace Modules.Base.StartGameScreen.Scripts
             await _startGameScreenView.Hide();
         }
 
-        private void SetApplicationFrameRate() => Application.targetFrameRate = AppFrameRate;
+        private static void SetApplicationFrameRate() => 
+            Application.targetFrameRate = AppFrameRate;
 
         private void RunMainMenuScreen(ScreenPresenterMap screen)
         {
