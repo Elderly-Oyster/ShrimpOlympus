@@ -1,4 +1,3 @@
-using System;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
@@ -9,10 +8,17 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         [Inject] private LoadingSplashScreenPresenter _splashScreenPresenter;
 
         public async UniTask ShowSplashScreen() => 
-            await _splashScreenPresenter.Enter();
+            await _splashScreenPresenter.Show();
 
-        public async UniTask RunSplashScreen(Action scenesLoadingAction, Action servicesLoadingAction) => 
-            await _splashScreenPresenter.DisplayLoading(scenesLoadingAction, servicesLoadingAction);
+        public void UpdateScenesProgress(float progressData)
+        {
+            _splashScreenPresenter.UpdateSceneLoadingProgress(progressData);
+        }
+        
+        public async UniTask ExecuteSplashScreen()
+        {
+            await _splashScreenPresenter.Execute();
+        }
 
         public async UniTask HideSplashScreen()
         {

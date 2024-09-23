@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using Core;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
 namespace Services
@@ -15,11 +15,6 @@ namespace Services
         PopupsManager,
         DynamicBackground
     }
-
-    public enum TestScenesMap  //TODO 
-    {
-        PopupTester
-    }
     
     public class SceneService
     {
@@ -27,6 +22,8 @@ namespace Services
         private List<string> _activeModuleScenes = new();
         private List<string> _loadedModuleScenes = new();
         private CancellationTokenSource _cts;
+
+        public event UnityAction<float> ScenesLoadProgress;
 
         public SceneService()
         {
@@ -60,10 +57,11 @@ namespace Services
 
             Debug.Log("Loading scenes: " + string.Join(", ", scenes));
             await LoadScenesAsync(scenes);
+            ScenesLoadProgress?.Invoke(1f); //TODO В дальнейшем нужно перенести его в метод LoadScenesAsync
             _activeModuleScenes = scenes;
         }
 
-        private static IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
+        public IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
         {
             return screenPresenterMap switch
             {

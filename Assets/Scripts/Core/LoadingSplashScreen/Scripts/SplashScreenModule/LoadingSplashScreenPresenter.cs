@@ -17,9 +17,8 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
 
         private const int TooltipDelay = 3000;
+        private const float LoadingTolerance = 0.1f;
 
-        //TODO Самое актуальное. Сначала ожидание метода сцен сервиса по подгрузке всех сцен, а потом
-        //ожидания 
         public LoadingSplashScreenPresenter(LoadingSplashScreenModel loadingSplashScreenModel, LoadingSplashScreenView loadingSplashScreenView)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
@@ -29,7 +28,7 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
 
             SubscribeToUIUpdates();
         }
-        
+
         private void SubscribeToUIUpdates()
         {
             _exponentialProgress.Subscribe(progress =>
@@ -43,7 +42,7 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
                 .AddTo(_cancellationTokenSource.Token);
         }
 
-        public async UniTask Enter()
+        public async UniTask Show()
         {
             InitializeUI();
     
@@ -54,24 +53,35 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
             await _loadingSplashScreenView.Show();
         }
 
-        public async UniTask DisplayLoading(Action scenesLoadProgress, Action servicesLoadProgress)
+        
+        public async UniTask Execute()
         {
-            await WaitScenesInitialization(scenesLoadProgress);
-            await WaitServicesInitialization(servicesLoadProgress);
-
             await _completionSource.Task;
         }
 
         private void InitializeUI() => _loadingSplashScreenView.HideInstantly();
 
-        //Action - задел на будущее, потом он будет возращать float progress
-        private async UniTask WaitScenesInitialization(Action loadAction)
+        
+        public async UniTaskVoid WaitScenesLoading(float loadProgress)
         {
             UniTaskCompletionSource completionSource = new();
 
-            loadAction += () => completionSource.TrySetResult();
+            if (Math.Abs(loadProgress - 1f) > LoadingTolerance)
+            {
+                //Метод анимации шкалы
+            }
+            else
+            {
+                _loadingSplashScreenView.ReportProgress(1f, "Loading Scenes");
+                completionSource.TrySetResult();
+            }
 
             await completionSource.Task;
+        }
+
+        public void UpdateSceneLoadingProgress(float progressData)
+        {
+            _loadingSplashScreenView.ReportProgress(progressData, "Loading Scenes");
         }
 
         private async UniTask WaitServicesInitialization(Action loadAction)
