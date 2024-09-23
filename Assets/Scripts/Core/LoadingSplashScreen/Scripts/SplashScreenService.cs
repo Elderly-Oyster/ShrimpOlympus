@@ -1,10 +1,13 @@
 using Cysharp.Threading.Tasks;
+using Startup;
 using VContainer;
+using VContainer.Unity;
 
 namespace Modules.Additional.LoadingSplashScreen.Scripts
 {
-    public class SplashScreenService
+    public class SplashScreenService : IStartable
     {
+        [Inject] private ScreenStateMachine _screenStateMachine;
         [Inject] private LoadingSplashScreenPresenter _splashScreenPresenter;
 
         public async UniTask ShowSplashScreen() => 
@@ -24,5 +27,10 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         {
             await _splashScreenPresenter.Hide();
         }
+
+        public void Start() => _screenStateMachine.ModuleChanged += OnModuleChanged;
+
+        private void OnModuleChanged(IObjectResolver resolver) => EnsureAudioListenerExists(resolver);
+
     }
 }

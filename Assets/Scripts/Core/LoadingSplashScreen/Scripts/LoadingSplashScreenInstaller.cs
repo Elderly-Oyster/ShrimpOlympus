@@ -16,6 +16,8 @@ namespace Modules.Additional.LoadingSplashScreen.Scripts
         {
             builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
+            
+            // builder.Register<SplashScreenService>(Lifetime.Singleton);
 
             builder.RegisterInstance(loadingSplashScreenView).As<LoadingSplashScreenView>();
             builder.Register<LoadingSplashScreenPresenter>(Lifetime.Singleton);

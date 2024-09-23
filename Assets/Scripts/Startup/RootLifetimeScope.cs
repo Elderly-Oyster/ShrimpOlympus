@@ -1,4 +1,5 @@
 using Core.EventMediatorSystem;
+using Modules.Additional.LoadingSplashScreen.Scripts;
 using Services;
 using Services.LongInitializationServices;
 using VContainer;
@@ -28,6 +29,8 @@ namespace Startup
             builder.Register<AudioListenerService>(Lifetime.Singleton).As<IStartable>()
                 .AsSelf();
             builder.Register<EventSystemService>(Lifetime.Singleton).As<IStartable>()
+                .AsSelf();
+            builder.Register<SplashScreenService>(Lifetime.Singleton)
                 .AsSelf();
             
             builder.Register<SceneService>(Lifetime.Singleton);

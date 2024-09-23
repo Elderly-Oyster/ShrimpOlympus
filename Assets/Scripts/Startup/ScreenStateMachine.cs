@@ -48,10 +48,10 @@ namespace Startup
 
             try
             {
-                if (_sceneService.GetAdditionalScenes(screenPresenterMap).Any() /*|| CurrentPresenter.HaveService*/)
-                    await RunPresenterWithSplashScreen(screenPresenterMap, param);
-                else
-                {
+                // if (_sceneService.GetAdditionalScenes(screenPresenterMap).Any() /*|| CurrentPresenter.HaveService*/)
+                //     await RunPresenterWithSplashScreen(screenPresenterMap, param);
+                // else
+                // {
                     await _sceneService.LoadScenesForModule(screenPresenterMap);
                     await _sceneService.UnloadUnusedScenesAsync();
 
@@ -69,7 +69,7 @@ namespace Startup
                     await CurrentPresenter.Exit();
                     CurrentPresenter.Dispose();
                     sceneLifetimeScope.Dispose();
-                }
+                // }
             }
             finally { _semaphoreSlim.Release(); }
         }
