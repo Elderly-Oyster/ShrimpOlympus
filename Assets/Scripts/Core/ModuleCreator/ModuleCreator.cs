@@ -153,19 +153,24 @@ namespace Core.ModuleCreator
 
         private void CreateSelectedScripts(string targetFolderPath, string moduleName)
         {
-            if (_createInstaller)
-                CreateScript(targetFolderPath, $"{moduleName}ScreenInstaller.cs",
-                    GetTemplateContent("TemplateScreenInstaller.cs", moduleName));
-            if (_createPresenter)
-                CreateScript(targetFolderPath, $"{moduleName}ScreenPresenter.cs",
-                    GetTemplateContent("TemplateScreenPresenter.cs", moduleName));
-            if (_createView)
-                CreateScript(targetFolderPath, $"{moduleName}ScreenView.cs",
-                    GetTemplateContent("TemplateScreenView.cs", moduleName));
-            if (_createModel)
-                CreateScript(targetFolderPath, $"{moduleName}ScreenModel.cs",
-                    GetTemplateContent("TemplateScreenModel.cs", moduleName));
+            var scriptsToCreate = new List<(bool shouldCreate, string templateFile, string outputFile)>
+            {
+                (_createInstaller, "TemplateScreenInstaller.cs", $"{moduleName}ScreenInstaller.cs"),
+                (_createPresenter, "TemplateScreenPresenter.cs", $"{moduleName}ScreenPresenter.cs"),
+                (_createView, "TemplateScreenView.cs", $"{moduleName}ScreenView.cs"),
+                (_createModel, "TemplateScreenModel.cs", $"{moduleName}ScreenModel.cs"),
+            };
+
+            foreach (var (shouldCreate, templateFile, outputFile) in scriptsToCreate)
+            {
+                if (shouldCreate)
+                {
+                    string content = GetTemplateContent(templateFile, moduleName);
+                    CreateScript(targetFolderPath, outputFile, content);
+                }
+            }
         }
+
 
         private string GetTemplateContent(string templateFileName, string moduleName)
         {
@@ -189,8 +194,7 @@ namespace Core.ModuleCreator
 
                 if (char.IsUpper(templateWord[0]))
                     return prefix + moduleName;
-                else
-                    return prefix + moduleNameLower;
+                return prefix + moduleNameLower;
             }, RegexOptions.IgnoreCase);
         }
 
