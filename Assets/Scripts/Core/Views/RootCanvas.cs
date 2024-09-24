@@ -10,6 +10,9 @@ namespace Core.Views
         [SerializeField] private CanvasScaler canvasScaler;
         [SerializeField] private Camera uiCamera;
         
+        public Camera UICamera => uiCamera;
+
+        
         public float GetScaleFactor()
         {
             if (_scaleFactor.HasValue) return _scaleFactor.Value;
@@ -25,8 +28,6 @@ namespace Core.Views
 
             return _scaleFactor.Value;
         }
-        
-        public Camera UICamera => uiCamera;
         
         public Rect GetScreenSpaceBounds(RectTransform rectTransform)
         {

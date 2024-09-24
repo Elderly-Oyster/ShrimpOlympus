@@ -1,15 +1,15 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Core;
 using Core.EventMediatorSystem;
+using Core.MVP;
 using R3;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterScenePresenter : ISmartPresenter, IStartable
+    public class PopupsTesterScenePresenter : IScreenPresenter, IStartable
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
@@ -29,9 +29,9 @@ namespace Modules.Test.PopupsTester.Scripts
             _eventMediator = eventMediator;
         }
 
-        public void Start() => Run(null).Forget();
-
-        public async UniTask Run(object param)
+        public void Start() => Enter(null).Forget();
+        
+        public async UniTask Enter(object param)
         {
             var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
             foreach (var action in popupActions)
@@ -45,6 +45,18 @@ namespace Modules.Test.PopupsTester.Scripts
 
             _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
             await ShowView();
+        }
+
+        public async UniTask Execute()
+        {
+            await UniTask.WaitUntil(() => !Application.isPlaying);
+            await Exit();
+        }
+
+        public async UniTask Exit()
+        {
+            await HideScreenView();
+            Dispose();
         }
 
         private void OnPopupOpened(PopupOpenedEvent popupEvent) => 
@@ -67,10 +79,11 @@ namespace Modules.Test.PopupsTester.Scripts
             reactiveCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
         }
 
-        public async UniTask Stop()
+        public void Dispose()
         {
             _disposables.Dispose();
-            await HideScreenView();
+            _popupsTesterSceneView.Dispose();
+            _popupsTesterSceneModel.Dispose();
         }
     }
 }
