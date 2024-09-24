@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Core;
 using Core.EventMediatorSystem;
+using Core.MVP;
 using R3;
 using UnityEngine;
 using VContainer.Unity;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterScenePresenter : ISmartPresenter, IStartable
+    public class PopupsTesterScenePresenter : IScreenPresenter, IStartable
     {
         private readonly CompositeDisposable _disposables = new();
         private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
@@ -29,23 +30,8 @@ namespace Modules.Test.PopupsTester.Scripts
             _eventMediator = eventMediator;
         }
 
-        public void Start() => Run(null).Forget();
-
-        public async UniTask Run(object param)
-        {
-            var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
-            foreach (var action in popupActions)
-                CreateButton(action);
-
-            Initialize();
-
-            _eventMediator.OnPopupOpenedAsObservable()
-                .Subscribe(OnPopupOpened)
-                .AddTo(_disposables);
-
-            _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
-            await ShowView();
-        }
+        public void Start() => Enter(null).Forget();
+        
 
         private void OnPopupOpened(PopupOpenedEvent popupEvent) => 
             Debug.Log($"Open Popup: {popupEvent.PopupName}");
@@ -67,7 +53,34 @@ namespace Modules.Test.PopupsTester.Scripts
             reactiveCommand.Subscribe(_ => button.Show().Forget()).AddTo(_disposables);
         }
 
-        public async UniTask Stop()
+        public void Dispose()
+        {
+            _popupsTesterSceneView.Dispose();
+            _popupsTesterSceneModel.Dispose();
+        }
+
+        public async UniTask Enter(object param)
+        {
+            var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
+            foreach (var action in popupActions)
+                CreateButton(action);
+
+            Initialize();
+
+            _eventMediator.OnPopupOpenedAsObservable()
+                .Subscribe(OnPopupOpened)
+                .AddTo(_disposables);
+
+            _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
+            await ShowView();
+        }
+
+        public UniTask Execute()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async UniTask Exit()
         {
             _disposables.Dispose();
             await HideScreenView();

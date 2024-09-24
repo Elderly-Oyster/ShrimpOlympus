@@ -1,10 +1,11 @@
 using Core.Popup.Base;
 using System;
+using Core.MVP;
 using VContainer;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterSceneModel
+    public class PopupsTesterSceneModel : IScreenModel
     {
         private readonly Func<Action, TestButtonView> _buttonFactory;
         private readonly Action[] _popupActions;
@@ -22,5 +23,7 @@ namespace Modules.Test.PopupsTester.Scripts
         }
 
         public Action[] GetPopupHubActions() => _popupActions;
+
+        public void Dispose() { }
     }
 }
