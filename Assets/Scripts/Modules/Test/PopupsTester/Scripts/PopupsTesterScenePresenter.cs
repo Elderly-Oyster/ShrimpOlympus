@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Core;
 using Core.EventMediatorSystem;
 using Core.MVP;
 using R3;
@@ -32,6 +31,33 @@ namespace Modules.Test.PopupsTester.Scripts
 
         public void Start() => Enter(null).Forget();
         
+        public async UniTask Enter(object param)
+        {
+            var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
+            foreach (var action in popupActions)
+                CreateButton(action);
+
+            Initialize();
+
+            _eventMediator.OnPopupOpenedAsObservable()
+                .Subscribe(OnPopupOpened)
+                .AddTo(_disposables);
+
+            _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
+            await ShowView();
+        }
+
+        public async UniTask Execute()
+        {
+            await UniTask.WaitUntil(() => !Application.isPlaying);
+            await Exit();
+        }
+
+        public async UniTask Exit()
+        {
+            await HideScreenView();
+            Dispose();
+        }
 
         private void OnPopupOpened(PopupOpenedEvent popupEvent) => 
             Debug.Log($"Open Popup: {popupEvent.PopupName}");
@@ -55,35 +81,9 @@ namespace Modules.Test.PopupsTester.Scripts
 
         public void Dispose()
         {
+            _disposables.Dispose();
             _popupsTesterSceneView.Dispose();
             _popupsTesterSceneModel.Dispose();
-        }
-
-        public async UniTask Enter(object param)
-        {
-            var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
-            foreach (var action in popupActions)
-                CreateButton(action);
-
-            Initialize();
-
-            _eventMediator.OnPopupOpenedAsObservable()
-                .Subscribe(OnPopupOpened)
-                .AddTo(_disposables);
-
-            _popupsTesterSceneView.SetupListeners(_buttonCommandMap);
-            await ShowView();
-        }
-
-        public UniTask Execute()
-        {
-            throw new NotImplementedException();
-        }
-
-        public async UniTask Exit()
-        {
-            _disposables.Dispose();
-            await HideScreenView();
         }
     }
 }
