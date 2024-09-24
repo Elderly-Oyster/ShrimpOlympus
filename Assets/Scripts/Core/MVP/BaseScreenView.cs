@@ -1,4 +1,5 @@
-﻿using Core.Views.UIViews;
+﻿using Core.Views;
+using Core.Views.UIViews;
 using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -22,12 +23,14 @@ namespace Core.MVP
         public virtual async UniTask Show()
         {
             SetActive(true);
-            if (animationElement != null) await animationElement.Show();
+            if (animationElement != null) 
+                await animationElement.Show();
         }
 
         public virtual async UniTask Hide()
         {
-            if (animationElement != null) await animationElement.Hide();
+            if (animationElement != null) 
+                await animationElement.Hide();
             SetActive(false);
         }
         
@@ -45,7 +48,8 @@ namespace Core.MVP
 
         public virtual void Dispose()
         {
-            if (this != null) Destroy(gameObject);
+            if (this != null) 
+                Destroy(gameObject);
         } 
     }
 }
