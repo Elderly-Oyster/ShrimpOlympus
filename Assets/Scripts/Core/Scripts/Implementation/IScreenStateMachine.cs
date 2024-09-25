@@ -1,16 +1,11 @@
-﻿using System;
-using Core.Scripts;
-using Core.Scripts.MVP;
+﻿using Core.Scripts.MVP;
 using Cysharp.Threading.Tasks;
-using VContainer;
 
-namespace Implementation.Scripts
+namespace Core.Scripts.Implementation
 {
     public interface  IScreenStateMachine
     {
         public IScreenPresenter CurrentPresenter { get; }
-
-        public event Action<IObjectResolver> ModuleChanged;
         
         UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null);
     }

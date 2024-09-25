@@ -1,8 +1,8 @@
 ﻿using Core.Scripts;
+using Core.Scripts.Implementation;
 using Core.Scripts.MVP;
 using Core.Scripts.Popup.Base;
 using Cysharp.Threading.Tasks;
-using Implementation.Scripts;
 using R3;
 
 namespace Modules.Scripts.Base.TicTacScreen.Scripts

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading;
 using Core.Scripts;
+using Core.Scripts.Implementation;
 using Core.Scripts.MVP;
 using Core.Scripts.Services;
 using Core.Scripts.Services.SceneInstallerService;
 using Cysharp.Threading.Tasks;
-using Implementation.Scripts;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
@@ -22,7 +22,6 @@ namespace Root.Scripts.ScreenStateMachine
         [Inject] private readonly IObjectResolver _resolver;
 
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1);
-        public event Action<IObjectResolver> ModuleChanged;
         public IScreenPresenter CurrentPresenter { get; private set; }
 
 
@@ -59,8 +58,7 @@ namespace Root.Scripts.ScreenStateMachine
 
                 //await ShowSplashScreen(); //TODO
                 
-                ModuleChanged?.Invoke(sceneLifetimeScope.Container);
-                OnModuleChanged(sceneLifetimeScope);
+                _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
                 
                 await CurrentPresenter.Enter(param);
                 await CurrentPresenter.Execute();
@@ -69,12 +67,6 @@ namespace Root.Scripts.ScreenStateMachine
                 sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
-        }
-
-
-        private void OnModuleChanged(LifetimeScope sceneLifetimeScope)
-        {
-            _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
         }
 
         private async UniTask ShowSplashScreen()

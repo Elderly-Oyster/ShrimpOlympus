@@ -1,4 +1,4 @@
-﻿namespace Core.Scripts
+﻿namespace Core.Scripts.Implementation
 {
     public interface IFactory { }
 
