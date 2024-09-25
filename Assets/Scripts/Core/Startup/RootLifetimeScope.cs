@@ -1,10 +1,10 @@
 using Core.EventMediatorSystem;
-using Services;
-using Services.LongInitializationServices;
+using Core.Services;
+using Core.Services.LongInitializationServices;
 using VContainer;
 using VContainer.Unity;
 
-namespace Startup
+namespace Core.Startup
 {
     public class RootLifetimeScope : LifetimeScope
     {
@@ -19,7 +19,7 @@ namespace Startup
                 .AsImplementedInterfaces();
         }
 
-        private void RegisterServices(IContainerBuilder builder)
+        private static void RegisterServices(IContainerBuilder builder)
         {
             RegisterLongInitializationService(builder);
             
@@ -34,7 +34,7 @@ namespace Startup
             builder.Register<SceneInstallerService>(Lifetime.Singleton);
         }
 
-        private void RegisterLongInitializationService(IContainerBuilder builder)
+        private static void RegisterLongInitializationService(IContainerBuilder builder)
         {
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
