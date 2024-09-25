@@ -1,4 +1,4 @@
-using Core;
+using Core.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 

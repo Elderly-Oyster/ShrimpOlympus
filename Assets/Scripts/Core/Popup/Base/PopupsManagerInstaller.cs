@@ -2,6 +2,7 @@ using Core.EventMediatorSystem;
 using Core.Popup.Types.FirstPopup.Scripts;
 using Core.Popup.Types.SecondPopup.Scripts;
 using Core.Popup.Types.ThirdPopup.Scripts;
+using Core.Services.SceneInstallerService;
 using Core.Views.ProgressBars;
 using UnityEngine;
 using VContainer;

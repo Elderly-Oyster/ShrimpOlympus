@@ -1,10 +1,11 @@
 using Core.EventMediatorSystem;
 using Core.Services;
 using Core.Services.LongInitializationServices;
+using Core.Services.SceneInstallerService;
 using VContainer;
 using VContainer.Unity;
 
-namespace Core.Startup
+namespace Core.Root
 {
     public class RootLifetimeScope : LifetimeScope
     {
@@ -14,7 +15,7 @@ namespace Core.Startup
             
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
 
-            builder.Register<ScreenStateMachine>(Lifetime.Singleton)
+            builder.Register<ScreenStateMachine.ScreenStateMachine>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
         }

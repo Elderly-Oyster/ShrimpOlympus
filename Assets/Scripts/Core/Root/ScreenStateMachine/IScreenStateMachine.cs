@@ -3,7 +3,7 @@ using Core.MVP;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
-namespace Core
+namespace Core.Root.ScreenStateMachine
 {
     public interface  IScreenStateMachine
     {

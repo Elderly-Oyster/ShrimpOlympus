@@ -2,13 +2,14 @@
 using System.Threading;
 using Core.MVP;
 using Core.Services;
+using Core.Services.SceneInstallerService;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
-namespace Core.Startup
+namespace Core.Root.ScreenStateMachine
 {
     public class ScreenStateMachine : IScreenStateMachine, IStartable
     {
