@@ -1,9 +1,9 @@
-using Startup;
+using Core.Startup;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Services
+namespace Core.Services
 {
     public class AudioListenerService : IStartable
     {

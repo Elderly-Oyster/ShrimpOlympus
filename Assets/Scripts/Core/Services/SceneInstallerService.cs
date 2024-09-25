@@ -1,12 +1,10 @@
-using System;
 using System.Collections.Generic;
-using Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
-namespace Services
+namespace Core.Services
 {
     public class SceneInstallerService
     {

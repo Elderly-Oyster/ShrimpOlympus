@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Core.MVP;
+using Core.Services.LongInitializationServices;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
-using Services.LongInitializationServices;
 
 namespace Modules.Additional.LoadingSplashScreen.Scripts
 {

@@ -1,4 +1,4 @@
-﻿namespace Services.LongInitializationServices
+﻿namespace Core.Services.LongInitializationServices
 {
     public class SecondLongInitializationService : LongInitializationService
     {
