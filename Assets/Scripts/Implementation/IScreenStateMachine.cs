@@ -1,9 +1,10 @@
 ﻿using System;
+using Core;
 using Core.MVP;
 using Cysharp.Threading.Tasks;
 using VContainer;
 
-namespace Core.Root.ScreenStateMachine
+namespace Implementation
 {
     public interface  IScreenStateMachine
     {
@@ -18,14 +19,6 @@ namespace Core.Root.ScreenStateMachine
     {
         public static UniTaskVoid RunModel(this IScreenStateMachine self, ScreenPresenterMap screenPresenterMap) => 
             self.RunScreen(screenPresenterMap);
-    }
-    
-    public enum ScreenPresenterMap
-    {
-        StartGame,
-        MainMenu,
-        Converter,
-        TicTac,
     }
 }
 

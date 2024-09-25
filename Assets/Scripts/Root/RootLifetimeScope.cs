@@ -2,6 +2,8 @@ using Core.EventMediatorSystem;
 using Core.Services;
 using Core.Services.LongInitializationServices;
 using Core.Services.SceneInstallerService;
+using Root;
+using Root.ScreenStateMachine;
 using VContainer;
 using VContainer.Unity;
 
@@ -15,7 +17,7 @@ namespace Core.Root
             
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
 
-            builder.Register<ScreenStateMachine.ScreenStateMachine>(Lifetime.Singleton)
+            builder.Register<ScreenStateMachine>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
         }

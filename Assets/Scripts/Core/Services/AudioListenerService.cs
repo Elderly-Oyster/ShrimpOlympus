@@ -1,4 +1,3 @@
-using Core.Root.ScreenStateMachine;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -7,13 +6,9 @@ namespace Core.Services
 {
     public class AudioListenerService : IStartable
     {
-        [Inject] private ScreenStateMachine _screenStateMachine;
-
-        public void Start() => _screenStateMachine.ModuleChanged += OnModuleChanged;
-
-        private void OnModuleChanged(IObjectResolver resolver) => EnsureAudioListenerExists(resolver);
-
-        private void EnsureAudioListenerExists(IObjectResolver resolver)
+        public void Start() { } // TODO Check The Need
+        
+        public void EnsureAudioListenerExists(IObjectResolver resolver)
         {
             var mainCamera = resolver.Resolve<Camera>();
             if (mainCamera == null)

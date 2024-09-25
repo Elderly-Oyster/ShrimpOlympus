@@ -1,10 +1,10 @@
 {
-    "name": "TemplateScreen",
+    "name": "Implementation",
     "rootNamespace": "",
     "references": [
-        "GUID:f51ebe6a0ceec4240a699833d6309b23",
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:77221876cc6b8244180b96e320b1bcd4"
+        "GUID:46a522227ca1f23498bc545e8da31f76",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

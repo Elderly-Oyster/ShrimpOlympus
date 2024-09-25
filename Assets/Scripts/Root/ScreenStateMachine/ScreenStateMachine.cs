@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Threading;
+using Core;
 using Core.MVP;
+using Core.Root;
 using Core.Services;
 using Core.Services.SceneInstallerService;
 using Cysharp.Threading.Tasks;
+using Implementation;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
-namespace Core.Root.ScreenStateMachine
+namespace Root.ScreenStateMachine
 {
     public class ScreenStateMachine : IScreenStateMachine, IStartable
     {
+        [Inject] private readonly AudioListenerService _audioListenerService;
         [Inject] private readonly SceneInstallerService _sceneInstallerService;
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
@@ -57,6 +61,7 @@ namespace Core.Root.ScreenStateMachine
                 //await ShowSplashScreen(); //TODO
                 
                 ModuleChanged?.Invoke(sceneLifetimeScope.Container);
+                OnModuleChanged(sceneLifetimeScope);
                 
                 await CurrentPresenter.Enter(param);
                 await CurrentPresenter.Execute();
@@ -65,6 +70,12 @@ namespace Core.Root.ScreenStateMachine
                 sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
+        }
+
+
+        private void OnModuleChanged(LifetimeScope sceneLifetimeScope)
+        {
+            _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
         }
 
         private async UniTask ShowSplashScreen()
