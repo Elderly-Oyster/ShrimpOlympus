@@ -1,0 +1,25 @@
+﻿using Core.Scripts.Services.SceneInstallerService;
+using Core.Scripts.Views;
+using UnityEngine;
+using VContainer;
+using VContainer.Unity;
+
+namespace Modules.Scripts.Base.StartGameScreen.Scripts
+{
+    public class StartGameScreenInstaller : SceneInstaller
+    {
+        [SerializeField] private StartGameScreenView startGameScreenView;
+        [SerializeField] private ScreensCanvas screensCanvas;
+        [SerializeField] private Camera mainCamera;
+
+        public override void RegisterSceneDependencies(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(screensCanvas);
+            builder.RegisterInstance(mainCamera);
+
+            builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
+            builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
+            builder.Register<StartGameScreenModel>(Lifetime.Singleton);
+        }
+    }
+}
