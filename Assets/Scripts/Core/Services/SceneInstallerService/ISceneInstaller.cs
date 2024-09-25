@@ -1,6 +1,6 @@
 using VContainer;
 
-namespace Core
+namespace Core.Services.SceneInstallerService
 {
     public interface ISceneInstaller
     {

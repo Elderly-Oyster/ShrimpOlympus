@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using Core.MVP;
+using Core.Root.ScreenStateMachine;
 using Modules.Base.ConverterScreen.Scripts;
 using Modules.Base.MainMenuScreen.Scripts;
 using Modules.Base.StartGameScreen.Scripts;
 using Modules.Base.TicTacScreen.Scripts;
 using VContainer;
 
-namespace Core.Startup   
+namespace Core.Root   
 {
     public class ScreenTypeMapper
     {

@@ -1,5 +1,4 @@
-﻿using Core.Views;
-using Core.Views.UIViews;
+﻿using Core.Views.UIViews;
 using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;

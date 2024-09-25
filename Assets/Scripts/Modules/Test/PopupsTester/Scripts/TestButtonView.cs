@@ -1,4 +1,3 @@
-using System;
 using Core.Views.UIViews.Animations;
 using Cysharp.Threading.Tasks;
 using R3;

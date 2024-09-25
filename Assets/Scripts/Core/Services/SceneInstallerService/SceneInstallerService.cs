@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using VContainer;
 using VContainer.Unity;
 
-namespace Core.Services
+namespace Core.Services.SceneInstallerService
 {
     public class SceneInstallerService
     {
