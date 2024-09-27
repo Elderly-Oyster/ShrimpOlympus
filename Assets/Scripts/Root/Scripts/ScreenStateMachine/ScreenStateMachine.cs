@@ -55,8 +55,6 @@ namespace Root.Scripts.ScreenStateMachine
                     CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
                 
                 CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
-
-                //await ShowSplashScreen(); //TODO
                 
                 _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
                 
@@ -67,13 +65,6 @@ namespace Root.Scripts.ScreenStateMachine
                 sceneLifetimeScope.Dispose();
             }
             finally { _semaphoreSlim.Release(); }
-        }
-
-        private async UniTask ShowSplashScreen()
-        {
-            // await CurrentPresenter.Enter();
-            await CurrentPresenter.Execute();
-            await CurrentPresenter.Exit();
         }
 
         private static ScreenPresenterMap? SceneNameToEnum(string sceneName)
