@@ -246,7 +246,7 @@ namespace Core.Scripts.ModuleCreator
 
         private string ReplaceNamespace(string content, string moduleName)
         {
-            string namespaceReplacement = $"namespace Modules.{_selectedFolder}.{moduleName}Screen";
+            string namespaceReplacement = $"namespace Modules.{_selectedFolder}.{moduleName}Screen.Scripts";
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
