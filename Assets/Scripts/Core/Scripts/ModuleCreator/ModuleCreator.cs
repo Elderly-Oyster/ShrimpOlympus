@@ -21,13 +21,13 @@ namespace Core.Scripts.ModuleCreator
         private bool _createPresenter = true;
         private bool _createView = true;
         private bool _createModel = true;
-        private bool _createAsmdef = true; // Добавлено: возможность выбора создания asmdef
+        private bool _createAsmdef = true;
 
         private string _additionalFolderPath;
         private string _baseFolderPath;
         private string _testFolderPath;
         private string _templateFolderPath;
-        private string _templateModuleFolderPath; // Путь к папке модуля шаблона
+        private string _templateModuleFolderPath;
 
         private readonly List<string> _requiredTemplates = new List<string>
         {
@@ -87,7 +87,7 @@ namespace Core.Scripts.ModuleCreator
             _baseFolderPath = Path.Combine(BasePath, "Base");
             _testFolderPath = Path.Combine(BasePath, "Test");
             _templateFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Scripts");
-            _templateModuleFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen"); // Путь к папке модуля шаблона
+            _templateModuleFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen");
         }
 
         private void EnsureSubfoldersExist()
@@ -156,21 +156,38 @@ namespace Core.Scripts.ModuleCreator
         {
             string selectedFolderPath = GetSelectedFolderPath();
             string targetFolderPath = Path.Combine(selectedFolderPath, $"{moduleName}Screen");
-            EnsureTargetFolderExists(targetFolderPath);
+            EnsureModuleFolders(targetFolderPath);
 
             string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
-            EnsureTargetFolderExists(scriptsFolderPath);
 
             if (_createAsmdef)
             {
-                string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
-                string targetAsmdefPath = Path.Combine(targetFolderPath, $"{moduleName}Screen.asmdef");
-                CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
+                CreateAsmdefFile(targetFolderPath, moduleName);
             }
 
             CreateSelectedScripts(scriptsFolderPath, moduleName);
 
             AssetDatabase.Refresh();
+
+            DisplaySuccessMessage(moduleName);
+        }
+
+        private void EnsureModuleFolders(string targetFolderPath)
+        {
+            EnsureTargetFolderExists(targetFolderPath);
+            string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
+            EnsureTargetFolderExists(scriptsFolderPath);
+        }
+
+        private void CreateAsmdefFile(string targetFolderPath, string moduleName)
+        {
+            string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
+            string targetAsmdefPath = Path.Combine(targetFolderPath, $"{moduleName}Screen.asmdef");
+            CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
+        }
+
+        private void DisplaySuccessMessage(string moduleName)
+        {
             EditorUtility.DisplayDialog("Success",
                 $"Module {moduleName} created successfully.", "OK");
         }
@@ -208,14 +225,31 @@ namespace Core.Scripts.ModuleCreator
         private string GetTemplateContent(string templateFileName, string moduleName)
         {
             string templateFilePath = Path.Combine(_templateFolderPath, templateFileName);
-            string content = File.ReadAllText(templateFilePath);
+            string content = ReadTemplateFile(templateFilePath);
+            if (content == null)
+                return null;
 
             string moduleNameLower = char.ToLower(moduleName[0]) + moduleName.Substring(1);
-            string namespaceReplacement = $"namespace Modules.{_selectedFolder}.{moduleName}Screen";
-            content = Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
-
+            content = ReplaceNamespace(content, moduleName);
             content = ReplaceTemplateOccurrences(content, moduleName, moduleNameLower);
             return content;
+        }
+
+        private string ReadTemplateFile(string templateFilePath)
+        {
+            if (!File.Exists(templateFilePath))
+            {
+                Debug.LogError($"Template file not found at {templateFilePath}");
+                return null;
+            }
+
+            return File.ReadAllText(templateFilePath);
+        }
+
+        private string ReplaceNamespace(string content, string moduleName)
+        {
+            string namespaceReplacement = $"namespace Modules.{_selectedFolder}.{moduleName}Screen";
+            return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
         private string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
@@ -254,10 +288,15 @@ namespace Core.Scripts.ModuleCreator
                 }
             }
 
+            WriteToFile(filePath, scriptContent);
+        }
+
+        private void WriteToFile(string filePath, string content)
+        {
             try
             {
-                File.WriteAllText(filePath, scriptContent);
-                Debug.Log($"Script created at {filePath}");
+                File.WriteAllText(filePath, content);
+                Debug.Log($"File created at {filePath}");
             }
             catch (Exception ex)
             {
@@ -267,7 +306,8 @@ namespace Core.Scripts.ModuleCreator
 
         private void CopyAndAdjustAsmdef(string templateAsmdefPath, string targetAsmdefPath, string moduleName)
         {
-            if (!File.Exists(templateAsmdefPath))
+            string content = ReadTemplateFile(templateAsmdefPath);
+            if (content == null)
             {
                 EditorUtility.DisplayDialog("Missing asmdef Template",
                     $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.",
@@ -275,19 +315,12 @@ namespace Core.Scripts.ModuleCreator
                 return;
             }
 
-            string content = File.ReadAllText(templateAsmdefPath);
-            content = Regex.Replace(content,
-                @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
+            content = AdjustAsmdefContent(content, moduleName);
 
-            try
-            {
-                File.WriteAllText(targetAsmdefPath, content);
-                Debug.Log($"Asmdef file created at {targetAsmdefPath}");
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Error writing asmdef file: {ex.Message}");
-            }
+            WriteToFile(targetAsmdefPath, content);
         }
+
+        private string AdjustAsmdefContent(string content, string moduleName) => 
+            Regex.Replace(content, @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
     }
 }
