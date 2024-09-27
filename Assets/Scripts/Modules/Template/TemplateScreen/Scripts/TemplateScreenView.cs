@@ -3,7 +3,7 @@ using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Scripts.Template.TemplateScreen
+namespace Modules.Template.TemplateScreen.Scripts
 {
     public class TemplateScreenView : BaseScreenView
     {

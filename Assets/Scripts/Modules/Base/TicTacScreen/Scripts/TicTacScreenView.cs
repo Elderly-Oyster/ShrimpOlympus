@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Scripts.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenView : BaseScreenView
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Core.Scripts;
 using Core.Scripts.MVP;
-using Modules.Scripts.Base.ConverterScreen.Scripts;
-using Modules.Scripts.Base.MainMenuScreen.Scripts;
-using Modules.Scripts.Base.StartGameScreen.Scripts;
-using Modules.Scripts.Base.TicTacScreen.Scripts;
+using Modules.Base.ConverterScreen.Scripts;
+using Modules.Base.MainMenuScreen.Scripts;
+using Modules.Base.StartGameScreen.Scripts;
+using Modules.Base.TicTacScreen.Scripts;
 using VContainer;
 
 namespace Root.Scripts.ScreenStateMachine   

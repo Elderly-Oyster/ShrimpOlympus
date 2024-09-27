@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Scripts.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenInstaller : SceneInstaller
     {

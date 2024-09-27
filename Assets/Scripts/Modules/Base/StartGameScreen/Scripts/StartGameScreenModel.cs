@@ -6,7 +6,7 @@ using Core.Scripts.Services.LongInitializationServices;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
 
-namespace Modules.Scripts.Base.StartGameScreen.Scripts
+namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenModel : IScreenModel
     {

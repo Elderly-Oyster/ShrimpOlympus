@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Scripts.Base.ConverterScreen.Scripts
+namespace Modules.Base.ConverterScreen.Scripts
 {
     public class ConverterScreenInstaller : SceneInstaller
     {

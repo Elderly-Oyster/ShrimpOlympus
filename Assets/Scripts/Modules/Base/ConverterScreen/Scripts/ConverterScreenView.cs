@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Scripts.Base.ConverterScreen.Scripts
+namespace Modules.Base.ConverterScreen.Scripts
 {
     public class ConverterScreenView : BaseScreenView
     {

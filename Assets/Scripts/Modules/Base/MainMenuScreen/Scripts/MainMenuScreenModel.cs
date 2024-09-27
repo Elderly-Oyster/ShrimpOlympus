@@ -1,6 +1,6 @@
 ﻿using Core.Scripts.MVP;
 
-namespace Modules.Scripts.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenModel : IScreenModel
     {

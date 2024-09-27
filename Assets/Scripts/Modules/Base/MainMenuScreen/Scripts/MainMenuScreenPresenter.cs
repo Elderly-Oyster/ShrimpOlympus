@@ -5,7 +5,7 @@ using Core.Scripts.Popup.Base;
 using Cysharp.Threading.Tasks;
 using R3;
 
-namespace Modules.Scripts.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenPresenter : IScreenPresenter
     {

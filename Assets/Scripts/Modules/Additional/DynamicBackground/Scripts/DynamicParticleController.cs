@@ -1,25 +1,24 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Modules.Scripts.Additional.DynamicBackground
+namespace Modules.Additional.DynamicBackground.Scripts
 {
     [ExecuteInEditMode]
     public class DynamicParticleController : MonoBehaviour
     {
         public new ParticleSystem particleSystem;
-        [Range(0, 1)]
-        public float parameter = 0.5f;
+        [Range(0, 1)] public float parameter = 0.5f;
         private float _previousParameter;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _previousParameter = parameter;
             EditorApplication.update += EditorUpdate;
         }
 
-        void OnDisable() => EditorApplication.update -= EditorUpdate;
+        private void OnDisable() => EditorApplication.update -= EditorUpdate;
 
-        void EditorUpdate()
+        private void EditorUpdate()
         {
             if (parameter != _previousParameter)
             {
@@ -28,7 +27,7 @@ namespace Modules.Scripts.Additional.DynamicBackground
             }
         }
 
-        void UpdateParticleSystem(float param)
+        private void UpdateParticleSystem(float param)
         {
             var colorOverLifetime = particleSystem.colorOverLifetime;
             colorOverLifetime.enabled = true;

@@ -1,6 +1,6 @@
 ﻿using Core.Scripts.MVP;
 
-namespace Modules.Scripts.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenModel : IScreenModel
     {

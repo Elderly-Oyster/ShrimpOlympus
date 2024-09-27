@@ -1,6 +1,6 @@
 using Core.Scripts.MVP;
 
-namespace Modules.Scripts.Template.TemplateScreen
+namespace Modules.Template.TemplateScreen.Scripts
 {
     public class TemplateScreenModel : IScreenModel
     {

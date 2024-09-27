@@ -5,7 +5,7 @@ using Core.Scripts.Popup.Base;
 using Cysharp.Threading.Tasks;
 using R3;
 
-namespace Modules.Scripts.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenPresenter : IScreenPresenter
     {

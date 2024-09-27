@@ -4,7 +4,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Scripts.Base.StartGameScreen.Scripts
+namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenInstaller : SceneInstaller
     {

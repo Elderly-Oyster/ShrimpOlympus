@@ -3,7 +3,7 @@ using R3;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Scripts.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenView : BaseScreenView
     {

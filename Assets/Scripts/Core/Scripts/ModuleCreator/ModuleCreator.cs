@@ -10,6 +10,7 @@ namespace Core.Scripts.ModuleCreator
 {
     public class ModuleCreator : EditorWindow
     {
+        private FolderType _selectedFolder = FolderType.Base;
         private enum FolderType { Additional, Base, Test }
 
         private const string BasePath = "Assets/Scripts/Modules";
@@ -20,8 +21,6 @@ namespace Core.Scripts.ModuleCreator
         private bool _createPresenter = true;
         private bool _createView = true;
         private bool _createModel = true;
-
-        private FolderType _selectedFolder = FolderType.Base;
 
         private string _additionalFolderPath;
         private string _baseFolderPath;
@@ -81,7 +80,7 @@ namespace Core.Scripts.ModuleCreator
             _additionalFolderPath = Path.Combine(BasePath, "Additional");
             _baseFolderPath = Path.Combine(BasePath, "Base");
             _testFolderPath = Path.Combine(BasePath, "Test");
-            _templateFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen");
+            _templateFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Scripts");
         }
 
         private void EnsureSubfoldersExist()

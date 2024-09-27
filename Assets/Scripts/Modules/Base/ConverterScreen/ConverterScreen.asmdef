@@ -1,18 +1,15 @@
 {
-    "name": "Root",
+    "name": "ConverterScreen",
     "rootNamespace": "",
     "references": [
-        "GUID:77221876cc6b8244180b96e320b1bcd4",
         "GUID:f51ebe6a0ceec4240a699833d6309b23",
         "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:77221876cc6b8244180b96e320b1bcd4",
         "GUID:46a522227ca1f23498bc545e8da31f76",
-        "GUID:046fa1820b7f4dcfaa941ae392edc806",
-        "GUID:cb1000da4b6c4c84922ba628c1f857c7",
-        "GUID:0eb98ddc5690bdb4297a1352d8c4387f",
-        "GUID:b4e4dc74f7b741bcaff0ecae1dea3927",
-        "GUID:089527a6554b4db69e386250e8be4f70",
-        "GUID:876767c6b7ac4baa8f6e6df71b890fdc",
-        "GUID:fd4ec8eb30744f52b5c35d018ea95df0"
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:b2af9ebba2d6a2f4a9428318c45ebfa6",
+        "GUID:029c1c1b674aaae47a6841a0b89ad80e",
+        "GUID:e57a070918d14774a432af85349df17e"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

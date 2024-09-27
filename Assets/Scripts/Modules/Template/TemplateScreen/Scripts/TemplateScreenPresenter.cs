@@ -4,7 +4,7 @@ using Core.Scripts.MVP;
 using Cysharp.Threading.Tasks;
 using R3;
 
-namespace Modules.Scripts.Template.TemplateScreen
+namespace Modules.Template.TemplateScreen.Scripts
 {
     public class TemplatePresenter : IScreenPresenter
     {

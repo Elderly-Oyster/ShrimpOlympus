@@ -7,7 +7,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 
-namespace Modules.Scripts.Base.StartGameScreen.Scripts
+namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IScreenPresenter
     {

@@ -3,11 +3,11 @@ using Core.Scripts;
 using Core.Scripts.Implementation;
 using Core.Scripts.MVP;
 using Cysharp.Threading.Tasks;
-using Modules.Scripts.Additional.DynamicBackground;
+using Modules.Additional.DynamicBackground.Scripts;
 using R3;
 using UnityEngine;
 
-namespace Modules.Scripts.Base.ConverterScreen.Scripts
+namespace Modules.Base.ConverterScreen.Scripts
 {
     public class ConverterScreenPresenter : IScreenPresenter
     {
