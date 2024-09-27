@@ -21,11 +21,13 @@ namespace Core.Scripts.ModuleCreator
         private bool _createPresenter = true;
         private bool _createView = true;
         private bool _createModel = true;
+        private bool _createAsmdef = true; // Добавлено: возможность выбора создания asmdef
 
         private string _additionalFolderPath;
         private string _baseFolderPath;
         private string _testFolderPath;
         private string _templateFolderPath;
+        private string _templateModuleFolderPath; // Путь к папке модуля шаблона
 
         private readonly List<string> _requiredTemplates = new List<string>
         {
@@ -59,6 +61,10 @@ namespace Core.Scripts.ModuleCreator
             _createPresenter = EditorGUILayout.Toggle("Presenter", _createPresenter);
             _createView = EditorGUILayout.Toggle("View", _createView);
             _createModel = EditorGUILayout.Toggle("Model", _createModel);
+
+            GUILayout.Space(GUISpacing);
+            _createAsmdef = EditorGUILayout.Toggle("Create asmdef", _createAsmdef);
+
             GUILayout.Space(GUISpacing);
             if (GUILayout.Button("Create Module"))
             {
@@ -81,6 +87,7 @@ namespace Core.Scripts.ModuleCreator
             _baseFolderPath = Path.Combine(BasePath, "Base");
             _testFolderPath = Path.Combine(BasePath, "Test");
             _templateFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Scripts");
+            _templateModuleFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen"); // Путь к папке модуля шаблона
         }
 
         private void EnsureSubfoldersExist()
@@ -119,6 +126,18 @@ namespace Core.Scripts.ModuleCreator
                 return false;
             }
 
+            if (_createAsmdef)
+            {
+                string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
+                if (!File.Exists(templateAsmdefPath))
+                {
+                    EditorUtility.DisplayDialog("Missing asmdef Template",
+                        $"Template asmdef file not found at {templateAsmdefPath}.\n\nModule creation aborted.",
+                        "OK");
+                    return false;
+                }
+            }
+
             return true;
         }
 
@@ -138,7 +157,19 @@ namespace Core.Scripts.ModuleCreator
             string selectedFolderPath = GetSelectedFolderPath();
             string targetFolderPath = Path.Combine(selectedFolderPath, $"{moduleName}Screen");
             EnsureTargetFolderExists(targetFolderPath);
-            CreateSelectedScripts(targetFolderPath, moduleName);
+
+            string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
+            EnsureTargetFolderExists(scriptsFolderPath);
+
+            if (_createAsmdef)
+            {
+                string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
+                string targetAsmdefPath = Path.Combine(targetFolderPath, $"{moduleName}Screen.asmdef");
+                CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
+            }
+
+            CreateSelectedScripts(scriptsFolderPath, moduleName);
+
             AssetDatabase.Refresh();
             EditorUtility.DisplayDialog("Success",
                 $"Module {moduleName} created successfully.", "OK");
@@ -147,10 +178,14 @@ namespace Core.Scripts.ModuleCreator
         private void EnsureTargetFolderExists(string targetFolderPath)
         {
             if (!AssetDatabase.IsValidFolder(targetFolderPath))
-                AssetDatabase.CreateFolder(Path.GetDirectoryName(targetFolderPath), Path.GetFileName(targetFolderPath));
+            {
+                string parentFolder = Path.GetDirectoryName(targetFolderPath);
+                string newFolderName = Path.GetFileName(targetFolderPath);
+                AssetDatabase.CreateFolder(parentFolder, newFolderName);
+            }
         }
 
-        private void CreateSelectedScripts(string targetFolderPath, string moduleName)
+        private void CreateSelectedScripts(string folderPath, string moduleName)
         {
             var scriptsToCreate = new List<(bool shouldCreate, string templateFile, string outputFile)>
             {
@@ -165,11 +200,10 @@ namespace Core.Scripts.ModuleCreator
                 if (shouldCreate)
                 {
                     string content = GetTemplateContent(templateFile, moduleName);
-                    CreateScript(targetFolderPath, outputFile, content);
+                    CreateScript(folderPath, outputFile, content);
                 }
             }
         }
-
 
         private string GetTemplateContent(string templateFileName, string moduleName)
         {
@@ -228,6 +262,31 @@ namespace Core.Scripts.ModuleCreator
             catch (Exception ex)
             {
                 Debug.LogError($"Error writing file {Path.GetFileName(filePath)}: {ex.Message}");
+            }
+        }
+
+        private void CopyAndAdjustAsmdef(string templateAsmdefPath, string targetAsmdefPath, string moduleName)
+        {
+            if (!File.Exists(templateAsmdefPath))
+            {
+                EditorUtility.DisplayDialog("Missing asmdef Template",
+                    $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.",
+                    "OK");
+                return;
+            }
+
+            string content = File.ReadAllText(templateAsmdefPath);
+            content = Regex.Replace(content,
+                @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
+
+            try
+            {
+                File.WriteAllText(targetAsmdefPath, content);
+                Debug.Log($"Asmdef file created at {targetAsmdefPath}");
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Error writing asmdef file: {ex.Message}");
             }
         }
     }
