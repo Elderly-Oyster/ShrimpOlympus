@@ -40,7 +40,7 @@ namespace Core.Scripts.ModuleCreator
         [MenuItem("Tools/Create Module")]
         public static void ShowWindow() => GetWindow<ModuleCreator>("Create Module");
 
-        private bool IsValidModuleName(string moduleName) =>
+        private static bool IsValidModuleName(string moduleName) =>
             !string.IsNullOrWhiteSpace(moduleName) && !moduleName.Contains(" ");
 
         private void OnEnable()
@@ -90,14 +90,14 @@ namespace Core.Scripts.ModuleCreator
             _templateModuleFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen");
         }
 
-        private void EnsureSubfoldersExist()
+        private static void EnsureSubfoldersExist()
         {
             CreateFolderIfNotExists("Additional");
             CreateFolderIfNotExists("Base");
             CreateFolderIfNotExists("Test");
         }
 
-        private void CreateFolderIfNotExists(string folderName)
+        private static void CreateFolderIfNotExists(string folderName)
         {
             string folderPath = Path.Combine(BasePath, folderName);
             if (!AssetDatabase.IsValidFolder(folderPath))
@@ -160,10 +160,8 @@ namespace Core.Scripts.ModuleCreator
 
             string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
 
-            if (_createAsmdef)
-            {
+            if (_createAsmdef) 
                 CreateAsmdefFile(targetFolderPath, moduleName);
-            }
 
             CreateSelectedScripts(scriptsFolderPath, moduleName);
 
@@ -172,7 +170,7 @@ namespace Core.Scripts.ModuleCreator
             DisplaySuccessMessage(moduleName);
         }
 
-        private void EnsureModuleFolders(string targetFolderPath)
+        private static void EnsureModuleFolders(string targetFolderPath)
         {
             EnsureTargetFolderExists(targetFolderPath);
             string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
@@ -186,13 +184,13 @@ namespace Core.Scripts.ModuleCreator
             CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
         }
 
-        private void DisplaySuccessMessage(string moduleName)
+        private static void DisplaySuccessMessage(string moduleName)
         {
             EditorUtility.DisplayDialog("Success",
                 $"Module {moduleName} created successfully.", "OK");
         }
 
-        private void EnsureTargetFolderExists(string targetFolderPath)
+        private static void EnsureTargetFolderExists(string targetFolderPath)
         {
             if (!AssetDatabase.IsValidFolder(targetFolderPath))
             {
@@ -235,7 +233,7 @@ namespace Core.Scripts.ModuleCreator
             return content;
         }
 
-        private string ReadTemplateFile(string templateFilePath)
+        private static string ReadTemplateFile(string templateFilePath)
         {
             if (!File.Exists(templateFilePath))
             {
@@ -252,7 +250,7 @@ namespace Core.Scripts.ModuleCreator
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
-        private string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
+        private static string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
         {
             return Regex.Replace(content, @"(_?)(template)", match =>
             {
@@ -291,7 +289,7 @@ namespace Core.Scripts.ModuleCreator
             WriteToFile(filePath, scriptContent);
         }
 
-        private void WriteToFile(string filePath, string content)
+        private static void WriteToFile(string filePath, string content)
         {
             try
             {
