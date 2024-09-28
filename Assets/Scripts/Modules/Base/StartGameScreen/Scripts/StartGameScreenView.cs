@@ -60,7 +60,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         public void SetVersionText(string version) => versionText.text = version;
 
-        public UniTask ReportProgress(float expProgress, string progressStatus)
+        private UniTask ReportProgress(float expProgress, string progressStatus)
         {
             progressText.text = progressStatus;
     

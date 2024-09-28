@@ -10,7 +10,7 @@ namespace Modules.Base.TicTacScreen.Scripts
         [SerializeField] private Button cellButton;
         [SerializeField] private TMP_Text cellText;
         
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly CompositeDisposable _disposables = new();
         private ReactiveCommand<int[]> _onCellClicked;
         private int _x, _y;
 

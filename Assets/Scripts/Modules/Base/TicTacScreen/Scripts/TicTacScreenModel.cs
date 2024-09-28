@@ -8,9 +8,9 @@ namespace Modules.Base.TicTacScreen.Scripts
         private const char PlayerX = 'X';
         private const char PlayerO = 'O';
 
-        public char[,] board { get; private set; }
-        public char currentPlayer { get; private set; }
-        public bool isGameOver { get; private set; }
+        public char[,] Board { get; private set; }
+        public char CurrentPlayer { get; private set; }
+        public bool IsGameOver { get; private set; }
 
         private static readonly int[][] WinPositions = {
             new[] {0, 0, 0, 1, 0, 2},
@@ -23,23 +23,21 @@ namespace Modules.Base.TicTacScreen.Scripts
             new[] {0, 2, 1, 1, 2, 0}  
         };
 
-        public TicTacScreenModel()
-        {
-        }
+        public TicTacScreenModel() { }
 
         public void InitializeGame()
         {
-            board = new char[BoardSize, BoardSize];
-            currentPlayer = PlayerX;
-            isGameOver = false;
+            Board = new char[BoardSize, BoardSize];
+            CurrentPlayer = PlayerX;
+            IsGameOver = false;
         }
 
         public void MakeMove(int x, int y)
         {
-            if (board[x, y] == '\0' && !isGameOver)
+            if (Board[x, y] == '\0' && !IsGameOver)
             {
-                board[x, y] = currentPlayer;
-                currentPlayer = currentPlayer == PlayerX ? PlayerO : PlayerX;
+                Board[x, y] = CurrentPlayer;
+                CurrentPlayer = CurrentPlayer == PlayerX ? PlayerO : PlayerX;
             }
         }
 
@@ -47,12 +45,12 @@ namespace Modules.Base.TicTacScreen.Scripts
         {
             foreach (var pos in WinPositions)
             {
-                if (board[pos[0], pos[1]] == board[pos[2], pos[3]] &&
-                    board[pos[2], pos[3]] == board[pos[4], pos[5]] &&
-                    board[pos[0], pos[1]] != '\0')
+                if (Board[pos[0], pos[1]] == Board[pos[2], pos[3]] &&
+                    Board[pos[2], pos[3]] == Board[pos[4], pos[5]] &&
+                    Board[pos[0], pos[1]] != '\0')
                 {
-                    isGameOver = true;
-                    return board[pos[0], pos[1]];
+                    IsGameOver = true;
+                    return Board[pos[0], pos[1]];
                 }
             }
             return '\0';
@@ -64,11 +62,11 @@ namespace Modules.Base.TicTacScreen.Scripts
             {
                 for (int j = 0; j < BoardSize; j++)
                 {
-                    if (board[i, j] == '\0')
+                    if (Board[i, j] == '\0')
                         return false;
                 }
             }
-            isGameOver = true;
+            IsGameOver = true;
             return true;
         }
         public void Dispose() {}

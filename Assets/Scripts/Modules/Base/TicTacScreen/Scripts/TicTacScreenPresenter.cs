@@ -76,7 +76,7 @@ namespace Modules.Base.TicTacScreen.Scripts
         private void OnCellClicked(int x, int y)
         {
             _ticTacScreenModel.MakeMove(x, y);
-            _ticTacScreenView.UpdateBoard(_ticTacScreenModel.board);
+            _ticTacScreenView.UpdateBoard(_ticTacScreenModel.Board);
             char winner = _ticTacScreenModel.CheckWinner();
             if (winner != '\0')
             {

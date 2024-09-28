@@ -15,10 +15,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly PopupHub _popupHub;
 
-        private readonly ReactiveCommand<Unit> _secondPopupCommand = new ReactiveCommand<Unit>();
-        private readonly ReactiveCommand<Unit> _firstPopupCommand =  new ReactiveCommand<Unit>();
-        private readonly ReactiveCommand<Unit> _converterCommand =  new ReactiveCommand<Unit>();
-        private readonly ReactiveCommand<Unit> _ticTacCommand =  new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _secondPopupCommand = new();
+        private readonly ReactiveCommand<Unit> _firstPopupCommand =  new();
+        private readonly ReactiveCommand<Unit> _converterCommand =  new();
+        private readonly ReactiveCommand<Unit> _ticTacCommand =  new();
 
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, PopupHub popupHub,

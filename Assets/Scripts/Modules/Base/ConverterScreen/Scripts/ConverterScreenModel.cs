@@ -42,9 +42,6 @@ namespace Modules.Base.ConverterScreen.Scripts
             return convertedAmount;
         }
         
-        public void Dispose()
-        { 
-            
-        }
+        public void Dispose() { }
     }
 }
