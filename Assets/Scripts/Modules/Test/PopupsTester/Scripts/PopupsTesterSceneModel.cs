@@ -3,7 +3,7 @@ using Core.Scripts.MVP;
 using Core.Scripts.Popup.Base;
 using VContainer;
 
-namespace Modules.Scripts.Test.PopupsTester.Scripts
+namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterSceneModel : IScreenModel
     {

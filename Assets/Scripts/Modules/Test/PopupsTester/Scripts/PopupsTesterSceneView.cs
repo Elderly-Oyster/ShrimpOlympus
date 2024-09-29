@@ -3,7 +3,7 @@ using Core.Scripts.MVP;
 using R3;
 using UnityEngine;
 
-namespace Modules.Scripts.Test.PopupsTester.Scripts
+namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterSceneView : BaseScreenView
     {

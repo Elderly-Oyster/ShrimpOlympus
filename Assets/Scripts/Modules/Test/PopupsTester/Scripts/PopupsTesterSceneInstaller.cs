@@ -5,7 +5,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Scripts.Test.PopupsTester.Scripts
+namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterSceneInstaller : SceneInstaller
     {
