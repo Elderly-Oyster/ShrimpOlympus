@@ -263,7 +263,7 @@ namespace Core.Scripts.ModuleCreator
             }, RegexOptions.IgnoreCase);
         }
 
-        private void CreateScript(string folderPath, string fileName, string scriptContent)
+        private static void CreateScript(string folderPath, string fileName, string scriptContent)
         {
             if (string.IsNullOrEmpty(scriptContent))
             {
@@ -302,7 +302,7 @@ namespace Core.Scripts.ModuleCreator
             }
         }
 
-        private void CopyAndAdjustAsmdef(string templateAsmdefPath, string targetAsmdefPath, string moduleName)
+        private static void CopyAndAdjustAsmdef(string templateAsmdefPath, string targetAsmdefPath, string moduleName)
         {
             string content = ReadTemplateFile(templateAsmdefPath);
             if (content == null)
@@ -318,7 +318,7 @@ namespace Core.Scripts.ModuleCreator
             WriteToFile(targetAsmdefPath, content);
         }
 
-        private string AdjustAsmdefContent(string content, string moduleName) => 
+        private static string AdjustAsmdefContent(string content, string moduleName) => 
             Regex.Replace(content, @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
     }
 }
