@@ -25,6 +25,9 @@ namespace Core.Scripts.ModuleCreator
         private string _testFolderPath;
         private string _templateFolderPath;
         private string _templateModuleFolderPath;
+        private string _templateViewsFolderPath;
+        private string _templateViewPrefabPath;
+        private string _targetModuleFolderPath;
         private readonly List<string> _requiredTemplates = new List<string>
         {
             "TemplateScreenInstaller.cs",
@@ -47,10 +50,7 @@ namespace Core.Scripts.ModuleCreator
             EditorApplication.update += OnEditorUpdate;
         }
 
-        private void OnDisable()
-        {
-            EditorApplication.update -= OnEditorUpdate;
-        }
+        private void OnDisable() => EditorApplication.update -= OnEditorUpdate;
 
         private void OnGUI()
         {
@@ -78,10 +78,7 @@ namespace Core.Scripts.ModuleCreator
                     }
                 }
                 else
-                {
-                    EditorUtility.DisplayDialog("Invalid Name",
-                        "Module name cannot be empty or contain spaces.", "OK");
-                }
+                    EditorUtility.DisplayDialog("Invalid Name", "Module name cannot be empty or contain spaces.", "OK");
             }
         }
 
@@ -92,6 +89,8 @@ namespace Core.Scripts.ModuleCreator
             _testFolderPath = Path.Combine(BasePath, "Test");
             _templateFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Scripts");
             _templateModuleFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen");
+            _templateViewsFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Views");
+            _templateViewPrefabPath = Path.Combine(_templateViewsFolderPath, "TemplateView.prefab");
         }
 
         private static void EnsureSubfoldersExist()
@@ -112,54 +111,67 @@ namespace Core.Scripts.ModuleCreator
         {
             if (!AssetDatabase.IsValidFolder(_templateFolderPath))
             {
-                EditorUtility.DisplayDialog("Missing Template Folder",
-                    $"Template folder not found at {_templateFolderPath}.\n\nModule creation aborted.",
-                    "OK");
+                ShowDialog("Missing Template Folder", $"Template folder not found at {_templateFolderPath}.\n\nModule creation aborted.");
                 return false;
             }
-
-            var missingTemplates = _requiredTemplates.Where(template =>
-                !File.Exists(Path.Combine(_templateFolderPath, template))).ToList();
-
-            if (missingTemplates.Any())
-            {
-                string missing = string.Join("\n", missingTemplates);
-                EditorUtility.DisplayDialog("Missing Templates",
-                    $"The following template files are missing:\n{missing}\n\nModule creation aborted.",
-                    "OK");
+            if (MissingTemplateFiles())
                 return false;
-            }
-
-            if (_createAsmdef)
-            {
-                string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
-                if (!File.Exists(templateAsmdefPath))
-                {
-                    EditorUtility.DisplayDialog("Missing asmdef Template",
-                        $"Template asmdef file not found at {templateAsmdefPath}.\n\nModule creation aborted.",
-                        "OK");
-                    return false;
-                }
-            }
-
+            if (_createAsmdef && !AsmdefTemplateExists())
+                return false;
+            if (!PrefabTemplateExists())
+                return false;
             return true;
         }
 
-        private string GetSelectedFolderPath()
+        private bool MissingTemplateFiles()
         {
-            return _selectedFolder switch
+            var missingTemplates = _requiredTemplates.Where(template =>
+                !File.Exists(Path.Combine(_templateFolderPath, template))).ToList();
+            if (missingTemplates.Any())
             {
-                FolderType.Additional => _additionalFolderPath,
-                FolderType.Base => _baseFolderPath,
-                FolderType.Test => _testFolderPath,
-                _ => _baseFolderPath
-            };
+                string missing = string.Join("\n", missingTemplates);
+                ShowDialog("Missing Templates", $"The following template files are missing:\n{missing}\n\nModule creation aborted.");
+                return true;
+            }
+            return false;
         }
+
+        private bool AsmdefTemplateExists()
+        {
+            string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
+            if (!File.Exists(templateAsmdefPath))
+            {
+                ShowDialog("Missing asmdef Template", $"Template asmdef file not found at {templateAsmdefPath}.\n\nModule creation aborted.");
+                return false;
+            }
+            return true;
+        }
+
+        private bool PrefabTemplateExists()
+        {
+            if (!File.Exists(_templateViewPrefabPath))
+            {
+                ShowDialog("Missing Prefab Template", $"Template prefab not found at {_templateViewPrefabPath}.\n\nModule creation aborted.");
+                return false;
+            }
+            return true;
+        }
+
+        private void ShowDialog(string title, string message) => EditorUtility.DisplayDialog(title, message, "OK");
+
+        private string GetSelectedFolderPath() => _selectedFolder switch
+        {
+            FolderType.Additional => _additionalFolderPath,
+            FolderType.Base => _baseFolderPath,
+            FolderType.Test => _testFolderPath,
+            _ => _baseFolderPath
+        };
 
         private void CreateModuleFiles(string moduleName)
         {
             string selectedFolderPath = GetSelectedFolderPath();
             string targetFolderPath = Path.Combine(selectedFolderPath, $"{moduleName}Screen");
+            _targetModuleFolderPath = targetFolderPath;
             EnsureModuleFolders(targetFolderPath);
             string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
 
@@ -176,8 +188,8 @@ namespace Core.Scripts.ModuleCreator
         private static void EnsureModuleFolders(string targetFolderPath)
         {
             EnsureTargetFolderExists(targetFolderPath);
-            string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
-            EnsureTargetFolderExists(scriptsFolderPath);
+            EnsureTargetFolderExists(Path.Combine(targetFolderPath, "Scripts"));
+            EnsureTargetFolderExists(Path.Combine(targetFolderPath, "Views"));
         }
 
         private void CreateAsmdefFile(string targetFolderPath, string moduleName)
@@ -187,11 +199,8 @@ namespace Core.Scripts.ModuleCreator
             CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
         }
 
-        private static void DisplaySuccessMessage(string moduleName)
-        {
-            EditorUtility.DisplayDialog("Success",
-                $"Module {moduleName} created successfully.", "OK");
-        }
+        private static void DisplaySuccessMessage(string moduleName) =>
+            EditorUtility.DisplayDialog("Success", $"Module {moduleName} created successfully.", "OK");
 
         private static void EnsureTargetFolderExists(string targetFolderPath)
         {
@@ -236,12 +245,8 @@ namespace Core.Scripts.ModuleCreator
             return content;
         }
 
-        private static string ReadTemplateFile(string templateFilePath)
-        {
-            if (!File.Exists(templateFilePath))
-                return null;
-            return File.ReadAllText(templateFilePath);
-        }
+        private static string ReadTemplateFile(string templateFilePath) =>
+            File.Exists(templateFilePath) ? File.ReadAllText(templateFilePath) : null;
 
         private string ReplaceNamespace(string content, string moduleName)
         {
@@ -249,17 +254,13 @@ namespace Core.Scripts.ModuleCreator
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
-        private static string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
-        {
-            return Regex.Replace(content, @"(_?)(template)", match =>
+        private static string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower) =>
+            Regex.Replace(content, @"(_?)(template)", match =>
             {
                 string prefix = match.Groups[1].Value;
                 string templateWord = match.Groups[2].Value;
-                if (char.IsUpper(templateWord[0]))
-                    return prefix + moduleName;
-                return prefix + moduleNameLower;
+                return prefix + (char.IsUpper(templateWord[0]) ? moduleName : moduleNameLower);
             }, RegexOptions.IgnoreCase);
-        }
 
         private static void CreateScript(string folderPath, string fileName, string scriptContent)
         {
@@ -270,11 +271,7 @@ namespace Core.Scripts.ModuleCreator
 
             if (File.Exists(filePath))
             {
-                if (!EditorUtility.DisplayDialog(
-                    "File Exists",
-                    $"File {fileName} already exists. Overwrite?",
-                    "Yes",
-                    "No"))
+                if (!EditorUtility.DisplayDialog("File Exists", $"File {fileName} already exists. Overwrite?", "Yes", "No"))
                     return;
             }
 
@@ -298,9 +295,7 @@ namespace Core.Scripts.ModuleCreator
             string content = ReadTemplateFile(templateAsmdefPath);
             if (content == null)
             {
-                EditorUtility.DisplayDialog("Missing asmdef Template",
-                    $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.",
-                    "OK");
+                EditorUtility.DisplayDialog("Missing asmdef Template", $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.", "OK");
                 return;
             }
             content = AdjustAsmdefContent(content, moduleName);
@@ -318,9 +313,28 @@ namespace Core.Scripts.ModuleCreator
                 {
                     _waitingForCompilation = false;
                     EditorApplication.update -= OnEditorUpdate;
-                    EditorUtility.DisplayDialog("Compilation Finished", "Scripts compiled successfully.", "OK");
+                    CreatePrefabForModule();
+                    EditorUtility.DisplayDialog("Module Creation Finished", "Scripts compiled and prefab created successfully.", "OK");
                 }
             }
+        }
+
+        private void CreatePrefabForModule()
+        {
+            string targetPrefabFolderPath = Path.Combine(_targetModuleFolderPath, "Views");
+            EnsureTargetFolderExists(targetPrefabFolderPath);
+            string targetPrefabPath = Path.Combine(targetPrefabFolderPath, $"{_moduleName}View.prefab");
+            AssetDatabase.CopyAsset(_templateViewPrefabPath, targetPrefabPath);
+            AssetDatabase.Refresh();
+
+            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(targetPrefabPath);
+            if (prefab != null)
+            {
+                prefab.name = $"{_moduleName}View";
+                PrefabUtility.SavePrefabAsset(prefab);
+            }
+            else
+                Debug.LogError("Failed to load prefab at " + targetPrefabPath);
         }
     }
 }
