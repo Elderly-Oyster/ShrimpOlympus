@@ -7,7 +7,7 @@ using R3;
 using UnityEngine;
 using VContainer.Unity;
 
-namespace Modules.Scripts.Test.PopupsTester.Scripts
+namespace Modules.Test.PopupsTester.Scripts
 {
     public class PopupsTesterScenePresenter : IScreenPresenter, IStartable
     {
@@ -59,7 +59,7 @@ namespace Modules.Scripts.Test.PopupsTester.Scripts
             Dispose();
         }
 
-        private void OnPopupOpened(PopupOpenedEvent popupEvent) => 
+        private static void OnPopupOpened(PopupOpenedEvent popupEvent) => 
             Debug.Log($"Open Popup: {popupEvent.PopupName}");
 
         private void Initialize() => _popupsTesterSceneView.GetPopupsButtons(_buttons);
