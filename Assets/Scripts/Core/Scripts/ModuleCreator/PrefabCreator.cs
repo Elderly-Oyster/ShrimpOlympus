@@ -11,33 +11,45 @@ namespace Core.Scripts.ModuleCreator
 
         private static void OnEditorUpdate()
         {
-            bool moduleCreationInProgress = EditorPrefs.
-                GetBool(ModuleGenerator.ModuleCreationInProgressKey, false);
-            if (moduleCreationInProgress)
+            if (!EditorPrefs.GetBool(ModuleGenerator.ModuleCreationInProgressKey, false))
+                return;
+
+            string moduleName = EditorPrefs.GetString(ModuleGenerator.ModuleNameKey, "");
+            string targetModuleFolderPath = EditorPrefs.GetString(ModuleGenerator.TargetModuleFolderPathKey, "");
+
+            if (string.IsNullOrEmpty(moduleName) || string.IsNullOrEmpty(targetModuleFolderPath)) return;
+
+            EditorApplication.delayCall += () =>
             {
-                string moduleName = EditorPrefs.GetString(ModuleGenerator.ModuleNameKey, "");
-                string targetModuleFolderPath = EditorPrefs.GetString(ModuleGenerator.TargetModuleFolderPathKey, "");
+                CreatePrefabForModule(moduleName, targetModuleFolderPath);
 
-                if (!string.IsNullOrEmpty(moduleName) && !string.IsNullOrEmpty(targetModuleFolderPath))
-                {
-                    EditorApplication.delayCall += () =>
-                    {
-                        CreatePrefabForModule(moduleName, targetModuleFolderPath);
+                EditorPrefs.DeleteKey(ModuleGenerator.ModuleCreationInProgressKey);
+                EditorPrefs.DeleteKey(ModuleGenerator.ModuleNameKey);
+                EditorPrefs.DeleteKey(ModuleGenerator.TargetModuleFolderPathKey);
 
-                        EditorPrefs.DeleteKey(ModuleGenerator.ModuleCreationInProgressKey);
-                        EditorPrefs.DeleteKey(ModuleGenerator.ModuleNameKey);
-                        EditorPrefs.DeleteKey(ModuleGenerator.TargetModuleFolderPathKey);
+                EditorUtility.DisplayDialog("Module Creation Finished",
+                    "Scripts compiled and prefab created successfully.", "OK");
 
-                        EditorUtility.DisplayDialog("Module Creation Finished",
-                            "Scripts compiled and prefab created successfully.", "OK");
-
-                        EditorApplication.update -= OnEditorUpdate;
-                    };
-                }
-            }
+                EditorApplication.update -= OnEditorUpdate;
+            };
         }
 
         private static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
+        {
+            string targetPrefabPath = CopyTemplatePrefab(moduleName, targetModuleFolderPath);
+            GameObject prefabContents = PrefabUtility.LoadPrefabContents(targetPrefabPath);
+
+            if (prefabContents == null)
+            {
+                Debug.LogError("Failed to load prefab contents at " + targetPrefabPath);
+                return;
+            }
+
+            AddComponentToPrefab(prefabContents, moduleName, targetModuleFolderPath);
+            SaveAndUnloadPrefab(prefabContents, targetPrefabPath, moduleName);
+        }
+
+        private static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
             string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
@@ -48,43 +60,45 @@ namespace Core.Scripts.ModuleCreator
             AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
             AssetDatabase.Refresh();
 
-            GameObject prefabContents = PrefabUtility.LoadPrefabContents(targetPrefabPath);
-            if (prefabContents != null)
+            return targetPrefabPath;
+        }
+
+        private static void AddComponentToPrefab(GameObject prefabContents,
+            string moduleName, string targetModuleFolderPath)
+        {
+            var components = prefabContents.GetComponentsInChildren<Component>(true);
+            foreach (var comp in components)
             {
-                var components = prefabContents.GetComponentsInChildren<Component>(true);
-                foreach (var comp in components)
+                if (comp != null) continue;
+
+                string newScriptPath = PathManager.
+                    CombinePaths(targetModuleFolderPath, "Scripts", $"{moduleName}ScreenView.cs");
+                MonoScript newScript = AssetDatabase.LoadAssetAtPath<MonoScript>(newScriptPath);
+
+                if (newScript == null)
                 {
-                    if (comp == null)
-                    {
-                        string newScriptPath = PathManager.CombinePaths(targetModuleFolderPath, "Scripts",
-                            $"{moduleName}ScreenView.cs");
-                        MonoScript newScript = AssetDatabase.LoadAssetAtPath<MonoScript>(newScriptPath);
-
-                        if (newScript != null)
-                        {
-                            Type newComponentType = newScript.GetClass();
-                            if (newComponentType != null)
-                            {
-                                prefabContents.AddComponent(newComponentType);
-                                RemoveMissingScripts(prefabContents);
-                            }
-                            else
-                                Debug.LogError($"Failed to get Type from MonoScript at {newScriptPath}");
-                        }
-                        else
-                            Debug.LogError($"Failed to load new script at {newScriptPath}");
-
-                        break;
-                    }
+                    Debug.LogError($"Failed to load new script at {newScriptPath}");
+                    break;
                 }
 
-                prefabContents.name = $"{moduleName}View";
+                Type newComponentType = newScript.GetClass();
+                if (newComponentType == null)
+                {
+                    Debug.LogError($"Failed to get Type from MonoScript at {newScriptPath}");
+                    break;
+                }
 
-                PrefabUtility.SaveAsPrefabAsset(prefabContents, targetPrefabPath);
-                PrefabUtility.UnloadPrefabContents(prefabContents);
+                prefabContents.AddComponent(newComponentType);
+                RemoveMissingScripts(prefabContents);
+                break;
             }
-            else
-                Debug.LogError("Failed to load prefab contents at " + targetPrefabPath);
+        }
+
+        private static void SaveAndUnloadPrefab(GameObject prefabContents, string prefabPath, string moduleName)
+        {
+            prefabContents.name = $"{moduleName}View";
+            PrefabUtility.SaveAsPrefabAsset(prefabContents, prefabPath);
+            PrefabUtility.UnloadPrefabContents(prefabContents);
         }
 
         private static void RemoveMissingScripts(GameObject go)
@@ -96,12 +110,10 @@ namespace Core.Scripts.ModuleCreator
             for (int i = 0; i < prop.arraySize; i++)
             {
                 var component = prop.GetArrayElementAtIndex(i - r);
-                var obj = component.objectReferenceValue;
-                if (obj == null)
-                {
-                    prop.DeleteArrayElementAtIndex(i - r);
-                    r++;
-                }
+                if (component.objectReferenceValue != null) continue;
+
+                prop.DeleteArrayElementAtIndex(i - r);
+                r++;
             }
             serializedObject.ApplyModifiedProperties();
 
