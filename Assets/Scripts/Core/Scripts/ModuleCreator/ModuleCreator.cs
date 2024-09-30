@@ -12,23 +12,19 @@ namespace Core.Scripts.ModuleCreator
     {
         private FolderType _selectedFolder = FolderType.Base;
         private enum FolderType { Additional, Base, Test }
-
         private const string BasePath = "Assets/Scripts/Modules";
         private const float GUISpacing = 10f;
-
         private string _moduleName = "NewModule";
         private bool _createInstaller = true;
         private bool _createPresenter = true;
         private bool _createView = true;
         private bool _createModel = true;
         private bool _createAsmdef = true;
-
         private string _additionalFolderPath;
         private string _baseFolderPath;
         private string _testFolderPath;
         private string _templateFolderPath;
         private string _templateModuleFolderPath;
-
         private readonly List<string> _requiredTemplates = new List<string>
         {
             "TemplateScreenInstaller.cs",
@@ -36,6 +32,7 @@ namespace Core.Scripts.ModuleCreator
             "TemplateScreenView.cs",
             "TemplateScreenModel.cs"
         };
+        private bool _waitingForCompilation = false;
 
         [MenuItem("Tools/Create Module")]
         public static void ShowWindow() => GetWindow<ModuleCreator>("Create Module");
@@ -47,6 +44,12 @@ namespace Core.Scripts.ModuleCreator
         {
             InitializePaths();
             EnsureSubfoldersExist();
+            EditorApplication.update += OnEditorUpdate;
+        }
+
+        private void OnDisable()
+        {
+            EditorApplication.update -= OnEditorUpdate;
         }
 
         private void OnGUI()
@@ -61,17 +64,18 @@ namespace Core.Scripts.ModuleCreator
             _createPresenter = EditorGUILayout.Toggle("Presenter", _createPresenter);
             _createView = EditorGUILayout.Toggle("View", _createView);
             _createModel = EditorGUILayout.Toggle("Model", _createModel);
-
             GUILayout.Space(GUISpacing);
             _createAsmdef = EditorGUILayout.Toggle("Create asmdef", _createAsmdef);
-
             GUILayout.Space(GUISpacing);
             if (GUILayout.Button("Create Module"))
             {
                 if (IsValidModuleName(_moduleName))
                 {
                     if (AreTemplatesAvailable())
+                    {
                         CreateModuleFiles(_moduleName);
+                        _waitingForCompilation = true;
+                    }
                 }
                 else
                 {
@@ -157,10 +161,9 @@ namespace Core.Scripts.ModuleCreator
             string selectedFolderPath = GetSelectedFolderPath();
             string targetFolderPath = Path.Combine(selectedFolderPath, $"{moduleName}Screen");
             EnsureModuleFolders(targetFolderPath);
-
             string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
 
-            if (_createAsmdef) 
+            if (_createAsmdef)
                 CreateAsmdefFile(targetFolderPath, moduleName);
 
             CreateSelectedScripts(scriptsFolderPath, moduleName);
@@ -236,11 +239,7 @@ namespace Core.Scripts.ModuleCreator
         private static string ReadTemplateFile(string templateFilePath)
         {
             if (!File.Exists(templateFilePath))
-            {
-                Debug.LogError($"Template file not found at {templateFilePath}");
                 return null;
-            }
-
             return File.ReadAllText(templateFilePath);
         }
 
@@ -256,7 +255,6 @@ namespace Core.Scripts.ModuleCreator
             {
                 string prefix = match.Groups[1].Value;
                 string templateWord = match.Groups[2].Value;
-
                 if (char.IsUpper(templateWord[0]))
                     return prefix + moduleName;
                 return prefix + moduleNameLower;
@@ -266,10 +264,7 @@ namespace Core.Scripts.ModuleCreator
         private static void CreateScript(string folderPath, string fileName, string scriptContent)
         {
             if (string.IsNullOrEmpty(scriptContent))
-            {
-                Debug.LogError($"Script content is null or empty for {fileName}");
                 return;
-            }
 
             string filePath = Path.Combine(folderPath, fileName);
 
@@ -280,10 +275,7 @@ namespace Core.Scripts.ModuleCreator
                     $"File {fileName} already exists. Overwrite?",
                     "Yes",
                     "No"))
-                {
-                    Debug.Log($"Skipped creating file: {fileName}");
                     return;
-                }
             }
 
             WriteToFile(filePath, scriptContent);
@@ -294,7 +286,6 @@ namespace Core.Scripts.ModuleCreator
             try
             {
                 File.WriteAllText(filePath, content);
-                Debug.Log($"File created at {filePath}");
             }
             catch (Exception ex)
             {
@@ -312,13 +303,24 @@ namespace Core.Scripts.ModuleCreator
                     "OK");
                 return;
             }
-
             content = AdjustAsmdefContent(content, moduleName);
-
             WriteToFile(targetAsmdefPath, content);
         }
 
-        private static string AdjustAsmdefContent(string content, string moduleName) => 
+        private static string AdjustAsmdefContent(string content, string moduleName) =>
             Regex.Replace(content, @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
+
+        private void OnEditorUpdate()
+        {
+            if (_waitingForCompilation)
+            {
+                if (!EditorApplication.isCompiling)
+                {
+                    _waitingForCompilation = false;
+                    EditorApplication.update -= OnEditorUpdate;
+                    EditorUtility.DisplayDialog("Compilation Finished", "Scripts compiled successfully.", "OK");
+                }
+            }
+        }
     }
 }
