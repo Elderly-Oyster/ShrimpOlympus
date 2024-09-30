@@ -35,7 +35,9 @@ namespace Core.Scripts.ModuleCreator
             "TemplateScreenView.cs",
             "TemplateScreenModel.cs"
         };
-        private bool _waitingForCompilation = false;
+        private const string ModuleCreationInProgressKey = "ModuleCreationInProgress";
+        private const string ModuleNameKey = "ModuleCreationName";
+        private const string TargetModuleFolderPathKey = "TargetModuleFolderPath";
 
         [MenuItem("Tools/Create Module")]
         public static void ShowWindow() => GetWindow<ModuleCreator>("Create Module");
@@ -47,10 +49,7 @@ namespace Core.Scripts.ModuleCreator
         {
             InitializePaths();
             EnsureSubfoldersExist();
-            EditorApplication.update += OnEditorUpdate;
         }
-
-        private void OnDisable() => EditorApplication.update -= OnEditorUpdate;
 
         private void OnGUI()
         {
@@ -74,7 +73,12 @@ namespace Core.Scripts.ModuleCreator
                     if (AreTemplatesAvailable())
                     {
                         CreateModuleFiles(_moduleName);
-                        _waitingForCompilation = true;
+
+                        EditorPrefs.SetBool(ModuleCreationInProgressKey, true);
+                        EditorPrefs.SetString(ModuleNameKey, _moduleName);
+                        EditorPrefs.SetString(TargetModuleFolderPathKey, _targetModuleFolderPath);
+
+                        AssetDatabase.Refresh();
                     }
                 }
                 else
@@ -84,27 +88,31 @@ namespace Core.Scripts.ModuleCreator
 
         private void InitializePaths()
         {
-            _additionalFolderPath = Path.Combine(BasePath, "Additional");
-            _baseFolderPath = Path.Combine(BasePath, "Base");
-            _testFolderPath = Path.Combine(BasePath, "Test");
-            _templateFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Scripts");
-            _templateModuleFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen");
-            _templateViewsFolderPath = Path.Combine(BasePath, "Template", "TemplateScreen", "Views");
-            _templateViewPrefabPath = Path.Combine(_templateViewsFolderPath, "TemplateView.prefab");
+            _additionalFolderPath = CombinePaths(BasePath, "Additional");
+            _baseFolderPath = CombinePaths(BasePath, "Base");
+            _testFolderPath = CombinePaths(BasePath, "Test");
+            _templateFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen", "Scripts");
+            _templateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen");
+            _templateViewsFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen", "Views");
+            _templateViewPrefabPath = CombinePaths(_templateViewsFolderPath, "TemplateView.prefab");
         }
 
         private static void EnsureSubfoldersExist()
         {
-            CreateFolderIfNotExists("Additional");
-            CreateFolderIfNotExists("Base");
-            CreateFolderIfNotExists("Test");
+            CreateFolderIfNotExists(CombinePaths(BasePath, "Additional"));
+            CreateFolderIfNotExists(CombinePaths(BasePath, "Base"));
+            CreateFolderIfNotExists(CombinePaths(BasePath, "Test"));
         }
 
-        private static void CreateFolderIfNotExists(string folderName)
+        private static void CreateFolderIfNotExists(string folderPath)
         {
-            string folderPath = Path.Combine(BasePath, folderName);
+            folderPath = folderPath.Replace("\\", "/");
             if (!AssetDatabase.IsValidFolder(folderPath))
-                AssetDatabase.CreateFolder(BasePath, folderName);
+            {
+                string parentFolder = Path.GetDirectoryName(folderPath).Replace("\\", "/");
+                string newFolderName = Path.GetFileName(folderPath);
+                AssetDatabase.CreateFolder(parentFolder, newFolderName);
+            }
         }
 
         private bool AreTemplatesAvailable()
@@ -138,7 +146,7 @@ namespace Core.Scripts.ModuleCreator
 
         private bool AsmdefTemplateExists()
         {
-            string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
+            string templateAsmdefPath = CombinePaths(_templateModuleFolderPath, "TemplateScreen.asmdef");
             if (!File.Exists(templateAsmdefPath))
             {
                 ShowDialog("Missing asmdef Template", $"Template asmdef file not found at {templateAsmdefPath}.\n\nModule creation aborted.");
@@ -170,32 +178,30 @@ namespace Core.Scripts.ModuleCreator
         private void CreateModuleFiles(string moduleName)
         {
             string selectedFolderPath = GetSelectedFolderPath();
-            string targetFolderPath = Path.Combine(selectedFolderPath, $"{moduleName}Screen");
+            string targetFolderPath = CombinePaths(selectedFolderPath, $"{moduleName}Screen");
             _targetModuleFolderPath = targetFolderPath;
             EnsureModuleFolders(targetFolderPath);
-            string scriptsFolderPath = Path.Combine(targetFolderPath, "Scripts");
+            string scriptsFolderPath = CombinePaths(targetFolderPath, "Scripts");
 
             if (_createAsmdef)
                 CreateAsmdefFile(targetFolderPath, moduleName);
 
             CreateSelectedScripts(scriptsFolderPath, moduleName);
 
-            AssetDatabase.Refresh();
-
             DisplaySuccessMessage(moduleName);
         }
 
-        private static void EnsureModuleFolders(string targetFolderPath)
+        private void EnsureModuleFolders(string targetFolderPath)
         {
             EnsureTargetFolderExists(targetFolderPath);
-            EnsureTargetFolderExists(Path.Combine(targetFolderPath, "Scripts"));
-            EnsureTargetFolderExists(Path.Combine(targetFolderPath, "Views"));
+            EnsureTargetFolderExists(CombinePaths(targetFolderPath, "Scripts"));
+            EnsureTargetFolderExists(CombinePaths(targetFolderPath, "Views"));
         }
 
         private void CreateAsmdefFile(string targetFolderPath, string moduleName)
         {
-            string templateAsmdefPath = Path.Combine(_templateModuleFolderPath, "TemplateScreen.asmdef");
-            string targetAsmdefPath = Path.Combine(targetFolderPath, $"{moduleName}Screen.asmdef");
+            string templateAsmdefPath = CombinePaths(_templateModuleFolderPath, "TemplateScreen.asmdef");
+            string targetAsmdefPath = CombinePaths(targetFolderPath, $"{moduleName}Screen.asmdef");
             CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
         }
 
@@ -204,9 +210,10 @@ namespace Core.Scripts.ModuleCreator
 
         private static void EnsureTargetFolderExists(string targetFolderPath)
         {
+            targetFolderPath = targetFolderPath.Replace("\\", "/");
             if (!AssetDatabase.IsValidFolder(targetFolderPath))
             {
-                string parentFolder = Path.GetDirectoryName(targetFolderPath);
+                string parentFolder = Path.GetDirectoryName(targetFolderPath).Replace("\\", "/");
                 string newFolderName = Path.GetFileName(targetFolderPath);
                 AssetDatabase.CreateFolder(parentFolder, newFolderName);
             }
@@ -234,7 +241,7 @@ namespace Core.Scripts.ModuleCreator
 
         private string GetTemplateContent(string templateFileName, string moduleName)
         {
-            string templateFilePath = Path.Combine(_templateFolderPath, templateFileName);
+            string templateFilePath = CombinePaths(_templateFolderPath, templateFileName);
             string content = ReadTemplateFile(templateFilePath);
             if (content == null)
                 return null;
@@ -267,11 +274,12 @@ namespace Core.Scripts.ModuleCreator
             if (string.IsNullOrEmpty(scriptContent))
                 return;
 
-            string filePath = Path.Combine(folderPath, fileName);
+            string filePath = CombinePaths(folderPath, fileName);
 
             if (File.Exists(filePath))
             {
-                if (!EditorUtility.DisplayDialog("File Exists", $"File {fileName} already exists. Overwrite?", "Yes", "No"))
+                if (!EditorUtility.DisplayDialog("File Exists", $"File {fileName} already exists. Overwrite?",
+                        "Yes", "No"))
                     return;
             }
 
@@ -295,7 +303,8 @@ namespace Core.Scripts.ModuleCreator
             string content = ReadTemplateFile(templateAsmdefPath);
             if (content == null)
             {
-                EditorUtility.DisplayDialog("Missing asmdef Template", $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.", "OK");
+                EditorUtility.DisplayDialog("Missing asmdef Template", 
+                    $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.", "OK");
                 return;
             }
             content = AdjustAsmdefContent(content, moduleName);
@@ -305,36 +314,105 @@ namespace Core.Scripts.ModuleCreator
         private static string AdjustAsmdefContent(string content, string moduleName) =>
             Regex.Replace(content, @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
 
-        private void OnEditorUpdate()
+        [InitializeOnLoadMethod]
+        private static void OnEditorReload()
         {
-            if (_waitingForCompilation)
+            bool moduleCreationInProgress = EditorPrefs.GetBool(ModuleCreationInProgressKey, false);
+            if (moduleCreationInProgress)
             {
-                if (!EditorApplication.isCompiling)
+                string moduleName = EditorPrefs.GetString(ModuleNameKey, "");
+                string targetModuleFolderPath = EditorPrefs.GetString(TargetModuleFolderPathKey, "");
+
+                if (!string.IsNullOrEmpty(moduleName) && !string.IsNullOrEmpty(targetModuleFolderPath))
                 {
-                    _waitingForCompilation = false;
-                    EditorApplication.update -= OnEditorUpdate;
-                    CreatePrefabForModule();
-                    EditorUtility.DisplayDialog("Module Creation Finished", "Scripts compiled and prefab created successfully.", "OK");
+                    EditorApplication.delayCall += () =>
+                    {
+                        CreatePrefabForModule(moduleName, targetModuleFolderPath);
+
+                        EditorPrefs.DeleteKey(ModuleCreationInProgressKey);
+                        EditorPrefs.DeleteKey(ModuleNameKey);
+                        EditorPrefs.DeleteKey(TargetModuleFolderPathKey);
+
+                        EditorUtility.DisplayDialog("Module Creation Finished", 
+                            "Scripts compiled and prefab created successfully.", "OK");
+                    };
                 }
             }
         }
 
-        private void CreatePrefabForModule()
+        private static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
         {
-            string targetPrefabFolderPath = Path.Combine(_targetModuleFolderPath, "Views");
+            string targetPrefabFolderPath = CombinePaths(targetModuleFolderPath, "Views");
             EnsureTargetFolderExists(targetPrefabFolderPath);
-            string targetPrefabPath = Path.Combine(targetPrefabFolderPath, $"{_moduleName}View.prefab");
-            AssetDatabase.CopyAsset(_templateViewPrefabPath, targetPrefabPath);
+
+            string templateViewPrefabPath = CombinePaths(BasePath, "Template", "TemplateScreen", "Views", "TemplateView.prefab");
+            string targetPrefabPath = CombinePaths(targetPrefabFolderPath, $"{moduleName}View.prefab");
+
+            AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
             AssetDatabase.Refresh();
 
-            GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(targetPrefabPath);
-            if (prefab != null)
+            GameObject prefabContents = PrefabUtility.LoadPrefabContents(targetPrefabPath);
+            if (prefabContents != null)
             {
-                prefab.name = $"{_moduleName}View";
-                PrefabUtility.SavePrefabAsset(prefab);
+                var components = prefabContents.GetComponentsInChildren<Component>(true);
+                foreach (var comp in components)
+                {
+                    if (comp == null)
+                    {
+                        string newScriptPath = CombinePaths(targetModuleFolderPath, "Scripts",
+                            $"{moduleName}ScreenView.cs");
+                        MonoScript newScript = AssetDatabase.LoadAssetAtPath<MonoScript>(newScriptPath);
+
+                        if (newScript != null)
+                        {
+                            Type newComponentType = newScript.GetClass();
+                            if (newComponentType != null)
+                            {
+                                prefabContents.AddComponent(newComponentType);
+                                RemoveMissingScripts(prefabContents);
+                            }
+                            else
+                                Debug.LogError($"Failed to get Type from MonoScript at {newScriptPath}");
+                        }
+                        else
+                            Debug.LogError($"Failed to load new script at {newScriptPath}");
+
+                        break;
+                    }
+                }
+
+                prefabContents.name = $"{moduleName}View";
+
+                PrefabUtility.SaveAsPrefabAsset(prefabContents, targetPrefabPath);
+                PrefabUtility.UnloadPrefabContents(prefabContents);
             }
             else
-                Debug.LogError("Failed to load prefab at " + targetPrefabPath);
+                Debug.LogError("Failed to load prefab contents at " + targetPrefabPath);
         }
+
+        private static void RemoveMissingScripts(GameObject go)
+        {
+            var serializedObject = new SerializedObject(go);
+            var prop = serializedObject.FindProperty("m_Component");
+
+            int r = 0;
+            for (int i = 0; i < prop.arraySize; i++)
+            {
+                var component = prop.GetArrayElementAtIndex(i - r);
+                var obj = component.objectReferenceValue;
+                if (obj == null)
+                {
+                    prop.DeleteArrayElementAtIndex(i - r);
+                    r++;
+                }
+            }
+            serializedObject.ApplyModifiedProperties();
+
+            foreach (Transform child in go.transform) 
+                RemoveMissingScripts(child.gameObject);
+        }
+
+        private static string CombinePaths(params string[] paths) => 
+            string.Join("/", paths.Select(p => p.Trim('/', '\\')));
     }
 }
