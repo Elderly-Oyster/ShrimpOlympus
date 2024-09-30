@@ -81,7 +81,7 @@ namespace Core.Scripts.ModuleCreator
             {
                 ModuleGenerator.CreateModuleFiles(
                     _moduleName,
-                    _selectedFolder,
+                    _selectedFolder.ToString(), // Преобразуем выбранную папку в строку
                     _createInstaller,
                     _createPresenter,
                     _createView,

@@ -17,7 +17,7 @@ namespace Core.Scripts.ModuleCreator
 
         public static void CreateModuleFiles(
             string moduleName,
-            ModuleCreator.FolderType selectedFolder,
+            string selectedFolder,
             bool createInstaller,
             bool createPresenter,
             bool createView,
@@ -37,6 +37,7 @@ namespace Core.Scripts.ModuleCreator
             CreateSelectedScripts(
                 scriptsFolderPath,
                 moduleName,
+                selectedFolder,
                 createInstaller,
                 createPresenter,
                 createView,
@@ -45,12 +46,12 @@ namespace Core.Scripts.ModuleCreator
             EditorUtility.DisplayDialog("Success", $"Module {moduleName} created successfully.", "OK");
         }
 
-        private static string GetSelectedFolderPath(ModuleCreator.FolderType selectedFolder) =>
+        private static string GetSelectedFolderPath(string selectedFolder) =>
             selectedFolder switch
             {
-                ModuleCreator.FolderType.Additional => PathManager.AdditionalFolderPath,
-                ModuleCreator.FolderType.Base => PathManager.BaseFolderPath,
-                ModuleCreator.FolderType.Test => PathManager.TestFolderPath,
+                "Additional" => PathManager.AdditionalFolderPath,
+                "Base" => PathManager.BaseFolderPath,
+                "Test" => PathManager.TestFolderPath,
                 _ => PathManager.BaseFolderPath
             };
 
@@ -82,6 +83,7 @@ namespace Core.Scripts.ModuleCreator
         private static void CreateSelectedScripts(
             string folderPath,
             string moduleName,
+            string selectedFolder,
             bool createInstaller,
             bool createPresenter,
             bool createView,
@@ -99,13 +101,13 @@ namespace Core.Scripts.ModuleCreator
             {
                 if (shouldCreate)
                 {
-                    string content = GetTemplateContent(templateFile, moduleName);
+                    string content = GetTemplateContent(templateFile, moduleName, selectedFolder);
                     CreateScript(folderPath, outputFile, content);
                 }
             }
         }
 
-        private static string GetTemplateContent(string templateFileName, string moduleName)
+        private static string GetTemplateContent(string templateFileName, string moduleName, string selectedFolder)
         {
             string templateFilePath = PathManager.CombinePaths(PathManager.TemplateFolderPath, templateFileName);
             string content = ReadTemplateFile(templateFilePath);
@@ -113,7 +115,7 @@ namespace Core.Scripts.ModuleCreator
                 return null;
 
             string moduleNameLower = char.ToLower(moduleName[0]) + moduleName.Substring(1);
-            content = ReplaceNamespace(content, moduleName);
+            content = ReplaceNamespace(content, moduleName, selectedFolder);
             content = ReplaceTemplateOccurrences(content, moduleName, moduleNameLower);
             return content;
         }
@@ -121,9 +123,9 @@ namespace Core.Scripts.ModuleCreator
         private static string ReadTemplateFile(string templateFilePath) =>
             File.Exists(templateFilePath) ? File.ReadAllText(templateFilePath) : null;
 
-        private static string ReplaceNamespace(string content, string moduleName)
+        private static string ReplaceNamespace(string content, string moduleName, string selectedFolder)
         {
-            string namespaceReplacement = $"namespace Modules.{moduleName}Screen.Scripts";
+            string namespaceReplacement = $"namespace Modules.{selectedFolder}.{moduleName}Screen.Scripts";
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
@@ -144,8 +146,8 @@ namespace Core.Scripts.ModuleCreator
 
             if (File.Exists(filePath))
             {
-                if (!EditorUtility.DisplayDialog("File Exists", 
-                        $"File {fileName} already exists. Overwrite?", "Yes", "No"))
+                if (!EditorUtility.DisplayDialog("File Exists", $"File {fileName} already exists. Overwrite?",
+                        "Yes", "No"))
                     return;
             }
 
@@ -170,8 +172,7 @@ namespace Core.Scripts.ModuleCreator
             if (content == null)
             {
                 EditorUtility.DisplayDialog("Missing asmdef Template",
-                    $"Template asmdef file not found at {templateAsmdefPath}.\n" +
-                    $"\nCannot create asmdef file.", "OK");
+                    $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.", "OK");
                 return;
             }
             content = AdjustAsmdefContent(content, moduleName);
