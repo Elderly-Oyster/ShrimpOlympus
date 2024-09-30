@@ -82,7 +82,8 @@ namespace Core.Scripts.ModuleCreator
                     }
                 }
                 else
-                    EditorUtility.DisplayDialog("Invalid Name", "Module name cannot be empty or contain spaces.", "OK");
+                    EditorUtility.DisplayDialog("Invalid Name", 
+                        "Module name cannot be empty or contain spaces.", "OK");
             }
         }
 
@@ -109,7 +110,7 @@ namespace Core.Scripts.ModuleCreator
             folderPath = folderPath.Replace("\\", "/");
             if (!AssetDatabase.IsValidFolder(folderPath))
             {
-                string parentFolder = Path.GetDirectoryName(folderPath).Replace("\\", "/");
+                string parentFolder = Path.GetDirectoryName(folderPath)?.Replace("\\", "/");
                 string newFolderName = Path.GetFileName(folderPath);
                 AssetDatabase.CreateFolder(parentFolder, newFolderName);
             }
@@ -119,7 +120,8 @@ namespace Core.Scripts.ModuleCreator
         {
             if (!AssetDatabase.IsValidFolder(_templateFolderPath))
             {
-                ShowDialog("Missing Template Folder", $"Template folder not found at {_templateFolderPath}.\n\nModule creation aborted.");
+                ShowDialog("Missing Template Folder", 
+                    $"Template folder not found at {_templateFolderPath}.\n\nModule creation aborted.");
                 return false;
             }
             if (MissingTemplateFiles())
@@ -149,7 +151,8 @@ namespace Core.Scripts.ModuleCreator
             string templateAsmdefPath = CombinePaths(_templateModuleFolderPath, "TemplateScreen.asmdef");
             if (!File.Exists(templateAsmdefPath))
             {
-                ShowDialog("Missing asmdef Template", $"Template asmdef file not found at {templateAsmdefPath}.\n\nModule creation aborted.");
+                ShowDialog("Missing asmdef Template", 
+                    $"Template asmdef file not found at {templateAsmdefPath}.\n\nModule creation aborted.");
                 return false;
             }
             return true;
@@ -159,7 +162,8 @@ namespace Core.Scripts.ModuleCreator
         {
             if (!File.Exists(_templateViewPrefabPath))
             {
-                ShowDialog("Missing Prefab Template", $"Template prefab not found at {_templateViewPrefabPath}.\n\nModule creation aborted.");
+                ShowDialog("Missing Prefab Template", 
+                    $"Template prefab not found at {_templateViewPrefabPath}.\n\nModule creation aborted.");
                 return false;
             }
             return true;
