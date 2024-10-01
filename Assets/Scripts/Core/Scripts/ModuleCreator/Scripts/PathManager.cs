@@ -1,6 +1,6 @@
 using UnityEditor;
 
-namespace Core.Scripts.ModuleCreator
+namespace Core.Scripts.ModuleCreator.Scripts
 {
     public static class PathManager
     {

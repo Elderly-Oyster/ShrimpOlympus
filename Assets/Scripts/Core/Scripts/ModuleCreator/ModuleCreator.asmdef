@@ -1,0 +1,17 @@
+{
+    "name": "ModuleCreator",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5ac821cbf6ab93744976a55902fec83d",
+        "GUID:46a522227ca1f23498bc545e8da31f76"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

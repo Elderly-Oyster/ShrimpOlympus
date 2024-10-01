@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Core.Scripts.ModuleCreator
+namespace Core.Scripts.ModuleCreator.Scripts
 {
     public class ModuleCreator : EditorWindow
     {
