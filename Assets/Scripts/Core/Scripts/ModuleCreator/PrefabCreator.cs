@@ -2,25 +2,27 @@ using System;
 using UnityEditor;
 using UnityEditor.Compilation;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Core.Scripts.ModuleCreator
 {
     [InitializeOnLoad]
     public static class PrefabCreator
     {
-        static PrefabCreator()
-        {
+        static PrefabCreator() => 
             CompilationPipeline.compilationFinished += OnCompilationFinished;
-        }
 
         private static void OnCompilationFinished(object obj)
         {
-            if (!EditorPrefs.GetBool(ModuleGenerator.ModuleCreationInProgressKey, false)) return;
+            if (!EditorPrefs.GetBool(ModuleGenerator.ModuleCreationInProgressKey, false)) 
+                return;
 
             string moduleName = EditorPrefs.GetString(ModuleGenerator.ModuleNameKey, "");
-            string targetModuleFolderPath = EditorPrefs.GetString(ModuleGenerator.TargetModuleFolderPathKey, "");
+            string targetModuleFolderPath = EditorPrefs.
+                GetString(ModuleGenerator.TargetModuleFolderPathKey, "");
 
-            if (string.IsNullOrEmpty(moduleName) || string.IsNullOrEmpty(targetModuleFolderPath)) return;
+            if (string.IsNullOrEmpty(moduleName) || string.IsNullOrEmpty(targetModuleFolderPath))
+                return;
 
             CreatePrefabForModule(moduleName, targetModuleFolderPath);
 
@@ -63,7 +65,8 @@ namespace Core.Scripts.ModuleCreator
             return targetPrefabPath;
         }
 
-        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, string moduleName, string targetModuleFolderPath)
+        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, 
+            string moduleName, string targetModuleFolderPath)
         {
             MonoBehaviour templateViewComponent = prefabContents.GetComponent("TemplateScreenView") as MonoBehaviour;
             if (templateViewComponent == null)
@@ -95,11 +98,10 @@ namespace Core.Scripts.ModuleCreator
         {
             var newComponent = gameObject.AddComponent(newComponentType) as MonoBehaviour;
 
-            // Копируем данные из старого компонента в новый
             string json = EditorJsonUtility.ToJson(oldComponent);
             EditorJsonUtility.FromJsonOverwrite(json, newComponent);
 
-            GameObject.DestroyImmediate(oldComponent, true);
+            Object.DestroyImmediate(oldComponent, true);
         }
 
         private static void SaveAndUnloadPrefab(GameObject prefabContents, string prefabPath, string moduleName)
