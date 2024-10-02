@@ -1,7 +1,8 @@
 using UnityEditor;
+using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace Core.Scripts.ModuleCreator.Editor
+namespace Editor
 {
     public class ModuleCreator : EditorWindow
     {
@@ -41,10 +42,10 @@ namespace Core.Scripts.ModuleCreator.Editor
             HandleCreateModuleButton();
         }
 
-        private void DrawModuleNameField() => 
+        private void DrawModuleNameField() =>
             _moduleName = EditorGUILayout.TextField("Module Name", _moduleName);
 
-        private void DrawFolderSelection() => 
+        private void DrawFolderSelection() =>
             _selectedFolder = (FolderType)EditorGUILayout.EnumPopup("Select Folder", _selectedFolder);
 
         private void DrawScriptOptions()
@@ -56,7 +57,7 @@ namespace Core.Scripts.ModuleCreator.Editor
             _createModel = EditorGUILayout.Toggle("Model", _createModel);
         }
 
-        private void DrawAsmdefOption() => 
+        private void DrawAsmdefOption() =>
             _createAsmdef = EditorGUILayout.Toggle("Create asmdef", _createAsmdef);
 
         private void HandleCreateModuleButton()
@@ -81,19 +82,35 @@ namespace Core.Scripts.ModuleCreator.Editor
             {
                 ModuleGenerator.CreateModuleFiles(
                     _moduleName,
-                    _selectedFolder.ToString(), // Преобразуем выбранную папку в строку
+                    _selectedFolder.ToString(),
                     _createInstaller,
                     _createPresenter,
                     _createView,
                     _createModel,
                     _createAsmdef);
 
-                EditorPrefs.SetBool(ModuleGenerator.ModuleCreationInProgressKey, true);
-                EditorPrefs.SetString(ModuleGenerator.ModuleNameKey, _moduleName);
-                EditorPrefs.SetString(ModuleGenerator.TargetModuleFolderPathKey, 
-                    ModuleGenerator.TargetModuleFolderPath);
+                SessionState.SetString("PendingModuleName", _moduleName);
+                SessionState.SetString("PendingModuleFolderPath", ModuleGenerator.TargetModuleFolderPath);
 
                 AssetDatabase.Refresh();
+            }
+        }
+
+        [DidReloadScripts]
+        private static void OnScriptsReloaded()
+        {
+            string moduleName = SessionState.GetString("PendingModuleName", "");
+            string targetModuleFolderPath = SessionState.GetString("PendingModuleFolderPath", "");
+
+            if (!string.IsNullOrEmpty(moduleName) && !string.IsNullOrEmpty(targetModuleFolderPath))
+            {
+                PrefabCreator.CreatePrefabForModule(moduleName, targetModuleFolderPath);
+
+                EditorUtility.DisplayDialog("Module Creation Finished",
+                    "Scripts compiled and prefab created successfully.", "OK");
+
+                SessionState.EraseString("PendingModuleName");
+                SessionState.EraseString("PendingModuleFolderPath");
             }
         }
     }

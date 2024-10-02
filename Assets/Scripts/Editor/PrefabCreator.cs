@@ -1,46 +1,15 @@
 using System;
-using System.IO;
 using System.Linq;
 using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
-using UnityEditor.Compilation;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-
-namespace Core.Scripts.ModuleCreator.Editor
+namespace Editor
 {
-    [InitializeOnLoad]
     public static class PrefabCreator
     {
-        static PrefabCreator() => 
-            CompilationPipeline.compilationFinished += OnCompilationFinished;
-
-        private static void OnCompilationFinished(object obj)
-        {
-            if (!EditorPrefs.GetBool(ModuleGenerator.ModuleCreationInProgressKey, false)) 
-                return;
-
-            string moduleName = EditorPrefs.GetString(ModuleGenerator.ModuleNameKey, "");
-            string targetModuleFolderPath = EditorPrefs.
-                GetString(ModuleGenerator.TargetModuleFolderPathKey, "");
-
-            if (string.IsNullOrEmpty(moduleName) || string.IsNullOrEmpty(targetModuleFolderPath))
-                return;
-
-            CreatePrefabForModule(moduleName, targetModuleFolderPath);
-
-            EditorPrefs.DeleteKey(ModuleGenerator.ModuleCreationInProgressKey);
-            EditorPrefs.DeleteKey(ModuleGenerator.ModuleNameKey);
-            EditorPrefs.DeleteKey(ModuleGenerator.TargetModuleFolderPathKey);
-
-            EditorUtility.DisplayDialog("Module Creation Finished",
-                "Scripts compiled and prefab created successfully.", "OK");
-
-            CompilationPipeline.compilationFinished -= OnCompilationFinished;
-        }
-
-        private static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
+        public static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
         {
             string targetPrefabPath = CopyTemplatePrefab(moduleName, targetModuleFolderPath);
             GameObject prefabContents = PrefabUtility.LoadPrefabContents(targetPrefabPath);
@@ -51,7 +20,7 @@ namespace Core.Scripts.ModuleCreator.Editor
                 return;
             }
 
-            ReplaceTemplateScreenViewScript(prefabContents, moduleName, targetModuleFolderPath);
+            ReplaceTemplateScreenViewScript(prefabContents, moduleName);
             SaveAndUnloadPrefab(prefabContents, targetPrefabPath, moduleName);
         }
 
@@ -68,12 +37,9 @@ namespace Core.Scripts.ModuleCreator.Editor
 
             return targetPrefabPath;
         }
-        
-        
-        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, 
-            string moduleName, string targetModuleFolderPath)
+
+        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, string moduleName)
         {
-            // Получаем компонент TemplateScreenView из префаба
             var templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
             if (templateViewComponent == null)
             {
@@ -81,30 +47,37 @@ namespace Core.Scripts.ModuleCreator.Editor
                 return;
             }
 
-            // Формируем полное имя типа
             string namespaceName = $"Modules.{moduleName}Screen.Scripts";
             string className = $"{namespaceName}.{moduleName}ScreenView";
 
-            // Используем TypeCache для поиска типа
-            Type newComponentType = TypeCache.GetTypesDerivedFrom<MonoBehaviour>()
-                .FirstOrDefault(t => t.FullName == className);
+            Type newComponentType = null;
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                newComponentType = assembly.GetType(className);
+                if (newComponentType != null)
+                {
+                    break;
+                }
+            }
 
             if (newComponentType == null)
             {
-                Debug.LogError($"Failed to find Type '{className}' in loaded assemblies.");
+                Debug.LogError($"Failed to find Type '{className}' even after scripts reload.");
                 return;
             }
 
-            // Заменяем компонент
             ReplaceComponent(prefabContents, templateViewComponent, newComponentType);
         }
-
-
-
 
         private static void ReplaceComponent(GameObject gameObject, MonoBehaviour oldComponent, Type newComponentType)
         {
             var newComponent = gameObject.AddComponent(newComponentType) as MonoBehaviour;
+
+            if (newComponent == null)
+            {
+                Debug.LogError("Failed to add new component.");
+                return;
+            }
 
             string json = EditorJsonUtility.ToJson(oldComponent);
             EditorJsonUtility.FromJsonOverwrite(json, newComponent);

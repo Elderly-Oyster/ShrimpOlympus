@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
-namespace Core.Scripts.ModuleCreator.Editor
+namespace Editor
 {
     public static class ModuleGenerator
     {
