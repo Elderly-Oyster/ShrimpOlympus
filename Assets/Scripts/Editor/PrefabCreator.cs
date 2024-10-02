@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
 using UnityEditor.Compilation;
@@ -7,7 +8,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 
-namespace Core.Scripts.ModuleCreator.Scripts
+namespace Core.Scripts.ModuleCreator.Editor
 {
     [InitializeOnLoad]
     public static class PrefabCreator
@@ -73,47 +74,31 @@ namespace Core.Scripts.ModuleCreator.Scripts
             string moduleName, string targetModuleFolderPath)
         {
             // Получаем компонент TemplateScreenView из префаба
-            TemplateScreenView templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
+            var templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
             if (templateViewComponent == null)
             {
                 Debug.LogError("TemplateScreenView component not found in prefab.");
                 return;
             }
 
-            // Формируем путь к новому скрипту
-            string newScriptPath = PathManager.CombinePaths(targetModuleFolderPath, "Scripts", $"{moduleName}ScreenView.cs");
-            newScriptPath = newScriptPath.Replace("\\", "/");
-            Debug.Log("Attempting to load MonoScript at path: " + newScriptPath);
+            // Формируем полное имя типа
+            string namespaceName = $"Modules.{moduleName}Screen.Scripts";
+            string className = $"{namespaceName}.{moduleName}ScreenView";
 
-            // Обновляем AssetDatabase
-            AssetDatabase.Refresh();
+            // Используем TypeCache для поиска типа
+            Type newComponentType = TypeCache.GetTypesDerivedFrom<MonoBehaviour>()
+                .FirstOrDefault(t => t.FullName == className);
 
-            // Проверяем, существует ли файл
-            if (!File.Exists(newScriptPath))
-            {
-                Debug.LogError("File does not exist at path: " + newScriptPath);
-                return;
-            }
-
-            // Пытаемся загрузить MonoScript
-            MonoScript newScript = AssetDatabase.LoadAssetAtPath<MonoScript>(newScriptPath);
-            if (newScript == null)
-            {
-                Debug.LogError($"Failed to load MonoScript at {newScriptPath}");
-                return;
-            }
-
-            // Получаем тип класса из MonoScript
-            Type newComponentType = newScript.GetClass();
             if (newComponentType == null)
             {
-                Debug.LogError($"Failed to get Type from MonoScript at {newScriptPath}");
+                Debug.LogError($"Failed to find Type '{className}' in loaded assemblies.");
                 return;
             }
 
             // Заменяем компонент
             ReplaceComponent(prefabContents, templateViewComponent, newComponentType);
         }
+
 
 
 
