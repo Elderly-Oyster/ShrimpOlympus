@@ -9,10 +9,6 @@ namespace Editor
 {
     public static class ModuleGenerator
     {
-        public const string ModuleCreationInProgressKey = "ModuleCreationInProgress";
-        public const string ModuleNameKey = "ModuleCreationName";
-        public const string TargetModuleFolderPathKey = "TargetModuleFolderPath";
-
         public static string TargetModuleFolderPath { get; private set; }
 
         public static void CreateModuleFiles(
@@ -43,7 +39,13 @@ namespace Editor
                 createView,
                 createModel);
 
-            EditorUtility.DisplayDialog("Success", $"Module {moduleName} created successfully.", "OK");
+            Debug.Log($"Module {moduleName} scripts created successfully.");
+        }
+
+        public static string GetTargetModuleFolderPath(string moduleName, string selectedFolder)
+        {
+            string selectedFolderPath = GetSelectedFolderPath(selectedFolder);
+            return PathManager.CombinePaths(selectedFolderPath, $"{moduleName}Screen");
         }
 
         private static string GetSelectedFolderPath(string selectedFolder) =>

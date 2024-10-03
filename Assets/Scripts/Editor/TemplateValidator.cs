@@ -53,7 +53,7 @@ namespace Editor
 
         private static bool AsmdefTemplateExists()
         {
-            string templateAsmdefPath = PathManager.CombinePaths(PathManager.TemplateModuleFolderPath, 
+            string templateAsmdefPath = PathManager.CombinePaths(PathManager.TemplateModuleFolderPath,
                 "TemplateScreen.asmdef");
             if (!File.Exists(templateAsmdefPath))
             {

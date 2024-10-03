@@ -1,5 +1,4 @@
 using UnityEditor;
-using UnityEditor.Callbacks;
 using UnityEngine;
 
 namespace Editor
@@ -76,42 +75,25 @@ namespace Editor
 
         private void CreateModule()
         {
-            PathManager.InitializePaths();
+            var addScriptsTask = new AddScriptsTask(
+                _moduleName,
+                _selectedFolder.ToString(),
+                _createInstaller,
+                _createPresenter,
+                _createView,
+                _createModel,
+                _createAsmdef);
 
-            if (TemplateValidator.AreTemplatesAvailable(_createAsmdef))
-            {
-                ModuleGenerator.CreateModuleFiles(
-                    _moduleName,
-                    _selectedFolder.ToString(),
-                    _createInstaller,
-                    _createPresenter,
-                    _createView,
-                    _createModel,
-                    _createAsmdef);
+            TaskQueue.EnqueueTask(addScriptsTask);
 
-                SessionState.SetString("PendingModuleName", _moduleName);
-                SessionState.SetString("PendingModuleFolderPath", ModuleGenerator.TargetModuleFolderPath);
+            var addPrefabTask = new AddPrefabTask(
+                _moduleName,
+                ModuleGenerator.GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString()));
 
-                AssetDatabase.Refresh();
-            }
-        }
+            TaskQueue.EnqueueTask(addPrefabTask);
 
-        [DidReloadScripts]
-        private static void OnScriptsReloaded()
-        {
-            string moduleName = SessionState.GetString("PendingModuleName", "");
-            string targetModuleFolderPath = SessionState.GetString("PendingModuleFolderPath", "");
-
-            if (!string.IsNullOrEmpty(moduleName) && !string.IsNullOrEmpty(targetModuleFolderPath))
-            {
-                PrefabCreator.CreatePrefabForModule(moduleName, targetModuleFolderPath);
-
-                EditorUtility.DisplayDialog("Module Creation Finished",
-                    "Scripts compiled and prefab created successfully.", "OK");
-
-                SessionState.EraseString("PendingModuleName");
-                SessionState.EraseString("PendingModuleFolderPath");
-            }
+            EditorUtility.DisplayDialog("Module Creation Started",
+                "Module creation process has started. Please wait for it to complete.", "OK");
         }
     }
 }

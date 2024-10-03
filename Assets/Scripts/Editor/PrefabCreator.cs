@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
 using UnityEngine;
@@ -22,6 +21,7 @@ namespace Editor
 
             ReplaceTemplateScreenViewScript(prefabContents, moduleName);
             SaveAndUnloadPrefab(prefabContents, targetPrefabPath, moduleName);
+            Debug.Log($"Prefab for module {moduleName} created successfully.");
         }
 
         private static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
@@ -32,8 +32,13 @@ namespace Editor
             string templateViewPrefabPath = PathManager.TemplateViewPrefabPath;
             string targetPrefabPath = PathManager.CombinePaths(targetPrefabFolderPath, $"{moduleName}View.prefab");
 
-            AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
-            AssetDatabase.Refresh();
+            bool copyResult = AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
+            if (!copyResult)
+            {
+                Debug.LogError($"Failed to copy prefab from '{templateViewPrefabPath}' to '{targetPrefabPath}'.");
+                return null;
+            }
+            AssetDatabase.ImportAsset(targetPrefabPath, ImportAssetOptions.ForceUpdate);
 
             return targetPrefabPath;
         }
