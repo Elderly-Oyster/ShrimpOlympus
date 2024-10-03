@@ -26,6 +26,7 @@ namespace Editor
 
         private static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
+            Debug.Log("Module name: " + moduleName);
             string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
 

@@ -1,7 +1,7 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
-using UnityEngine;
 
 namespace Editor
 {
@@ -9,7 +9,7 @@ namespace Editor
     public static class TaskQueue
     {
         private static readonly Queue<Task> Tasks = new Queue<Task>();
-        private static bool isExecuting = false;
+        private static bool _isExecuting = false;
 
         static TaskQueue()
         {
@@ -29,9 +29,10 @@ namespace Editor
         {
             while (true)
             {
-                if (isExecuting || Tasks.Count == 0) return;
+                if (_isExecuting || Tasks.Count == 0)
+                    return;
 
-                isExecuting = true;
+                _isExecuting = true;
                 var task = Tasks.Peek();
                 task.Execute();
 
@@ -40,7 +41,7 @@ namespace Editor
                 else
                 {
                     Tasks.Dequeue();
-                    isExecuting = false;
+                    _isExecuting = false;
                     SaveState();
                     continue;
                 }
@@ -55,7 +56,7 @@ namespace Editor
             {
                 EditorApplication.update -= WaitForCompilation;
                 Tasks.Dequeue();
-                isExecuting = false;
+                _isExecuting = false;
                 SaveState();
                 ExecuteNextTask();
             }
@@ -63,7 +64,7 @@ namespace Editor
 
         private static void OnEditorUpdate()
         {
-            if (!isExecuting && Tasks.Count > 0) 
+            if (!_isExecuting && Tasks.Count > 0)
                 ExecuteNextTask();
         }
 
@@ -71,54 +72,23 @@ namespace Editor
 
         private static void SaveState()
         {
-            List<string> serializedTasks = new List<string>();
-            foreach (var task in Tasks)
-            {
-                var taskData = new TaskData
-                {
-                    TypeName = task.GetType().AssemblyQualifiedName,
-                    SerializedData = JsonUtility.ToJson(task)
-                };
-                serializedTasks.Add(JsonUtility.ToJson(taskData));
-            }
-            string tasksJson = JsonUtility.ToJson(new TaskQueueData { Tasks = serializedTasks });
+            var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+            string tasksJson = JsonConvert.SerializeObject(Tasks.ToList(), settings);
             SessionState.SetString("TaskQueueState", tasksJson);
         }
 
         private static void LoadState()
         {
+            SessionState.EraseString("TaskQueueState"); 
             string tasksJson = SessionState.GetString("TaskQueueState", "");
             if (!string.IsNullOrEmpty(tasksJson))
             {
-                var taskQueueData = JsonUtility.FromJson<TaskQueueData>(tasksJson);
+                var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
+                var tasksList = JsonConvert.DeserializeObject<List<Task>>(tasksJson, settings);
                 Tasks.Clear();
-                foreach (var taskJson in taskQueueData.Tasks)
-                {
-                    var taskData = JsonUtility.FromJson<TaskData>(taskJson);
-                    Type taskType = Type.GetType(taskData.TypeName);
-                    if (taskType != null)
-                    {
-                        var task = JsonUtility.FromJson(taskData.SerializedData, taskType) as Task;
-                        if (task != null)
-                        {
-                            Tasks.Enqueue(task);
-                        }
-                    }
-                }
+                foreach (var task in tasksList) 
+                    Tasks.Enqueue(task);
             }
-        }
-
-        [Serializable]
-        private class TaskQueueData
-        {
-            public List<string> Tasks;
-        }
-
-        [Serializable]
-        private class TaskData
-        {
-            public string TypeName;
-            public string SerializedData;
         }
     }
 }

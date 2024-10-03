@@ -1,16 +1,18 @@
 using UnityEditor;
+using System;
 
 namespace Editor
 {
+    [Serializable]
     public class AddScriptsTask : Task
     {
-        private readonly string _moduleName;
-        private readonly string _selectedFolder;
-        private readonly bool _createInstaller;
-        private readonly bool _createPresenter;
-        private readonly bool _createView;
-        private readonly bool _createModel;
-        private readonly bool _createAsmdef;
+        private string _moduleName;
+        private string _selectedFolder;
+        private bool _createInstaller;
+        private bool _createPresenter;
+        private bool _createView;
+        private bool _createModel;
+        private bool _createAsmdef;
 
         public AddScriptsTask(string moduleName, string selectedFolder, bool createInstaller,
             bool createPresenter, bool createView, bool createModel, bool createAsmdef)
