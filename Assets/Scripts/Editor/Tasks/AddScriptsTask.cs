@@ -1,19 +1,21 @@
 using System;
 using Editor.Tasks.Abstract;
+using Newtonsoft.Json;
 using UnityEditor;
+using UnityEngine;
 
 namespace Editor.Tasks
 {
     [Serializable]
     public class AddScriptsTask : Task
     {
-        private string _moduleName;
-        private string _selectedFolder;
-        private bool _createInstaller;
-        private bool _createPresenter;
-        private bool _createView;
-        private bool _createModel;
-        private bool _createAsmdef;
+        [JsonProperty] private string _moduleName;
+        [JsonProperty] private string _selectedFolder;
+        [JsonProperty] private bool _createInstaller;
+        [JsonProperty] private bool _createPresenter;
+        [JsonProperty] private bool _createView;
+        [JsonProperty] private bool _createModel;
+        [JsonProperty] private bool _createAsmdef;
 
         public AddScriptsTask(string moduleName, string selectedFolder, bool createInstaller,
             bool createPresenter, bool createView, bool createModel, bool createAsmdef)
@@ -30,6 +32,7 @@ namespace Editor.Tasks
 
         public override void Execute()
         {
+            Debug.Log($"Executing AddScriptsTask for module: {_moduleName}");
             PathManager.InitializePaths();
 
             if (TemplateValidator.AreTemplatesAvailable(_createAsmdef))

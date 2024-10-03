@@ -1,5 +1,6 @@
 using System;
 using Editor.Tasks.Abstract;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace Editor.Tasks
@@ -7,19 +8,20 @@ namespace Editor.Tasks
     [Serializable]
     public class AddPrefabTask : Task
     {
-        [SerializeField] private string _moduleName;
-        [SerializeField] private string _targetModuleFolderPath;
+        [JsonProperty] private string _moduleName;
+        [JsonProperty] private string _targetModuleFolderPath;
 
         public AddPrefabTask(string moduleName, string targetModuleFolderPath)
         {
             _moduleName = moduleName;
             _targetModuleFolderPath = targetModuleFolderPath;
-            WaitForCompilation = true;
+            WaitForCompilation = false;
         }
 
         public override void Execute()
         {
-            Debug.Log("Executing AddPrefabTask for module: " + _moduleName);
+            Debug.Log($"Executing AddPrefabTask for module: {_moduleName}");
+            Debug.Log($"Target Module Folder Path: {_targetModuleFolderPath}");
             PrefabCreator.CreatePrefabForModule(_moduleName, _targetModuleFolderPath);
         }
     }

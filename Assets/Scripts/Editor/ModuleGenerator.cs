@@ -146,13 +146,6 @@ namespace Editor
 
             string filePath = PathManager.CombinePaths(folderPath, fileName);
 
-            if (File.Exists(filePath))
-            {
-                if (!EditorUtility.DisplayDialog("File Exists", $"File {fileName} already exists. Overwrite?",
-                        "Yes", "No"))
-                    return;
-            }
-
             WriteToFile(filePath, scriptContent);
         }
 

@@ -77,6 +77,8 @@ namespace Editor
 
         private void CreateModule()
         {
+            Debug.Log("Creating module with name: " + _moduleName);
+
             var addScriptsTask = new AddScriptsTask(
                 _moduleName,
                 _selectedFolder.ToString(),
@@ -98,6 +100,8 @@ namespace Editor
 
             EditorUtility.DisplayDialog("Module Creation Started",
                 "Module creation process has started. Please wait for it to complete.", "OK");
+
+            _moduleName = "NewModule";
         }
     }
 }

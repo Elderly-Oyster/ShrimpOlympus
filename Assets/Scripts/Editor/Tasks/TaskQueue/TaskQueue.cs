@@ -11,8 +11,8 @@ namespace Editor.Tasks.TaskQueue
     [InitializeOnLoad]
     public static class TaskQueue
     {
-        private static readonly Queue<Task> Tasks = new Queue<Task>();
-        private static bool _isExecuting = false;
+        private static readonly Queue<Task> Tasks = new();
+        private static bool _isExecuting;
 
         static TaskQueue()
         {
@@ -23,7 +23,6 @@ namespace Editor.Tasks.TaskQueue
 
         public static void EnqueueTask(Task task)
         {
-            Debug.Log("EnqueueTask: " + task.GetType().Name);
             Tasks.Enqueue(task);
             SaveState();
             ExecuteNextTask();
@@ -34,27 +33,33 @@ namespace Editor.Tasks.TaskQueue
             while (true)
             {
                 if (_isExecuting || Tasks.Count == 0)
-                {
-                    Debug.Log("No tasks to execute or already executing.");
                     return;
-                }
 
                 _isExecuting = true;
                 var task = Tasks.Peek();
-                Debug.Log("Executing task: " + task.GetType().Name);
                 task.Execute();
 
                 if (task.WaitForCompilation)
                 {
-                    Debug.Log("Waiting for compilation...");
-                    EditorApplication.update += WaitForCompilation;
+                    if (EditorApplication.isCompiling)
+                    {
+                        EditorApplication.update += WaitForCompilation;
+                    }
+                    else
+                    {
+                        Tasks.Dequeue();
+                        _isExecuting = false;
+                        SaveState();
+                        ClearCompletedTasks();
+                        continue;
+                    }
                 }
                 else
                 {
-                    Debug.Log("Task does not require compilation wait.");
                     Tasks.Dequeue();
                     _isExecuting = false;
                     SaveState();
+                    ClearCompletedTasks();
                     continue;
                 }
 
@@ -66,11 +71,11 @@ namespace Editor.Tasks.TaskQueue
         {
             if (!EditorApplication.isCompiling)
             {
-                Debug.Log("Compilation finished.");
                 EditorApplication.update -= WaitForCompilation;
                 Tasks.Dequeue();
                 _isExecuting = false;
                 SaveState();
+                ClearCompletedTasks();
                 ExecuteNextTask();
             }
         }
@@ -83,7 +88,7 @@ namespace Editor.Tasks.TaskQueue
 
         private static void OnAfterAssemblyReload()
         {
-            Debug.Log("Assembly reloaded.");
+            _isExecuting = false;
             LoadState();
         }
 
@@ -91,15 +96,12 @@ namespace Editor.Tasks.TaskQueue
         {
             var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
             string tasksJson = JsonConvert.SerializeObject(Tasks.ToList(), settings);
-            Debug.Log("Saving tasks: " + tasksJson);
             SessionState.SetString("TaskQueueState", tasksJson);
         }
 
         private static void LoadState()
         {
-            // Не удаляем сохраненное состояние
             string tasksJson = SessionState.GetString("TaskQueueState", "");
-            Debug.Log("Loading tasks: " + tasksJson);
             if (!string.IsNullOrEmpty(tasksJson))
             {
                 var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
@@ -107,20 +109,21 @@ namespace Editor.Tasks.TaskQueue
                 {
                     var tasksList = JsonConvert.DeserializeObject<List<Task>>(tasksJson, settings);
                     Tasks.Clear();
-                    foreach (var task in tasksList)
-                    {
-                        Debug.Log("Enqueuing loaded task: " + task.GetType().Name);
+                    foreach (var task in tasksList) 
                         Tasks.Enqueue(task);
-                    }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Debug.LogError("Error deserializing tasks: " + ex.Message);
                 }
             }
-            else
+        }
+
+        public static void ClearCompletedTasks()
+        {
+            if (Tasks.Count == 0)
             {
-                Debug.Log("No tasks found in SessionState.");
+                SessionState.EraseString("TaskQueueState");
+                _isExecuting = false;
             }
         }
     }
