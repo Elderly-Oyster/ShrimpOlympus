@@ -7,7 +7,7 @@ namespace Editor
         public static string AdditionalFolderPath { get; private set; }
         public static string BaseFolderPath { get; private set; }
         public static string TestFolderPath { get; private set; }
-        public static string TemplateFolderPath { get; private set; }
+        public static string TemplateScriptsFolderPath { get; private set; }
         public static string TemplateModuleFolderPath { get; private set; }
         public static string TemplateViewsFolderPath { get; private set; }
         public static string TemplateViewPrefabPath { get; private set; }
@@ -19,9 +19,10 @@ namespace Editor
             AdditionalFolderPath = CombinePaths(BasePath, "Additional");
             BaseFolderPath = CombinePaths(BasePath, "Base");
             TestFolderPath = CombinePaths(BasePath, "Test");
-            TemplateFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen", "Scripts");
+            
             TemplateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen");
-            TemplateViewsFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen", "Views");
+            TemplateViewsFolderPath = CombinePaths(TemplateModuleFolderPath, "Views");
+            TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, "Scripts");
             TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateView.prefab");
 
             EnsureSubfoldersExist();

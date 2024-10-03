@@ -111,7 +111,7 @@ namespace Editor
 
         private static string GetTemplateContent(string templateFileName, string moduleName, string selectedFolder)
         {
-            string templateFilePath = PathManager.CombinePaths(PathManager.TemplateFolderPath, templateFileName);
+            string templateFilePath = PathManager.CombinePaths(PathManager.TemplateScriptsFolderPath, templateFileName);
             string content = ReadTemplateFile(templateFilePath);
             if (content == null)
                 return null;

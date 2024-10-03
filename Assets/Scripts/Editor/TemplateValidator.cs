@@ -17,10 +17,10 @@ namespace Editor
 
         public static bool AreTemplatesAvailable(bool createAsmdef)
         {
-            if (!AssetDatabase.IsValidFolder(PathManager.TemplateFolderPath))
+            if (!AssetDatabase.IsValidFolder(PathManager.TemplateScriptsFolderPath))
             {
                 ShowDialog("Missing Template Folder",
-                    $"Template folder not found at {PathManager.TemplateFolderPath}.\n" +
+                    $"Template folder not found at {PathManager.TemplateScriptsFolderPath}.\n" +
                     $"\nModule creation aborted.");
                 return false;
             }
@@ -40,7 +40,7 @@ namespace Editor
         private static bool MissingTemplateFiles()
         {
             var missingTemplates = RequiredTemplates.Where(template =>
-                !File.Exists(PathManager.CombinePaths(PathManager.TemplateFolderPath, template))).ToList();
+                !File.Exists(PathManager.CombinePaths(PathManager.TemplateScriptsFolderPath, template))).ToList();
             if (missingTemplates.Any())
             {
                 string missing = string.Join("\n", missingTemplates);
