@@ -1,6 +1,7 @@
 using System;
+using Editor.Tasks.Abstract;
 
-namespace Editor
+namespace Editor.Tasks
 {
     [Serializable]
     public class AddPrefabTask : Task

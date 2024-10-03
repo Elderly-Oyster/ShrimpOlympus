@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using Editor.Tasks.Abstract;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
 
-namespace Editor
+namespace Editor.Tasks.TaskQueue
 {
     [InitializeOnLoad]
     public static class TaskQueue

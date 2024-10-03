@@ -1,7 +1,8 @@
-using UnityEditor;
 using System;
+using Editor.Tasks.Abstract;
+using UnityEditor;
 
-namespace Editor
+namespace Editor.Tasks
 {
     [Serializable]
     public class AddScriptsTask : Task

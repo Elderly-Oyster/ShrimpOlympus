@@ -1,6 +1,6 @@
 using System;
 
-namespace Editor
+namespace Editor.Tasks.Abstract
 {
     [Serializable]
     public abstract class Task
