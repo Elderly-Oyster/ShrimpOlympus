@@ -8,7 +8,7 @@ namespace Editor
     [InitializeOnLoad]
     public static class TaskQueue
     {
-        private static Queue<Task> tasks = new Queue<Task>();
+        private static readonly Queue<Task> Tasks = new Queue<Task>();
         private static bool isExecuting = false;
 
         static TaskQueue()
@@ -20,30 +20,32 @@ namespace Editor
 
         public static void EnqueueTask(Task task)
         {
-            tasks.Enqueue(task);
+            Tasks.Enqueue(task);
             SaveState();
             ExecuteNextTask();
         }
 
         private static void ExecuteNextTask()
         {
-            if (isExecuting || tasks.Count == 0)
-                return;
-
-            isExecuting = true;
-            var task = tasks.Peek();
-            task.Execute();
-
-            if (task.WaitForCompilation)
+            while (true)
             {
-                EditorApplication.update += WaitForCompilation;
-            }
-            else
-            {
-                tasks.Dequeue();
-                isExecuting = false;
-                SaveState();
-                ExecuteNextTask();
+                if (isExecuting || Tasks.Count == 0) return;
+
+                isExecuting = true;
+                var task = Tasks.Peek();
+                task.Execute();
+
+                if (task.WaitForCompilation)
+                    EditorApplication.update += WaitForCompilation;
+                else
+                {
+                    Tasks.Dequeue();
+                    isExecuting = false;
+                    SaveState();
+                    continue;
+                }
+
+                break;
             }
         }
 
@@ -52,7 +54,7 @@ namespace Editor
             if (!EditorApplication.isCompiling)
             {
                 EditorApplication.update -= WaitForCompilation;
-                tasks.Dequeue();
+                Tasks.Dequeue();
                 isExecuting = false;
                 SaveState();
                 ExecuteNextTask();
@@ -61,21 +63,16 @@ namespace Editor
 
         private static void OnEditorUpdate()
         {
-            if (!isExecuting && tasks.Count > 0)
-            {
+            if (!isExecuting && Tasks.Count > 0) 
                 ExecuteNextTask();
-            }
         }
 
-        private static void OnAfterAssemblyReload()
-        {
-            LoadState();
-        }
+        private static void OnAfterAssemblyReload() => LoadState();
 
         private static void SaveState()
         {
             List<string> serializedTasks = new List<string>();
-            foreach (var task in tasks)
+            foreach (var task in Tasks)
             {
                 var taskData = new TaskData
                 {
@@ -94,7 +91,7 @@ namespace Editor
             if (!string.IsNullOrEmpty(tasksJson))
             {
                 var taskQueueData = JsonUtility.FromJson<TaskQueueData>(tasksJson);
-                tasks.Clear();
+                Tasks.Clear();
                 foreach (var taskJson in taskQueueData.Tasks)
                 {
                     var taskData = JsonUtility.FromJson<TaskData>(taskJson);
@@ -104,7 +101,7 @@ namespace Editor
                         var task = JsonUtility.FromJson(taskData.SerializedData, taskType) as Task;
                         if (task != null)
                         {
-                            tasks.Enqueue(task);
+                            Tasks.Enqueue(task);
                         }
                     }
                 }

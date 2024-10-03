@@ -42,7 +42,7 @@ namespace Editor
             folderPath = folderPath.Replace("\\", "/");
             if (!AssetDatabase.IsValidFolder(folderPath))
             {
-                string parentFolder = System.IO.Path.GetDirectoryName(folderPath).Replace("\\", "/");
+                string parentFolder = System.IO.Path.GetDirectoryName(folderPath)?.Replace("\\", "/");
                 string newFolderName = System.IO.Path.GetFileName(folderPath);
                 AssetDatabase.CreateFolder(parentFolder, newFolderName);
             }

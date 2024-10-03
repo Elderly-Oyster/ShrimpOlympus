@@ -60,9 +60,7 @@ namespace Editor
             {
                 newComponentType = assembly.GetType(className);
                 if (newComponentType != null)
-                {
                     break;
-                }
             }
 
             if (newComponentType == null)
