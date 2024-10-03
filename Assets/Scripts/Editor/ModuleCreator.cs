@@ -88,9 +88,11 @@ namespace Editor
 
             TaskQueue.EnqueueTask(addScriptsTask);
 
+            var targetModuleFolderPath = ModuleGenerator.GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString());
+
             var addPrefabTask = new AddPrefabTask(
                 _moduleName,
-                ModuleGenerator.GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString()));
+                targetModuleFolderPath);
 
             TaskQueue.EnqueueTask(addPrefabTask);
 

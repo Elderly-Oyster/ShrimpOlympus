@@ -1,13 +1,14 @@
 using System;
 using Editor.Tasks.Abstract;
+using UnityEngine;
 
 namespace Editor.Tasks
 {
     [Serializable]
     public class AddPrefabTask : Task
     {
-        private string _moduleName;
-        private string _targetModuleFolderPath;
+        [SerializeField] private string _moduleName;
+        [SerializeField] private string _targetModuleFolderPath;
 
         public AddPrefabTask(string moduleName, string targetModuleFolderPath)
         {
@@ -16,7 +17,10 @@ namespace Editor.Tasks
             WaitForCompilation = true;
         }
 
-        public override void Execute() =>
+        public override void Execute()
+        {
+            Debug.Log("Executing AddPrefabTask for module: " + _moduleName);
             PrefabCreator.CreatePrefabForModule(_moduleName, _targetModuleFolderPath);
+        }
     }
 }
