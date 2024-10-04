@@ -1,10 +1,10 @@
 using System;
-using Editor.Tasks.Abstract;
+using Editor.ModuleCreator.Tasks.Abstract;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.Tasks
+namespace Editor.ModuleCreator.Tasks
 {
     [Serializable]
     public class AddScriptsTask : Task

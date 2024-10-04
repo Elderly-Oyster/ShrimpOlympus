@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 
-namespace Editor
+namespace Editor.ModuleCreator
 {
     public static class TemplateValidator
     {

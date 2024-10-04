@@ -1,9 +1,9 @@
-using Editor.Tasks;
-using Editor.Tasks.TaskQueue;
+using Editor.ModuleCreator.Tasks;
+using Editor.ModuleCreator.Tasks.TaskQueue;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace Editor.ModuleCreator
 {
     public class ModuleCreator : EditorWindow
     {

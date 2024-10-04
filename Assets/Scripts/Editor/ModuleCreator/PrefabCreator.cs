@@ -3,7 +3,7 @@ using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor
+namespace Editor.ModuleCreator
 {
     public static class PrefabCreator
     {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Editor.Tasks.Abstract
+namespace Editor.ModuleCreator.Tasks.Abstract
 {
     [Serializable]
     public abstract class Task
