@@ -71,7 +71,8 @@ namespace Editor.ModuleCreator
 
             TaskQueue.EnqueueTask(addScriptsTask);
 
-            string targetModuleFolderPath = ModuleGenerator.GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString());
+            string targetModuleFolderPath = ModuleGenerator.
+                GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString());
 
             if (_createPrefab)
             {

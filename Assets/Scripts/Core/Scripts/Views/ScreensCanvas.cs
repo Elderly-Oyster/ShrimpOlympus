@@ -5,14 +5,13 @@ namespace Core.Scripts.Views
 {
     public class ScreensCanvas : MonoBehaviour
     {
-        private float? _scaleFactor;
-        
         [SerializeField] private CanvasScaler canvasScaler;
         [SerializeField] private Camera uiCamera;
         
         public Camera UICamera => uiCamera;
+        private float? _scaleFactor;
 
-        
+
         public float GetScaleFactor()
         {
             if (_scaleFactor.HasValue) return _scaleFactor.Value;
