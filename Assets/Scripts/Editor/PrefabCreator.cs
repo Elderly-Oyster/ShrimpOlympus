@@ -10,7 +10,16 @@ namespace Editor
     {
         public static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
         {
+            Debug.Log($"CreatePrefabForModule called with moduleName: {moduleName}," +
+                      $" targetModuleFolderPath: {targetModuleFolderPath}");
+
             string targetPrefabPath = CopyTemplatePrefab(moduleName, targetModuleFolderPath);
+            if (string.IsNullOrEmpty(targetPrefabPath))
+            {
+                Debug.LogError("Target prefab path is null or empty.");
+                return;
+            }
+
             GameObject prefabContents = PrefabUtility.LoadPrefabContents(targetPrefabPath);
 
             if (prefabContents == null)
@@ -27,11 +36,15 @@ namespace Editor
         private static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
             Debug.Log("Module name: " + moduleName);
+            Debug.Log("Target module folder path: " + targetModuleFolderPath);
+
             string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
 
             string templateViewPrefabPath = PathManager.TemplateViewPrefabPath;
             string targetPrefabPath = PathManager.CombinePaths(targetPrefabFolderPath, $"{moduleName}View.prefab");
+
+            Debug.Log($"Copying prefab from '{templateViewPrefabPath}' to '{targetPrefabPath}'");
 
             bool copyResult = AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
             if (!copyResult)
@@ -56,26 +69,31 @@ namespace Editor
             string namespaceName = $"Modules.{moduleName}Screen.Scripts";
             string className = $"{namespaceName}.{moduleName}ScreenView";
 
-            Type newComponentType = null;
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                newComponentType = assembly.GetType(className);
-                if (newComponentType != null)
-                    break;
-            }
+            Type newComponentType = GetTypeByName(className);
 
             if (newComponentType == null)
             {
-                Debug.LogError($"Failed to find Type '{className}' even after scripts reload.");
+                Debug.LogError($"Failed to find Type '{className}' after scripts reload.");
                 return;
             }
 
             ReplaceComponent(prefabContents, templateViewComponent, newComponentType);
         }
 
-        private static void ReplaceComponent(GameObject gameObject, MonoBehaviour oldComponent, Type newComponentType)
+        private static Type GetTypeByName(string className)
         {
-            var newComponent = gameObject.AddComponent(newComponentType) as MonoBehaviour;
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                var type = assembly.GetType(className);
+                if (type != null)
+                    return type;
+            }
+            return null;
+        }
+
+        private static void ReplaceComponent(GameObject gameObject, Component oldComponent, Type newComponentType)
+        {
+            var newComponent = gameObject.AddComponent(newComponentType);
 
             if (newComponent == null)
             {
@@ -83,8 +101,7 @@ namespace Editor
                 return;
             }
 
-            string json = EditorJsonUtility.ToJson(oldComponent);
-            EditorJsonUtility.FromJsonOverwrite(json, newComponent);
+            EditorUtility.CopySerialized(oldComponent, newComponent);
 
             Object.DestroyImmediate(oldComponent, true);
         }

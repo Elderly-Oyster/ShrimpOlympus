@@ -47,7 +47,10 @@ namespace Editor.Tasks
                     _createAsmdef);
 
                 AssetDatabase.Refresh();
+                Debug.Log($"Module {_moduleName} scripts created successfully.");
             }
+            else
+                Debug.LogError("Templates are not available.");
         }
     }
 }

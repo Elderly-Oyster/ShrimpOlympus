@@ -7,7 +7,7 @@ namespace Editor
 {
     public static class TemplateValidator
     {
-        private static readonly List<string> RequiredTemplates = new List<string>
+        private static readonly List<string> RequiredTemplates = new()
         {
             "TemplateScreenInstaller.cs",
             "TemplateScreenPresenter.cs",

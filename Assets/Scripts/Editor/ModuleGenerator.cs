@@ -77,8 +77,10 @@ namespace Editor
 
         private static void CreateAsmdefFile(string targetFolderPath, string moduleName)
         {
-            string templateAsmdefPath = PathManager.CombinePaths(PathManager.TemplateModuleFolderPath, "TemplateScreen.asmdef");
-            string targetAsmdefPath = PathManager.CombinePaths(targetFolderPath, $"{moduleName}Screen.asmdef");
+            string templateAsmdefPath = PathManager.
+                CombinePaths(PathManager.TemplateModuleFolderPath, "TemplateScreen.asmdef");
+            string targetAsmdefPath = PathManager.
+                CombinePaths(targetFolderPath, $"{moduleName}Screen.asmdef");
             CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
         }
 
@@ -131,13 +133,15 @@ namespace Editor
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
-        private static string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower) =>
-            Regex.Replace(content, @"(_?)(template)", match =>
+        private static string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
+        {
+            return Regex.Replace(content, @"(_?)(template)", match =>
             {
                 string prefix = match.Groups[1].Value;
                 string templateWord = match.Groups[2].Value;
                 return prefix + (char.IsUpper(templateWord[0]) ? moduleName : moduleNameLower);
             }, RegexOptions.IgnoreCase);
+        }
 
         private static void CreateScript(string folderPath, string fileName, string scriptContent)
         {
@@ -167,7 +171,8 @@ namespace Editor
             if (content == null)
             {
                 EditorUtility.DisplayDialog("Missing asmdef Template",
-                    $"Template asmdef file not found at {templateAsmdefPath}.\n\nCannot create asmdef file.", "OK");
+                    $"Template asmdef file not found at {templateAsmdefPath}.\n" +
+                    $"\nCannot create asmdef file.", "OK");
                 return;
             }
             content = AdjustAsmdefContent(content, moduleName);
