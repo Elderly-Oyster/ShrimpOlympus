@@ -9,6 +9,7 @@ namespace Editor.ModuleCreator
     {
         private FolderType _selectedFolder = FolderType.Base;
         private bool _createPrefab = true;
+        private bool _createScene = true;
 
         public enum FolderType { Additional, Base, Test }
         private const float GUISpacing = 10f;
@@ -41,6 +42,7 @@ namespace Editor.ModuleCreator
             _createAsmdef = EditorGUILayout.Toggle("Create asmdef", _createAsmdef);
             GUILayout.Space(GUISpacing);
             _createPrefab = EditorGUILayout.Toggle("Create Prefab", _createPrefab);
+            _createScene = EditorGUILayout.Toggle("Create Scene", _createScene);
             GUILayout.Space(GUISpacing);
             if (GUILayout.Button("Create Module"))
             {
@@ -69,8 +71,7 @@ namespace Editor.ModuleCreator
 
             TaskQueue.EnqueueTask(addScriptsTask);
 
-            var targetModuleFolderPath = ModuleGenerator.
-                GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString());
+            string targetModuleFolderPath = ModuleGenerator.GetTargetModuleFolderPath(_moduleName, _selectedFolder.ToString());
 
             if (_createPrefab)
             {
@@ -79,6 +80,15 @@ namespace Editor.ModuleCreator
                     targetModuleFolderPath);
 
                 TaskQueue.EnqueueTask(addPrefabTask);
+            }
+
+            if (_createScene)
+            {
+                var createSceneTask = new CreateSceneTask(
+                    _moduleName,
+                    targetModuleFolderPath);
+
+                TaskQueue.EnqueueTask(createSceneTask);
             }
 
             EditorUtility.DisplayDialog("Module Creation Started",
