@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reflection;
 using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
@@ -12,61 +11,51 @@ namespace Editor.ModuleCreator
     {
         public static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
         {
-            Debug.Log($"CreatePrefabForModule called with moduleName: {moduleName}, targetModuleFolderPath: {targetModuleFolderPath}");
-
+            LogStart(moduleName, targetModuleFolderPath);
             string targetPrefabPath = CopyTemplatePrefab(moduleName, targetModuleFolderPath);
-            if (string.IsNullOrEmpty(targetPrefabPath))
-            {
-                Debug.LogError("Target prefab path is null or empty.");
-                return;
-            }
+            if (IsInvalidPath(targetPrefabPath)) return;
 
-            GameObject prefabContents = PrefabUtility.LoadPrefabContents(targetPrefabPath);
-
-            if (prefabContents == null)
-            {
-                Debug.LogError($"Failed to load prefab contents at {targetPrefabPath}");
-                return;
-            }
+            GameObject prefabContents = LoadPrefab(targetPrefabPath);
+            if (prefabContents == null) return;
 
             ReplaceTemplateScreenViewScript(prefabContents, moduleName, targetModuleFolderPath);
 
             MonoScript newMonoScript = GetMonoScript(moduleName, targetModuleFolderPath);
             if (newMonoScript == null)
             {
-                Debug.LogError("New MonoScript is null, cannot proceed.");
                 PrefabUtility.UnloadPrefabContents(prefabContents);
                 return;
             }
 
-            Type newViewType = newMonoScript.GetClass();
+            Type newViewType = GetViewType(newMonoScript);
             if (newViewType == null)
             {
-                Debug.LogError("Failed to get Type from new MonoScript.");
                 PrefabUtility.UnloadPrefabContents(prefabContents);
                 return;
             }
 
-            Component newViewComponent = prefabContents.GetComponent(newViewType);
+            Component newViewComponent = GetViewComponent(prefabContents, newViewType);
             if (newViewComponent != null)
             {
                 AssignTemplateScreenTitle(prefabContents, moduleName, newViewComponent, newViewType);
                 InvokeSetTitle(newViewComponent, moduleName, newViewType);
-                Debug.Log($"Set title to '{moduleName}' in {newViewType.Name}.");
+                LogTitleSet(moduleName, newViewType.Name);
             }
             else
-            {
-                Debug.LogError($"{newViewType.Name} component not found in prefab.");
-            }
+                LogComponentNotFound(newViewType.Name);
 
             SaveAndUnloadPrefab(prefabContents, targetPrefabPath, moduleName);
-            Debug.Log($"Prefab for module {moduleName} created successfully.");
+            LogPrefabCreated(moduleName);
         }
+
+        private static void LogStart(string moduleName, string targetModuleFolderPath) => 
+            Debug.Log($"CreatePrefabForModule called with moduleName: {moduleName}," +
+                      $" targetModuleFolderPath: {targetModuleFolderPath}");
 
         private static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
-            Debug.Log("Module name: " + moduleName);
-            Debug.Log("Target module folder path: " + targetModuleFolderPath);
+            Debug.Log($"Module name: {moduleName}");
+            Debug.Log($"Target module folder path: {targetModuleFolderPath}");
 
             string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
@@ -87,26 +76,37 @@ namespace Editor.ModuleCreator
             return targetPrefabPath;
         }
 
+        private static bool IsInvalidPath(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                Debug.LogError("Target prefab path is null or empty.");
+                return true;
+            }
+            return false;
+        }
+
+        private static GameObject LoadPrefab(string prefabPath)
+        {
+            GameObject prefab = PrefabUtility.LoadPrefabContents(prefabPath);
+            if (prefab == null) 
+                Debug.LogError($"Failed to load prefab contents at {prefabPath}");
+            return prefab;
+        }
+
         private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, string moduleName, string targetModuleFolderPath)
         {
-            var templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
+            TemplateScreenView templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
             if (templateViewComponent == null)
             {
                 Debug.LogError("TemplateScreenView component not found in prefab.");
                 return;
             }
 
-            string folderType = GetFolderTypeFromPath(targetModuleFolderPath);
-            if (string.IsNullOrEmpty(folderType))
-            {
-                Debug.LogError("Folder type could not be determined from the target module folder path.");
-                return;
-            }
+            string folderType = GetFolderType(targetModuleFolderPath);
+            if (string.IsNullOrEmpty(folderType)) return;
 
-            string namespaceName = $"Modules.{folderType}.{moduleName}Screen.Scripts";
-            string className = $"{moduleName}ScreenView";
-            string fullClassName = $"{namespaceName}.{className}";
-
+            string fullClassName = GetFullClassName(moduleName, folderType);
             MonoScript newMonoScript = GetMonoScript(moduleName, targetModuleFolderPath);
             if (newMonoScript == null)
             {
@@ -114,29 +114,35 @@ namespace Editor.ModuleCreator
                 return;
             }
 
-            SerializedObject serializedObject = new SerializedObject(templateViewComponent);
-            SerializedProperty scriptProperty = serializedObject.FindProperty("m_Script");
+            ReplaceScriptProperty(templateViewComponent, newMonoScript, fullClassName);
+        }
 
-            if (scriptProperty != null)
+        private static string GetFolderType(string path)
+        {
+            string[] pathParts = path.Split('/');
+            int modulesIndex = Array.IndexOf(pathParts, "Modules");
+            if (modulesIndex >= 0 && modulesIndex + 1 < pathParts.Length)
             {
-                scriptProperty.objectReferenceValue = newMonoScript;
-                serializedObject.ApplyModifiedProperties();
-                Debug.Log($"Replaced script on TemplateScreenView with {fullClassName}.");
+                string folderType = pathParts[modulesIndex + 1];
+                Debug.Log($"Determined folder type: {folderType}");
+                return folderType;
             }
-            else
-            {
-                Debug.LogError("Failed to find 'm_Script' property.");
-            }
+            Debug.LogError("Folder type not found in path: " + path);
+            return "";
+        }
+
+        private static string GetFullClassName(string moduleName, string folderType)
+        {
+            string namespaceName = $"Modules.{folderType}.{moduleName}Screen.Scripts";
+            string className = $"{moduleName}ScreenView";
+            return $"{namespaceName}.{className}";
         }
 
         private static MonoScript GetMonoScript(string moduleName, string targetModuleFolderPath)
         {
-            string folderType = GetFolderTypeFromPath(targetModuleFolderPath);
-            string namespaceName = $"Modules.{folderType}.{moduleName}Screen.Scripts";
-            string className = $"{moduleName}ScreenView";
-            string fullClassName = $"{namespaceName}.{className}";
+            string folderType = GetFolderType(targetModuleFolderPath);
+            string fullClassName = GetFullClassName(moduleName, folderType);
 
-            // Ищем MonoScript по полному имени класса
             string[] guids = AssetDatabase.FindAssets("t:MonoScript");
             Debug.Log($"Searching for MonoScript with class name: {fullClassName}");
             foreach (string guid in guids)
@@ -156,11 +162,37 @@ namespace Editor.ModuleCreator
             return null;
         }
 
+        private static void ReplaceScriptProperty(TemplateScreenView templateViewComponent, MonoScript newMonoScript, string fullClassName)
+        {
+            SerializedObject serializedObject = new SerializedObject(templateViewComponent);
+            SerializedProperty scriptProperty = serializedObject.FindProperty("m_Script");
+
+            if (scriptProperty != null)
+            {
+                scriptProperty.objectReferenceValue = newMonoScript;
+                serializedObject.ApplyModifiedProperties();
+                Debug.Log($"Replaced script on TemplateScreenView with {fullClassName}.");
+            }
+            else
+                Debug.LogError("Failed to find 'm_Script' property.");
+        }
+
+        private static Type GetViewType(MonoScript monoScript)
+        {
+            return monoScript.GetClass();
+        }
+
+        private static Component GetViewComponent(GameObject prefabContents, Type viewType)
+        {
+            Component component = prefabContents.GetComponent(viewType);
+            if (component == null) 
+                Debug.LogError($"{viewType.Name} component not found in prefab.");
+            return component;
+        }
+
         private static void AssignTemplateScreenTitle(GameObject prefabContents, string moduleName, Component newViewComponent, Type viewType)
         {
             string fieldName = $"{char.ToLower(moduleName[0])}{moduleName.Substring(1)}ScreenTitle";
-
-
             Transform titleTransform = prefabContents.transform.Find("Title");
             if (titleTransform == null)
             {
@@ -175,7 +207,6 @@ namespace Editor.ModuleCreator
                 return;
             }
 
-            // Используем рефлексию для назначения поля
             FieldInfo fieldInfo = viewType.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
             if (fieldInfo != null)
             {
@@ -183,40 +214,16 @@ namespace Editor.ModuleCreator
                 Debug.Log($"Assigned '{fieldName}' to TMP_Text component.");
             }
             else
-            {
                 Debug.LogError($"Field '{fieldName}' not found in '{viewType.Name}'.");
-            }
         }
 
         private static void InvokeSetTitle(Component newViewComponent, string moduleName, Type viewType)
         {
-            // Находим метод SetTitle
             MethodInfo setTitleMethod = viewType.GetMethod("SetTitle", BindingFlags.Public | BindingFlags.Instance);
             if (setTitleMethod != null)
-            {
                 setTitleMethod.Invoke(newViewComponent, new object[] { moduleName });
-            }
             else
-            {
                 Debug.LogError($"SetTitle method not found in '{viewType.Name}'.");
-            }
-        }
-
-        private static string GetFolderTypeFromPath(string targetModuleFolderPath)
-        {
-            string[] pathParts = targetModuleFolderPath.Split('/');
-            int modulesIndex = Array.IndexOf(pathParts, "Modules");
-            if (modulesIndex >= 0 && modulesIndex + 1 < pathParts.Length)
-            {
-                string folderType = pathParts[modulesIndex + 1];
-                Debug.Log($"Determined folder type: {folderType}");
-                return folderType;
-            }
-            else
-            {
-                Debug.LogError("Folder type not found in path: " + targetModuleFolderPath);
-                return "";
-            }
         }
 
         private static void SaveAndUnloadPrefab(GameObject prefabContents, string prefabPath, string moduleName)
@@ -225,5 +232,14 @@ namespace Editor.ModuleCreator
             PrefabUtility.SaveAsPrefabAsset(prefabContents, prefabPath);
             PrefabUtility.UnloadPrefabContents(prefabContents);
         }
+
+        private static void LogTitleSet(string moduleName, string viewTypeName) => 
+            Debug.Log($"Set title to '{moduleName}' in {viewTypeName}.");
+
+        private static void LogComponentNotFound(string viewTypeName) => 
+            Debug.LogError($"{viewTypeName} component not found in prefab.");
+
+        private static void LogPrefabCreated(string moduleName) => 
+            Debug.Log($"Prefab for module {moduleName} created successfully.");
     }
 }
