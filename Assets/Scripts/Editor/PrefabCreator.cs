@@ -1,9 +1,7 @@
 using System;
-using System.Linq;
 using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Editor
 {
@@ -11,7 +9,8 @@ namespace Editor
     {
         public static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
         {
-            Debug.Log($"CreatePrefabForModule called with moduleName: {moduleName}, targetModuleFolderPath: {targetModuleFolderPath}");
+            Debug.Log($"CreatePrefabForModule called with moduleName: {moduleName}," +
+                      $" targetModuleFolderPath: {targetModuleFolderPath}");
 
             string targetPrefabPath = CopyTemplatePrefab(moduleName, targetModuleFolderPath);
             if (string.IsNullOrEmpty(targetPrefabPath))
@@ -28,7 +27,7 @@ namespace Editor
                 return;
             }
 
-            ReplaceTemplateScreenViewScript(prefabContents, moduleName);
+            ReplaceTemplateScreenViewScript(prefabContents, moduleName, targetModuleFolderPath);
             SaveAndUnloadPrefab(prefabContents, targetPrefabPath, moduleName);
             Debug.Log($"Prefab for module {moduleName} created successfully.");
         }
@@ -57,7 +56,8 @@ namespace Editor
             return targetPrefabPath;
         }
 
-        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, string moduleName)
+        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents,
+            string moduleName, string targetModuleFolderPath)
         {
             var templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
             if (templateViewComponent == null)
@@ -66,7 +66,14 @@ namespace Editor
                 return;
             }
 
-            string namespaceName = $"Modules.{moduleName}Screen.Scripts";
+            string folderType = GetFolderTypeFromPath(targetModuleFolderPath);
+            if (string.IsNullOrEmpty(folderType))
+            {
+                Debug.LogError("Folder type could not be determined from the target module folder path.");
+                return;
+            }
+
+            string namespaceName = $"Modules.{folderType}.{moduleName}Screen.Scripts";
             string className = $"{namespaceName}.{moduleName}ScreenView";
 
             MonoScript newMonoScript = GetMonoScript(className);
@@ -91,20 +98,39 @@ namespace Editor
             }
         }
 
+        private static string GetFolderTypeFromPath(string targetModuleFolderPath)
+        {
+            string[] pathParts = targetModuleFolderPath.Split('/');
+            int modulesIndex = Array.IndexOf(pathParts, "Modules");
+            if (modulesIndex >= 0 && modulesIndex + 1 < pathParts.Length)
+            {
+                string folderType = pathParts[modulesIndex + 1];
+                Debug.Log($"Determined folder type: {folderType}");
+                return folderType;
+            }
+            else
+            {
+                Debug.LogError("Folder type not found in path: " + targetModuleFolderPath);
+                return "";
+            }
+        }
+
         private static MonoScript GetMonoScript(string className)
         {
-            // Находим все скрипты в проекте
             string[] guids = AssetDatabase.FindAssets("t:MonoScript");
+            Debug.Log($"Searching for MonoScript with class name: {className}");
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
                 MonoScript monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
                 if (monoScript != null && monoScript.GetClass() != null)
                 {
+                    Debug.Log($"Found MonoScript: {monoScript.GetClass().FullName} at {path}");
                     if (monoScript.GetClass().FullName == className)
                         return monoScript;
                 }
             }
+            Debug.LogError($"MonoScript for class '{className}' not found.");
             return null;
         }
 
