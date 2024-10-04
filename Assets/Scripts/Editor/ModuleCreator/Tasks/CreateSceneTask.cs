@@ -1,13 +1,11 @@
-// CreateSceneTask.cs
 using System;
 using System.Linq;
-using System.Reflection;
 using Editor.ModuleCreator.Tasks.Abstract;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 using UnityEditor.SceneManagement;
-using TMPro;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Editor.ModuleCreator.Tasks
@@ -35,17 +33,17 @@ namespace Editor.ModuleCreator.Tasks
 
             GameObject canvas = CreateCanvas();
             InstantiateViewPrefab(canvas);
-            InstantiateInstaller(canvas);
+            InstantiateInstaller(); 
             CreateModuleCamera();
 
-            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), scenePath);
+            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
         }
 
         private void CreateNewScene(string scenePath)
         {
             EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
-            EditorSceneManager.SaveScene(EditorSceneManager.GetActiveScene(), scenePath);
+            EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
         }
 
         private GameObject CreateCanvas()
@@ -60,40 +58,33 @@ namespace Editor.ModuleCreator.Tasks
 
         private void InstantiateViewPrefab(GameObject canvas)
         {
-            string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, "Views", $"{_moduleName}View.prefab");
+            string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, "Views",
+                $"{_moduleName}View.prefab");
             GameObject viewPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(viewPrefabPath);
             if (viewPrefab != null)
             {
                 GameObject viewInstance = PrefabUtility.InstantiatePrefab(viewPrefab) as GameObject;
                 if (viewInstance != null)
-                {
                     viewInstance.transform.SetParent(canvas.transform, false);
-                }
                 else
-                {
                     Debug.LogError($"Failed to instantiate View prefab at {viewPrefabPath}");
-                }
             }
             else
-            {
                 Debug.LogError($"View prefab not found at {viewPrefabPath}");
-            }
         }
 
-        private void InstantiateInstaller(GameObject canvas)
+        private void InstantiateInstaller()
         {
             string installerScriptName = $"{_moduleName}Installer";
-            Type installerType = FindType($"Modules.{GetFolderType(_targetModuleFolderPath)}.{_moduleName}Screen.Scripts.{installerScriptName}");
+            Type installerType = FindType($"Modules.{GetFolderType(_targetModuleFolderPath)}." +
+                                          $"{_moduleName}Screen.Scripts.{installerScriptName}");
             if (installerType != null)
             {
                 GameObject installerObject = new GameObject(installerScriptName);
-                installerObject.transform.SetParent(canvas.transform, false);
                 installerObject.AddComponent(installerType);
             }
             else
-            {
                 Debug.LogError($"Installer type '{installerScriptName}' not found.");
-            }
         }
 
         private void CreateModuleCamera()
@@ -109,9 +100,7 @@ namespace Editor.ModuleCreator.Tasks
             string[] pathParts = path.Split('/');
             int modulesIndex = Array.IndexOf(pathParts, "Modules");
             if (modulesIndex >= 0 && modulesIndex + 1 < pathParts.Length)
-            {
                 return pathParts[modulesIndex + 1];
-            }
             Debug.LogError("Folder type not found in path: " + path);
             return "";
         }
