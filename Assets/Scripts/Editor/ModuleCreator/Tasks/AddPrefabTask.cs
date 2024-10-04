@@ -15,7 +15,7 @@ namespace Editor.ModuleCreator.Tasks
         {
             _moduleName = moduleName;
             _targetModuleFolderPath = targetModuleFolderPath;
-            WaitForCompilation = false;
+            WaitForCompilation = true; 
         }
 
         public override void Execute()

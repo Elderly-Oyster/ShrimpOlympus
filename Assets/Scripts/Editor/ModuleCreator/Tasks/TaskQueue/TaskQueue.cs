@@ -127,9 +127,7 @@ namespace Editor.ModuleCreator.Tasks.TaskQueue
                 }
             }
             else
-            {
                 Debug.Log("No tasks found in SessionState.");
-            }
         }
 
         public static void ClearCompletedTasks()
