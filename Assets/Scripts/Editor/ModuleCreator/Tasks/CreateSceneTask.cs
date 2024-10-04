@@ -22,7 +22,7 @@ namespace Editor.ModuleCreator.Tasks
         {
             _moduleName = moduleName;
             _targetModuleFolderPath = targetModuleFolderPath;
-            WaitForCompilation = false;
+            WaitForCompilation = true;
         }
 
         public override void Execute()
@@ -39,6 +39,7 @@ namespace Editor.ModuleCreator.Tasks
             Camera camera = CreateModuleCamera();
 
             AssignInstallerFields(installerObject, viewInstance, canvas, camera);
+            AssignScreensCanvasFields(canvas, camera);
 
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
@@ -63,7 +64,8 @@ namespace Editor.ModuleCreator.Tasks
 
         private GameObject InstantiateViewPrefab(GameObject canvas)
         {
-            string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, "Views", $"{_moduleName}View.prefab");
+            string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath,
+                "Views", $"{_moduleName}View.prefab");
             GameObject viewPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(viewPrefabPath);
             if (viewPrefab != null)
             {
@@ -113,8 +115,8 @@ namespace Editor.ModuleCreator.Tasks
             return cameraComponent;
         }
 
-        private void AssignInstallerFields(GameObject installerObject,
-            GameObject viewInstance, GameObject canvas, Camera camera)
+        private void AssignInstallerFields(GameObject installerObject, GameObject viewInstance, 
+            GameObject canvas, Camera camera)
         {
             if (installerObject == null) return;
 
@@ -126,7 +128,6 @@ namespace Editor.ModuleCreator.Tasks
             }
 
             Type installerType = installerComponent.GetType();
-
             FieldInfo viewField = installerType.
                 GetField("newModuleScreenView", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo canvasField = installerType.
@@ -149,6 +150,32 @@ namespace Editor.ModuleCreator.Tasks
                 cameraField.SetValue(installerComponent, camera);
             else
                 Debug.LogError("Field 'mainCamera' not found.");
+        }
+
+        private void AssignScreensCanvasFields(GameObject canvas, Camera camera)
+        {
+            ScreensCanvas screensCanvas = canvas.GetComponent<ScreensCanvas>();
+            if (screensCanvas == null)
+            {
+                Debug.LogError("ScreensCanvas component not found on Canvas.");
+                return;
+            }
+
+            Type screensCanvasType = screensCanvas.GetType();
+            FieldInfo scalerField = screensCanvasType.
+                GetField("canvasScaler", BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo cameraField = screensCanvasType.
+                GetField("uiCamera", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (scalerField != null)
+                scalerField.SetValue(screensCanvas, canvas.GetComponent<CanvasScaler>());
+            else
+                Debug.LogError("Field 'canvasScaler' not found in ScreensCanvas.");
+
+            if (cameraField != null)
+                cameraField.SetValue(screensCanvas, camera);
+            else
+                Debug.LogError("Field 'uiCamera' not found in ScreensCanvas.");
         }
 
         private string GetFolderType(string path)
