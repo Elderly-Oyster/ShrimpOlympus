@@ -23,7 +23,7 @@ namespace Editor
             TemplateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen");
             TemplateViewsFolderPath = CombinePaths(TemplateModuleFolderPath, "Views");
             TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, "Scripts");
-            TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateView.prefab");
+            TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateScreenView.prefab");
 
             EnsureSubfoldersExist();
         }

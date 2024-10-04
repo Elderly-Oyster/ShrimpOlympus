@@ -69,7 +69,7 @@ namespace Editor
             targetFolderPath = targetFolderPath.Replace("\\", "/");
             if (!AssetDatabase.IsValidFolder(targetFolderPath))
             {
-                string parentFolder = Path.GetDirectoryName(targetFolderPath).Replace("\\", "/");
+                string parentFolder = Path.GetDirectoryName(targetFolderPath)?.Replace("\\", "/");
                 string newFolderName = Path.GetFileName(targetFolderPath);
                 AssetDatabase.CreateFolder(parentFolder, newFolderName);
             }

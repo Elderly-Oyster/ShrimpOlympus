@@ -2,7 +2,6 @@ using System;
 using Modules.Template.TemplateScreen.Scripts;
 using UnityEditor;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace Editor
 {
@@ -28,7 +27,7 @@ namespace Editor
                 return;
             }
 
-            ReplaceTemplateScreenViewScript(prefabContents, moduleName);
+            ReplaceTemplateScreenViewScript(prefabContents, moduleName, targetModuleFolderPath);
             SaveAndUnloadPrefab(prefabContents, targetPrefabPath, moduleName);
             Debug.Log($"Prefab for module {moduleName} created successfully.");
         }
@@ -57,7 +56,8 @@ namespace Editor
             return targetPrefabPath;
         }
 
-        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents, string moduleName)
+        private static void ReplaceTemplateScreenViewScript(GameObject prefabContents,
+            string moduleName, string targetModuleFolderPath)
         {
             var templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
             if (templateViewComponent == null)
@@ -66,44 +66,72 @@ namespace Editor
                 return;
             }
 
-            string namespaceName = $"Modules.{moduleName}Screen.Scripts";
+            string folderType = GetFolderTypeFromPath(targetModuleFolderPath);
+            if (string.IsNullOrEmpty(folderType))
+            {
+                Debug.LogError("Folder type could not be determined from the target module folder path.");
+                return;
+            }
+
+            string namespaceName = $"Modules.{folderType}.{moduleName}Screen.Scripts";
             string className = $"{namespaceName}.{moduleName}ScreenView";
 
-            Type newComponentType = GetTypeByName(className);
-
-            if (newComponentType == null)
+            MonoScript newMonoScript = GetMonoScript(className);
+            if (newMonoScript == null)
             {
-                Debug.LogError($"Failed to find Type '{className}' after scripts reload.");
+                Debug.LogError($"Failed to find MonoScript for '{className}'. Ensure the script is compiled.");
                 return;
             }
 
-            ReplaceComponent(prefabContents, templateViewComponent, newComponentType);
+            SerializedObject serializedObject = new SerializedObject(templateViewComponent);
+            SerializedProperty scriptProperty = serializedObject.FindProperty("m_Script");
+
+            if (scriptProperty != null)
+            {
+                scriptProperty.objectReferenceValue = newMonoScript;
+                serializedObject.ApplyModifiedProperties();
+                Debug.Log($"Replaced script on TemplateScreenView with {className}.");
+            }
+            else
+            {
+                Debug.LogError("Failed to find 'm_Script' property.");
+            }
         }
 
-        private static Type GetTypeByName(string className)
+        private static string GetFolderTypeFromPath(string targetModuleFolderPath)
         {
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            string[] pathParts = targetModuleFolderPath.Split('/');
+            int modulesIndex = Array.IndexOf(pathParts, "Modules");
+            if (modulesIndex >= 0 && modulesIndex + 1 < pathParts.Length)
             {
-                var type = assembly.GetType(className);
-                if (type != null)
-                    return type;
+                string folderType = pathParts[modulesIndex + 1];
+                Debug.Log($"Determined folder type: {folderType}");
+                return folderType;
             }
+            else
+            {
+                Debug.LogError("Folder type not found in path: " + targetModuleFolderPath);
+                return "";
+            }
+        }
+
+        private static MonoScript GetMonoScript(string className)
+        {
+            string[] guids = AssetDatabase.FindAssets("t:MonoScript");
+            Debug.Log($"Searching for MonoScript with class name: {className}");
+            foreach (string guid in guids)
+            {
+                string path = AssetDatabase.GUIDToAssetPath(guid);
+                MonoScript monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
+                if (monoScript != null && monoScript.GetClass() != null)
+                {
+                    Debug.Log($"Found MonoScript: {monoScript.GetClass().FullName} at {path}");
+                    if (monoScript.GetClass().FullName == className)
+                        return monoScript;
+                }
+            }
+            Debug.LogError($"MonoScript for class '{className}' not found.");
             return null;
-        }
-
-        private static void ReplaceComponent(GameObject gameObject, Component oldComponent, Type newComponentType)
-        {
-            var newComponent = gameObject.AddComponent(newComponentType);
-
-            if (newComponent == null)
-            {
-                Debug.LogError("Failed to add new component.");
-                return;
-            }
-
-            EditorUtility.CopySerialized(oldComponent, newComponent);
-
-            Object.DestroyImmediate(oldComponent, true);
         }
 
         private static void SaveAndUnloadPrefab(GameObject prefabContents, string prefabPath, string moduleName)
