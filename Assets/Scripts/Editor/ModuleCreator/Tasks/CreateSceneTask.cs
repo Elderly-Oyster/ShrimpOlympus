@@ -115,12 +115,12 @@ namespace Editor.ModuleCreator.Tasks
             return cameraComponent;
         }
 
-        private void AssignInstallerFields(GameObject installerObject, GameObject viewInstance, 
+        private void AssignInstallerFields(GameObject installerObject, GameObject viewInstance,
             GameObject canvas, Camera camera)
         {
             if (installerObject == null) return;
 
-            Component installerComponent = installerObject.GetComponent($"{_moduleName}Installer");
+            Component installerComponent = installerObject.GetComponent(installerObject.name);
             if (installerComponent == null)
             {
                 Debug.LogError("Installer component is null.");
@@ -128,15 +128,19 @@ namespace Editor.ModuleCreator.Tasks
             }
 
             Type installerType = installerComponent.GetType();
+
+            string fieldPrefix = char.ToLower(_moduleName[0]) + _moduleName.Substring(1);
+            string viewFieldName = $"{fieldPrefix}ScreenView";
+
             FieldInfo viewField = installerType.
-                GetField("newModuleScreenView", BindingFlags.NonPublic | BindingFlags.Instance);
+                GetField(viewFieldName, BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo canvasField = installerType.
                 GetField("screensCanvas", BindingFlags.NonPublic | BindingFlags.Instance);
             FieldInfo cameraField = installerType.
                 GetField("mainCamera", BindingFlags.NonPublic | BindingFlags.Instance);
 
             if (viewField != null && viewInstance != null)
-                viewField.SetValue(installerComponent,
+                viewField.SetValue(installerComponent, 
                     viewInstance.GetComponent($"{_moduleName}ScreenView"));
             else
                 Debug.LogError("Field 'newModuleScreenView' not found or viewInstance is null.");
