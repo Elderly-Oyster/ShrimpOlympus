@@ -118,15 +118,7 @@ namespace Editor.ModuleCreator.Tasks
         private void AssignInstallerFields(GameObject installerObject, GameObject viewInstance,
             GameObject canvas, Camera camera)
         {
-            if (installerObject == null) return;
-
-            Component installerComponent = installerObject.GetComponent(installerObject.name);
-            if (installerComponent == null)
-            {
-                Debug.LogError("Installer component is null.");
-                return;
-            }
-
+            Component installerComponent = GetInstallerComponent(installerObject);
             Type installerType = installerComponent.GetType();
 
             string fieldPrefix = char.ToLower(_moduleName[0]) + _moduleName.Substring(1);
@@ -154,6 +146,21 @@ namespace Editor.ModuleCreator.Tasks
                 cameraField.SetValue(installerComponent, camera);
             else
                 Debug.LogError("Field 'mainCamera' not found.");
+        }
+
+        private Component GetInstallerComponent(GameObject installerObject)
+        {
+            if (installerObject == null) 
+                return null;
+
+            Component installerComponent = installerObject.GetComponent(installerObject.name);
+            if (installerComponent == null)
+            {
+                Debug.LogError("Installer component is null.");
+                return null;
+            }
+
+            return installerComponent;
         }
 
         private void AssignScreensCanvasFields(GameObject canvas, Camera camera)

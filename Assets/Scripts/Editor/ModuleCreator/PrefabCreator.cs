@@ -11,12 +11,13 @@ namespace Editor.ModuleCreator
     {
         public static void CreatePrefabForModule(string moduleName, string targetModuleFolderPath)
         {
-            LogStart(moduleName, targetModuleFolderPath);
             string targetPrefabPath = CopyTemplatePrefab(moduleName, targetModuleFolderPath);
-            if (IsInvalidPath(targetPrefabPath)) return;
+            if (IsInvalidPath(targetPrefabPath))
+                return;
 
             GameObject prefabContents = LoadPrefab(targetPrefabPath);
-            if (prefabContents == null) return;
+            if (prefabContents == null)
+                return;
 
             ReplaceTemplateScreenViewScript(prefabContents, moduleName, targetModuleFolderPath);
 
@@ -48,23 +49,14 @@ namespace Editor.ModuleCreator
             LogPrefabCreated(moduleName);
         }
 
-        private static void LogStart(string moduleName, string targetModuleFolderPath) => 
-            Debug.Log($"CreatePrefabForModule called with moduleName: {moduleName}," +
-                      $" targetModuleFolderPath: {targetModuleFolderPath}");
-
         private static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
-            Debug.Log($"Module name: {moduleName}");
-            Debug.Log($"Target module folder path: {targetModuleFolderPath}");
-
             string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
 
             string templateViewPrefabPath = PathManager.TemplateViewPrefabPath;
             string targetPrefabPath = PathManager.CombinePaths(targetPrefabFolderPath, $"{moduleName}View.prefab");
-
-            Debug.Log($"Copying prefab from '{templateViewPrefabPath}' to '{targetPrefabPath}'");
-
+            
             bool copyResult = AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
             if (!copyResult)
             {
@@ -177,10 +169,7 @@ namespace Editor.ModuleCreator
                 Debug.LogError("Failed to find 'm_Script' property.");
         }
 
-        private static Type GetViewType(MonoScript monoScript)
-        {
-            return monoScript.GetClass();
-        }
+        private static Type GetViewType(MonoScript monoScript) => monoScript.GetClass();
 
         private static Component GetViewComponent(GameObject prefabContents, Type viewType)
         {
