@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEngine;
 
 namespace Editor.ModuleCreator
 {
@@ -47,6 +48,16 @@ namespace Editor.ModuleCreator
                 string newFolderName = System.IO.Path.GetFileName(folderPath);
                 AssetDatabase.CreateFolder(parentFolder, newFolderName);
             }
+        }
+
+        public static string GetFolderType(string path)
+        {
+            string[] pathParts = path.Split('/');
+            int modulesIndex = System.Array.IndexOf(pathParts, "Modules");
+            if (modulesIndex >= 0 && modulesIndex + 1 < pathParts.Length)
+                return pathParts[modulesIndex + 1];
+            Debug.LogError("Folder type not found in path: " + path);
+            return "";
         }
     }
 }
