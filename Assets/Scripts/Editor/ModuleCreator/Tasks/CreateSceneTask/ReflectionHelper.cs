@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using UnityEngine;
 
-namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.CreateSceneTask
+namespace Editor.ModuleCreator.Tasks.CreateSceneTask
 {
     public static class ReflectionHelper
     {

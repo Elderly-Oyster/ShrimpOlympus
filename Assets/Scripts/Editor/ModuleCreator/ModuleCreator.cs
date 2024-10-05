@@ -1,7 +1,7 @@
-using Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddPrefabTask;
-using Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddScriptsTask;
-using Editor.ModuleCreator.ModuleCreatorTasks.Tasks.CreateSceneTask;
-using Editor.ModuleCreator.ModuleCreatorTasks.TaskQueue;
+using Editor.ModuleCreator.Tasks;
+using Editor.ModuleCreator.Tasks.AddPrefabTask;
+using Editor.ModuleCreator.Tasks.AddScriptsTask;
+using Editor.ModuleCreator.Tasks.CreateSceneTask;
 using UnityEditor;
 using UnityEngine;
 

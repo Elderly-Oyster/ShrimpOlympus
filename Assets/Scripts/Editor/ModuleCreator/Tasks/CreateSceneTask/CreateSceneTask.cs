@@ -1,7 +1,7 @@
 using System;
 using Core.Scripts.Views;
-using Editor.ModuleCreator.ModuleCreatorTasks.Abstract;
-using Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddScriptsTask;
+using Editor.ModuleCreator.Base;
+using Editor.ModuleCreator.Tasks.AddScriptsTask;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.CreateSceneTask
+namespace Editor.ModuleCreator.Tasks.CreateSceneTask
 {
     [Serializable]
     public class CreateSceneTask : Task

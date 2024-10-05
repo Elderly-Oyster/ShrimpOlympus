@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.CreateSceneTask
+namespace Editor.ModuleCreator.Tasks.CreateSceneTask
 {
     public static class GameObjectFactory
     {

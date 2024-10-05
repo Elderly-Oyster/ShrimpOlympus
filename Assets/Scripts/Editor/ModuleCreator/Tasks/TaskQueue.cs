@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Editor.ModuleCreator.ModuleCreatorTasks.Abstract;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.ModuleCreator.ModuleCreatorTasks.TaskQueue
+namespace Editor.ModuleCreator.Tasks
 {
     [InitializeOnLoad]
     public static class TaskQueue

@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using Editor.ModuleCreator.Base;
 using UnityEditor;
 using UnityEngine;
 
-namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddScriptsTask
+namespace Editor.ModuleCreator.Tasks.AddScriptsTask
 {
     public static class ModuleGenerator
     {
