@@ -2,8 +2,8 @@
     "name": "DynamicBackground",
     "rootNamespace": "",
     "references": [
-        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:46a522227ca1f23498bc545e8da31f76"
+        "VContainer",
+        "Core"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
