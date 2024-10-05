@@ -1,11 +1,12 @@
 using System;
 using System.Reflection;
+using Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddScriptsTask;
 using Modules.Template.TemplateScreen.Scripts;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
-using TMPro;
 
-namespace Editor.ModuleCreator
+namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddPrefabTask
 {
     public static class PrefabCreator
     {

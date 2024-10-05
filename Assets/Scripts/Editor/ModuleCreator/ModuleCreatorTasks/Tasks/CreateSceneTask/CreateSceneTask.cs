@@ -2,15 +2,16 @@ using System;
 using System.Linq;
 using System.Reflection;
 using Core.Scripts.Views;
-using Editor.ModuleCreator.Tasks.Abstract;
+using Editor.ModuleCreator.ModuleCreatorTasks.Abstract;
+using Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddScriptsTask;
 using Newtonsoft.Json;
 using UnityEditor;
-using UnityEngine;
 using UnityEditor.SceneManagement;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace Editor.ModuleCreator.Tasks
+namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.CreateSceneTask
 {
     [Serializable]
     public class CreateSceneTask : Task

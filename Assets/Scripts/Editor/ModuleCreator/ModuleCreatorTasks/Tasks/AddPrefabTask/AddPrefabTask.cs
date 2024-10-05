@@ -1,9 +1,9 @@
 using System;
-using Editor.ModuleCreator.Tasks.Abstract;
+using Editor.ModuleCreator.ModuleCreatorTasks.Abstract;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace Editor.ModuleCreator.Tasks
+namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddPrefabTask
 {
     [Serializable]
     public class AddPrefabTask : Task
