@@ -1,4 +1,5 @@
 using Core.Scripts.EventMediatorSystem;
+using Core.Scripts.Popup.Base;
 using Core.Scripts.Popup.Types.FirstPopup.Scripts;
 using Core.Scripts.Popup.Types.SecondPopup.Scripts;
 using Core.Scripts.Popup.Types.ThirdPopup.Scripts;
@@ -8,7 +9,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Core.Scripts.Popup.Base
+namespace Modules.Additional.PopupsManager.Scripts
 {
     public class PopupsManagerInstaller : SceneInstaller
     {
@@ -16,6 +17,7 @@ namespace Core.Scripts.Popup.Base
         [SerializeField] private FirstPopup firstPopupPrefab;
         [SerializeField] private SecondPopup secondPopup;
         [SerializeField] private ThirdPopup thirdPopup;
+        
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterComponent(popupCanvas);
