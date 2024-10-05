@@ -1,6 +1,7 @@
 using System;
 using Editor.ModuleCreator.ModuleCreatorTasks.Abstract;
 using Newtonsoft.Json;
+using UnityEditor;
 using UnityEngine;
 
 namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddPrefabTask
@@ -22,7 +23,48 @@ namespace Editor.ModuleCreator.ModuleCreatorTasks.Tasks.AddPrefabTask
         {
             Debug.Log($"Executing AddPrefabTask for module: {_moduleName}");
             Debug.Log($"Target Module Folder Path: {_targetModuleFolderPath}");
-            PrefabCreator.CreatePrefabForModule(_moduleName, _targetModuleFolderPath);
+            
+            string targetPrefabPath = PrefabHelper.CopyTemplatePrefab(_moduleName, _targetModuleFolderPath);
+            if (string.IsNullOrEmpty(targetPrefabPath))
+                return;
+
+            GameObject prefabContents = PrefabHelper.LoadPrefab(targetPrefabPath);
+            if (prefabContents == null)
+                return;
+
+            string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
+            if (string.IsNullOrEmpty(folderType))
+                return;
+
+            PrefabHelper.ReplaceScriptProperty(prefabContents, _moduleName, folderType);
+
+            MonoScript newMonoScript = PrefabHelper.
+                FindMonoScript($"Modules.{folderType}.{_moduleName}Screen.Scripts.{_moduleName}ScreenView");
+            if (newMonoScript == null)
+            {
+                PrefabUtility.UnloadPrefabContents(prefabContents);
+                return;
+            }
+
+            Type newViewType = PrefabHelper.GetViewType(newMonoScript);
+            if (newViewType == null)
+            {
+                PrefabUtility.UnloadPrefabContents(prefabContents);
+                return;
+            }
+
+            Component newViewComponent = PrefabHelper.GetViewComponent(prefabContents, newViewType);
+            if (newViewComponent != null)
+            {
+                PrefabHelper.AssignTemplateScreenTitle(prefabContents, _moduleName, newViewComponent, newViewType);
+                PrefabHelper.InvokeSetTitle(newViewComponent, _moduleName, newViewType);
+                PrefabHelper.LogTitleSet(_moduleName, newViewType.Name);
+            }
+            else
+                PrefabHelper.LogComponentNotFound(newViewType.Name);
+
+            PrefabHelper.SaveAndUnloadPrefab(prefabContents, targetPrefabPath, _moduleName);
+            PrefabHelper.LogPrefabCreated(_moduleName);
         }
     }
 }
