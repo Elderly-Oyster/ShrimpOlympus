@@ -13,7 +13,7 @@ namespace Editor.ModuleCreator.Base
         public static string TemplateViewsFolderPath { get; private set; }
         public static string TemplateViewPrefabPath { get; private set; }
 
-        private const string BasePath = "Assets/Scripts/Modules";
+        private const string BasePath = "Assets/Modules";
 
         public static void InitializePaths()
         {
