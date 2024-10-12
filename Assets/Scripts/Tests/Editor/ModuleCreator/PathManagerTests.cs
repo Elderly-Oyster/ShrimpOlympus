@@ -1,0 +1,35 @@
+﻿using Editor.ModuleCreator.Base;
+using NUnit.Framework;
+
+namespace Tests.Editor.ModuleCreator
+{
+    public class PathManagerTests
+    {
+        [SetUp]
+        public void Setup() => PathManager.InitializePaths();
+
+        [Test]
+        public void InitializePaths_ShouldSetCorrectPaths()
+        {
+            Assert.AreEqual("Assets/Modules/Additional", PathManager.AdditionalFolderPath);
+            Assert.AreEqual("Assets/Modules/Base", PathManager.BaseFolderPath);
+            Assert.AreEqual("Assets/Modules/Test", PathManager.TestFolderPath);
+            Assert.AreEqual("Assets/Modules/Template/TemplateScreen", 
+                PathManager.TemplateModuleFolderPath);
+            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Views",
+                PathManager.TemplateViewsFolderPath);
+            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Scripts",
+                PathManager.TemplateScriptsFolderPath);
+            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Views/TemplateScreenView.prefab",
+                PathManager.TemplateViewPrefabPath);
+        }
+
+        [Test]
+        public void GetFolderType_ShouldReturnCorrectFolderType()
+        {
+            string path = "Assets/Modules/Base/SomeModule";
+            string folderType = PathManager.GetFolderType(path);
+            Assert.AreEqual("Base", folderType);
+        }
+    }
+}
