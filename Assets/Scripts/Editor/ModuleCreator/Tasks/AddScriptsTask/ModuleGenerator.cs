@@ -39,8 +39,6 @@ namespace Editor.ModuleCreator.Tasks.AddScriptsTask
                 createPresenter,
                 createView,
                 createModel);
-
-            Debug.Log($"Module {moduleName} scripts created successfully.");
         }
 
         public static string GetTargetModuleFolderPath(string moduleName, string selectedFolder)

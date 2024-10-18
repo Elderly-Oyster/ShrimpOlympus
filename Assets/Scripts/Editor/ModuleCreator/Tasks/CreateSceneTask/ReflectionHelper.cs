@@ -8,7 +8,7 @@ namespace Editor.ModuleCreator.Tasks.CreateSceneTask
 {
     public static class ReflectionHelper
     {
-        private static readonly Dictionary<string, Type> TypeCache = new Dictionary<string, Type>();
+        private static readonly Dictionary<string, Type> TypeCache = new();
 
         public static Type FindType(string fullName)
         {
@@ -35,7 +35,8 @@ namespace Editor.ModuleCreator.Tasks.CreateSceneTask
                 return;
             }
 
-            FieldInfo field = obj.GetType().GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo field = obj.GetType().GetField(fieldName,
+                BindingFlags.NonPublic | BindingFlags.Instance);
             if (field != null)
                 field.SetValue(obj, value);
             else

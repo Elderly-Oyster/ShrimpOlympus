@@ -21,9 +21,6 @@ namespace Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public override void Execute()
         {
-            Debug.Log($"Executing AddPrefabTask for module: {_moduleName}");
-            Debug.Log($"Target Module Folder Path: {_targetModuleFolderPath}");
-            
             string targetPrefabPath = PrefabHelper.CopyTemplatePrefab(_moduleName, _targetModuleFolderPath);
             if (string.IsNullOrEmpty(targetPrefabPath))
                 return;

@@ -55,8 +55,6 @@ namespace Tests.Editor.ModuleCreator
             await TaskQueue.UniTaskCompletionSource.Task;
 
             // assert
-            //AssetDatabase.Refresh();
-
             Assert.IsTrue(File.Exists(TrackingFilePath), "Tracking file was not created.");
 
             string json = await File.ReadAllTextAsync(TrackingFilePath);
@@ -73,5 +71,33 @@ namespace Tests.Editor.ModuleCreator
             Assert.IsTrue(AssetDatabase.IsValidFolder(targetModuleFolderPath),
                 "Module folder was not created.");
         });
+
+        /*[UnityTest]
+        public IEnumerator DeleteLastModule_ShouldDeleteModuleFolder() => UniTask.ToCoroutine(async () =>
+        {
+            // arrange 
+            var moduleCreatorWindow = ScriptableObject.CreateInstance<ModuleCreatorWindow>();
+            moduleCreatorWindow.ShowUtility();
+            moduleCreatorWindow.CreateModule();
+
+            await TaskQueue.UniTaskCompletionSource.Task;
+
+            string json = await File.ReadAllTextAsync(TrackingFilePath);
+            List<string> createdModules = JsonConvert.DeserializeObject<List<string>>(json);
+            string targetModuleFolderPath = createdModules.Find(path => path.Contains(ModuleName));
+
+            // act
+            moduleCreatorWindow.DeleteLastModule();
+            AssetDatabase.Refresh();
+
+            // assert
+            Assert.IsFalse(AssetDatabase.IsValidFolder(targetModuleFolderPath),
+                "Module folder was not deleted.");
+
+            string updatedJson = await File.ReadAllTextAsync(TrackingFilePath);
+            List<string> updatedCreatedModules = JsonConvert.DeserializeObject<List<string>>(updatedJson);
+            Assert.IsFalse(updatedCreatedModules.Contains(targetModuleFolderPath),
+                "Module path still exists in tracking file.");
+        });*/
     }
 }

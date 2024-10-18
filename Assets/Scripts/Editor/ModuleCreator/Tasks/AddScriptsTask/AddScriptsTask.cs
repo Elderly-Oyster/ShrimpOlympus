@@ -32,7 +32,6 @@ namespace Editor.ModuleCreator.Tasks.AddScriptsTask
 
         public override void Execute()
         {
-            Debug.Log($"Executing AddScriptsTask for module: {_moduleName}");
             PathManager.InitializePaths();
 
             if (TemplateValidator.AreTemplatesAvailable(_createAsmdef))

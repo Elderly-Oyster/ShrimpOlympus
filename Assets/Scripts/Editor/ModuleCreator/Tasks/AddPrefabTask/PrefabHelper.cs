@@ -76,7 +76,6 @@ namespace Editor.ModuleCreator.Tasks.AddPrefabTask
         public static MonoScript FindMonoScript(string fullClassName)
         {
             string[] guids = AssetDatabase.FindAssets("t:MonoScript");
-            Debug.Log($"Searching for MonoScript with class name: {fullClassName}");
             foreach (string guid in guids)
             {
                 string path = AssetDatabase.GUIDToAssetPath(guid);
@@ -84,10 +83,7 @@ namespace Editor.ModuleCreator.Tasks.AddPrefabTask
                 if (monoScript != null && monoScript.GetClass() != null)
                 {
                     if (monoScript.GetClass().FullName == fullClassName)
-                    {
-                        Debug.Log($"Found MonoScript: {monoScript.GetClass().FullName} at {path}");
                         return monoScript;
-                    }
                 }
             }
             Debug.LogError($"MonoScript for class '{fullClassName}' not found.");
@@ -125,10 +121,7 @@ namespace Editor.ModuleCreator.Tasks.AddPrefabTask
             FieldInfo fieldInfo = viewType.GetField(fieldName,
                 BindingFlags.NonPublic | BindingFlags.Instance);
             if (fieldInfo != null)
-            {
                 fieldInfo.SetValue(newViewComponent, titleText);
-                Debug.Log($"Assigned '{fieldName}' to TMP_Text component.");
-            }
             else
                 Debug.LogError($"Field '{fieldName}' not found in '{viewType.Name}'.");
         }

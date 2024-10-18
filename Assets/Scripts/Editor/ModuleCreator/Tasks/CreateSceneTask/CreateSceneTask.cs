@@ -25,7 +25,6 @@ namespace Editor.ModuleCreator.Tasks.CreateSceneTask
 
         public override void Execute()
         {
-            Debug.Log($"Executing CreateSceneTask for module: {_moduleName}");
             string sceneFolderPath = PathManager.CombinePaths(_targetModuleFolderPath, "Scene");
             ModuleGenerator.EnsureTargetFolderExists(sceneFolderPath);
             string scenePath = PathManager.CombinePaths(sceneFolderPath, $"{_moduleName}.unity");

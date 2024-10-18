@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -10,35 +11,52 @@ namespace Editor.ModuleCreator.Tasks
     [InitializeOnLoad]
     public static class TaskQueue
     {
+        public static UniTaskCompletionSource UniTaskCompletionSource;
         private static readonly Queue<Task> Tasks = new();
         private static bool _isExecuting;
+
 
         static TaskQueue()
         {
             LoadState();
             EditorApplication.update += OnEditorUpdate;
             AssemblyReloadEvents.afterAssemblyReload += OnAfterAssemblyReload;
+            Init();
+            AwaitTaskCompleted();
+        }
+
+        public static void Init() => UniTaskCompletionSource = new UniTaskCompletionSource();
+
+
+        private static void AwaitTaskCompleted()
+        {
+            UniTask.ToCoroutine(async () =>
+            {
+                await UniTaskCompletionSource.Task;
+                Debug.Log("Tasks Completed");
+            });
         }
 
         public static void EnqueueTask(Task task)
         {
-            Debug.Log("EnqueueTask: " + task.GetType().Name);
             Tasks.Enqueue(task);
             SaveState();
             ExecuteNextTask();
         }
 
+        public static void OnEditorUpdate()
+        {
+            if (!_isExecuting && Tasks.Count > 0)
+                ExecuteNextTask();
+        }
+
         private static void ExecuteNextTask()
         {
             if (_isExecuting || Tasks.Count == 0)
-            {
-                Debug.Log("No tasks to execute or already executing.");
                 return;
-            }
 
             _isExecuting = true;
             var task = Tasks.Peek();
-            Debug.Log("Executing task: " + task.GetType().Name);
             task.Execute();
             HandleTaskCompletion(task);
         }
@@ -48,13 +66,9 @@ namespace Editor.ModuleCreator.Tasks
             if (task.WaitForCompilation)
             {
                 if (EditorApplication.isCompiling)
-                {
-                    Debug.Log("Waiting for compilation...");
                     EditorApplication.update += WaitForCompilation;
-                }
                 else
                 {
-                    Debug.Log("No compilation detected after task execution.");
                     CompleteTask();
                     ExecuteNextTask();
                 }
@@ -70,7 +84,6 @@ namespace Editor.ModuleCreator.Tasks
         {
             if (!EditorApplication.isCompiling)
             {
-                Debug.Log("Compilation finished.");
                 EditorApplication.update -= WaitForCompilation;
                 CompleteTask();
                 ExecuteNextTask();
@@ -83,12 +96,8 @@ namespace Editor.ModuleCreator.Tasks
             _isExecuting = false;
             SaveState();
             ClearCompletedTasks();
-        }
-
-        private static void OnEditorUpdate()
-        {
-            if (!_isExecuting && Tasks.Count > 0)
-                ExecuteNextTask();
+            if (Tasks.Count == 0) 
+                UniTaskCompletionSource.TrySetResult();
         }
 
         private static void OnAfterAssemblyReload()
@@ -101,14 +110,12 @@ namespace Editor.ModuleCreator.Tasks
         {
             var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
             string tasksJson = JsonConvert.SerializeObject(Tasks.ToList(), settings);
-            Debug.Log("Saving tasks: " + tasksJson);
             SessionState.SetString("TaskQueueState", tasksJson);
         }
 
         private static void LoadState()
         {
             string tasksJson = SessionState.GetString("TaskQueueState", "");
-            Debug.Log("Loading tasks: " + tasksJson);
             if (!string.IsNullOrEmpty(tasksJson))
             {
                 var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
@@ -125,8 +132,6 @@ namespace Editor.ModuleCreator.Tasks
                     Debug.LogError("Error deserializing tasks: " + ex.Message);
                 }
             }
-            else
-                Debug.Log("No tasks found in SessionState.");
         }
 
         public static void ClearCompletedTasks()
@@ -135,7 +140,6 @@ namespace Editor.ModuleCreator.Tasks
             {
                 SessionState.EraseString("TaskQueueState");
                 _isExecuting = false;
-                Debug.Log("All tasks completed. TaskQueue and SessionState cleared.");
             }
         }
     }
