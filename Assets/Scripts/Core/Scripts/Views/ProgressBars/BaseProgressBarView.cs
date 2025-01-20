@@ -11,7 +11,7 @@ namespace Core.Scripts.Views.ProgressBars
 
         public bool canAnimate;
         public bool canAnimateToZero;
-        private float _currentRatio;
+        private float _currentRatio; //it is initialized to 0 by default 
 
         public async UniTask Animate(float duration, float value = 1f)
         {

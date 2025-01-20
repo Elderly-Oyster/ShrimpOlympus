@@ -8,6 +8,7 @@ using VContainer.Unity;
 
 namespace Root.Scripts
 {
+    //RootLifeTimeScope where all the dependencies needed for the whole project are registered
     public class RootLifetimeScope : LifetimeScope
     {
         protected override void Configure(IContainerBuilder builder)

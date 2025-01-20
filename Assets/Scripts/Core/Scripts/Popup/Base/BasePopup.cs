@@ -61,7 +61,7 @@ namespace Core.Scripts.Popup.Base
 
         public virtual async UniTask Close()
         {
-            if(_isClosed)
+            if(_isClosed)  // if a popup is already closed, return
                 return;
             try
             {

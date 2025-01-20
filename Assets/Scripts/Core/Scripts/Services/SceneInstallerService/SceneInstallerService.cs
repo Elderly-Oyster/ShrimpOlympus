@@ -37,6 +37,7 @@ namespace Core.Scripts.Services.SceneInstallerService
             {
                 if (scenes[i].isLoaded)
                 {
+                    // Root GameObjects are the top-level objects in the scene hierarchy (direct children of the scene itself).
                     GameObject[] rootObjects = scenes[i].GetRootGameObjects();
                     foreach (GameObject rootObject in rootObjects)
                     {

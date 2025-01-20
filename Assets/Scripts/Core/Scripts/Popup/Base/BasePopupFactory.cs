@@ -20,7 +20,7 @@ namespace Core.Scripts.Popup.Base
         public virtual T Create(Transform parentTransform)
         {
             var popupInstance = Object.Instantiate(_basePopupFactoryPrefab, parentTransform);
-            _resolver.Inject(popupInstance);
+            _resolver.Inject(popupInstance);  // injects all the dependencies into the popup
             popupInstance.gameObject.SetActive(false);
             return popupInstance;
         }

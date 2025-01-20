@@ -25,8 +25,10 @@ namespace Core.Scripts.Views.UIViews.Animations
         public override async UniTask Show()
         {
             transform.localScale = Vector3.zero;
-
+            
             Sequence = DOTween.Sequence();
+            // plays scaling(firstly makes the object slightly bigger than it should be) and fading animations together,
+            // after that scales it to the needed size 
             Sequence
                 .Append(transform.DOScale(scaleUpFactor, scaleDuration / 2))
                 .Join(canvasGroup.DOFade(1, fadeDuration))

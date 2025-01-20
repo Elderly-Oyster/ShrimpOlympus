@@ -8,7 +8,7 @@ namespace Core.Scripts.Services.LongInitializationServices
         private bool _isInitialized;
         protected static int DelayTime = 1;
 
-        public Task Init()
+        public Task Init()   //why task and not UniTask?
         {
             if (!_isInitialized)
                 return InitializeAsync();

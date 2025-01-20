@@ -1,5 +1,6 @@
 ﻿namespace Core.Scripts.Implementation
 {
+    // factory interfaces from zenject with a tone of overloads
     public interface IFactory { }
 
     public interface IFactory<out TValue> : IFactory
