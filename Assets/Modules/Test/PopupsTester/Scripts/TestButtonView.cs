@@ -1,4 +1,4 @@
-using Core.Scripts.Views.UIViews.Animations;
+using CodeBase.Core.UI.Views.Animations;
 using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;

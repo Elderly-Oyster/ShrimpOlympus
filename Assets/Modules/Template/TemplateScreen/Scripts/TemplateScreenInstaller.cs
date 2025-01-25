@@ -1,5 +1,5 @@
-using Core.Scripts.Services.SceneInstallerService;
-using Core.Scripts.Views;
+using CodeBase.Core.Root;
+using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -9,7 +9,7 @@ namespace Modules.Template.TemplateScreen.Scripts
     public class TemplateInstaller : SceneInstaller
     {
         [SerializeField] private TemplateScreenView templateScreenView;
-        [SerializeField] private ScreensCanvas screensCanvas;
+        [SerializeField] private IScreensCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)

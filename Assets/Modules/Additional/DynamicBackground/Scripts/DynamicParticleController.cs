@@ -20,11 +20,9 @@ namespace Modules.Additional.DynamicBackground.Scripts
 
         private void EditorUpdate()
         {
-            if (parameter != _previousParameter)
-            {
-                UpdateParticleSystem(parameter);
-                _previousParameter = parameter;
-            }
+            if (Mathf.Approximately(parameter, _previousParameter)) return;
+            UpdateParticleSystem(parameter);
+            _previousParameter = parameter;
         }
 
         private void UpdateParticleSystem(float param)

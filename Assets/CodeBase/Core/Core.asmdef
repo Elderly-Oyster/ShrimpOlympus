@@ -1,0 +1,21 @@
+{
+    "name": "Core",
+    "rootNamespace": "",
+    "references": [
+        "VContainer",
+        "UniTask",
+        "R3.Unity",
+        "DOTween.Modules",
+        "UniTask.DOTween",
+        "Mappings"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

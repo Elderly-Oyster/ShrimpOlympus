@@ -1,5 +1,5 @@
-﻿using Core.Scripts.MVP;
-using Core.Scripts.Views.Buttons;
+﻿using CodeBase.Core.Modules;
+using CodeBase.Core.UI.Buttons;
 using R3;
 using TMPro;
 using UnityEngine;

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Core.Scripts.MVP;
+using CodeBase.Core.Modules;
 using R3;
 using UnityEngine;
 

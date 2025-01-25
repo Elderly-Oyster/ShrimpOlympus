@@ -8,7 +8,8 @@
         "Core",
         "Unity.TextMeshPro",
         "DOTween.Modules",
-        "UniTask.DOTween"
+        "UniTask.DOTween",
+        "Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

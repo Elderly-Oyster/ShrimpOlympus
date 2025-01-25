@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Core.Scripts;
-using Core.Scripts.Implementation;
-using Core.Scripts.MVP;
+using CodeBase.Core.Modules;
+using CodeBase.Core.Root;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground.Scripts;
 using R3;

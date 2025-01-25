@@ -1,6 +1,6 @@
 using System;
-using Core.Scripts.MVP;
-using Core.Scripts.Popup.Base;
+using CodeBase.Core.Modules;
+using CodeBase.Core.Systems.PopupHub;
 using VContainer;
 
 namespace Modules.Test.PopupsTester.Scripts
@@ -10,7 +10,7 @@ namespace Modules.Test.PopupsTester.Scripts
         private readonly Func<Action, TestButtonView> _buttonFactory;
         private readonly Action[] _popupActions;
 
-        [Inject] public PopupsTesterSceneModel(PopupHub popupHub)
+        [Inject] public PopupsTesterSceneModel(IPopupHub popupHub)
         {
             var popupHub1 = popupHub;
 

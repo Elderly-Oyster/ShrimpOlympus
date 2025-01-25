@@ -1,0 +1,24 @@
+{
+    "name": "TicTacScreen",
+    "rootNamespace": "",
+    "references": [
+        "UniTask",
+        "VContainer",
+        "R3.Unity",
+        "Core",
+        "Unity.TextMeshPro",
+        "DOTween.Modules",
+        "UniTask.DOTween",
+        "Services",
+        "Implementation"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

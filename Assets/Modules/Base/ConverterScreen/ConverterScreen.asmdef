@@ -9,7 +9,9 @@
         "Unity.TextMeshPro",
         "DOTween.Modules",
         "UniTask.DOTween",
-        "DynamicBackground"
+        "DynamicBackground",
+        "Implementation",
+        "Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

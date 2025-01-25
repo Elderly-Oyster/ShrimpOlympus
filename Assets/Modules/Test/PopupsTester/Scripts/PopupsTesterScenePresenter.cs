@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Core.Scripts.EventMediatorSystem;
-using Core.Scripts.MVP;
+using CodeBase.Core.Modules;
+using CodeBase.Core.Systems.PopupHub;
+using CodeBase.Services;
 using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
@@ -60,7 +61,7 @@ namespace Modules.Test.PopupsTester.Scripts
         }
 
         private static void OnPopupOpened(PopupOpenedEvent popupEvent) => 
-            Debug.Log($"Open Popup: {popupEvent.PopupName}");
+            Debug.Log($"Open PopupHub: {popupEvent.PopupName}");
 
         private void Initialize() => _popupsTesterSceneView.GetPopupsButtons(_buttons);
 

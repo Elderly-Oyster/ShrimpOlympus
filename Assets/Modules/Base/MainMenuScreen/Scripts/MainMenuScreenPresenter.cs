@@ -1,7 +1,6 @@
-﻿using Core.Scripts;
-using Core.Scripts.Implementation;
-using Core.Scripts.MVP;
-using Core.Scripts.Popup.Base;
+﻿using CodeBase.Core.Modules;
+using CodeBase.Core.Root;
+using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using R3;
 
@@ -13,7 +12,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenModel _mainMenuScreenModel;
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly MainMenuScreenView _mainMenuScreenView;
-        private readonly PopupHub _popupHub;
+        private readonly IPopupHub _popupHub;
 
         private readonly ReactiveCommand<Unit> _secondPopupCommand = new();
         private readonly ReactiveCommand<Unit> _firstPopupCommand =  new();
@@ -21,7 +20,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<Unit> _ticTacCommand =  new();
 
         
-        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, PopupHub popupHub,
+        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
             MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView)
         {
             _completionSource = new UniTaskCompletionSource<bool>();

@@ -1,6 +1,6 @@
 ﻿using System.Threading;
-using Core.Scripts.MVP;
-using Core.Scripts.Views.UIViews.Animations;
+using CodeBase.Core.Modules;
+using CodeBase.Core.UI.Views.Animations;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;

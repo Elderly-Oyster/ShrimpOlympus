@@ -1,5 +1,5 @@
 using System;
-using Core.Scripts.Services.SceneInstallerService;
+using CodeBase.Services.SceneInstallerService;
 using R3;
 using UnityEngine;
 using VContainer;

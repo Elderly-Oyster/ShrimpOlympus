@@ -50,7 +50,7 @@ namespace TMPro.Examples
         {
             if (SpawnType == 0)
             {
-                // TextMesh Pro Implementation
+                // TextMesh Pro Root
                 m_textMeshPro = m_floatingText.AddComponent<TextMeshPro>();
                 m_textMeshPro.rectTransform.sizeDelta = new Vector2(3, 3);
 

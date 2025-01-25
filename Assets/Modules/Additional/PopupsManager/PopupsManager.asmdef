@@ -3,7 +3,9 @@
     "rootNamespace": "",
     "references": [
         "VContainer",
-        "Core"
+        "Core",
+        "Services",
+        "Implementation"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

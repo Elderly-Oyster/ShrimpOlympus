@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Core.Scripts.MVP;
-using Core.Scripts.Services.LongInitializationServices;
+using CodeBase.Core.Modules;
+using CodeBase.Services.LongInitializationServices;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
 

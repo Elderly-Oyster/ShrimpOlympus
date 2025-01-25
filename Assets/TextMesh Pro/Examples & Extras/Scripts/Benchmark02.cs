@@ -23,7 +23,7 @@ namespace TMPro.Examples
 
                 if (SpawnType == 0)
                 {
-                    // TextMesh Pro Implementation
+                    // TextMesh Pro Root
                     GameObject go = new GameObject();
                     go.transform.position = new Vector3(Random.Range(-95f, 95f), 0.25f, Random.Range(-95f, 95f));
 
@@ -47,7 +47,7 @@ namespace TMPro.Examples
                 }
                 else if (SpawnType == 1)
                 {
-                    // TextMesh Implementation
+                    // TextMesh Root
                     GameObject go = new GameObject();
                     go.transform.position = new Vector3(Random.Range(-95f, 95f), 0.25f, Random.Range(-95f, 95f));
 
