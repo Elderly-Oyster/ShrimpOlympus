@@ -8,6 +8,7 @@ namespace CodeBase.Services
     {
         public void Start()
         {
+            //TODO Рефакторинг, в том числе лииитттерала
             var eventSystem = new GameObject("EventSystem").AddComponent<EventSystem>();
             eventSystem.gameObject.AddComponent<StandaloneInputModule>();
             Object.DontDestroyOnLoad(eventSystem.gameObject);

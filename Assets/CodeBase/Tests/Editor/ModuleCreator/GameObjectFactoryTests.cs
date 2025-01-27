@@ -1,6 +1,4 @@
-﻿using CodeBase.Core.Root;
-using CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask;
-using CodeBase.Implementation.Root;
+﻿using CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask;
 using CodeBase.Implementation.UI;
 using NUnit.Framework;
 using UnityEngine;

@@ -5,7 +5,8 @@
         "VContainer",
         "Core",
         "Services",
-        "Implementation"
+        "Implementation",
+        "Systems"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

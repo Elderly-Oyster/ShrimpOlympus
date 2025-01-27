@@ -6,8 +6,7 @@
         "UniTask",
         "R3.Unity",
         "DOTween.Modules",
-        "UniTask.DOTween",
-        "Mappings"
+        "UniTask.DOTween"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

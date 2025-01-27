@@ -18,7 +18,7 @@ namespace CodeBase.Tests.Editor.ModuleCreator
                 PathManager.TemplateModuleFolderPath);
             Assert.AreEqual("Assets/Modules/Template/TemplateScreen/UI",
                 PathManager.TemplateViewsFolderPath);
-            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Root",
+            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Infrastructure",
                 PathManager.TemplateScriptsFolderPath);
             Assert.AreEqual("Assets/Modules/Template/TemplateScreen/UI/TemplateScreenView.prefab",
                 PathManager.TemplateViewPrefabPath);

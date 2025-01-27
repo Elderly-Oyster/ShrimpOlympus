@@ -1,5 +1,4 @@
-﻿using CodeBase.Core.Root;
-using CodeBase.Implementation.UI;
+﻿using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
@@ -10,7 +9,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
     public class MainMenuScreenInstaller : SceneInstaller
     {
         [SerializeField] private MainMenuScreenView mainMenuScreenView;
-        [SerializeField] private ScreenCanvas screensCanvas;
+        [SerializeField] private BaseScreenCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)

@@ -30,7 +30,7 @@ namespace TMPro.Examples
             {
                 if (SpawnType == 0)
                 {
-                    // TextMesh Pro Root
+                    // TextMesh Pro Infrastructure
                     GameObject go = new GameObject("Text - " + i + " Pts");
 
                     if (lineHeight > orthoSize * 2) return;
@@ -56,7 +56,7 @@ namespace TMPro.Examples
                 }
                 else
                 {
-                    // TextMesh Root
+                    // TextMesh Infrastructure
                     // Causes crashes since atlas needed exceeds 4096 X 4096
                     /*
                     GameObject go = new GameObject("Arial " + i);

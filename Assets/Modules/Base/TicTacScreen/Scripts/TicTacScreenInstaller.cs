@@ -1,4 +1,4 @@
-﻿using CodeBase.Core.Root;
+﻿using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
@@ -9,7 +9,7 @@ namespace Modules.Base.TicTacScreen.Scripts
     public class TicTacScreenInstaller : SceneInstaller
     {
         [SerializeField] private TicTacScreenView ticTacScreenView;
-        [SerializeField] private ScreenCanvas screensCanvas;
+        [SerializeField] private BaseScreenCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)

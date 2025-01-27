@@ -1,6 +1,4 @@
 using System;
-using CodeBase.Core.Root;
-using CodeBase.Implementation.Root;
 using CodeBase.Implementation.UI;
 using UnityEditor;
 using UnityEngine;

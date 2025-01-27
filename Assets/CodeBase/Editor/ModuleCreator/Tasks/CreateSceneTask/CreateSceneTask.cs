@@ -1,8 +1,6 @@
 using System;
-using CodeBase.Core.Root;
 using CodeBase.Editor.ModuleCreator.Base;
 using CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask;
-using CodeBase.Implementation.Root;
 using CodeBase.Implementation.UI;
 using Newtonsoft.Json;
 using UnityEditor.SceneManagement;
@@ -50,7 +48,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
             string installerName = $"{_moduleName}Installer";
             string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
-            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.Root.{installerName}";
+            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.Infrastructure.{installerName}";
             Type installerType = ReflectionHelper.FindType(installerFullName);
             if (installerType == null)
             {

@@ -8,6 +8,7 @@ namespace CodeBase.Services
     {
         public void Start() { } // TODO Check The Need
         
+        //TODO Рефакторинг, в том числе лииитттерала
         public void EnsureAudioListenerExists(IObjectResolver resolver)
         {
             var mainCamera = resolver.Resolve<Camera>();

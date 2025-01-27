@@ -23,7 +23,7 @@ namespace CodeBase.Editor.ModuleCreator.Base
             
             TemplateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen");
             TemplateViewsFolderPath = CombinePaths(TemplateModuleFolderPath, "UI");
-            TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, "Root");
+            TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, "Infrastructure");
             TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateScreenView.prefab");
 
             EnsureSubfoldersExist();

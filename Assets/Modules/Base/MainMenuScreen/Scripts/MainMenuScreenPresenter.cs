@@ -1,6 +1,7 @@
-﻿using CodeBase.Core.Modules;
-using CodeBase.Core.Root;
+﻿using CodeBase.Core.Infrastructure;
+using CodeBase.Core.Modules;
 using CodeBase.Core.Systems.PopupHub;
+using CodeBase.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using R3;
 

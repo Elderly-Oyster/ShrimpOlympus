@@ -10,7 +10,6 @@
         "DOTween.Modules",
         "UniTask.DOTween",
         "DynamicBackground",
-        "Implementation",
         "Services"
     ],
     "includePlatforms": [],
