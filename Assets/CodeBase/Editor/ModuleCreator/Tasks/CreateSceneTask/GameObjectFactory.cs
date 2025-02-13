@@ -1,4 +1,5 @@
 using System;
+using CodeBase.Core.UI;
 using CodeBase.Implementation.UI;
 using UnityEditor;
 using UnityEngine;
@@ -10,9 +11,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
     {
         public static GameObject CreateCanvas()
         {
-            GameObject canvas = new GameObject("Canvas");
+            var canvas = new GameObject("Canvas");
             Undo.RegisterCreatedObjectUndo(canvas, "Create Canvas");
-            Canvas canvasComponent = canvas.AddComponent<Canvas>();
+            var canvasComponent = canvas.AddComponent<Canvas>();
             canvasComponent.renderMode = RenderMode.ScreenSpaceOverlay;
             canvas.AddComponent<CanvasScaler>();
             canvas.AddComponent<GraphicRaycaster>();
@@ -22,7 +23,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
         public static GameObject InstantiateViewPrefab(string prefabPath, GameObject parent)
         {
-            GameObject viewPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+            var viewPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
             if (viewPrefab == null)
             {
                 Debug.LogError($"View prefab not found at {prefabPath}");

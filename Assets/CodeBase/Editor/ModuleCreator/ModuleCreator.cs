@@ -35,7 +35,7 @@ namespace CodeBase.Editor.ModuleCreator
             GUILayout.Space(GUISpacing);
             _selectedFolder = (FolderType)EditorGUILayout.EnumPopup("Select Folder", _selectedFolder);
             GUILayout.Space(GUISpacing);
-            GUILayout.Label("Select Infrastructure to Create", EditorStyles.boldLabel);
+            GUILayout.Label("Select Scripts to Create", EditorStyles.boldLabel);
             _createInstaller = EditorGUILayout.Toggle("Installer", _createInstaller);
             _createPresenter = EditorGUILayout.Toggle("Presenter", _createPresenter);
             _createView = EditorGUILayout.Toggle("View", _createView);

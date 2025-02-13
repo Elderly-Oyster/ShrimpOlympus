@@ -26,7 +26,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
             TargetModuleFolderPath = targetFolderPath;
             EnsureModuleFolders(targetFolderPath);
 
-            string scriptsFolderPath = PathManager.CombinePaths(targetFolderPath, "Infrastructure");
+            string scriptsFolderPath = PathManager.CombinePaths(targetFolderPath, "Scripts");
 
             if (createAsmdef)
                 CreateAsmdefFile(targetFolderPath, moduleName);
@@ -59,8 +59,8 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         private static void EnsureModuleFolders(string targetFolderPath)
         {
             EnsureTargetFolderExists(targetFolderPath);
-            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, "Infrastructure"));
-            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, "UI"));
+            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, "Scripts"));
+            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, "Views"));
         }
 
         public static void EnsureTargetFolderExists(string targetFolderPath)
@@ -128,7 +128,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
 
         private static string ReplaceNamespace(string content, string moduleName, string selectedFolder)
         {
-            string namespaceReplacement = $"namespace Modules.{selectedFolder}.{moduleName}Screen.Infrastructure";
+            string namespaceReplacement = $"namespace Modules.{selectedFolder}.{moduleName}Screen.Scripts";
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 

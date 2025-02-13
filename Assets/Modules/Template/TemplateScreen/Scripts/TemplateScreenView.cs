@@ -13,7 +13,6 @@ namespace Modules.Template.TemplateScreen.Scripts
         
         private readonly CompositeDisposable _disposables = new();
         
-        
         public void SetupEventListeners(ReactiveCommand<Unit> mainMenuCommand)
         {
             mainMenuButton.OnClickAsObservable()
@@ -28,13 +27,13 @@ namespace Modules.Template.TemplateScreen.Scripts
             else
                 Debug.LogWarning("templateScreenTitle is not assigned in the Inspector.");
         }
-        
-        private void RemoveEventListeners() => _disposables.Clear();
 
         public override void Dispose()
         {
             RemoveEventListeners();
             base.Dispose();
         }
+
+        private void RemoveEventListeners() => _disposables.Clear();
     }
 }

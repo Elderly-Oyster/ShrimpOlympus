@@ -27,7 +27,7 @@ namespace CodeBase.Editor.ModuleCreator
 
         public enum FolderType { Additional, Base, Test }
 
-        private static readonly string TrackingFilePath = "Assets/Infrastructure/Editor/ModuleCreator/CreatedModules.json";
+        private static readonly string TrackingFilePath = "Assets/CodeBase/Editor/ModuleCreator/CreatedModules.json";
         private List<string> _createdModules = new List<string>();
 
         [MenuItem("Tools/Create Module")]
@@ -45,7 +45,7 @@ namespace CodeBase.Editor.ModuleCreator
             GUILayout.Space(Spacing);
             _selectedFolder = (FolderType)EditorGUILayout.EnumPopup("Select Folder", _selectedFolder);
             GUILayout.Space(Spacing);
-            GUILayout.Label("Select Infrastructure to Create", EditorStyles.boldLabel);
+            GUILayout.Label("Select Scripts to Create", EditorStyles.boldLabel);
             _createInstaller = EditorGUILayout.Toggle("Installer", _createInstaller);
             _createPresenter = EditorGUILayout.Toggle("Presenter", _createPresenter);
             _createView = EditorGUILayout.Toggle("View", _createView);

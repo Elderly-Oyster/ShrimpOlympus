@@ -13,7 +13,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
     {
         public static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
-            string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "UI");
+            string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
 
             string templateViewPrefabPath = PathManager.TemplateViewPrefabPath;
@@ -42,7 +42,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public static void ReplaceScriptProperty(GameObject prefabContents, string moduleName, string folderType)
         {
-            string fullClassName = $"Modules.{folderType}.{moduleName}Screen.Infrastructure.{moduleName}ScreenView";
+            string fullClassName = $"Modules.{folderType}.{moduleName}Screen.Scripts.{moduleName}ScreenView";
             MonoScript newMonoScript = FindMonoScript(fullClassName);
             if (newMonoScript == null)
             {

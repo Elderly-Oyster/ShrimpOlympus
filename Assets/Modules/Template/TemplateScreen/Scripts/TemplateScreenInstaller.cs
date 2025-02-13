@@ -6,7 +6,7 @@ using VContainer.Unity;
 
 namespace Modules.Template.TemplateScreen.Scripts
 {
-    public class TemplateInstaller : SceneInstaller
+    public class TemplateScreenInstaller : SceneInstaller
     {
         [SerializeField] private TemplateScreenView templateScreenView;
         [SerializeField] private BaseScreenCanvas screenCanvas;

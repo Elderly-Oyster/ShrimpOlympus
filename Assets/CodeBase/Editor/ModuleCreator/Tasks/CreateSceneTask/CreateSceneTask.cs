@@ -1,4 +1,5 @@
 using System;
+using CodeBase.Core.UI;
 using CodeBase.Editor.ModuleCreator.Base;
 using CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask;
 using CodeBase.Implementation.UI;
@@ -38,7 +39,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
             }
 
             string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, 
-                "UI", $"{_moduleName}View.prefab");
+                "Views", $"{_moduleName}View.prefab");
             GameObject viewInstance = GameObjectFactory.InstantiateViewPrefab(viewPrefabPath, canvas);
             if (viewInstance == null)
             {
@@ -48,7 +49,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
             string installerName = $"{_moduleName}Installer";
             string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
-            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.Infrastructure.{installerName}";
+            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.Scripts.{installerName}";
             Type installerType = ReflectionHelper.FindType(installerFullName);
             if (installerType == null)
             {
@@ -105,7 +106,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
             else
                 Debug.LogError($"View component '{_moduleName}ScreenView' not found on View prefab.");
 
-            ScreenCanvas screenCanvas = canvas.GetComponent<ScreenCanvas>();
+            var screenCanvas = canvas.GetComponent<BaseScreenCanvas>();
             if (screenCanvas != null)
                 ReflectionHelper.SetPrivateField(installerComponent, "screenCanvas", screenCanvas);
             else
@@ -119,14 +120,14 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
         private void AssignScreensCanvasFields(GameObject canvas, Camera camera)
         {
-            ScreenCanvas screenCanvas = canvas.GetComponent<ScreenCanvas>();
+            var screenCanvas = canvas.GetComponent<BaseScreenCanvas>();
             if (screenCanvas == null)
             {
-                Debug.LogError("ScreenCanvas component not found on Canvas.");
+                Debug.LogError("BaseScreenCanvas component not found on Canvas.");
                 return;
             }
 
-            CanvasScaler canvasScaler = canvas.GetComponent<CanvasScaler>();
+            var canvasScaler = canvas.GetComponent<CanvasScaler>();
             if (canvasScaler != null)
                 ReflectionHelper.SetPrivateField(screenCanvas, "canvasScaler", canvasScaler);
             else

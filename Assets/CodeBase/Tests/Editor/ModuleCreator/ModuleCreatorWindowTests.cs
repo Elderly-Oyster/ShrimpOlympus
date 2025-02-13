@@ -15,7 +15,7 @@ namespace CodeBase.Tests.Editor.ModuleCreator
     public class ModuleCreatorWindowTests
     {
         private const string ModuleName = "NewModule";
-        private const string TrackingFilePath = "Assets/Infrastructure/Editor/ModuleCreator/CreatedModules.json";
+        private const string TrackingFilePath = "Assets/CodeBase/Editor/ModuleCreator/CreatedModules.json";
 
         [SetUp]
         public void Setup()

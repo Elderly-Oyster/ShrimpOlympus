@@ -36,7 +36,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
             PrefabHelper.ReplaceScriptProperty(prefabContents, _moduleName, folderType);
 
             MonoScript newMonoScript = PrefabHelper.
-                FindMonoScript($"Modules.{folderType}.{_moduleName}Screen.Infrastructure.{_moduleName}ScreenView");
+                FindMonoScript($"Modules.{folderType}.{_moduleName}Screen.Scripts.{_moduleName}ScreenView");
             if (newMonoScript == null)
             {
                 PrefabUtility.UnloadPrefabContents(prefabContents);

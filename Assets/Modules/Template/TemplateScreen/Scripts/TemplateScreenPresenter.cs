@@ -8,51 +8,50 @@ namespace Modules.Template.TemplateScreen.Scripts
     public class TemplatePresenter : IScreenPresenter
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly TemplateScreenModel _templateScreenModel;
-        private readonly TemplateScreenView _templateScreenView;
-        private readonly UniTaskCompletionSource<bool> _completionSource;
-
+        private readonly TemplateScreenModel _screenModel;
+        private readonly TemplateScreenView _screenView;
+        private readonly UniTaskCompletionSource _screenCompletionSource;
+        
         private readonly ReactiveCommand<Unit> _mainMenuCommand = new();
-
         
         public TemplatePresenter(IScreenStateMachine screenStateMachine, 
-            TemplateScreenModel templateScreenModel, TemplateScreenView templateScreenView)
+            TemplateScreenModel screenModel, TemplateScreenView screenView)
         {
             _screenStateMachine = screenStateMachine;
-            _templateScreenModel = templateScreenModel;
-            _templateScreenView = templateScreenView;
-            _completionSource = new UniTaskCompletionSource<bool>();
+            _screenModel = screenModel;
+            _screenView = screenView;
+            _screenCompletionSource = new UniTaskCompletionSource();
         }
 
         public async UniTask Enter(object param)
         {
-            _templateScreenView.gameObject.SetActive(false);
+            _screenView.gameObject.SetActive(false);
             SubscribeToUIUpdates();
-            _templateScreenView.SetupEventListeners(_mainMenuCommand);
+            _screenView.SetupEventListeners(_mainMenuCommand);
             
-            await _templateScreenView.Show();
+            await _screenView.Show();
         }
-        
+
+        public async UniTask Execute() => await _screenCompletionSource.Task;
+
+        public async UniTask Exit() => await _screenView.Hide();
+
+        public void Dispose()
+        {
+            _screenView.Dispose();
+            _screenModel.Dispose();
+        }
+
         private void SubscribeToUIUpdates() => 
             _mainMenuCommand.Subscribe(_ =>OnMainMenuButtonClicked());
 
         private void OnMainMenuButtonClicked() => 
             RunNewScreen(ScreenPresenterMap.MainMenu);
-        
+
         private void RunNewScreen(ScreenPresenterMap screen)
         {
-            _completionSource.TrySetResult(true);
+            _screenCompletionSource.TrySetResult();
             _screenStateMachine.RunScreen(screen);
-        }
-
-        public async UniTask Execute() => await _completionSource.Task;
-
-        public async UniTask Exit() => await _templateScreenView.Hide();
-
-        public void Dispose()
-        {
-            _templateScreenView.Dispose();
-            _templateScreenModel.Dispose();
         }
     }
 }
