@@ -5,6 +5,7 @@ using UnityEngine;
 
 namespace CodeBase.Implementation.UI.Views.Animations.ShowHideAnimations
 {
+    // There might be problems when there is ScrollView element on view. Don't use if it's so.
     [RequireComponent(typeof(CanvasGroup))]
     public class BubbleFadeAnimation : BaseAnimationElement
     {
@@ -30,23 +31,19 @@ namespace CodeBase.Implementation.UI.Views.Animations.ShowHideAnimations
             Sequence = DOTween.Sequence();
             // plays scaling(firstly makes the object slightly bigger than it should be) and fading animations together,
             // after that scales it to the needed size 
-            Sequence
+            await Sequence
                 .Append(transform.DOScale(scaleUpFactor, scaleDuration / 2))
                 .Join(canvasGroup.DOFade(1, fadeDuration))
                 .Append(transform.DOScale(1, scaleDuration / 2));
-
-            await Sequence;
         }
 
         public override async UniTask Hide()
         {
             Sequence = DOTween.Sequence();
-            Sequence
+            await Sequence
                 .Append(transform.DOScale(scaleUpFactor, scaleDuration / 2))
                 .Join(canvasGroup.DOFade(0, fadeDuration))
                 .Append(transform.DOScale(0, scaleDuration / 2));
-
-            await Sequence;
         }
     }
 }

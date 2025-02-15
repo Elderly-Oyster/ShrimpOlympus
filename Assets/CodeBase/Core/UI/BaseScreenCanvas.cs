@@ -9,8 +9,8 @@ namespace CodeBase.Core.UI
     /// </summary>
     public abstract class BaseScreenCanvas : MonoBehaviour
     {
-        [SerializeField] private CanvasScaler canvasScaler;
-        [SerializeField] private Camera uiCamera;
+        [SerializeField] protected CanvasScaler canvasScaler;
+        [SerializeField] protected Camera uiCamera;
 
         /// <summary>
         /// The camera used for rendering the UI.
