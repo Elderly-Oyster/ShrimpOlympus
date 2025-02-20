@@ -1,20 +1,18 @@
 using UnityEngine;
 using VContainer;
-using VContainer.Unity;
 
 namespace CodeBase.Services
 {
-    public class AudioListenerService : IStartable
+    public class AudioListenerService
     {
-        public void Start() { } // TODO Check The Need
+        private const string MainCameraName = "MainCamera";
         
-        //TODO Рефакторинг, в том числе лииитттерала
         public void EnsureAudioListenerExists(IObjectResolver resolver)
         {
             var mainCamera = resolver.Resolve<Camera>();
             if (mainCamera == null)
             {
-                mainCamera = new GameObject("MainCamera").AddComponent<Camera>();
+                mainCamera = new GameObject(MainCameraName).AddComponent<Camera>();
                 resolver.Inject(mainCamera);
             }
 

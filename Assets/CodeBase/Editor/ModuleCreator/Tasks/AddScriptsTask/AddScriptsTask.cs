@@ -11,22 +11,22 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
     {
         [JsonProperty] private string _moduleName;
         [JsonProperty] private string _selectedFolder;
-        [JsonProperty] private bool _createInstaller;
-        [JsonProperty] private bool _createPresenter;
-        [JsonProperty] private bool _createView;
-        [JsonProperty] private bool _createModel;
-        [JsonProperty] private bool _createAsmdef;
+        [JsonProperty] private bool _isInstallerRequired;
+        [JsonProperty] private bool _isPresenterRequired;
+        [JsonProperty] private bool _isViewRequired;
+        [JsonProperty] private bool _isModelRequired;
+        [JsonProperty] private bool _isAsmdefRequired;
 
-        public AddScriptsTask(string moduleName, string selectedFolder, bool createInstaller,
-            bool createPresenter, bool createView, bool createModel, bool createAsmdef)
+        public AddScriptsTask(string moduleName, string selectedFolder, bool isInstallerRequired,
+            bool isPresenterRequired, bool isViewRequired, bool isModelRequired, bool isAsmdefRequired)
         {
             _moduleName = moduleName;
             _selectedFolder = selectedFolder;
-            _createInstaller = createInstaller;
-            _createPresenter = createPresenter;
-            _createView = createView;
-            _createModel = createModel;
-            _createAsmdef = createAsmdef;
+            _isInstallerRequired = isInstallerRequired;
+            _isPresenterRequired = isPresenterRequired;
+            _isViewRequired = isViewRequired;
+            _isModelRequired = isModelRequired;
+            _isAsmdefRequired = isAsmdefRequired;
             WaitForCompilation = true;
         }
 
@@ -34,16 +34,16 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         {
             PathManager.InitializePaths();
 
-            if (TemplateValidator.AreTemplatesAvailable(_createAsmdef))
+            if (TemplateValidator.AreTemplatesAvailable(_isAsmdefRequired))
             {
                 ModuleGenerator.CreateModuleFiles(
                     _moduleName,
                     _selectedFolder,
-                    _createInstaller,
-                    _createPresenter,
-                    _createView,
-                    _createModel,
-                    _createAsmdef);
+                    _isInstallerRequired,
+                    _isPresenterRequired,
+                    _isViewRequired,
+                    _isModelRequired,
+                    _isAsmdefRequired);
 
                 AssetDatabase.Refresh();
                 Debug.Log($"Module {_moduleName} scripts created successfully.");

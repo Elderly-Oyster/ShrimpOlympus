@@ -49,7 +49,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
             string installerName = $"{_moduleName}ScreenInstaller";
             string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
-            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.Scripts.{installerName}";
+            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.{PathManager.TemplateScriptsFolderPath}.{installerName}";
             Type installerType = ReflectionHelper.FindType(installerFullName);
             if (installerType == null)
             {
