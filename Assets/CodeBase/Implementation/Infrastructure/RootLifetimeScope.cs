@@ -1,7 +1,9 @@
 using CodeBase.Core.SerializableDataCore;
+using CodeBase.Implementation.SerializableDataImplementation;
 using CodeBase.Services;
 using CodeBase.Services.LongInitializationServices;
 using CodeBase.Services.SceneInstallerService;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -28,6 +30,9 @@ namespace CodeBase.Implementation.Infrastructure
             var manager = new SerializableDataSystemsManager();
             manager.Initialize().Forget();
             builder.RegisterInstance(manager)
+                .AsImplementedInterfaces()
+                .AsSelf();
+            builder.Register<GraphicsSettingsSystem>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 .AsSelf();
         }
