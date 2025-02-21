@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using CodeBase.Editor.ModuleCreator.Base;
+using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask;
 using Modules.Template.TemplateScreen.Scripts;
 using TMPro;
@@ -13,7 +14,8 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
     {
         public static string CopyTemplatePrefab(string moduleName, string targetModuleFolderPath)
         {
-            string targetPrefabFolderPath = PathManager.CombinePaths(targetModuleFolderPath, "Views");
+            string targetPrefabFolderPath = 
+                PathManager.CombinePaths(targetModuleFolderPath, ModulePathCache.ViewsFolderName);
             ModuleGenerator.EnsureTargetFolderExists(targetPrefabFolderPath);
 
             string templateViewPrefabPath = PathManager.TemplateViewPrefabPath;

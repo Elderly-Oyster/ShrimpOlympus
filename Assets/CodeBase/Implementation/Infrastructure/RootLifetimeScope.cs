@@ -29,7 +29,6 @@ namespace CodeBase.Implementation.Infrastructure
                 .AsSelf();
             
             builder.Register<AudioListenerService>(Lifetime.Singleton)
-                .As<IStartable>()
                 .AsSelf();
             
             builder.Register<EventSystemService>(Lifetime.Singleton)
