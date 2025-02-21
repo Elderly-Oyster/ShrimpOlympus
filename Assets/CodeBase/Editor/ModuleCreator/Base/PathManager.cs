@@ -1,3 +1,4 @@
+using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,8 +23,8 @@ namespace CodeBase.Editor.ModuleCreator.Base
             TestFolderPath = CombinePaths(BasePath, "Test");
             
             TemplateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen");
-            TemplateViewsFolderPath = CombinePaths(TemplateModuleFolderPath, "Views");
-            TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, "Scripts");
+            TemplateViewsFolderPath = CombinePaths(TemplateModuleFolderPath, ModulePathCache.ViewsFolderName);
+            TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, ModulePathCache.ScriptsFolderName);
             TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateScreenView.prefab");
 
             EnsureSubfoldersExist();
