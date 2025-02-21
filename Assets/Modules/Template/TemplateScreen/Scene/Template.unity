@@ -153,8 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e375cb934942e7a19cb06e1f091837, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasScaler: {fileID: 0}
-  uiCamera: {fileID: 0}
+  canvasScaler: {fileID: 414013165}
+  uiCamera: {fileID: 519420031}
 --- !u!114 &414013165
 MonoBehaviour:
   m_ObjectHideFlags: 0

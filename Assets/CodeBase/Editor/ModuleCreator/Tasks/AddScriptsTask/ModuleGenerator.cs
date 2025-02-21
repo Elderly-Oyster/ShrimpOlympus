@@ -15,11 +15,11 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         public static void CreateModuleFiles(
             string moduleName,
             string selectedFolder,
-            bool createInstaller,
-            bool createPresenter,
-            bool createView,
-            bool createModel,
-            bool createAsmdef)
+            bool isInstallerRequired,
+            bool isPresenterRequired,
+            bool isViewRequired,
+            bool isModelRequired,
+            bool isAsmdefRequired)
         {
             string selectedFolderPath = GetSelectedFolderPath(selectedFolder);
             string targetFolderPath = PathManager.CombinePaths(selectedFolderPath, $"{moduleName}Screen");
@@ -28,17 +28,17 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
 
             string scriptsFolderPath = PathManager.CombinePaths(targetFolderPath, "Scripts");
 
-            if (createAsmdef)
+            if (isAsmdefRequired)
                 CreateAsmdefFile(targetFolderPath, moduleName);
 
             CreateSelectedScripts(
                 scriptsFolderPath,
                 moduleName,
                 selectedFolder,
-                createInstaller,
-                createPresenter,
-                createView,
-                createModel);
+                isInstallerRequired,
+                isPresenterRequired,
+                isViewRequired,
+                isModelRequired);
         }
 
         public static string GetTargetModuleFolderPath(string moduleName, string selectedFolder)

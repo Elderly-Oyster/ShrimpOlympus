@@ -47,9 +47,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 return;
             }
 
-            string installerName = $"{_moduleName}Installer";
+            string installerName = $"{_moduleName}ScreenInstaller";
             string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
-            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.Scripts.{installerName}";
+            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.{PathManager.TemplateScriptsFolderPath}.{installerName}";
             Type installerType = ReflectionHelper.FindType(installerFullName);
             if (installerType == null)
             {
@@ -120,14 +120,14 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
         private void AssignScreensCanvasFields(GameObject canvas, Camera camera)
         {
-            var screenCanvas = canvas.GetComponent<BaseScreenCanvas>();
+            var screenCanvas = canvas.GetComponent<ScreenCanvas>();
             if (screenCanvas == null)
             {
-                Debug.LogError("BaseScreenCanvas component not found on Canvas.");
+                Debug.LogError("ScreenCanvas component not found on Canvas.");
                 return;
             }
 
-            var canvasScaler = canvas.GetComponent<CanvasScaler>();
+            CanvasScaler canvasScaler = canvas.GetComponent<CanvasScaler>();
             if (canvasScaler != null)
                 ReflectionHelper.SetPrivateField(screenCanvas, "canvasScaler", canvasScaler);
             else
