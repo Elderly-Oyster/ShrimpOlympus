@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using CodeBase.Editor.ModuleCreator.Base;
+using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
             TargetModuleFolderPath = targetFolderPath;
             EnsureModuleFolders(targetFolderPath);
 
-            string scriptsFolderPath = PathManager.CombinePaths(targetFolderPath, "Scripts");
+            string scriptsFolderPath = PathManager.CombinePaths(targetFolderPath, ModulePathCache.ScriptsFolderName);
 
             if (isAsmdefRequired)
                 CreateAsmdefFile(targetFolderPath, moduleName);
@@ -59,8 +60,8 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         private static void EnsureModuleFolders(string targetFolderPath)
         {
             EnsureTargetFolderExists(targetFolderPath);
-            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, "Scripts"));
-            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, "Views"));
+            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, ModulePathCache.ScriptsFolderName));
+            EnsureTargetFolderExists(PathManager.CombinePaths(targetFolderPath, ModulePathCache.ViewsFolderName));
         }
 
         public static void EnsureTargetFolderExists(string targetFolderPath)
@@ -128,7 +129,8 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
 
         private static string ReplaceNamespace(string content, string moduleName, string selectedFolder)
         {
-            string namespaceReplacement = $"namespace Modules.{selectedFolder}.{moduleName}Screen.Scripts";
+            string namespaceReplacement = 
+                $"namespace Modules.{selectedFolder}.{moduleName}Screen.{ModulePathCache.ScriptsFolderName}";
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 

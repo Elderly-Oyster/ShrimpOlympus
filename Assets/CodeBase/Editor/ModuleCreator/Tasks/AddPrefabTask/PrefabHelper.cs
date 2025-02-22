@@ -44,7 +44,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public static void ReplaceScriptProperty(GameObject prefabContents, string moduleName, string folderType)
         {
-            string fullClassName = $"Modules.{folderType}.{moduleName}Screen.Scripts.{moduleName}ScreenView";
+            string fullClassName = $"Modules.{folderType}.{moduleName}Screen.{ModulePathCache.ScriptsFolderName}.{moduleName}ScreenView";
             MonoScript newMonoScript = FindMonoScript(fullClassName);
             if (newMonoScript == null)
             {

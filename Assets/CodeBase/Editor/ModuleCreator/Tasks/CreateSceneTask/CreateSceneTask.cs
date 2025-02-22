@@ -1,6 +1,7 @@
 using System;
 using CodeBase.Core.UI;
 using CodeBase.Editor.ModuleCreator.Base;
+using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask;
 using CodeBase.Implementation.UI;
 using Newtonsoft.Json;
@@ -39,17 +40,20 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
             }
 
             string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, 
-                "Views", $"{_moduleName}View.prefab");
+                ModulePathCache.ViewsFolderName, $"{_moduleName}View.prefab");
             GameObject viewInstance = GameObjectFactory.InstantiateViewPrefab(viewPrefabPath, canvas);
             if (viewInstance == null)
             {
-                Debug.LogError("Failed to instantiate View prefab.");
+                Debug.LogError("Failed to instantiate View prefab."); 
                 return;
             }
 
+            //TODO Ошибка появилась после замены "Scripts"
+            //TODO Здесь проблема. Скрипт успевает создаваться, однако он не обнаруживается 55-ой строчкой.
             string installerName = $"{_moduleName}ScreenInstaller";
             string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
-            string installerFullName = $"Modules.{folderType}.{_moduleName}Screen.{PathManager.TemplateScriptsFolderPath}.{installerName}";
+            string installerFullName = 
+                $"Modules.{folderType}.{_moduleName}Screen.{ModulePathCache.ScriptsFolderName}.{installerName}";
             Type installerType = ReflectionHelper.FindType(installerFullName);
             if (installerType == null)
             {

@@ -1,5 +1,6 @@
 using System;
 using CodeBase.Editor.ModuleCreator.Base;
+using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
@@ -36,7 +37,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
             PrefabHelper.ReplaceScriptProperty(prefabContents, _moduleName, folderType);
 
             MonoScript newMonoScript = PrefabHelper.
-                FindMonoScript($"Modules.{folderType}.{_moduleName}Screen.Scripts.{_moduleName}ScreenView");
+                FindMonoScript($"Modules.{folderType}.{_moduleName}Screen.{ModulePathCache.ScriptsFolderName}.{_moduleName}ScreenView");
             if (newMonoScript == null)
             {
                 PrefabUtility.UnloadPrefabContents(prefabContents);

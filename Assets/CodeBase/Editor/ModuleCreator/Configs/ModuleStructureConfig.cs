@@ -1,3 +1,4 @@
+using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using UnityEngine;
 
 namespace CodeBase.Editor.ModuleCreator.Configs
@@ -8,6 +9,6 @@ namespace CodeBase.Editor.ModuleCreator.Configs
         [Header("Structure folders")]
         public string scriptsFolderName = "Scripts";
         public string viewsFolderName = "Views";
-        public string scenesFolderName = "Scenes";
+        public string scenesFolderName = ModulePathCache.ScenesFolderName;
     }
 }
