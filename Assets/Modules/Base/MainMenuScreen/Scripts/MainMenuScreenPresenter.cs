@@ -19,6 +19,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<Unit> _firstPopupCommand =  new();
         private readonly ReactiveCommand<Unit> _converterCommand =  new();
         private readonly ReactiveCommand<Unit> _ticTacCommand =  new();
+        private readonly ReactiveCommand<bool> _toggleSoundCommand =  new();
 
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
@@ -50,7 +51,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 _converterCommand,
                 _ticTacCommand,
                 _firstPopupCommand,
-                _secondPopupCommand
+                _secondPopupCommand,
+                _toggleSoundCommand
             );
 
             await _mainMenuScreenView.Show();
