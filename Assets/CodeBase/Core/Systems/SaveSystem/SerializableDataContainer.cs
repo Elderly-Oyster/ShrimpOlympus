@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace CodeBase.Core.SerializableDataCore
+namespace CodeBase.Core.Systems.SaveSystem
 {
 	public class SerializableDataContainer
 	{

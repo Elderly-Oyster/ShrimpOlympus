@@ -1,4 +1,4 @@
-﻿namespace CodeBase.Core.SerializableDataCore
+﻿namespace CodeBase.Core.Systems.SaveSystem
 {
 	public interface ISerializableDataSystem
 	{

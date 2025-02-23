@@ -1,13 +1,11 @@
 using System;
-using CodeBase.Core.SerializableDataCore;
-using UnityEngine;
-using VContainer.Unity;
+using CodeBase.Core.Systems.SaveSystem;
 
-namespace CodeBase.Implementation.SerializableDataImplementation
+namespace CodeBase.Systems
 {
 	public class GraphicsSettingsSystem : ISerializableDataSystem
 	{
-		private int _loadingRange = 0;
+		private int _loadingRange;
 
 		public int LoadingRange
 		{
@@ -15,10 +13,7 @@ namespace CodeBase.Implementation.SerializableDataImplementation
 			set
 			{
 				if(value < 2)
-				{
 					throw new ArgumentException("Loading Range cannot be less then 2");
-				}
-
 				_loadingRange = value;
 			}
 		}
@@ -30,14 +25,7 @@ namespace CodeBase.Implementation.SerializableDataImplementation
 
 		public void Initialize(SerializableDataContainer dataContainer)
 		{
-			if(dataContainer.TryGet(nameof(LoadingRange), out int loadingRange))
-			{
-				LoadingRange = loadingRange;
-			}
-			else
-			{
-				LoadingRange = 8;
-			}
+			LoadingRange = dataContainer.TryGet(nameof(LoadingRange), out int loadingRange) ? loadingRange : 8;
 		}
 
 		public void WriteTo(SerializableDataContainer dataContainer)

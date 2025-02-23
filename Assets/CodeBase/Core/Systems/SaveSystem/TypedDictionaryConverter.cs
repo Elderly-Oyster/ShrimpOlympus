@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CodeBase.Core.SerializableDataCore
+namespace CodeBase.Core.Systems.SaveSystem
 {
     public class TypedDictionaryConverter : JsonConverter
     {

@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-namespace CodeBase.Core.SerializableDataCore
+namespace CodeBase.Core.Systems.SaveSystem
 {
 	public class SerializableDataFileLoader
 	{

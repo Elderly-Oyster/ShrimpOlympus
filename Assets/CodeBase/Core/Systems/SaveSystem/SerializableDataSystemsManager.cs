@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 
-namespace CodeBase.Core.SerializableDataCore
+namespace CodeBase.Core.Systems.SaveSystem
 {
 	public class SerializableDataSystemsManager
 	{
-		private readonly List<ISerializableDataSystem> _serializableDataSystems = new List<ISerializableDataSystem>();
-		private readonly SerializableDataFileLoader _serializableDataFileLoader = new SerializableDataFileLoader();
+		private readonly List<ISerializableDataSystem> _serializableDataSystems = new();
+		private readonly SerializableDataFileLoader _serializableDataFileLoader = new();
 
 		private SerializableDataContainer _serializableDataContainer;
 		private bool _isLoaded;
@@ -51,9 +51,9 @@ namespace CodeBase.Core.SerializableDataCore
 			await _serializableDataFileLoader.Write(_serializableDataContainer);
 		}
 
-		private void SaveDataOnApplicationUnfocus(bool focus)
+		private void SaveDataOnApplicationUnfocus(bool isFocused)
 		{
-			if(!focus)
+			if(!isFocused)
 			{
 				SaveData().Forget();
 			}
