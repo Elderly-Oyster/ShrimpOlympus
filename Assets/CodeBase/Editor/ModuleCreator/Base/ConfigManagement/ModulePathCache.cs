@@ -15,7 +15,7 @@ namespace CodeBase.Editor.ModuleCreator.Base.ConfigManagement
 
         static ModulePathCache()
         {
-            LoadPaths();
+            EditorApplication.delayCall += LoadPaths;   //To prevent call before Unity Scene Initialization
         }
 
         public static void RefreshPaths()
