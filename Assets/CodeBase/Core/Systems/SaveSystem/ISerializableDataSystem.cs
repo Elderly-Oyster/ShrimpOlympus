@@ -3,11 +3,11 @@
 	public interface ISerializableDataSystem
 	{
 		/// <summary>
-		/// Загружает свои данные из dataContainer
+		/// Load own data from dataContainer
 		/// </summary>
 		public void Initialize(SerializableDataContainer dataContainer);
 		/// <summary>
-		/// Загружает свои данные в dataContainer
+		/// Save own data to dataContainer
 		/// </summary>
 		public void WriteTo(SerializableDataContainer dataContainer);
 	}

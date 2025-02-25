@@ -11,7 +11,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
-        [SerializeField] private Toggle soundToggle;
+        [SerializeField] private Toggle musicToggle;
         
         protected override void Awake()
         {
@@ -19,6 +19,11 @@ namespace Modules.Base.MainMenuScreen.Scripts
             HideInstantly();
         }
 
+        public void Initialize(bool isMusicOn)
+        {
+            musicToggle.SetIsOnWithoutNotify(isMusicOn);
+        }
+        
         public void SetupEventListeners(
             ReactiveCommand<Unit> converterCommand,
             ReactiveCommand<Unit> ticTacCommand,
@@ -42,8 +47,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 .Subscribe(_ => secondPopupCommand.Execute(default))
                 .AddTo(this);
 
-            soundToggle.OnValueChangedAsObservable()
-                .Subscribe(_ => soundToggleCommand.Execute(soundToggle.isOn))
+            musicToggle.OnValueChangedAsObservable()
+                .Subscribe(_ => soundToggleCommand.Execute(musicToggle.isOn))
                 .AddTo(this);
         }
     }

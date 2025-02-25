@@ -30,7 +30,7 @@ namespace CodeBase.Systems
 
 		public void WriteTo(SerializableDataContainer dataContainer)
 		{
-			dataContainer.Set(nameof(LoadingRange), LoadingRange);
+			dataContainer.SetData(nameof(LoadingRange), LoadingRange);
 		}
 	}
 }

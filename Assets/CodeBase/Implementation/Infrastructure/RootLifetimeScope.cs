@@ -1,8 +1,9 @@
+using System.Runtime.CompilerServices;
+using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.SaveSystem;
 using CodeBase.Services;
 using CodeBase.Services.LongInitializationServices;
 using CodeBase.Services.SceneInstallerService;
-using CodeBase.Systems;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -12,6 +13,8 @@ namespace CodeBase.Implementation.Infrastructure
     //RootLifeTimeScope where all the dependencies needed for the whole project are registered
     public class RootLifetimeScope : LifetimeScope
     {
+        [SerializeField] private AudioSystem audioSystem;
+        
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterServices(builder);
@@ -32,8 +35,8 @@ namespace CodeBase.Implementation.Infrastructure
             builder.RegisterInstance(manager)
                 .AsImplementedInterfaces()
                 .AsSelf();
-            builder.Register<GraphicsSettingsSystem>(Lifetime.Singleton)
-                .AsImplementedInterfaces()
+            
+            builder.RegisterInstance(audioSystem)
                 .AsSelf();
         }
         

@@ -30,7 +30,7 @@ namespace CodeBase.Core.Systems.SaveSystem
 			return dictionary.TryGetValue(dataName, out dataValue);
 		}
 
-		public void Set<T>(string dataName, T dataValue)
+		public void SetData<T>(string dataName, T dataValue)
 		{
 			var type = typeof(T);
 			if(_dataTypes.TryGetValue(dataName, out var cachedType) && cachedType != type)

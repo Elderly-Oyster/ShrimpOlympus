@@ -146,7 +146,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
         }
 
         public static void LogTitleSet(string moduleName, string viewTypeName) => 
-            Debug.Log($"Set title to '{moduleName}' in {viewTypeName}.");
+            Debug.Log($"SetData title to '{moduleName}' in {viewTypeName}.");
 
         public static void LogComponentNotFound(string viewTypeName) => 
             Debug.LogError($"{viewTypeName} component not found in prefab.");
