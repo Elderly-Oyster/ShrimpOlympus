@@ -1,6 +1,10 @@
+using System.Runtime.CompilerServices;
+using CodeBase.Core.Systems;
+using CodeBase.Core.Systems.SaveSystem;
 using CodeBase.Services;
 using CodeBase.Services.LongInitializationServices;
 using CodeBase.Services.SceneInstallerService;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,18 +13,34 @@ namespace CodeBase.Implementation.Infrastructure
     //RootLifeTimeScope where all the dependencies needed for the whole project are registered
     public class RootLifetimeScope : LifetimeScope
     {
+        [SerializeField] private AudioSystem audioSystem;
+        
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterServices(builder);
-            
+
+            RegisterSystems(builder);
+                
             builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
 
             builder.Register<ScreenStateMachine>(Lifetime.Singleton)
                 .AsSelf()
                 .AsImplementedInterfaces();
         }
+
+        private void RegisterSystems(IContainerBuilder builder)
+        {
+            var manager = new SerializableDataSystemsManager();
+            manager.Initialize().Forget();
+            builder.RegisterInstance(manager)
+                .AsImplementedInterfaces()
+                .AsSelf();
+            
+            builder.RegisterInstance(audioSystem)
+                .AsSelf();
+        }
         
-        private static void RegisterServices(IContainerBuilder builder)
+        private void RegisterServices(IContainerBuilder builder)
         {
             RegisterLongInitializationService(builder);
 
@@ -39,7 +59,7 @@ namespace CodeBase.Implementation.Infrastructure
             builder.Register<SceneInstallerService>(Lifetime.Singleton);
         }
 
-        private static void RegisterLongInitializationService(IContainerBuilder builder)
+        private void RegisterLongInitializationService(IContainerBuilder builder)
         {
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);

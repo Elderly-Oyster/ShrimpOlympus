@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/CodeBase/Core/Systems/CodeBase/NewModuleScreenView.cs.meta
+guid: 1fef06e250cc7614ca613cb995b181da
+========
+guid: 5b83864981300514d851775625daa0ec
+>>>>>>>> ka3yc_experimental:Assets/CodeBase/Core/Systems/SaveSystem/SerializableDataContainer.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

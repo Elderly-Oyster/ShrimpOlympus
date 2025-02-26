@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/CodeBase/Core/Systems/CodeBase/NewModuleScreenModel.cs.meta
+guid: b9d13056e14e3184fa69985740f27c81
+========
+guid: 5ac0a65ace22f7f458d1e3b1a335750e
+>>>>>>>> ka3yc_experimental:Assets/CodeBase/Editor/ConditionalHideAttribute/ConditionalHidePropertyDrawer.cs.meta
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

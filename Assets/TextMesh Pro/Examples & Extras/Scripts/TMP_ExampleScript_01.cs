@@ -34,16 +34,16 @@ namespace TMPro.Examples
             // Load a new material preset which was created with the context menu duplicate.
             m_text.fontSharedMaterial = Resources.Load<Material>("Fonts & Materials/Anton SDF - Drop Shadow");
 
-            // Set the size of the font.
+            // SetData the size of the font.
             m_text.fontSize = 120;
 
-            // Set the text
+            // SetData the text
             m_text.text = "A <#0080ff>simple</color> line of text.";
 
             // Get the preferred width and height based on the supplied width and height as opposed to the actual size of the current text container.
             Vector2 size = m_text.GetPreferredValues(Mathf.Infinity, Mathf.Infinity);
 
-            // Set the size of the RectTransform based on the new calculated values.
+            // SetData the size of the RectTransform based on the new calculated values.
             m_text.rectTransform.sizeDelta = new Vector2(size.x, size.y);
         }
 
