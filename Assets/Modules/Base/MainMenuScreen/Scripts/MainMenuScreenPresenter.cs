@@ -2,7 +2,6 @@
 using CodeBase.Core.Modules;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.PopupHub;
-using CodeBase.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using R3;
 
@@ -49,7 +48,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _mainMenuScreenView.Initialize(_audioSystem.MusicVolume != 0);
+            _mainMenuScreenView.Initialize(isMusicOn: _audioSystem.MusicVolume != 0);
             _mainMenuScreenView.HideInstantly();
 
             _mainMenuScreenView.SetupEventListeners(
@@ -61,11 +60,16 @@ namespace Modules.Base.MainMenuScreen.Scripts
             );
 
             await _mainMenuScreenView.Show();
+            _audioSystem.PlayMainMenuMelody();
         }
 
         public async UniTask Execute() => await _completionSource.Task;
 
-        public async UniTask Exit() => await _mainMenuScreenView.Hide();
+        public async UniTask Exit()
+        {
+            await _mainMenuScreenView.Hide();
+            _audioSystem.StopMusic();
+        }
 
         public void Dispose()
         {

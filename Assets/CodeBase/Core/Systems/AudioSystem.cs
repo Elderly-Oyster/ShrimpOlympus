@@ -1,7 +1,8 @@
 ﻿using System;
-using CodeBase.Core.Systems.SaveSystem;
+using CodeBase.Core.Systems.Save;
 using DG.Tweening;
 using UnityEngine;
+using VContainer;
 
 namespace CodeBase.Core.Systems
 {
@@ -13,13 +14,14 @@ namespace CodeBase.Core.Systems
         [SerializeField] private AudioClip gameMelodyClip;
         [Header("Fade Parameters")]
         [SerializeField] private float fadeDuration = 1.0f;
+        [Inject] private SaveSystem _saveSystem;
         private float _soundsVolume;
         private float _musicVolume;
 
         public float MusicVolume
         {
             get => _musicVolume;
-            private set => _musicVolume = value;
+            private set => _musicVolume = value < 0 ? 0 : value;
         }
 
         public float SoundsVolume
@@ -30,7 +32,10 @@ namespace CodeBase.Core.Systems
 
         public event Action<float> OnSoundsVolumeChanged;
 
+        private void Start() => _saveSystem.AddSystem(this);
+
         public void PlayGameMelody() => PlayMusic(gameMelodyClip);
+        
         public void PlayMainMenuMelody() => PlayMusic(mainMelodyClip);
 
         private void PlayMusic(AudioClip music)
@@ -43,7 +48,7 @@ namespace CodeBase.Core.Systems
 
         public void SetMusicVolume(float volume)
         {
-            Debug.Log("SetData MusicVolume - " + volume);
+            // Debug.Log("Set MusicVolume - " + volume);
             MusicVolume = volume > 0 ? volume : 0;
             musicAudioSource.volume = MusicVolume;
         }
@@ -68,18 +73,15 @@ namespace CodeBase.Core.Systems
             audioSource.DOFade(targetVolume, duration);
         }
 
-        public void Initialize(SerializableDataContainer dataContainer)
+        public void LoadData(SerializableDataContainer dataContainer)
         {
-            MusicVolume = dataContainer.TryGet(nameof(MusicVolume), out int musicVolume) ? musicVolume : 0;
-            SoundsVolume = dataContainer.TryGet(nameof(SoundsVolume), out int soundsVolume) ? soundsVolume : 0;
+            MusicVolume = dataContainer.TryGet(nameof(MusicVolume), out float musicVolume) ? musicVolume : 0;
+            SoundsVolume = dataContainer.TryGet(nameof(SoundsVolume), out float soundsVolume) ? soundsVolume : 0;
             
             musicAudioSource.volume = MusicVolume;
-            
-            Debug.Log(MusicVolume + " Music");
-            Debug.Log(SoundsVolume + " Sounds");        
         }
 
-        public void WriteTo(SerializableDataContainer dataContainer)
+        public void SaveData(SerializableDataContainer dataContainer)
         {      
             dataContainer.SetData(nameof(MusicVolume), MusicVolume);
             dataContainer.SetData(nameof(SoundsVolume), SoundsVolume);

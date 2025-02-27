@@ -49,7 +49,10 @@ MonoBehaviour:
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects: []
+  autoInjectGameObjects:
+  - {fileID: 8925830873703328478}
+  - {fileID: 4918328524241054238}
+  universalAppEventsService: {fileID: 6755475324245317476}
   audioSystem: {fileID: 6378455545049262953}
 --- !u!1 &4918328524241054238
 GameObject:
@@ -93,11 +96,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4918328524241054238}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2dbf2693ef6ea4945b5ee500e8d9965f, type: 3}
+  m_Script: {fileID: 11500000, guid: 68562816a990e74408424caee4a4e3db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   musicAudioSource: {fileID: 4669333744180989668}
-  mainMelodyClip: {fileID: 8300000, guid: d50bb82d89fec0540a9ea6d1caaafdb5, type: 3}
+  mainMelodyClip: {fileID: 8300000, guid: 37e59e77af5621744b8ece36adc7092a, type: 3}
   gameMelodyClip: {fileID: 8300000, guid: d50bb82d89fec0540a9ea6d1caaafdb5, type: 3}
   fadeDuration: 1
 --- !u!82 &4669333744180989668
@@ -111,7 +114,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -207,7 +210,7 @@ GameObject:
   - component: {fileID: 37110946932675353}
   - component: {fileID: 6755475324245317476}
   m_Layer: 0
-  m_Name: MonobehaviourEventsHandler
+  m_Name: AppEventsService
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
