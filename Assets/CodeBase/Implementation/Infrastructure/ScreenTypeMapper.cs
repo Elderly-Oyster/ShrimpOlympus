@@ -10,6 +10,10 @@ using VContainer;
 
 namespace CodeBase.Implementation.Infrastructure
 {
+    ///<summary> 
+    /// Responsible for resolving (or instantiating) the appropriate screen presenter for the
+    /// specified screenPresenterMap, using a dependency injection container provided by sceneLifetimeScope
+    ///</summary>
     public class ScreenTypeMapper
     {
         private readonly Dictionary<ScreenPresenterMap, Type> _map;

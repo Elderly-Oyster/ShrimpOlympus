@@ -19,10 +19,10 @@ namespace CodeBase.Implementation.Infrastructure
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
-
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); // reducing the number of threads to one
-        public IScreenPresenter CurrentPresenter { get; private set; }
         
+        public ScreenPresenterMap CurrentScreenPresenterMap { get; private set; } = ScreenPresenterMap.None;
+        public IScreenPresenter CurrentPresenter { get; private set; }
         
         public void Start() => RunScreen(SceneManager.GetActiveScene().name);
 
@@ -31,7 +31,7 @@ namespace CodeBase.Implementation.Infrastructure
             ScreenPresenterMap? screenModelMap = SceneNameToEnum(sceneName);
             
             if (screenModelMap != null)
-                RunScreen((ScreenPresenterMap)screenModelMap, param).Forget();  // overload method
+                RunScreen((ScreenPresenterMap)screenModelMap, param).Forget(); 
             else
             {
                 _sceneService.AddActiveScene(sceneName);
@@ -40,33 +40,55 @@ namespace CodeBase.Implementation.Infrastructure
             }
         }
 
+        /// <summary>
+        /// Launches a new screen state (only after the previous state finishes execution).
+        /// </summary>
+        /// <param name="screenPresenterMap">Type of the screen.</param>
+        /// <param name="param">Parameters to pass to Presenter.</param>
         public async UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null)
         {
-            Debug.Log("Run Screen: " + screenPresenterMap);
+            if (CheckIsSameScreen(screenPresenterMap))
+            {
+                Debug.LogWarning("⚠️ The same screen is already active.");
+                return;
+            }
+            
             await _semaphoreSlim.WaitAsync(); //Asynchronously waits to enter the SemaphoreSlim.
-
             try
             {
-                await _sceneService.LoadScenesForModule(screenPresenterMap);
+                Debug.Log("currentScreenPresetner - " + screenPresenterMap);
+                CurrentScreenPresenterMap = screenPresenterMap;
+
+                await _sceneService.LoadScenesForModule(CurrentScreenPresenterMap);
                 await _sceneService.UnloadUnusedScenesAsync();
 
                 // creates children for the root installer
-                var sceneLifetimeScope = _sceneInstallerService.
-                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);  
+                var sceneLifetimeScope =
+                    _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
                 
-                // responsible for resolving (or instantiating) the appropriate screen presenter for the
-                // specified screenPresenterMap, using a dependency injection container provided by sceneLifetimeScope
-                CurrentPresenter = _screenTypeMapper.Resolve(screenPresenterMap, sceneLifetimeScope.Container);
-                
+                CurrentPresenter = _screenTypeMapper.Resolve(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
+
                 _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
-                
+
                 await CurrentPresenter.Enter(param);
                 await CurrentPresenter.Execute();
                 await CurrentPresenter.Exit();
+
                 CurrentPresenter.Dispose();
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }
-            finally { _semaphoreSlim.Release(); }
+            finally
+            {
+                _semaphoreSlim.Release();
+            }
+        }
+        
+        /// <summary>
+        /// Checks if the requested screen is already active.
+        /// </summary>
+        private bool CheckIsSameScreen(ScreenPresenterMap screenViewModelMap)
+        {
+            return screenViewModelMap == CurrentScreenPresenterMap;
         }
 
         //tries to convert screen name in string to its name in enum. Can return null if the sceneName is not found

@@ -31,11 +31,16 @@ namespace Modules.Base.StartGameScreen.Scripts
             
             _tooltips = new []
             {
-                "Quickly check live exchange rates for over 1 currencies!",
-                "Simple and easy-to-use interface to convert currencies on-the-go!",
-                "Traveling abroad? Get accurate currency conversions instantly!",
-                "Make informed financial decisions with precise currency conversion at your fingertips!",
-                "Your reliable companion for international shopping, travel, and business!"
+                "Monitor parked cars carefully! Violators should be fined or towed.",
+                "Tow illegally parked vehicles to keep the streets clear.",
+                "Check license plates and issue fines to traffic violators.",
+                "Be quick! Some drivers might return to their cars in time.",
+                "Patrol the city and maintain order on the roads.",
+                "Use your police tablet to scan for violations and issue tickets.",
+                "Pay attention to road signs! Illegal parking means towing.",
+                "Improve your skills as an officer and become the best in the city.",
+                "Some drivers will try to argue—stand your ground and enforce the law.",
+                "Earn rewards for efficient towing and accurate fines."
             };
         }
         

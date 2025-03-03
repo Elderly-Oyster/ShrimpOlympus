@@ -15,12 +15,10 @@ namespace Modules.Base.StartGameScreen.Scripts
         public ReadOnlyReactiveProperty<float> ExponentialProgress => 
             _exponentialProgress.ToReadOnlyReactiveProperty();
         public ReactiveCommand<Unit> StartCommand => _startCommand;
-
         
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
         private readonly ReactiveCommand<Unit> _startCommand = new ReactiveCommand<Unit>();
-        
         
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
@@ -30,7 +28,6 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;
-
         
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
             StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView)
