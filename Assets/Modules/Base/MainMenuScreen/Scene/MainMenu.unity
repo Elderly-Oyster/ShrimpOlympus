@@ -314,11 +314,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1264369949816264011, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_text
-      value: Game
+      value: Currency Converter
       objectReference: {fileID: 0}
     - target: {fileID: 1264369949816264011, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_fontSize
-      value: 71.6
+      value: 43.5
       objectReference: {fileID: 0}
     - target: {fileID: 1269878823724244595, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Pivot.x
@@ -406,7 +406,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2580474512083453286, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_text
-      value: Car shop
+      value: TicTac
       objectReference: {fileID: 0}
     - target: {fileID: 2580474512083453286, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_fontSize
