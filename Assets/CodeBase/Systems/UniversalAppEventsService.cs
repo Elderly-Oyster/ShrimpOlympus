@@ -32,7 +32,7 @@ namespace CodeBase.Systems
 using System;
 using UnityEngine;
 
-namespace CodeBase.Services.AppEvents
+namespace Scripts.Services.AppEvents
 {
     public class UniversalAppEventsService : IAppEventService
     {

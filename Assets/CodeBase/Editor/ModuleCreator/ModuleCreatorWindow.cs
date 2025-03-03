@@ -27,7 +27,7 @@ namespace CodeBase.Editor.ModuleCreator
 
         public enum FolderType { Additional, Base, Test }
 
-        private static readonly string TrackingFilePath = "Assets/CodeBase/Editor/ModuleCreator/CreatedModules.json";
+        private static readonly string TrackingFilePath = "Assets/Scripts/Editor/ModuleCreator/CreatedModules.json";
         private List<string> _createdModules = new List<string>();
 
         [MenuItem("Tools/Create Module")]

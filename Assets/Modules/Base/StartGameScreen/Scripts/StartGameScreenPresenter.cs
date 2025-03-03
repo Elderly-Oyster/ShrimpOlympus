@@ -18,7 +18,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
-        private readonly ReactiveCommand<Unit> _startCommand = new ReactiveCommand<Unit>();
+        private readonly ReactiveCommand<Unit> _startCommand = new();
         
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
