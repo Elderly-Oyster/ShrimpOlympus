@@ -2,6 +2,7 @@ using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Core.Systems.PopupHub.Popups;
 using CodeBase.Core.UI;
 using CodeBase.Services;
+using CodeBase.Services.EventMediator;
 using CodeBase.Services.SceneInstallerService;
 using CodeBase.Systems.PopupHub;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;

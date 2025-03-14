@@ -6,6 +6,7 @@ using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Core.Systems.PopupHub.Popups;
 using CodeBase.Core.UI;
 using CodeBase.Services;
+using CodeBase.Services.EventMediator;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;
 using CodeBase.Systems.PopupHub.Popups.SecondPopup;
 using CodeBase.Systems.PopupHub.Popups.ThirdPopup;

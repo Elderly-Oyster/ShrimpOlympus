@@ -1,7 +1,6 @@
-using CodeBase.Core.Systems.PopupHub;
 using R3;
 
-namespace CodeBase.Services
+namespace CodeBase.Services.EventMediator
 {
     public class EventMediator
     {

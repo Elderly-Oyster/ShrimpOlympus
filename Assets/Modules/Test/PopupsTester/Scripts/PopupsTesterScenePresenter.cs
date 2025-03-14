@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CodeBase.Core.Modules;
 using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Services;
+using CodeBase.Services.EventMediator;
 using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;

@@ -1,4 +1,4 @@
-namespace CodeBase.Services
+namespace CodeBase.Services.EventMediator
 {
     //TODO Абстракцию для событий надо, чтобы грамотно разделять Core и Implementation
     public class PopupOpenedEvent
