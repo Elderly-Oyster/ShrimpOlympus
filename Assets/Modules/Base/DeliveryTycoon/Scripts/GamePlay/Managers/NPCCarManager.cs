@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
     public class NPCCarManager : MonoBehaviour
     {
@@ -23,13 +24,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
         {
             _carPool = carPool;
             _carSpawnEnabled = true;
+            Debug.Log("npc manager initialized");
             StartCoroutine(SpawnDecorationCars());
         }
-
-        // public void Initialize()
-        // {
-        //     
-        // }
         
         private IEnumerator SpawnDecorationCars()
         {

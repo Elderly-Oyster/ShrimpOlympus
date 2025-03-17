@@ -7,6 +7,7 @@ using Modules.Base.DeliveryTycoon.Scripts.DataSaving.Game;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using R3;
+using UnityEngine;
 using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
@@ -52,6 +53,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         public void EndGame()
         {
             _npcCarManager.Shutdown();
+            Debug.Log("Game End, dispose");
             _disposables.Dispose();
         }
 

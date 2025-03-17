@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using R3;
+using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
@@ -34,6 +35,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         public void GetExperience(int experience)
         {
+            Debug.Log("GetExperience");
             _experience.Value += experience;
             OnUpdateViewProgressBar?.Invoke(CalculateExperienceForProgressBar(_experience.Value));
             CheckForLevelUp();

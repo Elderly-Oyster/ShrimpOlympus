@@ -6,8 +6,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
 {
     public class CarPool
     {
-        [Inject] private readonly CarFactory _carFactory;
+        private readonly CarFactory _carFactory;
         private readonly Dictionary<CarType, Queue<NPCCar>> _carPools = new();
+
+        public CarPool(CarFactory carFactory)
+        {
+            _carFactory = carFactory;
+        }
 
         public NPCCar SpawnCar(CarType vehicleType, Vector3 position)
         {

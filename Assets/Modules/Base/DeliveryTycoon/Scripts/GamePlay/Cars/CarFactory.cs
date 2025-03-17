@@ -7,7 +7,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
 {
     public class CarFactory : IFactory<CarType, Vector3, NPCCar>
     {
-        [Inject] private CarConfig _vehicleConfig;
+        private CarConfig _vehicleConfig;
+        public CarFactory(CarConfig vehicleConfig)
+        {
+            _vehicleConfig = vehicleConfig;
+        }
         
         public NPCCar Create(CarType vehicleType, Vector3 spawnPosition)
         {

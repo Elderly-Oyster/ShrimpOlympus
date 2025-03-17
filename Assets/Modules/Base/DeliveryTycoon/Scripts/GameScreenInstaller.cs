@@ -33,11 +33,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.Register<LevelManager>(Lifetime.Singleton);
             builder.RegisterInstance(containerManager);
             builder.RegisterInstance(carController).AsImplementedInterfaces().As<CarController>();
-            builder.RegisterInstance(npcCarManager);
             builder.RegisterInstance(carConfig);
-            builder.RegisterInstance(receiverManager);
             builder.Register<CarFactory>(Lifetime.Singleton);
             builder.Register<CarPool>(Lifetime.Singleton);
+            builder.RegisterComponent(npcCarManager).AsImplementedInterfaces().AsSelf();
+            builder.RegisterInstance(receiverManager);
             builder.Register<GameManager>(Lifetime.Singleton);
             
             builder.Register<GameScreenController>(Lifetime.Singleton);
