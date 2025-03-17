@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using CodeBase.Core.Gameplay.Parcels;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.Game;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
-    public class 
-        ReceiverManager : MonoBehaviour
+    public class ReceiverManager : MonoBehaviour
     { 
         [SerializeField] private List<ReceiverBuilding> receiverBuildings = new();
         [SerializeField] private AudioClip notificationSound;
@@ -22,14 +22,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         private List<ReceiverBuilding> _musicalInstrumentsDemandingReceivers = new();
         private List<ParcelType> _parcelTypes = new();
         private AudioSource _audioSource;
-        private bool _isMusicOn;
+        private float _musicVolume;
 
         public int MaxDemandingReceivers => _maxDemandingReceivers;
 
 
-        public void Initialize(List<ContainerHoldersData> containerHoldersData, int maxDemandingReceivers, bool isMusicPlaying)
+        public void Initialize(List<ContainerHoldersData> containerHoldersData, int maxDemandingReceivers, float musicVolume)
         {
-            _isMusicOn = isMusicPlaying;
+            _musicVolume = musicVolume;
             _audioSource = GetComponent<AudioSource>();
             _maxDemandingReceivers = maxDemandingReceivers;
             var containersParcelTypes = containerHoldersData.FindAll(x
@@ -61,6 +61,20 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         private void SortReceiverBuildings()
         {
+            foreach (var receiver in receiverBuildings)
+            {
+                if (receiver == null)
+                {
+                    Debug.LogError(" Null ReceiverBuilding found in receiverBuildings list!");
+                    continue;
+                }
+
+                if (receiver.Parcel == null)
+                {
+                    Debug.LogError($" Null Parcel in ReceiverBuilding: {receiver.name}");
+                }
+            }
+
             _presentDemandingReceivers = receiverBuildings.FindAll(r => 
                 r.Parcel.ParcelType == ParcelType.Presents);
             _electronicsDemandingReceivers = receiverBuildings.FindAll(r =>
@@ -122,7 +136,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                             potentialReceivers[i].StartDemandParcel();
                         }
 
-                        if (_isMusicOn)
+                        if (_musicVolume > 0)
                         {
                             AudioSource.PlayClipAtPoint(notificationSound, transform.TransformPoint(transform.position));
                         }

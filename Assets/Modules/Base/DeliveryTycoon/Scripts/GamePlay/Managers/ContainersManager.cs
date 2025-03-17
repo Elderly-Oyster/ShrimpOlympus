@@ -1,8 +1,14 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 using CodeBase.Core.Gameplay.Parcels;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.Game;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
+using R3;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
@@ -12,21 +18,19 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         [SerializeField] private List<ContainerHolder> containerHolders;
         [SerializeField] private List<ParcelType> parcelTypesForContainersToBeBought;
         
-        private List<ContainerHolder> _activeContainersHolders = new();
         private GameObject _cachedContainerModel;
         private ParcelType _parcelTypeToAssign;
         private bool _isInitialized;
-
-        public List<ContainerHolder> ActiveContainers => _activeContainersHolders;
-        public event Action<List<ContainerHolder>> OnContainerAdded;
+        private ReactiveProperty<List<ContainerHolder>> _containerHolder = new();
+        public ReadOnlyReactiveProperty<List<ContainerHolder>> ContainerHoldersList => _containerHolder;
 
         public void Initialize(List<ContainerHoldersData> containerHolders)
-        {
+        { 
+            _containerHolder.Value = this.containerHolders;
             var containersList = containerHolders.Find(c => c.HasInitializedContainer);
             if ( containersList == null)
             {
                 StartWarmUpOfContainer();
-                
             }
             else
             {
@@ -62,18 +66,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                 var instance = Instantiate(_cachedContainerModel,
                     firstInactiveContainHolder.transform.position, Quaternion.identity);
                 instance.transform.SetParent(transform);
-
-                
                 firstInactiveContainHolder.SetActiveState(_parcelTypeToAssign);
-
-                var container = instance.GetComponent<Container>();
-                _activeContainersHolders.Add(firstInactiveContainHolder);
                 Debug.Log($"     Assigned ParcelType {_parcelTypeToAssign} to {firstInactiveContainHolder.name}");
             }
 
-            
-            OnContainerAdded?.Invoke(containerHolders);
-
+            _containerHolder.Value = containerHolders;
             _cachedContainerModel = null;
             _parcelTypeToAssign = ParcelType.None;
         }

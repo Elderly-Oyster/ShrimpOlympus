@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Core.Gameplay.Parcels;
+using R3;
 using UnityEngine;
 
 namespace CodeBase.Core.Gameplay.Cars
@@ -10,26 +11,28 @@ namespace CodeBase.Core.Gameplay.Cars
         [SerializeField] private GameObject parcelModel;
         
         private int _capacity = 1;
-        private int _money;
+        //private int _money;
         private List<Parcel> _parcels = new();
-        public event Action<int> OnMoneyChanged;
-        public event Action<int> OnExperienceObtained;
+        
+        private ReactiveProperty<int> _money = new();
+        private ReactiveProperty<int> _experience = new();
+        public ReadOnlyReactiveProperty<int> Money => _money;
+        public ReadOnlyReactiveProperty<int> Experience => _experience;
 
         public int Capacity => _capacity;
 
-        public int Money => _money;
+        //public int Money => _money;
 
         public void Initialize(int capacity, int money)
         {
             _capacity = capacity;
-            _money = money;
+            _money.Value = money;
             parcelModel.SetActive(false);
         }
 
         private void AddMoney(int amount)
         {
-            _money += amount;
-            OnMoneyChanged?.Invoke(_money);
+            _money.Value += amount;
         }
 
         public void LoadParcel(Parcel parcel)
@@ -53,7 +56,7 @@ namespace CodeBase.Core.Gameplay.Cars
                 Debug.Log($"Unloading parcel {parcel}");
                 var parcelToUnload = _parcels.Find(p => p.ParcelType == parcel.ParcelType);
                 AddMoney(parcelToUnload.DeliveryCost);
-                OnExperienceObtained?.Invoke(parcelToUnload.Experience);
+                _experience.Value = parcelToUnload.Experience;
                 _parcels.Remove(parcelToUnload);
                 
                 if (_parcels.Count == 0)
@@ -66,13 +69,11 @@ namespace CodeBase.Core.Gameplay.Cars
 
         public void UpdateMoney(int amount)
         {
-            _money = amount;
-            OnMoneyChanged?.Invoke(_money);
+            _money.Value = amount;
         }
-        public void UpdateCarCapacity(int newCapacity, int money)
+        public void UpdateCarCapacity(int newCapacity)
         {
             _capacity = newCapacity;
-            _money = money;
         }
     }
 }

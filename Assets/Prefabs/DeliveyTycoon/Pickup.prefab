@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 380038498877923311}
   - component: {fileID: 3516790782963034519}
   - component: {fileID: 1334074730664995754}
+  - component: {fileID: 6716672519967986567}
   m_Layer: 0
   m_Name: Pickup
   m_TagString: Untagged
@@ -105,8 +106,8 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 4.9546075
-  m_BaseOffset: 2.4773037
+  m_Height: 2.47
+  m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &380038498877923311
@@ -169,3 +170,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6716672519967986567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2484080558074170025}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9aabba9dc71b412e8c73a2b7227282db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

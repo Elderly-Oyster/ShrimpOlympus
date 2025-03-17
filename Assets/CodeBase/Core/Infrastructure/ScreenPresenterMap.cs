@@ -6,6 +6,7 @@ namespace CodeBase.Core.Infrastructure
         StartGame,
         MainMenu,
         Converter,
-        TicTac
+        TicTac,
+        DeliveryTycoon
     }
 }

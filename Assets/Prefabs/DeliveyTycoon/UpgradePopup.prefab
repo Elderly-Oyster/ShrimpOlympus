@@ -178,17 +178,17 @@ RectTransform:
   m_GameObject: {fileID: 2239372582319477534}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.61, y: 0.61, z: 0.61}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6905377273148963334}
   - {fileID: 4992975632056299917}
   m_Father: {fileID: 2161322116585583318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -100, y: 100}
-  m_SizeDelta: {x: 125, y: 125}
+  m_AnchorMin: {x: 0.76930594, y: 0.76714283}
+  m_AnchorMax: {x: 0.84700006, y: 0.87000006}
+  m_AnchoredPosition: {x: 1, y: -2}
+  m_SizeDelta: {x: 49, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4623065044247217759
 CanvasRenderer:
@@ -283,7 +283,8 @@ GameObject:
   - component: {fileID: 2115179515970575175}
   - component: {fileID: 7008133320630727752}
   - component: {fileID: 6104509186706231453}
-  - component: {fileID: 5176715559681745139}
+  - component: {fileID: 2335704253623783441}
+  - component: {fileID: 2349337934506208788}
   m_Layer: 0
   m_Name: UpgradePopup
   m_TagString: Untagged
@@ -340,7 +341,30 @@ MonoBehaviour:
   scaleUpFactor: 1.1
   scaleDuration: 0.25
   fadeDuration: 0.25
---- !u!114 &5176715559681745139
+--- !u!223 &2335704253623783441
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2335789949373171186}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &2349337934506208788
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -349,17 +373,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 2335789949373171186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b4191f7b65943609c49a682b15401ef, type: 3}
+  m_Script: {fileID: 11500000, guid: d5c9186817a3499681ab1481cc4d662e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Canvas: {fileID: 0}
-  showHideAnimation: {fileID: 6104509186706231453}
-  closeButton: {fileID: 8048413988039265251}
-  priority: 1
+  animationElement: {fileID: 6104509186706231453}
   addCapacityButton: {fileID: 940120975408415211}
   promoteCompanyButton: {fileID: 7721430847409617256}
   hireEmployeeButton: {fileID: 7739688680462792915}
   buyContainerButton: {fileID: 1293345195494632970}
+  backToGameButton: {fileID: 8048413988039265251}
   addCapacityText: {fileID: 2995732365000286119}
   promoteCompanyText: {fileID: 7383994292107457960}
   hireEmployeeText: {fileID: 1520514040030077954}
@@ -503,7 +525,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hire an employee '
+  m_text: 'Hire Employee: 300'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -688,7 +710,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 8146105928708663070}
   m_OnClick:
     m_PersistentCalls:
@@ -809,7 +831,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 6876943657806418347}
   m_OnClick:
     m_PersistentCalls:
@@ -846,8 +868,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2161322116585583318}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.136, y: 0.07285715}
+  m_AnchorMax: {x: 0.8724489, y: 0.9028571}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -954,7 +976,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add Capacity up to 2
+  m_text: 'Add Capacity up to 2: 300'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1139,7 +1161,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 8504839075080123845}
   m_OnClick:
     m_PersistentCalls:
@@ -1209,7 +1231,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Promote Company. Maximum number of orders up to 2
+  m_text: 'Promote Company. Maximum number of orders up to 2: 300'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1585,7 +1607,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 257584917501920954}
   m_OnClick:
     m_PersistentCalls:

@@ -2,6 +2,7 @@
 using System.Threading;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Services;
 using CodeBase.Services.SceneInstallerService;
 using Cysharp.Threading.Tasks;
@@ -23,6 +24,8 @@ namespace CodeBase.Implementation.Infrastructure
         
         public ScreenPresenterMap CurrentScreenPresenterMap { get; private set; } = ScreenPresenterMap.None;
         public IScreenPresenter CurrentPresenter { get; private set; }
+        
+        public IStateController CurrentStateController { get; private set; }
         
         public void Start() => RunScreen(SceneManager.GetActiveScene().name);
 
@@ -65,16 +68,34 @@ namespace CodeBase.Implementation.Infrastructure
                 // creates children for the root installer
                 var sceneLifetimeScope =
                     _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
-                
-                CurrentPresenter = _screenTypeMapper.Resolve(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
+                if (CurrentScreenPresenterMap == ScreenPresenterMap.DeliveryTycoon)
+                {
+                    CurrentStateController = 
+                        _screenTypeMapper.ResolveController(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
+                    
+                    _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
+                    
+                    await CurrentStateController.Enter(param);
+                    await CurrentStateController.Execute();
+                    await CurrentStateController.Exit();
+                    
+                    CurrentStateController.Dispose();
+                }
+                else
+                {
+                    CurrentPresenter =
+                        _screenTypeMapper.Resolve(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
 
-                _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
 
-                await CurrentPresenter.Enter(param);
-                await CurrentPresenter.Execute();
-                await CurrentPresenter.Exit();
+                    _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
 
-                CurrentPresenter.Dispose();
+                    await CurrentPresenter.Enter(param);
+                    await CurrentPresenter.Execute();
+                    await CurrentPresenter.Exit();
+
+                    CurrentPresenter.Dispose();
+                }
+
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }
             finally

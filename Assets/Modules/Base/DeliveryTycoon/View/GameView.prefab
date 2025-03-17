@@ -562,7 +562,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 26.8
+  m_fontSize: 18
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 8006773272996431347}
   - component: {fileID: 3721616614393648447}
   - component: {fileID: 140403774526292463}
-  - component: {fileID: 182204135651324104}
+  - component: {fileID: 7433855421759802727}
   m_Layer: 5
   m_Name: GameView
   m_TagString: Untagged
@@ -713,7 +713,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 8006773272996431347}
   fadeDuration: 0.4
---- !u!114 &182204135651324104
+--- !u!114 &7433855421759802727
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -722,15 +722,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 3545869489180579486}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d88212fa5744fb2971b53817d9a70b0, type: 3}
+  m_Script: {fileID: 11500000, guid: 776afc2f787341139e59f9186f2291b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showHideShowHideAnimation: {fileID: 140403774526292463}
+  animationElement: {fileID: 140403774526292463}
   mainMenuButton: {fileID: 1331831594224535213}
   upgradePopupButton: {fileID: 1470153501112279564}
-  playerMoneyText: {fileID: 0}
-  experienceProgressBar: {fileID: 0}
-  levelText: {fileID: 0}
+  playerMoneyText: {fileID: 9120339899840274926}
+  experienceProgressBar: {fileID: 4648282667616408953}
+  levelText: {fileID: 2694675324253553079}
 --- !u!1 &4586561914067731408
 GameObject:
   m_ObjectHideFlags: 0
@@ -823,7 +823,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28.65
+  m_fontSize: 18
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 1

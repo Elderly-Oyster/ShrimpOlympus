@@ -23,7 +23,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
 
         [SerializeField] private Camera _mainCamera;
         
-        private AudioSystem _audioSystem;
         private Inputs _input;
         private float _speed;
         private CharacterController _controller;
@@ -33,16 +32,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
         private AudioClip _currentSound;
         private AudioSource _audioSource;
 
-        [Inject]
-        public void Construct(AudioSystem audioSystem)
-        {
-            _audioSystem = audioSystem;
-        }
+        [Inject] private AudioSystem _audioSystem;
         
-        public void SetMusicState(bool isMusicPlaying)
+        public void SetMusicState(float musicVolume)
         {
-            Debug.Log("Music "+ isMusicPlaying);
-            if (isMusicPlaying)
+            if (musicVolume > 0)
             {
                 _audioSource.clip = IdleSound;
                 _audioSource.loop = true;
@@ -65,15 +59,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
         private void Update()
         {
             Move();
-            if (_audioSystem.MusicVolume != 0 && _audioSource.isPlaying == false)
-            {
-                Debug.Log("Turning on Music");
-                _audioSource.clip = IdleSound;
-                _audioSource.loop = true;
-                _audioSource.playOnAwake = false;
-                _audioSource.Play();
-                _audioSource.volume = _audioSystem.MusicVolume-0.6f;
-            }
+            // if (_audioSystem.MusicVolume != 0 && _audioSource.isPlaying == false)
+            // {
+            //     Debug.Log("Turning on Music");
+            //     _audioSource.clip = IdleSound;
+            //     _audioSource.loop = true;
+            //     _audioSource.playOnAwake = false;
+            //     _audioSource.Play();
+            //     _audioSource.volume = _audioSystem.MusicVolume-0.6f;
+            // }
         }
 
         private void Move()
@@ -114,7 +108,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
                     RotationSmoothTime);
                 
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
-                _audioSource.pitch =1.3f;
+                //_audioSource.pitch =1.3f;
             }
 
 

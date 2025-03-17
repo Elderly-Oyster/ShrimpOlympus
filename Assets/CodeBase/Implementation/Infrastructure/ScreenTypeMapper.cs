@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using Modules.Base.ConverterScreen.Scripts;
+using Modules.Base.DeliveryTycoon.Scripts;
 using Modules.Base.MainMenuScreen.Scripts;
 using Modules.Base.StartGameScreen.Scripts;
 using Modules.Base.TicTacScreen.Scripts;
@@ -25,11 +27,15 @@ namespace CodeBase.Implementation.Infrastructure
                 { ScreenPresenterMap.StartGame, typeof(StartGameScreenPresenter) },
                 { ScreenPresenterMap.Converter, typeof(ConverterScreenPresenter) },
                 { ScreenPresenterMap.MainMenu, typeof(MainMenuScreenPresenter) },
-                { ScreenPresenterMap.TicTac, typeof(TicTacScreenPresenter) }
+                { ScreenPresenterMap.TicTac, typeof(TicTacScreenPresenter) },
+                { ScreenPresenterMap.DeliveryTycoon, typeof(GameScreenController)}
             };
         }
 
         public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) => 
             (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
+        
+        public IStateController ResolveController(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) =>
+        (IStateController)objectResolver.Resolve(_map[screenPresenterMap]);
     }
 }

@@ -2,31 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VContainer;
 using Random = UnityEngine.Random;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
 {
     public class NPCCarManager : MonoBehaviour
     {
-        [Inject] private CarPool _carPool;
+        private CarPool _carPool;
         [SerializeField] private GameObject spawn1;
         [SerializeField] private GameObject despawn1;
         [SerializeField] private GameObject spawn2;
         [SerializeField] private GameObject despawn2;
-        [SerializeField] private GameObject spawn3;
-        [SerializeField] private GameObject despawn3;
-        [SerializeField] private GameObject spawn4;
-        [SerializeField] private GameObject despawn4;
         
         private bool _carSpawnEnabled;
         private List<NPCCar> _cars = new();
 
-        public void Initialize()
+        [Inject]
+        public void Construct(CarPool carPool)
         {
-            ProjectDiContainer.Instance.Inject(this);
+            _carPool = carPool;
             _carSpawnEnabled = true;
             StartCoroutine(SpawnDecorationCars());
         }
+
+        // public void Initialize()
+        // {
+        //     
+        // }
         
         private IEnumerator SpawnDecorationCars()
         {
@@ -35,10 +38,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
                 SpawnCar(RandomCarType(), spawn1.transform.position, despawn1.transform);
                 yield return new WaitForSeconds(Random.Range(8f, 10f));
                 SpawnCar(RandomCarType(), spawn2.transform.position, despawn2.transform);
-                // yield return new WaitForSeconds(Random.Range(4f, 6f));
-                // SpawnCar(RandomCarType(), spawn3.transform.position, despawn3.transform);
-                // yield return new WaitForSeconds(Random.Range(4f, 6f));
-                // SpawnCar(RandomCarType(), spawn4.transform.position, despawn4.transform);
             }
         }
         

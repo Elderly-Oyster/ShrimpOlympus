@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using R3;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
@@ -8,34 +9,33 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
     {
         private List<int> _levelsToUnlockNewFeature = new(){1, 3, 5, 15};
         
-        private int _level;
-        private int _experience;
+        private ReactiveProperty<int> _level = new ();
+        private ReactiveProperty<int> _experience = new ();
         private const float EXPERIENCE_MULTIPLIER = 0.5F;
         private const int BaseExperienceForLevel = 100;
         private float _experienceNeededForNextLevel;
-        private int _numberOfUnlockedFeatures;
-
-        public event Action<int> OnLevelUp;
+        private ReactiveProperty<int> _numberOfUnlockedFeatures = new ();
+        
         public event Action<float> OnUpdateViewProgressBar;
+        
+        public ReadOnlyReactiveProperty<int> Level => _level;
 
-        public int Level => _level;
+        public ReadOnlyReactiveProperty<int> Experience => _experience;
 
-        public int Experience => _experience;
-
-        public int NumberOfUnlockedFeatures => _numberOfUnlockedFeatures;
+        public ReadOnlyReactiveProperty<int> NumberOfUnlockedFeatures => _numberOfUnlockedFeatures;
 
         public void Initialize(int level, int experience, int numberOfFeatures)
         {
-            _level = level;
-            _experience = experience;
-            _numberOfUnlockedFeatures = numberOfFeatures;
-            SetExperienceForLevel(_level);
+            _level.Value = level;
+            _experience.Value = experience;
+            _numberOfUnlockedFeatures.Value = numberOfFeatures;
+            SetExperienceForLevel(_level.Value);
         }
 
         public void GetExperience(int experience)
         {
-            _experience += experience;
-            OnUpdateViewProgressBar?.Invoke(CalculateExperienceForProgressBar(_experience));
+            _experience.Value += experience;
+            OnUpdateViewProgressBar?.Invoke(CalculateExperienceForProgressBar(_experience.Value));
             CheckForLevelUp();
         }
 
@@ -51,17 +51,16 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         private void LevelUp()
         {
-            _level++;
-            SetExperienceForLevel(_level);
-            CheckToUnlockNewFeature(_level);
-            _experience = 0;
-            OnUpdateViewProgressBar?.Invoke(CalculateExperienceForProgressBar(_experience));
-            OnLevelUp?.Invoke(_level);
+            _level.Value++;
+            SetExperienceForLevel(_level.Value);
+            CheckToUnlockNewFeature(_level.Value);
+            _experience.Value = 0;
+            OnUpdateViewProgressBar?.Invoke(CalculateExperienceForProgressBar(_experience.Value));
         }
 
         private void CheckForLevelUp()
         {
-            if (_experience >= _experienceNeededForNextLevel)
+            if (_experience.Value >= _experienceNeededForNextLevel)
                 LevelUp();
         }
 
@@ -69,7 +68,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         {
             if (_levelsToUnlockNewFeature.Contains(level))
             {
-                _numberOfUnlockedFeatures++;
+                _numberOfUnlockedFeatures.Value++;
             }
         }
     }
