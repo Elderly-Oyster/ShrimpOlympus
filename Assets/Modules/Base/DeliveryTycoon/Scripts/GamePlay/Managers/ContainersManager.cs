@@ -21,20 +21,20 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         private GameObject _cachedContainerModel;
         private ParcelType _parcelTypeToAssign;
         private bool _isInitialized;
-        private ReactiveProperty<List<ContainerHolder>> _containerHolder = new();
+        private readonly ReactiveProperty<List<ContainerHolder>> _containerHolder = new();
         public ReadOnlyReactiveProperty<List<ContainerHolder>> ContainerHoldersList => _containerHolder;
 
-        public void Initialize(List<ContainerHoldersData> containerHolders)
+        public void Initialize(List<ContainerHoldersData> containerHoldersData)
         { 
             _containerHolder.Value = this.containerHolders;
-            var containersList = containerHolders.Find(c => c.HasInitializedContainer);
+            var containersList = containerHoldersData.Find(c => c.HasInitializedContainer);
             if ( containersList == null)
             {
                 StartWarmUpOfContainer();
             }
             else
             {
-                var containersToInitialize = containerHolders.
+                var containersToInitialize = containerHoldersData.
                     FindAll(c => c.HasInitializedContainer);
                 for (int i = 0; i < containersToInitialize.Count; i++)
                 {
@@ -70,7 +70,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                 Debug.Log($"     Assigned ParcelType {_parcelTypeToAssign} to {firstInactiveContainHolder.name}");
             }
 
-            _containerHolder.Value = containerHolders;
+            _containerHolder.Value = new List<ContainerHolder>(containerHolders);
             _cachedContainerModel = null;
             _parcelTypeToAssign = ParcelType.None;
         }

@@ -54,7 +54,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private void ConfigureStateMachine()
         {
-            StateMachine.Configure(GameScreenState.Game).OnExit(() =>_saveSystem.SaveData().Forget()).
+            StateMachine.Configure(GameScreenState.Game).
                 Permit(GameScreenState.UpgradePopup, GameScreenState.UpgradePopup);
             
             StateMachine.Configure(GameScreenState.UpgradePopup).

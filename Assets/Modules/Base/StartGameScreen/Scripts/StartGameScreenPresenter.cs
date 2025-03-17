@@ -2,13 +2,14 @@
 using System.Threading;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenPresenter : IScreenPresenter
+    public class StartGameScreenPresenter : IStateController
     {
         public ReadOnlyReactiveProperty<string> ProgressStatus => 
             _progressStatus.ToReadOnlyReactiveProperty();

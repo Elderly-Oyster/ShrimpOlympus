@@ -15,10 +15,11 @@ namespace CodeBase.Core.Modules
 
         protected virtual void Awake()
         {
+            Debug.Log("Awake works for " + gameObject.name);
             _canvasGroup = GetComponent<CanvasGroup>();
             _canvas = GetComponent<Canvas>();
         }
-
+        
         public virtual async UniTask Show()
         {
             SetActive(true);
@@ -35,11 +36,34 @@ namespace CodeBase.Core.Modules
         
         protected void SetActive(bool isActive)
         {
-            _canvas.enabled = isActive;
-            _canvasGroup.alpha = isActive ? 1 : 0;
-            _canvasGroup.blocksRaycasts = isActive;
-            _canvasGroup.interactable = isActive;
+            if (_canvas == null)
+                _canvas = GetComponent<Canvas>();
+            if (_canvasGroup == null)
+                _canvasGroup = GetComponent<CanvasGroup>();
             
+            if (_canvas != null)
+                _canvas.enabled = isActive;
+            else
+            {
+                Debug.LogError("Canvas not found");
+            }
+            
+            if (_canvasGroup != null)
+            {
+                _canvasGroup.alpha = isActive ? 1 : 0;
+                _canvasGroup.blocksRaycasts = isActive;
+                _canvasGroup.interactable = isActive;
+            }
+            else
+            {
+                Debug.LogError("Canvas group not found");
+            }
+            
+            if (transform.parent != null && !transform.parent.gameObject.activeSelf)
+            {
+                transform.parent.gameObject.SetActive(true);
+            }
+
             gameObject.SetActive(isActive);
         }
         

@@ -68,8 +68,7 @@ namespace CodeBase.Implementation.Infrastructure
                 // creates children for the root installer
                 var sceneLifetimeScope =
                     _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
-                if (CurrentScreenPresenterMap == ScreenPresenterMap.DeliveryTycoon)
-                {
+                
                     CurrentStateController = 
                         _screenTypeMapper.ResolveController(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
                     
@@ -80,21 +79,6 @@ namespace CodeBase.Implementation.Infrastructure
                     await CurrentStateController.Exit();
                     
                     CurrentStateController.Dispose();
-                }
-                else
-                {
-                    CurrentPresenter =
-                        _screenTypeMapper.Resolve(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
-
-
-                    _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
-
-                    await CurrentPresenter.Enter(param);
-                    await CurrentPresenter.Execute();
-                    await CurrentPresenter.Exit();
-
-                    CurrentPresenter.Dispose();
-                }
 
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }

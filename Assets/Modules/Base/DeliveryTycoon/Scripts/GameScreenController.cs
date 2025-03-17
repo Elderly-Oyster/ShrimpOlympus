@@ -57,7 +57,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
                 case GameScreenState.UpgradePopup:
                 {
-                    _upgradePopupPresenter.Enter(null);
+                    await _upgradePopupPresenter.Enter(null);
                     break;
                 }
             }

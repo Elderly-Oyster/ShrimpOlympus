@@ -36,9 +36,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         }
 
 
-        public UniTask Enter(object param)
+        public async UniTask Enter(object param)
         {
             _upgradePopupView.HideInstantly();
+           
             SubscribeToReactiveEvents();
             _upgradePopupView.SetupEventListeners
             (
@@ -54,7 +55,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 _upgradeMaxNumberOfOrdersCost);
             _upgradePopupView.UpdateHireEmployeeText(_hireEmployeeCost);
             SetInteractableButtons();
-            return UniTask.CompletedTask;
+            await _upgradePopupView.Show();
         }
 
         public async UniTask Execute() => await _screenCompletionSource.Task;

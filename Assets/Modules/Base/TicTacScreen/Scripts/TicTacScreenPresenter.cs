@@ -1,12 +1,13 @@
 ﻿using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using R3;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenPresenter : IScreenPresenter
+    public class TicTacScreenPresenter : IStateController
     {
         private readonly TicTacScreenView _ticTacScreenView;
         private readonly IScreenStateMachine _screenStateMachine;

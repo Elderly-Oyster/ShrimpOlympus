@@ -60,7 +60,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             //Updates from managers and player for game data system 
             _disposables.Add(_carController.Money.
                 Subscribe(money => _gameDataSystem.GameDataProperty.Value.money = money));
-            _disposables.Add(_carController.Experience.Subscribe(_levelManager.GetExperience));
+            _disposables.Add(_carController.Experience.Subscribe(experience => _levelManager.GetExperience(experience)));
             _disposables.Add(_levelManager.Level.
                 Subscribe(level => _gameDataSystem.GameDataProperty.Value.level = level));
             _disposables.Add(_levelManager.Experience.
@@ -69,15 +69,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                 Subscribe(numberOfUnlockedUpgrades => 
                     _gameDataSystem.GameDataProperty.Value.numberOfUnlockedUpgrades = numberOfUnlockedUpgrades));
             //Updates from popup
-            _disposables.Add(_gameDataSystem.OnItemBought.Subscribe(_carController.UpdateMoney));
+            _disposables.Add(_gameDataSystem.OnItemBought.Subscribe(money => _carController.UpdateMoney(money)));
             _disposables.Add(_gameDataSystem.OnContainerNeedsInitialization.
                     Subscribe(_ =>_containerManager.StartWarmUpOfContainer()));
             _disposables.Add(_gameDataSystem.OnUpdateCapacity.
                     Subscribe(capacity =>_carController.UpdateCarCapacity(capacity)));
-            _disposables.Add(_gameDataSystem.OnUpdateMaxOrdersNumber.Subscribe(_receiverManager.UpdateMaxNumberOfReceivers));
+            _disposables.Add(_gameDataSystem.OnUpdateMaxOrdersNumber.
+                Subscribe(numberOfReceivers => _receiverManager.UpdateMaxNumberOfReceivers(numberOfReceivers)));
             //Updates from container manager 
-            _disposables.Add(_containerManager.ContainerHoldersList.Subscribe(UpdateContainerHoldersData));
-            _disposables.Add(_containerManager.ContainerHoldersList.Subscribe(_receiverManager.UpdateReceiversTypes));
+            _disposables.Add(_containerManager.ContainerHoldersList.
+                Subscribe(UpdateContainerHoldersData));
+            _disposables.Add(_containerManager.ContainerHoldersList.
+                Subscribe( data =>_receiverManager.UpdateReceiversTypes(data)));
         }
 
         private void UpdateContainerHoldersData(List<ContainerHolder> containerHolders)

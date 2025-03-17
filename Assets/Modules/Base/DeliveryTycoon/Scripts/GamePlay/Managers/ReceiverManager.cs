@@ -42,6 +42,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         public void UpdateReceiversTypes(List<ContainerHolder> containerHolders)
         {
+            Debug.Log("UpdateReceiversTypes");
             foreach (var containerHolder in containerHolders)
             {
                 if (containerHolder.Type == ParcelType.None && containerHolder.HasInitializedContainer == false)
@@ -87,6 +88,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         
         public IEnumerator StartAssignReceivers()
         {
+            Debug.Log("Starting Assigning Receivers");
             while (_assignReceivers)
             {
                 if (receiverBuildings.Count > 0)

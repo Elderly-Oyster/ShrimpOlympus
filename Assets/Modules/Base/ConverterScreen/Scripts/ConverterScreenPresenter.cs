@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground.Scripts;
 using R3;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenPresenter : IScreenPresenter
+    public class ConverterScreenPresenter : IStateController
     {
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly ConverterScreenModel _converterScreenModel;

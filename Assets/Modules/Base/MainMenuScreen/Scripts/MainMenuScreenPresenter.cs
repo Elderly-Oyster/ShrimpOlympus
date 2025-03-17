@@ -1,5 +1,6 @@
 ﻿using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
@@ -7,7 +8,7 @@ using R3;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenPresenter : IScreenPresenter
+    public class MainMenuScreenPresenter : IStateController
     {
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly MainMenuScreenModel _mainMenuScreenModel;

@@ -14,13 +14,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving
         private SaveSystem _saveSystem;
         
         private const string GameDataKey = "GameData";
-        private ReactiveProperty<GameData> _gameDataProperty = new();
+        private readonly ReactiveProperty<GameData> _gameDataProperty = new();
 
-        public ReactiveCommand<Unit> OnContainerNeedsInitialization = new();
-        public ReactiveCommand<int> OnUpdateCapacity = new();
+        public readonly ReactiveCommand<Unit> OnContainerNeedsInitialization = new();
+        public readonly ReactiveCommand<int> OnUpdateCapacity = new();
         public ReactiveProperty<GameData> GameDataProperty => _gameDataProperty;
         public ReactiveCommand<int> OnItemBought { get; private set; } = new();
-        public ReactiveCommand<int> OnUpdateMaxOrdersNumber = new();
+        public readonly ReactiveCommand<int> OnUpdateMaxOrdersNumber = new();
 
         [Inject]
         public void Construct(SaveSystem saveSystem)
@@ -81,7 +81,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving
             if (newMaxNumberOfOrdersData < 0) return;
             _gameDataProperty.Value.maxNumberOfOrders = newMaxNumberOfOrdersData;
             OnUpdateMaxOrdersNumber.Execute(newMaxNumberOfOrdersData);
-            _saveSystem.SaveData().Forget();
         }
 
         public List<ContainerHoldersData> GetContainerHoldersData() =>
@@ -91,7 +90,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving
         {
             if (containersData == null) return;
             _gameDataProperty.Value.containersData = containersData;
-            _saveSystem.SaveData().Forget();
         }
         
         public void LoadData(SerializableDataContainer dataContainer)
