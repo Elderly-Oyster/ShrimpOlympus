@@ -31,7 +31,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars
 
         private void OnTriggerEnter(Collider other)
         {
-            Debug.Log("Despawn Zone");
             if (other.GetComponent<DespawnZone>())
             {
                 _agent.speed = 0f;

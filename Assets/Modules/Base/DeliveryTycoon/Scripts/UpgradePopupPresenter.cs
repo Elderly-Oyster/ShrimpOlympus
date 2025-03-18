@@ -15,7 +15,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private GameScreenModel _gameScreenModel;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
         private GameDataSystem _gameDataSystem;
-        private CompositeDisposable _disposables = new();
+        private readonly CompositeDisposable _disposables = new();
         
         private const int BaseUpgradesCount = 120;
         private const float UpgradeCostMultiplier = 1.5f;
@@ -24,37 +24,33 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private int _hireEmployeeCost;
         private int _containerCost;
         
-       
-        public ReactiveCommand<Unit> OnBuyContainerButtonClickedCommand { get; private set; }
-        
         public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameScreenModel gameScreenModel, GameDataSystem gameDataSystem)
         {
             _upgradePopupView = upgradePopupView;
             _gameScreenModel = gameScreenModel;
             _gameDataSystem = gameDataSystem;
             _screenCompletionSource = new TaskCompletionSource<bool>();
-        }
-
-
-        public async UniTask Enter(object param)
-        {
-            _upgradePopupView.HideInstantly();
-           
-            SubscribeToReactiveEvents();
             _upgradePopupView.SetupEventListeners
             (
                 ClosePopup,
                 OnBuyContainerButtonClicked,
                 OnPromoteCompanyButtonClicked,
                 OnAddCapacityButtonClicked
-                );
+            );
+            SubscribeToReactiveEvents();
+        }
+
+
+        public async UniTask Enter(object param)
+        {
+            _upgradePopupView.HideInstantly();
+            SetInteractableButtons();
             CalculateUpgradeAllCosts(_gameDataSystem.GameDataProperty.CurrentValue);
             _upgradePopupView.UpdateAddCapacityText(_gameDataSystem.GameDataProperty.CurrentValue.capacity, 
                 _upgradeCapacityCost);
             _upgradePopupView.UpdatePromoteCompanyText(_gameDataSystem.GameDataProperty.CurrentValue.maxNumberOfOrders,
                 _upgradeMaxNumberOfOrdersCost);
             _upgradePopupView.UpdateHireEmployeeText(_hireEmployeeCost);
-            SetInteractableButtons();
             await _upgradePopupView.Show();
         }
 
@@ -74,8 +70,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private void ClosePopup()
         {
-            Debug.Log("Close popup");
-            _gameScreenModel.ChangeState(GameScreenState.UpgradePopup);
+            _gameScreenModel.ChangeState(GameScreenState.Game);
         }
         
         private void OnBuyContainerButtonClicked()
@@ -93,6 +88,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             {
                 _gameDataSystem.SetMoneyData(_gameDataSystem.GameDataProperty.Value.money - _upgradeMaxNumberOfOrdersCost);
                 _gameDataSystem.SetMaxNumberOfOrdersData(++_gameDataSystem.GameDataProperty.Value.maxNumberOfOrders);
+                _upgradePopupView.
+                    UpdatePromoteCompanyText(_gameDataSystem.GameDataProperty.CurrentValue.maxNumberOfOrders,
+                        _upgradeMaxNumberOfOrdersCost);
             }
         }
 
@@ -102,6 +100,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             {
                 _gameDataSystem.SetMoneyData(_gameDataSystem.GameDataProperty.Value.money + _upgradeCapacityCost);
                _gameDataSystem.SetCapacityData(++_gameDataSystem.GameDataProperty.Value.capacity);
+               _upgradePopupView.
+                   UpdateAddCapacityText(_gameDataSystem.GameDataProperty.CurrentValue.capacity, _upgradeCapacityCost);
             }
         }
         
@@ -109,17 +109,19 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         {
             if (_gameDataSystem.GameDataProperty.CurrentValue.numberOfUnlockedUpgrades > 0)
             {
-                for (int i = 0; i < _gameDataSystem.GameDataProperty.CurrentValue.numberOfUnlockedUpgrades; i++)
-                    UnlockNewUpgradeOption();
+                    UnlockNewUpgradeOption(_gameDataSystem.GameDataProperty.CurrentValue.numberOfUnlockedUpgrades);
             }
         }
         
-        private void UnlockNewUpgradeOption()
+        private void UnlockNewUpgradeOption(int availableUpgrades)
         {
-            var button = _upgradePopupView.Buttons[0];
-            _upgradePopupView.InteractableButtons.Add(button);
-            button.interactable = true;
-            _upgradePopupView.Buttons.Remove(button);
+            for (int i = 0; i < availableUpgrades; i++)
+                _upgradePopupView.Buttons[i].interactable = true;
+            // var button = _upgradePopupView.Buttons[0];
+            // _upgradePopupView.InteractableButtons.Add(button);
+            // button.interactable = true;
+            // _upgradePopupView.Buttons.Remove(button);
+            
         }
         
         private void CalculateUpgradeAllCosts(GameData gameData)

@@ -6,6 +6,7 @@ using R3;
 using Stateless;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
@@ -29,16 +30,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             SubscribeToEvents();
         }
 
+        // TODO add initial state
         public GameScreenModel()
         {
-            StateMachine = new StateMachine<GameScreenState, GameScreenState>(GameScreenState.Game);
+            StateMachine = new StateMachine<GameScreenState, GameScreenState>(GameScreenState.Initial);
             ConfigureStateMachine();
+            StateMachine.Fire(GameScreenState.Game);
         }
 
-        public void ChangeState(GameScreenState previousState)
+        public void ChangeState(GameScreenState targetState)
         {
-            Debug.Log("GameScreenModel ChangeState: " + previousState);
-            if (previousState == GameScreenState.Game)
+            Debug.Log("GameScreenModel ChangeState: " + targetState);
+            if (targetState == GameScreenState.UpgradePopup)
             {
                 StateMachine.Fire(GameScreenState.UpgradePopup);
                 return;
@@ -54,6 +57,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private void ConfigureStateMachine()
         {
+            StateMachine.Configure(GameScreenState.Initial)
+                .Permit(GameScreenState.Game, GameScreenState.Game);
+            
             StateMachine.Configure(GameScreenState.Game).
                 Permit(GameScreenState.UpgradePopup, GameScreenState.UpgradePopup);
             

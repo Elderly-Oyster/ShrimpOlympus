@@ -54,6 +54,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         private void LevelUp()
         {
             _level.Value++;
+            _level.ForceNotify();
             SetExperienceForLevel(_level.Value);
             CheckToUnlockNewFeature(_level.Value);
             _experience.Value = 0;

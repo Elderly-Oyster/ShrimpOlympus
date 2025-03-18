@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using R3;
 using Stateless;
+using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
@@ -46,12 +47,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         
         private async void OnStateChanged(StateMachine<GameScreenState, GameScreenState>.Transition transition)
         {
+            Debug.Log(transition.Destination);
             switch (transition.Destination)
             {
                 case GameScreenState.Game:
                 {
-                    _gameScreenPresenter.ShowGameScreenView();
                     await _upgradePopupPresenter.Exit();
+                    _gameScreenPresenter.ShowGameScreenView();
                     break;
                 }
 

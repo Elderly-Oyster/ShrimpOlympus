@@ -56,7 +56,8 @@ namespace CodeBase.Core.Gameplay.Cars
                 Debug.Log($"Unloading parcel {parcel}");
                 var parcelToUnload = _parcels.Find(p => p.ParcelType == parcel.ParcelType);
                 AddMoney(parcelToUnload.DeliveryCost);
-                _experience.Value = parcelToUnload.Experience;
+                _experience.Value = parcel.Experience;
+                _experience.ForceNotify();
                 _parcels.Remove(parcelToUnload);
                 
                 if (_parcels.Count == 0)

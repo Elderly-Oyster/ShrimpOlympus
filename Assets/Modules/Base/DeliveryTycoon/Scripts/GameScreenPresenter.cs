@@ -74,6 +74,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async UniTask Exit()
         {
+            _saveSystem.SaveData().Forget();
             _screenCompletionSource.TrySetResult(true);
             await _screenView.Hide();
         }
@@ -100,8 +101,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private async void OnUpgradePopupButtonClicked()
         {
+            _screenModel.ChangeState(GameScreenState.UpgradePopup);
             await _screenView.Hide();
-            _screenModel.ChangeState(GameScreenState.Game);
         }
 
         private void RunNewScreen(ScreenPresenterMap screen)

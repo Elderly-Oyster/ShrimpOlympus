@@ -21,6 +21,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<Unit> _firstPopupCommand = new();
         private readonly ReactiveCommand<Unit> _converterCommand = new();
         private readonly ReactiveCommand<Unit> _ticTacCommand = new();
+        private readonly ReactiveCommand<Unit> _tycoonCommand = new();
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
@@ -44,6 +45,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _firstPopupCommand.Subscribe(_ => OnFirstPopupButtonClicked());
             _converterCommand.Subscribe(_ => OnConverterButtonClicked());
             _ticTacCommand.Subscribe(_ => OnTicTacButtonClicked());
+            _tycoonCommand.Subscribe(_ => OnTycoonButtonClicked());
             _toggleSoundCommand.Subscribe(OnSoundToggled);
         }
 
@@ -55,6 +57,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _mainMenuScreenView.SetupEventListeners(
                 _converterCommand,
                 _ticTacCommand,
+                _tycoonCommand,
                 _firstPopupCommand,
                 _secondPopupCommand,
                 _toggleSoundCommand
@@ -80,6 +83,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         private void OnConverterButtonClicked() => RunNewScreen(ScreenPresenterMap.Converter);
         private void OnTicTacButtonClicked() => RunNewScreen(ScreenPresenterMap.TicTac);
+        private void OnTycoonButtonClicked() => RunNewScreen(ScreenPresenterMap.DeliveryTycoon);
         private void OnFirstPopupButtonClicked() => _popupHub.OpenFirstPopup();
         private void OnSecondPopupButtonClicked() => _popupHub.OpenSecondPopup();
         private void OnSoundToggled(bool isOn) => _audioSystem.SetMusicVolume(isOn ? 1 : 0);
