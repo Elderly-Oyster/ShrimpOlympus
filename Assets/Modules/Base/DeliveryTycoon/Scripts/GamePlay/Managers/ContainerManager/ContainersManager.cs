@@ -33,7 +33,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         public void Initialize(List<ContainerHoldersData> containerHoldersData)
         { 
             _containerHolder.Value = this.containerHolders;
-            var containersList = containerHoldersData.Find(c => c.HasInitializedContainer);
+            var containersList = containerHoldersData.Find(c => c.hasInitializedContainer);
             if ( containersList == null)
             {
                 StartWarmUpOfContainer();
@@ -41,11 +41,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             else
             {
                 var containersToInitialize = containerHoldersData.
-                    FindAll(c => c.HasInitializedContainer);
+                    FindAll(c => c.hasInitializedContainer);
                 for (int i = 0; i < containersToInitialize.Count; i++)
                 {
-                    parcelTypesForContainersToBeBought.Remove(containersToInitialize[i].ParcelType);
-                    PreloadContainerPrefab(containersToInitialize[i].ParcelType);
+                    parcelTypesForContainersToBeBought.Remove(containersToInitialize[i].parcelType);
+                    PreloadContainerPrefab(containersToInitialize[i].parcelType);
                 }
             }
         }
@@ -76,7 +76,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
                 Debug.Log($"     Assigned ParcelType {_parcelTypeToAssign} to {firstInactiveContainHolder.name}");
             }
             
-            await _mediator.Send(new ContainerManagerOperations.NewContainerAddedCommand(_containerHolder.Value));
+            await _mediator.Send(new ContainerManagerOperations.AddNewContainerCommand(_containerHolder.Value));
 
             _containerHolder.Value = new List<ContainerHolder>(containerHolders);
             _cachedContainerModel = null;

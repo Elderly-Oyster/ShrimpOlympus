@@ -6,23 +6,19 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData
     [Serializable]
     public class GameData
     {
-        public List<ContainerHoldersData> containersData;
-        public int level;
-        public int experience;
-        public int money;
-        public int capacity;
-        public int maxNumberOfOrders;
+        public List<ContainerHoldersData> containersData = new() 
+            {
+                new ContainerHoldersData(),
+                new ContainerHoldersData(),
+                new ContainerHoldersData(),
+                new ContainerHoldersData()
+            };
+        
         public int numberOfUnlockedUpgrades;
-
-        public GameData()
-        {
-            containersData = new List<ContainerHoldersData> {new(), new(), new(), new()};
-            level = 0;
-            experience = 0;
-            money = 1500;
-            capacity = 1;
-            maxNumberOfOrders = 1;
-            numberOfUnlockedUpgrades = 0;
-        }
+        public int maxNumberOfOrders = 1;
+        public int experience;
+        public int money = 1500;
+        public int capacity = 1;
+        public int level;
     }
 }

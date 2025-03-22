@@ -13,25 +13,19 @@ namespace CodeBase.Core.Systems.Save
 		private SerializableDataContainer _serializableDataContainer;
 		private bool _isLoaded;
 
-		public SaveSystem(IAppEventService universalAppEventsService)
-		{
+		public SaveSystem(IAppEventService universalAppEventsService) => 
 			universalAppEventsService.OnApplicationFocusEvent += SaveDataOnApplicationUnfocus;
-		}
 
 		public void Start() => Initialize().Forget();
 
 		private async UniTaskVoid Initialize()
 		{
 			_serializableDataContainer = await _serializableDataFileLoader.Read();
-			if(_serializableDataContainer == null)
-			{
+			if (_serializableDataContainer == null) 
 				_serializableDataContainer = new SerializableDataContainer();
-			}
 
-			foreach(var settingsSystem in _serializableDataSystems)
-			{
+			foreach(var settingsSystem in _serializableDataSystems) 
 				settingsSystem.LoadData(_serializableDataContainer);
-			}
 
 			_isLoaded = true;
 		}
@@ -39,28 +33,22 @@ namespace CodeBase.Core.Systems.Save
 		public void AddSystem(ISerializableDataSystem serializableDataSystem) 
 		{
 			_serializableDataSystems.Add(serializableDataSystem);
-			if(_isLoaded)
-			{
+			if (_isLoaded) 
 				serializableDataSystem.LoadData(_serializableDataContainer);
-			}
 		}
 
 		public async UniTaskVoid SaveData()
 		{
-			foreach(var serializableDataSystem in _serializableDataSystems)
-			{
+			foreach(var serializableDataSystem in _serializableDataSystems) 
 				serializableDataSystem.SaveData(_serializableDataContainer);
-			}
 
 			await _serializableDataFileLoader.Write(_serializableDataContainer);
 		}
 
 		private void SaveDataOnApplicationUnfocus(bool isFocused)
 		{
-			if(!isFocused)
-			{
+			if(!isFocused) 
 				SaveData().Forget();
-			}
 		}
 	}
 }

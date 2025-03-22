@@ -33,7 +33,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             _audioSource = GetComponent<AudioSource>();
             _maxDemandingReceivers = maxDemandingReceivers;
             var containersParcelTypes = containerHoldersData.FindAll(x
-                => x.HasInitializedContainer).Select(x => x.ParcelType).Distinct().ToList();
+                => x.hasInitializedContainer).Select(x => x.parcelType).Distinct().ToList();
             containersParcelTypes.Remove(ParcelType.None);
             _parcelTypes = containersParcelTypes;
             SortReceiverBuildings();

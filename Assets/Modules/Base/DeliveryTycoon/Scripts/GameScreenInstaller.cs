@@ -35,7 +35,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.RegisterInstance(mainCamera);
             builder.RegisterInstance(gameScreenView);
             builder.RegisterInstance(upgradePopupView);
-            builder.AddMediatR(typeof(NewContainerAddedCommand).Assembly);
+            builder.AddMediatR(typeof(AddNewContainerCommand).Assembly);
             builder.Register<GameDataSystem>(Lifetime.Singleton).As<GameDataSystem>();
             builder.Register<LevelService>(Lifetime.Singleton);
             builder.Register<CurrencyService>(Lifetime.Singleton);

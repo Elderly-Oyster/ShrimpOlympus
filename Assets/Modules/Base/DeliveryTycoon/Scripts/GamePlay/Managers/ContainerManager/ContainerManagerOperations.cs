@@ -6,7 +6,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
 {
     public static class ContainerManagerOperations
     {
-        public record NewContainerAddedCommand(List<ContainerHolder> ContainerHolders) : IRequest
+        public record AddNewContainerCommand(List<ContainerHolder> ContainerHolders) : IRequest
         {
             public List<ContainerHolder> ContainerHolders { get; } = ContainerHolders;
         }

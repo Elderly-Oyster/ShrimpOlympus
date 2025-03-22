@@ -12,18 +12,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts
     {
         public static void AddMediatR(this IContainerBuilder builder, Assembly assembly)
         {
-            
             // ServiceFactory: MediatR uses this to resolve handlers via DI
-            builder.Register<ServiceFactory>(ctx =>
+            builder.Register<ServiceFactory>(objectResolver =>
             {
-                var resolver = ctx;
+                var resolver = objectResolver;
                 return type =>
                 {
                     // Support IEnumerable<T> (for multiple notification handlers)
                     if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                     {
                         var elementType = type.GetGenericArguments()[0];
-                        var method = typeof(IObjectResolver).GetMethod("ResolveAll")?.MakeGenericMethod(elementType);
+                        var method = typeof(IObjectResolver).GetMethod("ResolveAll")
+                            ?.MakeGenericMethod(elementType);
                         var result = method?.Invoke(resolver, null);
 
                         // Return empty array if no registrations found
@@ -52,10 +52,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                         i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>) ||
                         i.GetGenericTypeDefinition() == typeof(INotificationHandler<>)
                     )));
-            
-            Debug.Log("handlers" + handlerTypes.Count());
 
-            foreach (var handlerType in handlerTypes)
+            var handlerTypesArray = handlerTypes as Type[] ?? handlerTypes.ToArray();
+            Debug.Log("handlers" + handlerTypesArray.Length);
+
+            foreach (var handlerType in handlerTypesArray)
             {
                 var interfaces = handlerType.GetInterfaces()
                     .Where(i => i.IsGenericType && (
@@ -64,10 +65,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                         i.GetGenericTypeDefinition() == typeof(INotificationHandler<>)
                     ));
 
-                foreach (var iface in interfaces)
-                {
-                    builder.Register(handlerType, Lifetime.Transient).As(iface);
-                }
+                foreach (var handlerInterface in interfaces) 
+                    builder.Register(handlerType, Lifetime.Transient).As(handlerInterface);
             }
         }
     }

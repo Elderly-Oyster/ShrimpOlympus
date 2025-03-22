@@ -6,13 +6,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData
     [Serializable]
     public class ContainerHoldersData
     {
-        public bool HasInitializedContainer;
-        public ParcelType ParcelType;
-        
-        public ContainerHoldersData()
-        {
-            HasInitializedContainer = false;
-            ParcelType = ParcelType.None;
-        }
+        public bool hasInitializedContainer = false;
+        public ParcelType parcelType = ParcelType.None;
     }
 }

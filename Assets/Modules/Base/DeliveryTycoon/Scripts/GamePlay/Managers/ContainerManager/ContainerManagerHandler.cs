@@ -7,7 +7,7 @@ using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerMana
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
 {
-    public class ContainerManagerHandler : IRequestHandler<NewContainerAddedCommand>
+    public class ContainerManagerHandler : IRequestHandler<AddNewContainerCommand>
     {
         private ReceiverManager ReceiverManager { get;  set; }
         private GameDataSystem GameDataSystem { get; set; }
@@ -21,7 +21,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         }
 
 
-        public Task<Unit> Handle(NewContainerAddedCommand request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(AddNewContainerCommand request, CancellationToken cancellationToken)
         {
             ReceiverManager.UpdateReceiversTypes(request.ContainerHolders);
             GameDataSystem.SetContainersData(GameDataSystem.ConvertToData(request.ContainerHolders));
