@@ -16,11 +16,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private GameDataSystem _gameDataSystem;
         private SaveSystem _saveSystem;
         
-        private ReactiveProperty<GameData> _gameData = new();
+        private ReactiveProperty<TycoonData> _gameData = new();
         private CompositeDisposable _disposable = new();
 
         public readonly StateMachine<GameScreenState, GameScreenState> StateMachine;
-        public ReadOnlyReactiveProperty<GameData> GameData => _gameData;
+        public ReadOnlyReactiveProperty<TycoonData> GameData => _gameData;
 
         [Inject]
         public void Construct(GameDataSystem gameDataSystem, SaveSystem saveSystem)
@@ -68,9 +68,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 Permit(GameScreenState.Game, GameScreenState.Game);
         }
 
-        private void UpdateGameData(GameData gameData)
+        private void UpdateGameData(TycoonData tycoonData)
         {
-            _gameData.Value = gameData;
+            _gameData.Value = tycoonData;
         }
 
         public void Dispose()

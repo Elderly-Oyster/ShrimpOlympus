@@ -110,7 +110,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public void Dispose()
         {
-            _gameManager.EndGame();
             _screenView.Dispose();
             _screenModel.Dispose();
         }

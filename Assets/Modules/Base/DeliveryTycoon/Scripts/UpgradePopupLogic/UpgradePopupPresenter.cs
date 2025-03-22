@@ -126,10 +126,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
                 _upgradePopupView.Buttons[i].interactable = true;
         }
         
-        private void CalculateUpgradeAllCosts(GameData gameData)
+        private void CalculateUpgradeAllCosts(TycoonData tycoonData)
         {
-            _upgradeCapacityCost = CalculateUpgradeCost(gameData.capacity);
-            _upgradeMaxNumberOfOrdersCost = CalculateUpgradeCost(gameData.maxNumberOfOrders);
+            _upgradeCapacityCost = CalculateUpgradeCost(tycoonData.capacity);
+            _upgradeMaxNumberOfOrdersCost = CalculateUpgradeCost(tycoonData.maxNumberOfOrders);
             _containerCost = 120;
             _hireEmployeeCost = 300;
         }

@@ -8,7 +8,7 @@ namespace CodeBase.Core.UI.ProgressBars
     public abstract class BaseProgressBarView : MonoBehaviour, IProgress<float>
     {
         public abstract void Report(float value);
-        public abstract void ReportToZero(float value);
+        protected abstract void ReportToZero(float value);
 
         public bool canAnimate;
         public bool canAnimateToZero;

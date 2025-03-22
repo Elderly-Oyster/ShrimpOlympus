@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData
 {
     [Serializable]
-    public class GameData
+    public class TycoonData
     {
         public List<ContainerHoldersData> containersData = new() 
             {

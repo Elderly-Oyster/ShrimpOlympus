@@ -1,5 +1,6 @@
 using System;
 using CodeBase.Core.Systems.Save;
+using Cysharp.Threading.Tasks;
 
 namespace CodeBase.Core.Systems
 {
@@ -23,9 +24,10 @@ namespace CodeBase.Core.Systems
 			systemsManager.AddSystem(this);
 		}
 
-		public void LoadData(SerializableDataContainer dataContainer)
+		public UniTask LoadData(SerializableDataContainer dataContainer)
 		{
 			LoadingRange = dataContainer.TryGet(nameof(LoadingRange), out int loadingRange) ? loadingRange : 8;
+			return UniTask.CompletedTask;
 		}
 
 		public void SaveData(SerializableDataContainer dataContainer)

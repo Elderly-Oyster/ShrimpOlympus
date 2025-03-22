@@ -11,7 +11,8 @@ namespace CodeBase.Core.UI.ProgressBars
             if (image != null)
                 image.fillAmount = Math.Min(value, 1f); //Ensures that value does not exceed 1 (the maximum fill amount)
         }
-        public override void ReportToZero(float value)
+
+        protected override void ReportToZero(float value)
         {
             if (image != null)
                 image.fillAmount = Math.Max(value, 0f);

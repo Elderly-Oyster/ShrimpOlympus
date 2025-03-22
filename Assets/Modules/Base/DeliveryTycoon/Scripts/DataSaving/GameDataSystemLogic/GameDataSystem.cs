@@ -21,7 +21,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
 
         public readonly ReactiveCommand<Unit> OnContainerNeedsInitialization = new();
         public readonly ReactiveCommand<int> OnUpdateCapacity = new();
-        public ReactiveProperty<GameData.GameData> GameDataProperty { get; private set; } = new();
+        public ReactiveProperty<GameData.TycoonData> GameDataProperty { get; private set; } = new();
 
         public ReactiveCommand<int> OnItemBought { get; private set; } = new();
         public readonly ReactiveCommand<int> OnUpdateMaxOrdersNumber = new();
@@ -32,7 +32,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             _saveSystem = saveSystem;
             _mediator = mediator;
             _saveSystem.AddSystem(this);
-            GameDataProperty ??= new ReactiveProperty<GameData.GameData>(new GameData.GameData());
+            GameDataProperty ??= new ReactiveProperty<GameData.TycoonData>(new GameData.TycoonData());
         }
 
         public int GetLevelData() => GameDataProperty.Value?.level ?? 0;
@@ -110,13 +110,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             return data;
         }
 
-        public async Task LoadData(SerializableDataContainer dataContainer)
+        public async UniTask LoadData(SerializableDataContainer dataContainer)
         {
-            if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData))
+            if (dataContainer.TryGet(GameDataKey, out GameData.TycoonData loadedData))
             {
                 GameDataProperty.Value = loadedData;
                 if (GameDataProperty.Value == null)
-                    GameDataProperty.Value = new GameData.GameData();
+                    GameDataProperty.Value = new GameData.TycoonData();
                 await WaitForFixedUpdate(); // TODO 
                 await _mediator.Send(new LoadDataCommand(GameDataProperty.CurrentValue));
             }

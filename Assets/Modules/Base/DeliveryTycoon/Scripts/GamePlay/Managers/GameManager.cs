@@ -13,7 +13,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         private readonly CarController _player;
         private readonly NPCCarManager _npcCarManager;
         private readonly CurrencyService _currencyService;
-        private GameData _gameData;
+        private TycoonData _tycoonData;
 
         public float MusicVolume { get; private set; }
         
@@ -34,15 +34,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         
         public void SetMusicData(float musicVolume) => MusicVolume = musicVolume;
 
-        public void StartGame(float musicIsPlaying, GameData gameData)
+        public void StartGame(float musicIsPlaying, TycoonData tycoonData)
         {
-            _gameData = gameData;
-            _containerManager.Initialize(_gameData.containersData);
-            _player.SetMusicState(musicIsPlaying);
-            _player.Initialize(_gameData.capacity);
-            _levelService.Initialize(_gameData.level, _gameData.experience, _gameData.numberOfUnlockedUpgrades);
-            _receiverManager.Initialize(_gameData.containersData, _gameData.maxNumberOfOrders, musicIsPlaying);
-            _currencyService.Initialize(_gameData.money);
+            _tycoonData = tycoonData;
+            _containerManager.Initialize(_tycoonData.containersData);
+            _player.SetMusicState(musicIsPlaying);  //TODO remove this and inject audio service to the class
+            _player.Initialize(_tycoonData.capacity);
+            _levelService.Initialize(_tycoonData.level, _tycoonData.experience, _tycoonData.numberOfUnlockedUpgrades);
+            _receiverManager.Initialize(_tycoonData.containersData, _tycoonData.maxNumberOfOrders, musicIsPlaying); //
+            _currencyService.Initialize(_tycoonData.money);
             _npcCarManager.Initialize();
         }
     }
