@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using CodeBase.Core.Gameplay.Parcels;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.Game;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Parcels;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.ReceiverBuildings;
 using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
@@ -26,7 +27,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         public int MaxDemandingReceivers => _maxDemandingReceivers;
 
-
         public void Initialize(List<ContainerHoldersData> containerHoldersData, int maxDemandingReceivers, float musicVolume)
         {
             _musicVolume = musicVolume;
@@ -42,23 +42,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         public void UpdateReceiversTypes(List<ContainerHolder> containerHolders)
         {
-            Debug.Log("UpdateReceiversTypes");
             foreach (var containerHolder in containerHolders)
             {
                 if (containerHolder.Type == ParcelType.None && containerHolder.HasInitializedContainer == false)
                     continue;
                 if (!_parcelTypes.Contains(containerHolder.Type))
                 {
-                    Debug.Log($"Adding {containerHolder.Type} to _parcelTypes");
                     _parcelTypes.Add(containerHolder.Type);
                 }
             }
         }
 
-        public void UpdateMaxNumberOfReceivers(int maxDemandingReceivers)
-        {
-            _maxDemandingReceivers = maxDemandingReceivers;
-        }
+        public void UpdateMaxNumberOfReceivers() => _maxDemandingReceivers++;
 
         private void SortReceiverBuildings()
         {
@@ -85,10 +80,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             _musicalInstrumentsDemandingReceivers = receiverBuildings.FindAll(r => 
                 r.Parcel.ParcelType == ParcelType.MusicalInstruments);
         }
-        
-        public IEnumerator StartAssignReceivers()
+
+        private IEnumerator StartAssignReceivers()
         {
-            Debug.Log("Starting Assigning Receivers");
             while (_assignReceivers)
             {
                 if (receiverBuildings.Count > 0)
@@ -149,9 +143,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             }
         }
 
-        private void OnDestroy()
-        {
-            StopAllCoroutines();
-        }
+        private void OnDestroy() => StopAllCoroutines();
     }
 }

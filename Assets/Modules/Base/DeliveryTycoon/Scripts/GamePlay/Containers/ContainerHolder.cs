@@ -1,4 +1,4 @@
-using CodeBase.Core.Gameplay.Parcels;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Parcels;
 using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers

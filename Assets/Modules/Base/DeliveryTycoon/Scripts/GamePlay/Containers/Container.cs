@@ -1,5 +1,5 @@
-using CodeBase.Core.Gameplay.Cars;
-using CodeBase.Core.Gameplay.Container;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Container;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers
 {

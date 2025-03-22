@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.NPCCars;
 using UnityEngine;
 using VContainer;
 using Random = UnityEngine.Random;
@@ -17,14 +17,17 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         [SerializeField] private GameObject despawn2;
         
         private bool _carSpawnEnabled;
-        private List<NPCCar> _cars = new();
+        private List<NPCCarController> _cars = new();
 
         [Inject]
         public void Construct(CarPool carPool)
         {
             _carPool = carPool;
+        }
+
+        public void Initialize()
+        {
             _carSpawnEnabled = true;
-            Debug.Log("npc manager initialized");
             StartCoroutine(SpawnDecorationCars());
         }
         
@@ -55,19 +58,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             return (CarType)values.GetValue(Random.Range(0, values.Length));
         }
         
-        public void DespawnCar(NPCCar car, CarType vehicleType)
+        public void DespawnCar(NPCCarController carController, CarType vehicleType)
         {
-            car.OnFinishPointReached -= DespawnCar;
-            car.ResetParameters();
-            _carPool.DespawnCar(car, vehicleType);
-            _cars.Remove(car);
+            carController.OnFinishPointReached -= DespawnCar;
+            carController.ResetParameters();
+            _carPool.DespawnCar(carController, vehicleType);
+            _cars.Remove(carController);
         }
         
-        public void Shutdown()
-        {
-            _carSpawnEnabled = false;
-            StopAllCoroutines();
-            
-        }
+        // public void Shutdown()
+        // {
+        //     _carSpawnEnabled = false;
+        //     StopAllCoroutines();
+        // }
     }
 }

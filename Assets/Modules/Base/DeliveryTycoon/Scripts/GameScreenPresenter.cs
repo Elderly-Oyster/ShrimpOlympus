@@ -2,25 +2,24 @@ using System.Threading.Tasks;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
 using CodeBase.Core.Systems;
-using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Core.Systems.Save;
 using Cysharp.Threading.Tasks;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
 using R3;
-using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
     public class GameScreenPresenter : IScreenPresenter
     {
-        private readonly LevelManager _levelManager;
+        private readonly LevelService _levelService;
         private readonly GameScreenModel _screenModel;
         private readonly GameScreenView _screenView;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
-        private readonly CarController _carController;
-        private readonly IPopupHub _popupHub;
+        private readonly CurrencyService _currencyService;
         private readonly GameManager _gameManager;
         private readonly GameDataSystem _gameDataSystem;
         private readonly AudioSystem _audioSystem;
@@ -31,14 +30,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
         
         public GameScreenPresenter( GameScreenModel screenModel, 
-            GameScreenView screenView, LevelManager levelManager, CarController carController,
-            AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem, IPopupHub popupHub )
+            GameScreenView screenView, LevelService levelService,
+            AudioSystem audioSystem, GameDataSystem gameDataSystem,
+            GameManager gameManager, SaveSystem saveSystem, CurrencyService currencyService )
         {
-            _popupHub = popupHub;
             _screenModel = screenModel;
             _screenView = screenView;
-            _levelManager = levelManager;
-            _carController = carController;
+            _levelService = levelService;
+            _currencyService = currencyService;
             _audioSystem = audioSystem;
             _gameDataSystem = gameDataSystem;
             _gameManager = gameManager;
@@ -49,15 +48,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         public async UniTask Enter(object param)
         {
             _screenView.HideInstantly();
-            _levelManager.OnUpdateViewProgressBar += UpdateExperienceProgressBar;
             SubscribeToReactiveEvents();
+            
             var musicVolume = _audioSystem.MusicVolume;
-            if (musicVolume > 0)
-            {
-                Debug.Log("Background Music is playing");
+            if (musicVolume > 0) 
                 _audioSystem.PlayGameMelody();
-            }
-            _gameManager.StartGame(musicVolume);
+            
+            _gameManager.SetMusicData(musicVolume);
             
             _screenView.SetupEventListeners
             (
@@ -79,21 +76,24 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             await _screenView.Hide();
         }
 
-        public async void ShowGameScreenView()
-        {
-            await _screenView.Show();
-        }
+        public async void ShowGameScreenView() => await _screenView.Show();
+
         private void SubscribeToReactiveEvents()
         {
-            _disposables.Add(_carController.Money.Subscribe(UpdateMoneyCounter));
-            _disposables.Add(_levelManager.Level.Subscribe(UpdateLevelText));
+            _disposables.Add(_currencyService.Money.
+                Subscribe(UpdateMoneyCounter));
+            _disposables.Add(_levelService.Level.
+                Subscribe(UpdateLevelText));
+            _disposables.Add(_levelService.ExperienceForProgressBar.
+                Subscribe(UpdateExperienceProgressBar));
         }
         
         private void UpdateMoneyCounter(int money) => _screenView.UpdatePlayerMoney(money);
         
         private void UpdateLevelText(int level) => _screenView.UpdateLevel(level);
         
-        private void UpdateExperienceProgressBar(float experience) => _screenView.UpdateExperience(experience);
+        private void UpdateExperienceProgressBar(float experience) => 
+            _screenView.UpdateExperience(experience);
 
 
         private void OnMainMenuButtonClicked() => 
@@ -105,15 +105,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             await _screenView.Hide();
         }
 
-        private void RunNewScreen(ScreenPresenterMap screen)
-        {
-             //await _saveSystem.SaveData();
-           _onMainMenuButtonClicked.Execute(screen);
-        }
+        private void RunNewScreen(ScreenPresenterMap screen) => 
+            _onMainMenuButtonClicked.Execute(screen);
 
         public void Dispose()
         {
-            _levelManager.OnUpdateViewProgressBar -= UpdateExperienceProgressBar;
             _gameManager.EndGame();
             _screenView.Dispose();
             _screenModel.Dispose();

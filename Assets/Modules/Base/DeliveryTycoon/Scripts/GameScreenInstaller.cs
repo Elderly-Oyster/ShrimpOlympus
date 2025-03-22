@@ -1,11 +1,17 @@
 using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.NPCCars;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
+using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
@@ -28,10 +34,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.RegisterInstance(mainCamera);
             builder.RegisterInstance(gameScreenView);
             builder.RegisterInstance(upgradePopupView);
-
+            builder.AddMediatR(typeof(ContainerManagerOperations.NewContainerAddedCommand).Assembly);
             builder.Register<GameDataSystem>(Lifetime.Singleton).As<GameDataSystem>();
-            builder.Register<LevelManager>(Lifetime.Singleton);
-            builder.RegisterInstance(containerManager);
+            builder.Register<LevelService>(Lifetime.Singleton);
+            builder.Register<CurrencyService>(Lifetime.Singleton);
+            builder.RegisterComponent(containerManager);
             builder.RegisterComponent(carController).AsImplementedInterfaces().As<CarController>();
             builder.RegisterInstance(carConfig);
             builder.Register<CarFactory>(Lifetime.Singleton);
