@@ -5,10 +5,10 @@ using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.Save;
 using Cysharp.Threading.Tasks;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelServiceLogic;
 using R3;
 
 namespace Modules.Base.DeliveryTycoon.Scripts

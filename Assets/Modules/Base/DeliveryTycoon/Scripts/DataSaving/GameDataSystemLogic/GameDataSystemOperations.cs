@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
+namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic
 {
     public class GameDataSystemOperations
     {

@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelServiceLogic
 {
     public static class LevelServiceOperations
     {

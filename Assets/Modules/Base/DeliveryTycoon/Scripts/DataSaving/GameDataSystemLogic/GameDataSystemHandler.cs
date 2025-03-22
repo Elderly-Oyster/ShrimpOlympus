@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using UnityEngine;
-using static Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem.GameDataSystemOperations;
+using static Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic.GameDataSystemOperations;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
+namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic
 {
-    public class GameDataSystemHandler : IRequestHandler<LoadDataCommand>
+    public class GameDataSystemHandler : IRequestHandler<GameDataSystemOperations.LoadDataCommand>
     {
         private readonly GameManager _gameManager;
         private readonly GameDataSystem _gameDataSystem;

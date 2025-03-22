@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CodeBase.Core.Systems.Save;
 using Cysharp.Threading.Tasks;
 using MediatR;
@@ -7,10 +6,10 @@ using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using R3;
 using VContainer;
-using static Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem.GameDataSystemOperations;
+using static Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic.GameDataSystemOperations;
 using Unit = R3.Unit;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
+namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic
 {
     public class GameDataSystem : ISerializableDataSystem
     {

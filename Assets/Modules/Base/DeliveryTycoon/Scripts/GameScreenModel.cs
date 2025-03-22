@@ -2,7 +2,7 @@ using CodeBase.Core.Modules;
 using CodeBase.Core.Systems.Save;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic;
 using R3;
 using Stateless;
 using UnityEngine;

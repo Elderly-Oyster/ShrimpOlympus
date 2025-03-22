@@ -2,7 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic
 {
     public class CurrencyServiceHandler : IRequestHandler<CurrencyServiceOperations.CheckSufficientFunds, bool>
     {

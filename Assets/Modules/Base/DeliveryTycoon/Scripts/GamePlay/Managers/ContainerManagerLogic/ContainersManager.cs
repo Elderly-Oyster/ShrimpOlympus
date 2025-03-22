@@ -10,7 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using VContainer;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic
 {
     public class ContainerManager : MonoBehaviour
     {

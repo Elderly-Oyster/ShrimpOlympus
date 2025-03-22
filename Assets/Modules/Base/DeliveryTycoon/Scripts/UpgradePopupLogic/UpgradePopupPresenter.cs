@@ -2,13 +2,12 @@ using System.Threading.Tasks;
 using CodeBase.Core.Modules;
 using Cysharp.Threading.Tasks;
 using MediatR;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic;
 using R3;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
+namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupLogic
 {
     public class UpgradePopupPresenter : IScreenPresenter
     {

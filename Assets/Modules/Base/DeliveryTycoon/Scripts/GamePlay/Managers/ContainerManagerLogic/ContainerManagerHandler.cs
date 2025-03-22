@@ -1,13 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
-using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager.ContainerManagerOperations;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic;
+using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic.ContainerManagerOperations;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic
 {
-    public class ContainerManagerHandler : IRequestHandler<AddNewContainerCommand>
+    public class ContainerManagerHandler : IRequestHandler<ContainerManagerOperations.AddNewContainerCommand>
     {
         private ReceiverManager ReceiverManager { get;  set; }
         private GameDataSystem GameDataSystem { get; set; }

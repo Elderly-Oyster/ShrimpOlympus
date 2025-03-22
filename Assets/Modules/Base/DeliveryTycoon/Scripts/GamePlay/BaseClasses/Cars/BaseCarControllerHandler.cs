@@ -2,10 +2,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelServiceLogic;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars
 {

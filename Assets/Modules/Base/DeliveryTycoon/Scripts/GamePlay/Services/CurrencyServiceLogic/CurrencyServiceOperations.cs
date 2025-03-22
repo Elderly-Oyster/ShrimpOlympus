@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic
 {
     public static class CurrencyServiceOperations
     {

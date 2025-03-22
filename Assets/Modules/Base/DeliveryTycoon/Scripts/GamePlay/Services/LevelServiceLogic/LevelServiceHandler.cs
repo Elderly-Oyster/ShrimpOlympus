@@ -1,10 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystemLogic;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelServiceLogic
 {
     public class LevelServiceHandler :
         IRequestHandler<LevelServiceOperations.NewUpgradeUnlockedCommand>, 

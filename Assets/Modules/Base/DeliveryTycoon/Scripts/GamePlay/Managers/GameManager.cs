@@ -1,14 +1,15 @@
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelServiceLogic;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
     public class GameManager
     {
         private readonly ReceiverManager _receiverManager;
-        private readonly ContainerManager.ContainerManager _containerManager;
+        private readonly ContainerManager _containerManager;
         private readonly LevelService _levelService;
         private readonly CarController _player;
         private readonly NPCCarManager _npcCarManager;
@@ -18,7 +19,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         public float MusicVolume { get; private set; }
         
         public GameManager(ReceiverManager receiverManager,
-            ContainerManager.ContainerManager containerManager, 
+            ContainerManager containerManager, 
             LevelService levelService, 
             CarController player,
             NPCCarManager npcCarManager,

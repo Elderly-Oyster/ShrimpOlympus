@@ -1,6 +1,6 @@
 using R3;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyServiceLogic
 {
     public class CurrencyService
     {

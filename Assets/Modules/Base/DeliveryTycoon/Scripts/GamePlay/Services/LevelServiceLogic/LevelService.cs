@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using MediatR;
 using R3;
 using UnityEngine;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelServiceLogic
 {
     
     public class LevelService

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
+namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupLogic
 {
     public class UpgradePopupView : BaseScreenView
     {
