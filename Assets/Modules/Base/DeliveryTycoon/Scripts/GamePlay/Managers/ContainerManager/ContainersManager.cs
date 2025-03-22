@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Parcels;
@@ -24,28 +25,23 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         private readonly ReactiveProperty<List<ContainerHolder>> _containerHolder = new();
         public ReadOnlyReactiveProperty<List<ContainerHolder>> ContainerHoldersList => _containerHolder;
 
-        [Inject]
-        public void Construct(Mediator mediator)
-        {
-            _mediator = mediator;
-        }
+        [Inject] public void Construct(Mediator mediator) => _mediator = mediator;
 
         public void Initialize(List<ContainerHoldersData> containerHoldersData)
         { 
-            _containerHolder.Value = this.containerHolders;
-            var containersList = containerHoldersData.Find(c => c.hasInitializedContainer);
-            if ( containersList == null)
-            {
+            _containerHolder.Value = containerHolders;
+            var containersList = containerHoldersData
+                .Find(c => c.hasInitializedContainer);
+            if (containersList == null)
                 StartWarmUpOfContainer();
-            }
             else
             {
                 var containersToInitialize = containerHoldersData.
                     FindAll(c => c.hasInitializedContainer);
-                for (int i = 0; i < containersToInitialize.Count; i++)
+                foreach (var container in containersToInitialize)
                 {
-                    parcelTypesForContainersToBeBought.Remove(containersToInitialize[i].parcelType);
-                    PreloadContainerPrefab(containersToInitialize[i].parcelType);
+                    parcelTypesForContainersToBeBought.Remove(container.parcelType);
+                    PreloadContainerPrefab(container.parcelType);
                 }
             }
         }
@@ -57,7 +53,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             parcelTypesForContainersToBeBought.Remove(containerModelToWarmUp);
         }
 
-        public async void InitializeContainer()
+        private async Task InitializeContainer()
         {
             Debug.Log("Initializing service building");
 
@@ -89,10 +85,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             var addressableKey = containersAddressableKeys.GetContainerKey(parcelType);
             if (string.IsNullOrEmpty(addressableKey)) return;
         
-            Addressables.LoadAssetAsync<GameObject>(addressableKey).Completed += handle =>
-            {
-                OnModelLoaded(handle, parcelType);
-            };
+            Addressables.LoadAssetAsync<GameObject>(addressableKey).Completed += handle 
+                => OnModelLoaded(handle, parcelType);
         }
 
         private void OnModelLoaded(AsyncOperationHandle<GameObject> handle, ParcelType parcelType)
@@ -102,10 +96,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             {
                 _cachedContainerModel = handle.Result;
                 _parcelTypeToAssign = parcelType;
-                InitializeContainer();
+                _ = InitializeContainer();
             }
             else
-                Debug.LogError($"Failed to load service building model");
+                Debug.LogError("Failed to load service building model");
         }
     }
 }

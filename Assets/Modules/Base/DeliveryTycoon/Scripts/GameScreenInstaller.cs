@@ -39,12 +39,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.Register<GameDataSystem>(Lifetime.Singleton).As<GameDataSystem>();
             builder.Register<LevelService>(Lifetime.Singleton);
             builder.Register<CurrencyService>(Lifetime.Singleton);
-            builder.RegisterComponent(containerManager);
-            builder.RegisterComponent(carController).AsImplementedInterfaces().As<CarController>();
-            builder.RegisterInstance(carConfig);
-            builder.Register<CarFactory>(Lifetime.Singleton);
-            builder.Register<CarPool>(Lifetime.Singleton);
-            builder.RegisterComponent(npcCarManager).AsImplementedInterfaces().AsSelf();
+
+            RegisterCarDependencies(builder);
+            
             builder.RegisterInstance(receiverManager);
             builder.Register<GameManager>(Lifetime.Singleton);
             
@@ -52,6 +49,23 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.Register<GameScreenPresenter>(Lifetime.Singleton);
             builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
             builder.Register<GameScreenModel>(Lifetime.Singleton);
+        }
+
+        private void RegisterCarDependencies(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(containerManager);
+            
+            builder.RegisterComponent(carController)
+                .AsImplementedInterfaces()
+                .As<CarController>();
+            
+            builder.RegisterInstance(carConfig);
+            builder.Register<CarFactory>(Lifetime.Singleton);
+            builder.Register<CarPool>(Lifetime.Singleton);
+            
+            builder.RegisterComponent(npcCarManager)
+                .AsImplementedInterfaces()
+                .AsSelf();
         }
     }
 }
