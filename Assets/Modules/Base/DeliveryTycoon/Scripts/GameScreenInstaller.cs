@@ -11,6 +11,7 @@ using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
+using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager.ContainerManagerOperations;
 
 
 namespace Modules.Base.DeliveryTycoon.Scripts
@@ -34,7 +35,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.RegisterInstance(mainCamera);
             builder.RegisterInstance(gameScreenView);
             builder.RegisterInstance(upgradePopupView);
-            builder.AddMediatR(typeof(ContainerManagerOperations.NewContainerAddedCommand).Assembly);
+            builder.AddMediatR(typeof(NewContainerAddedCommand).Assembly);
             builder.Register<GameDataSystem>(Lifetime.Singleton).As<GameDataSystem>();
             builder.Register<LevelService>(Lifetime.Singleton);
             builder.Register<CurrencyService>(Lifetime.Singleton);

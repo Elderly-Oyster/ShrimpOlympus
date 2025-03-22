@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
 {
-    public class GameDataSystemHandler : IRequestHandler<GameDataSystemOperations.DataLoaded>
+    public class GameDataSystemHandler : IRequestHandler<GameDataSystemOperations.LoadDataCommand>
     {
         private readonly GameManager _gameManager;
         private readonly GameDataSystem _gameDataSystem;
@@ -18,7 +18,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             _gameDataSystem = gameDataSystem;
         }
         
-        public Task<Unit> Handle(GameDataSystemOperations.DataLoaded request, CancellationToken cancellationToken)
+        public Task<Unit> Handle(GameDataSystemOperations.LoadDataCommand request, CancellationToken cancellationToken)
         {
            _gameManager.StartGame(_gameManager.MusicVolume, _gameDataSystem.GameDataProperty.CurrentValue);
            return Task.FromResult(Unit.Value);

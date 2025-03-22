@@ -26,7 +26,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                         var method = typeof(IObjectResolver).GetMethod("ResolveAll")?.MakeGenericMethod(elementType);
                         var result = method?.Invoke(resolver, null);
 
-                        // ✅ Return empty array if no registrations found
+                        // Return empty array if no registrations found
                         return result ?? Array.CreateInstance(elementType, 0);
                     }
 

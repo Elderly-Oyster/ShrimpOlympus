@@ -8,6 +8,7 @@ using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using R3;
 using UnityEngine;
 using VContainer;
+using static Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem.GameDataSystemOperations;
 using Unit = R3.Unit;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
@@ -124,7 +125,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
                 if (_gameDataProperty.Value == null)
                     _gameDataProperty.Value = new GameData.GameData();
                 await WaitForFixedUpdate();
-                await _mediator.Send(new GameDataSystemOperations.DataLoaded(_gameDataProperty.CurrentValue));
+                await _mediator.Send(new LoadDataCommand(_gameDataProperty.CurrentValue));
             }
         }
 
