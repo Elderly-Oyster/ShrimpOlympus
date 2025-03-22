@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CodeBase.Core.Systems.Save;
 using Cysharp.Threading.Tasks;
 using MediatR;
@@ -109,7 +110,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             return data;
         }
 
-        public async void LoadData(SerializableDataContainer dataContainer)
+        public async Task LoadData(SerializableDataContainer dataContainer)
         {
             if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData))
             {

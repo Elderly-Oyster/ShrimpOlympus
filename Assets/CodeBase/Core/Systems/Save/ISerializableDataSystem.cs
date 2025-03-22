@@ -1,11 +1,13 @@
-﻿namespace CodeBase.Core.Systems.Save
+﻿using System.Threading.Tasks;
+
+namespace CodeBase.Core.Systems.Save
 {
 	public interface ISerializableDataSystem
 	{
 		/// <summary>
 		/// Load own data from dataContainer
 		/// </summary>
-		public void LoadData(SerializableDataContainer dataContainer);
+		public Task LoadData(SerializableDataContainer dataContainer);
 		/// <summary>
 		/// Save own data to dataContainer
 		/// </summary>

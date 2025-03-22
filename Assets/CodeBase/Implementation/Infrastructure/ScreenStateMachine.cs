@@ -20,12 +20,14 @@ namespace CodeBase.Implementation.Infrastructure
         [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
-        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); // reducing the number of threads to one
+        
+        // reducing the number of threads to one
+        private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); 
         
         public ScreenPresenterMap CurrentScreenPresenterMap { get; private set; } = ScreenPresenterMap.None;
         public IScreenPresenter CurrentPresenter { get; private set; }
-        
-        public IStateController CurrentStateController { get; private set; }
+
+        private IStateController CurrentStateController { get; set; }
         
         public void Start() => RunScreen(SceneManager.GetActiveScene().name);
 
@@ -82,19 +84,14 @@ namespace CodeBase.Implementation.Infrastructure
 
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }
-            finally
-            {
-                _semaphoreSlim.Release();
-            }
+            finally { _semaphoreSlim.Release(); }
         }
         
         /// <summary>
         /// Checks if the requested screen is already active.
         /// </summary>
-        private bool CheckIsSameScreen(ScreenPresenterMap screenViewModelMap)
-        {
-            return screenViewModelMap == CurrentScreenPresenterMap;
-        }
+        private bool CheckIsSameScreen(ScreenPresenterMap screenViewModelMap) => 
+            screenViewModelMap == CurrentScreenPresenterMap;
 
         //tries to convert screen name in string to its name in enum. Can return null if the sceneName is not found
         private static ScreenPresenterMap? SceneNameToEnum(string sceneName)

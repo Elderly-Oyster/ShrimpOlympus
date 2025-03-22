@@ -2,7 +2,6 @@ using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
-using R3;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
@@ -14,13 +13,16 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         private readonly CarController _player;
         private readonly NPCCarManager _npcCarManager;
         private readonly CurrencyService _currencyService;
-        private float _musicVolume;
         private GameData _gameData;
-        private CompositeDisposable _disposables = new();
 
+        public float MusicVolume { get; private set; }
+        
         public GameManager(ReceiverManager receiverManager,
-            ContainerManager.ContainerManager containerManager, LevelService levelService, 
-            CarController player, NPCCarManager npcCarManager, CurrencyService currencyService)
+            ContainerManager.ContainerManager containerManager, 
+            LevelService levelService, 
+            CarController player,
+            NPCCarManager npcCarManager,
+            CurrencyService currencyService)
         {
             _receiverManager = receiverManager;
             _containerManager = containerManager;
@@ -29,10 +31,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             _npcCarManager = npcCarManager;
             _currencyService = currencyService;
         }
-
-        public float MusicVolume => _musicVolume;
-
-        public void SetMusicData(float musicVolume) => _musicVolume = musicVolume;
+        
+        public void SetMusicData(float musicVolume) => MusicVolume = musicVolume;
 
         public void StartGame(float musicIsPlaying, GameData gameData)
         {
@@ -44,12 +44,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             _receiverManager.Initialize(_gameData.containersData, _gameData.maxNumberOfOrders, musicIsPlaying);
             _currencyService.Initialize(_gameData.money);
             _npcCarManager.Initialize();
-        }
-
-        public void EndGame()
-        {
-            //_npcCarManager.Shutdown();
-            _disposables.Dispose();
         }
     }
 }
