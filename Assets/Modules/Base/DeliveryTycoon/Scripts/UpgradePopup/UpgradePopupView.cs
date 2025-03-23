@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Core.Modules;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -25,14 +26,22 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 
         public List<Button> InteractableButtons => _interactableButtons;
 
-        public void SetupEventListeners(UnityAction onCloseButtonClicked, 
-            UnityAction buyContainerButtonClicked, UnityAction promoteCompanyButtonClicked,
-            UnityAction addCapacityButtonClicked)
+        public void SetupEventListeners(ReactiveCommand<Unit> onCloseButtonClicked, 
+            ReactiveCommand<Unit> buyContainerButtonClicked, ReactiveCommand<Unit> promoteCompanyButtonClicked,
+            ReactiveCommand<Unit> addCapacityButtonClicked)
         {
-            buyContainerButton.onClick.AddListener(buyContainerButtonClicked);
-            promoteCompanyButton.onClick.AddListener(promoteCompanyButtonClicked);
-            addCapacityButton.onClick.AddListener(addCapacityButtonClicked);
-            backToGameButton.onClick.AddListener(onCloseButtonClicked);
+            buyContainerButton.OnClickAsObservable().
+                Subscribe(_ => buyContainerButtonClicked.Execute(default))
+                .AddTo(this);
+            promoteCompanyButton.OnClickAsObservable().
+                Subscribe(_ => promoteCompanyButtonClicked.Execute(default))
+                .AddTo(this);
+            addCapacityButton.OnClickAsObservable().
+                Subscribe(_ => addCapacityButtonClicked.Execute(default))
+                .AddTo(this);
+            backToGameButton.OnClickAsObservable().
+                Subscribe(_ => onCloseButtonClicked.Execute(default))
+                .AddTo(this);
             SetInitialConfiguration();
         }
 

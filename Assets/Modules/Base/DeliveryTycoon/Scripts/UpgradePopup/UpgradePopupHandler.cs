@@ -5,7 +5,7 @@ using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
@@ -37,6 +37,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         {
             _currencyService.SubtractMoney(request.ContainerCost);
             _containerManager.StartWarmUpOfContainer();
+            _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
             return Task.FromResult(Unit.Value);
         }
 
@@ -45,6 +46,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
             _currencyService.SubtractMoney(request.PromotionCost);
             _receiverManager.UpdateMaxNumberOfReceivers();
             _gameDataSystem.SetMaxNumberOfOrdersData(_receiverManager.MaxDemandingReceivers);
+            _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
             return Task.FromResult(Unit.Value);
         }
 
@@ -53,6 +55,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
             _currencyService.SubtractMoney(request.CapacityUpgradeCost);
             _carController.UpdateCarCapacity();
             _gameDataSystem.SetCapacityData(_carController.Capacity);
+            _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
             return Task.FromResult(Unit.Value);
         }
     }

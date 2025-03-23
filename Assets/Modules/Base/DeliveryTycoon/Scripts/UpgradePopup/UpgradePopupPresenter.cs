@@ -2,11 +2,11 @@ using System.Threading.Tasks;
 using CodeBase.Core.Modules;
 using Cysharp.Threading.Tasks;
 using MediatR;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using R3;
+using Unit = R3.Unit;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 {
@@ -27,6 +27,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         private int _hireEmployeeCost;
         private int _containerCost;
         
+        private readonly ReactiveCommand<Unit> _onClosePopupCommand = new();
+        private readonly ReactiveCommand<Unit> _onBuyContainerCommand = new();
+        private readonly ReactiveCommand<Unit> _onPromoteCompanyCommand = new();
+        private readonly ReactiveCommand<Unit> _onAddCapacityCommand = new();
+        
         public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameScreenModel gameScreenModel, GameDataSystem gameDataSystem, Mediator mediator)
         {
             _upgradePopupView = upgradePopupView;
@@ -36,12 +41,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
             _screenCompletionSource = new TaskCompletionSource<bool>();
             _upgradePopupView.SetupEventListeners
             (
-                ClosePopup,
-                OnBuyContainerButtonClicked,
-                OnPromoteCompanyButtonClicked,
-                OnAddCapacityButtonClicked
+                _onClosePopupCommand,
+                _onBuyContainerCommand,
+                _onPromoteCompanyCommand,
+                _onAddCapacityCommand
             );
             SubscribeToReactiveEvents();
+            SubscribeToUIUpdates();
         }
 
 
@@ -67,9 +73,17 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
             _screenCompletionSource.TrySetResult(true);
         }
 
+        private void SubscribeToUIUpdates()
+        {
+            _onClosePopupCommand.Subscribe(_ => ClosePopup());
+            _onBuyContainerCommand.Subscribe(_ => OnBuyContainerButtonClicked());
+            _onPromoteCompanyCommand.Subscribe(_ => OnPromoteCompanyButtonClicked());
+            _onAddCapacityCommand.Subscribe(_ => OnAddCapacityButtonClicked());
+        }
+
         private void SubscribeToReactiveEvents()
         {
-            _disposables.Add(_gameDataSystem.GameDataProperty.Subscribe(CalculateUpgradeAllCosts));
+            _disposables.Add(_gameDataSystem.GameDataProperty.Subscribe(_ => CalculateUpgradeAllCosts(_)));
         }
 
         private void ClosePopup()

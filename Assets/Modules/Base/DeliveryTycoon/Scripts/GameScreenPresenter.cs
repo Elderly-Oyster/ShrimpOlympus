@@ -27,6 +27,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private CompositeDisposable _disposables = new();
         
         private readonly ReactiveCommand<ScreenPresenterMap> _onMainMenuButtonClicked = new();
+        private readonly ReactiveCommand<Unit> _onMainMenuButtonClickedCommand = new();
+        private readonly ReactiveCommand<Unit> _onUpgradePopupButtonClickedCommand = new();
         public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
         
         public GameScreenPresenter( GameScreenModel screenModel, 
@@ -43,6 +45,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _gameManager = gameManager;
             _saveSystem = saveSystem;
             _screenCompletionSource = new TaskCompletionSource<bool>();
+            
+            SubscribeToUIUpdates();
         }
 
         public async UniTask Enter(object param)
@@ -58,9 +62,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             
             _screenView.SetupEventListeners
             (
-                OnMainMenuButtonClicked,
-                OnUpgradePopupButtonClicked
-                
+               _onMainMenuButtonClickedCommand,
+               _onUpgradePopupButtonClickedCommand
+               
             );
             
             await _screenView.Show();
@@ -87,6 +91,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _disposables.Add(_levelService.ExperienceForProgressBar.
                 Subscribe(UpdateExperienceProgressBar));
         }
+
+        private void SubscribeToUIUpdates()
+        {
+            _onMainMenuButtonClickedCommand.Subscribe(_ => OnMainMenuButtonClicked());
+            _onUpgradePopupButtonClickedCommand.Subscribe(_ => OnUpgradePopupButtonClicked());
+        }
         
         private void UpdateMoneyCounter(int money) => _screenView.UpdatePlayerMoney(money);
         
@@ -110,7 +120,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public void Dispose()
         {
-            _gameManager.EndGame();
             _screenView.Dispose();
             _screenModel.Dispose();
         }

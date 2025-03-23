@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Threading.Tasks;
 using CodeBase.Core.Systems.Save;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using UnityEngine;
 using VContainer;
@@ -73,12 +75,13 @@ namespace CodeBase.Core.Systems
             audioSource.DOFade(targetVolume, duration);
         }
 
-        public void LoadData(SerializableDataContainer dataContainer)
+        public UniTask LoadData(SerializableDataContainer dataContainer)
         {
             MusicVolume = dataContainer.TryGet(nameof(MusicVolume), out float musicVolume) ? musicVolume : 0;
             SoundsVolume = dataContainer.TryGet(nameof(SoundsVolume), out float soundsVolume) ? soundsVolume : 0;
             
             musicAudioSource.volume = MusicVolume;
+            return UniTask.CompletedTask;
         }
 
         public void SaveData(SerializableDataContainer dataContainer)

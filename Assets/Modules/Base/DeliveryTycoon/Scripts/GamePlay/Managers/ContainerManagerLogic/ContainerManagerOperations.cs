@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic
 {
     public static class ContainerManagerOperations
     {

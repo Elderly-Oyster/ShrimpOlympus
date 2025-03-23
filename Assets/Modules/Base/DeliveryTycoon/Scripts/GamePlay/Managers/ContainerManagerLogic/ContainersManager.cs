@@ -10,7 +10,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using VContainer;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
+namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic
 {
     public class ContainerManager : MonoBehaviour
     {
@@ -23,7 +23,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         private bool _isInitialized;
         private Mediator _mediator;
         private readonly ReactiveProperty<List<ContainerHolder>> _containerHolder = new();
-        public ReadOnlyReactiveProperty<List<ContainerHolder>> ContainerHoldersList => _containerHolder;
 
         [Inject] public void Construct(Mediator mediator) => _mediator = mediator;
 
@@ -55,7 +54,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
 
         private async Task InitializeContainer()
         {
-            Debug.Log("Initializing service building");
 
             if (_cachedContainerModel == null)
                 return;
@@ -69,7 +67,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
                     firstInactiveContainHolder.transform.position, Quaternion.identity);
                 instance.transform.SetParent(transform);
                 firstInactiveContainHolder.SetActiveState(_parcelTypeToAssign);
-                Debug.Log($"     Assigned ParcelType {_parcelTypeToAssign} to {firstInactiveContainHolder.name}");
             }
             
             await _mediator.Send(new ContainerManagerOperations.AddNewContainerCommand(_containerHolder.Value));
@@ -91,7 +88,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
 
         private void OnModelLoaded(AsyncOperationHandle<GameObject> handle, ParcelType parcelType)
         {
-            Debug.Log("OnModelLoaded");
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
                 _cachedContainerModel = handle.Result;

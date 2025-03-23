@@ -32,7 +32,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             _saveSystem = saveSystem;
             _mediator = mediator;
             _saveSystem.AddSystem(this);
-            GameDataProperty ??= new ReactiveProperty<GameData.GameData>(new GameData.GameData());
+            GameDataProperty ??= new ReactiveProperty<GameData.GameData>();
+            GameDataProperty.Value ??= new GameData.GameData();
         }
 
         public int GetLevelData() => GameDataProperty.Value?.level ?? 0;
@@ -110,22 +111,20 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             return data;
         }
 
-        public async Task LoadData(SerializableDataContainer dataContainer)
+        public async UniTask LoadData(SerializableDataContainer dataContainer)
         {
             if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData))
             {
                 GameDataProperty.Value = loadedData;
                 if (GameDataProperty.Value == null)
                     GameDataProperty.Value = new GameData.GameData();
-                await WaitForFixedUpdate(); // TODO 
+                await UniTask.WaitForFixedUpdate(); // TODO 
                 await _mediator.Send(new LoadDataCommand(GameDataProperty.CurrentValue));
             }
         }
 
         public void SaveData(SerializableDataContainer dataContainer) => 
             dataContainer.SetData(GameDataKey, GameDataProperty.Value);
-
-        private static async UniTask WaitForFixedUpdate() => 
-            await UniTask.WaitForFixedUpdate();
+            
     }
 }

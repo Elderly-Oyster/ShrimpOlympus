@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using Cysharp.Threading.Tasks;
 
 namespace CodeBase.Core.Systems.Save
 {
@@ -7,7 +7,7 @@ namespace CodeBase.Core.Systems.Save
 		/// <summary>
 		/// Load own data from dataContainer
 		/// </summary>
-		public Task LoadData(SerializableDataContainer dataContainer);
+		public UniTask LoadData(SerializableDataContainer dataContainer);
 		/// <summary>
 		/// Save own data to dataContainer
 		/// </summary>

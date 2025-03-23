@@ -4,14 +4,14 @@ using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.NPCCars;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
 using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager.ContainerManagerOperations;
+using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic.ContainerManagerOperations;
 
 
 namespace Modules.Base.DeliveryTycoon.Scripts

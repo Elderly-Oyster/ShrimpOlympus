@@ -2,6 +2,7 @@ using System.Threading;
 using CodeBase.Core.Modules;
 using CodeBase.Core.UI.ProgressBars;
 using Cysharp.Threading.Tasks;
+using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -17,10 +18,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         [SerializeField] private BaseProgressBarView experienceProgressBar;
         [SerializeField] private TMP_Text levelText;
         
-        public void SetupEventListeners(UnityAction onMainMenuButtonClicked, UnityAction onUpgradePopupButtonClicked)
+        public void SetupEventListeners(ReactiveCommand<Unit> onMainMenuButtonClicked, ReactiveCommand<Unit> onUpgradePopupButtonClicked)
         {
-            mainMenuButton.onClick.AddListener(onMainMenuButtonClicked);
-            upgradePopupButton.onClick.AddListener(onUpgradePopupButtonClicked);
+            mainMenuButton.OnClickAsObservable()
+                .Subscribe(_ => onMainMenuButtonClicked.Execute(default))
+                .AddTo(this);
+            upgradePopupButton.OnClickAsObservable()
+                .Subscribe(_ => onUpgradePopupButtonClicked.Execute(default))
+                .AddTo(this);
         }
 
         public void InitializeVisualElements( int playerMoney, int level)
