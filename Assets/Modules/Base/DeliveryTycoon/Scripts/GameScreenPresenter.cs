@@ -5,12 +5,14 @@ using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.Save;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
+using Modules.Additional.SplashScreen.Scripts;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
 using R3;
+using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
@@ -26,6 +28,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private readonly AudioSystem _audioSystem;
         private readonly SaveSystem _saveSystem;
         private readonly LoadingServiceProvider _loadingServiceProvider;
+        private readonly SplashScreenPresenter _splashScreenPresenter;
         private CompositeDisposable _disposables = new();
         
         private readonly ReactiveCommand<ScreenPresenterMap> _onMainMenuButtonClicked = new();
@@ -36,13 +39,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         public GameScreenPresenter( GameScreenModel screenModel, 
             GameScreenView screenView, LevelService levelService,
             AudioSystem audioSystem, GameDataSystem gameDataSystem,
-            GameManager gameManager, SaveSystem saveSystem, CurrencyService currencyService, LoadingServiceProvider loadingServiceProvider)
+            GameManager gameManager, SaveSystem saveSystem, CurrencyService currencyService, LoadingServiceProvider loadingServiceProvider, SplashScreenPresenter splashScreenPresenter)
         {
             _screenModel = screenModel;
             _screenView = screenView;
             _levelService = levelService;
             _currencyService = currencyService;
             _loadingServiceProvider = loadingServiceProvider;
+            _splashScreenPresenter = splashScreenPresenter;
             _audioSystem = audioSystem;
             _gameDataSystem = gameDataSystem;
             _gameManager = gameManager;
@@ -54,12 +58,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async UniTask Enter(object param)
         {
+            Debug.Log("GameScreenPresenter.Enter");
             _screenView.HideInstantly();
             
             await _gameDataSystem.DataLoaded.Task;
             _gameManager.SendGameData(_gameDataSystem.GameDataProperty.CurrentValue);
             _loadingServiceProvider.CompleteRegistration();
-            
+            _gameManager.StartGame();
             SubscribeToReactiveEvents();
             
             var musicVolume = _audioSystem.MusicVolume;
@@ -70,16 +75,16 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             (
                _onMainMenuButtonClickedCommand,
                _onUpgradePopupButtonClickedCommand
-               
             );
-            await _screenView.Show();
             _screenView.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
+            await _screenView.Show();
         }
 
         public async UniTask Execute() => await _screenCompletionSource.Task;
 
         public async UniTask Exit()
         {
+            _gameManager.EndGame();
             _saveSystem.SaveData().Forget();
             _screenCompletionSource.TrySetResult(true);
             await _screenView.Hide();

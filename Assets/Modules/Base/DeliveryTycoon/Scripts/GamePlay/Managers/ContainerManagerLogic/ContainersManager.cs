@@ -13,14 +13,15 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using VContainer;
+using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic.ContainerManagerOperations;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic
 {
     public class ContainerManager : MonoBehaviour
     {
         [SerializeField] private ContainersAddressableKeys containersAddressableKeys;
-        [SerializeField] private List<ContainerHolder> containerHolders;
-        [SerializeField] private List<ParcelType> parcelTypesForContainersToBeBought;
+        private List<ContainerHolder> _containerHolders;
+        private List<ParcelType> _parcelTypesForContainersToBeBought = new();
 
         private Mediator _mediator;
         private LoadingServiceProvider _loadingServiceProvider;
@@ -34,57 +35,83 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         private readonly Subject<float> _warmUpProgress = new();
         public Observable<float> WarmUpProgress => _warmUpProgress;
 
-        [Inject] public void Construct(Mediator mediator) => _mediator = mediator;
+        [Inject]
+        public void Construct(Mediator mediator, 
+            LoadingServiceProvider loadingServiceProvider,
+            List<ContainerHolder> containerHolders)
+        {
+            _mediator = mediator;
+            _loadingServiceProvider = loadingServiceProvider;
+            _containerHolders = containerHolders;
+            _parcelTypesForContainersToBeBought = new List<ParcelType>
+            {
+                ParcelType.Presents,
+                ParcelType.Electronics,
+                ParcelType.Furniture,
+                ParcelType.MusicalInstruments
+            };
+            _warmUpInitialized = false;
+        }
 
         public void Initialize(List<ContainerHoldersData> containerHoldersData)
-        { 
+        {
+            for (int i = 0; i < _containerHolders.Count; i++)
+                _containerHolders[i].SetParameters(containerHoldersData[i]);
+            
             _loadingServiceProvider.RegisterCommands("ContainerManager",
                 () => WarmUpContainerPrefabsAsync(containerHoldersData));
-            
-            // _containerHolder.Value = containerHolders;
-            // var containersList = containerHoldersData
-            //     .Find(c => c.hasInitializedContainer);
-            // if (containersList == null)
-            //     StartWarmUpOfContainer();
-            // else
-            // {
-            //     var containersToInitialize = containerHoldersData.
-            //         FindAll(c => c.hasInitializedContainer);
-            //     foreach (var container in containersToInitialize)
-            //     {
-            //         parcelTypesForContainersToBeBought.Remove(container.parcelType);
-            //         PreloadContainerPrefab(container.parcelType);
-            //     }
-            // }
         }
 
         public void StartWarmUpOfContainer()
         {
-            var containerModelToWarmUp = parcelTypesForContainersToBeBought[0];
+            var containerModelToWarmUp = _parcelTypesForContainersToBeBought[0];
             PreloadContainerPrefab(containerModelToWarmUp);
-            parcelTypesForContainersToBeBought.Remove(containerModelToWarmUp);
+            _parcelTypesForContainersToBeBought.Remove(containerModelToWarmUp);
         }
 
-        private async Task InitializeContainer()
+        private async UniTask InitializeNewContainer()
         {
-
             if (_cachedContainerModel == null)
                 return;
             
-            ContainerHolder firstInactiveContainHolder = containerHolders
+            var firstInactiveContainHolder = _containerHolders
                 .Find(c => !c.HasInitializedContainer);
 
             if (firstInactiveContainHolder != null)
             {
                 var instance = Instantiate(_cachedContainerModel,
                     firstInactiveContainHolder.transform.position, Quaternion.identity);
-                instance.transform.SetParent(transform);
+                instance.transform.SetParent(firstInactiveContainHolder.transform);
                 firstInactiveContainHolder.SetActiveState(_parcelTypeToAssign);
             }
             
-            await _mediator.Send(new ContainerManagerOperations.AddNewContainerCommand(_containerHolder.Value));
+            await _mediator.Send(new AddNewContainerCommand(_containerHolders));
 
-            _containerHolder.Value = new List<ContainerHolder>(containerHolders);
+            //_containerHolder.Value = new List<ContainerHolder>(containerHolders);
+            _cachedContainerModel = null;
+            _parcelTypeToAssign = ParcelType.None;
+        }
+        
+        private async UniTask InitializeBoughtContainers()
+        {
+            if (_cachedContainerModel == null)
+                return;
+            
+            ContainerHolder firstActiveContainHolder = _containerHolders
+                .Find(c => c.HasInitializedContainer);
+
+            if (firstActiveContainHolder != null)
+            {
+                Debug.Log("Initializing bought container");
+                var instance = Instantiate(_cachedContainerModel,
+                    firstActiveContainHolder.transform.position, Quaternion.identity);
+                instance.transform.SetParent(firstActiveContainHolder.transform);
+            }
+            
+            await _mediator.Send(new AddNewContainerCommand(_containerHolders));
+
+            Debug.Log("Container Initialized");
+            //_containerHolder.Value = new List<ContainerHolder>(containerHolders);
             _cachedContainerModel = null;
             _parcelTypeToAssign = ParcelType.None;
         }
@@ -105,7 +132,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             {
                 _cachedContainerModel = handle.Result;
                 _parcelTypeToAssign = parcelType;
-                _ = InitializeContainer();
+                _ = InitializeNewContainer();
             }
             else
                 Debug.LogError("Failed to load service building model");
@@ -116,16 +143,24 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             if (_warmUpInitialized)
             {
                 Debug.Log("Warm-up already completed.");
+                
                 return UniTask.CompletedTask;
             }
-
+            
+            Debug.Log("Warm-up initialized.");
             return WarmUpInternalAsync(containerHoldersData);
         }
 
         private async UniTask WarmUpInternalAsync(List<ContainerHoldersData> containerHoldersData)
         {
-            _containerHolder.Value = containerHolders;
-
+            _parcelTypesForContainersToBeBought = new List<ParcelType>
+            {
+                ParcelType.Presents,
+                ParcelType.Electronics,
+                ParcelType.Furniture,
+                ParcelType.MusicalInstruments
+            };
+            
             var containersToWarmUp = containerHoldersData
                 .Where(c => c.hasInitializedContainer)
                 .ToList();
@@ -133,10 +168,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             if (containersToWarmUp.Count == 0)
             {
                 // Fallback to warming up the first uninitialized container
-                if (parcelTypesForContainersToBeBought.Count > 0)
+                if (_parcelTypesForContainersToBeBought.Count > 0)
                 {
-                    var containerModelToWarmUp = parcelTypesForContainersToBeBought[0];
-                    parcelTypesForContainersToBeBought.RemoveAt(0); // remove before preload
+                    var containerModelToWarmUp = _parcelTypesForContainersToBeBought[0];
+                    _parcelTypesForContainersToBeBought.RemoveAt(0); // remove before preload
 
                     var addressableKey = containersAddressableKeys.GetContainerKey(containerModelToWarmUp);
                     if (!string.IsNullOrEmpty(addressableKey))
@@ -151,7 +186,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
                             _cachedContainerModel = prefab;
                             _parcelTypeToAssign = containerModelToWarmUp;
 
-                            await InitializeContainer();
+                            await InitializeNewContainer();
                         }
                         else
                         {
@@ -172,7 +207,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             foreach (var container in containersToWarmUp)
             {
                 var parcelType = container.parcelType;
-                parcelTypesForContainersToBeBought.Remove(parcelType);
+                var test = _parcelTypesForContainersToBeBought.Count;
+                _parcelTypesForContainersToBeBought.Remove(parcelType);
 
                 var addressableKey = containersAddressableKeys.GetContainerKey(parcelType);
                 if (string.IsNullOrEmpty(addressableKey))
@@ -193,7 +229,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
                     _cachedContainerModel = prefab;
                     _parcelTypeToAssign = parcelType;
 
-                    await InitializeContainer();
+                    await InitializeBoughtContainers();
                 }
                 else
                 {
@@ -207,6 +243,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             _warmUpProgress.OnCompleted();
             _warmUpInitialized = true;
         }
+        
+        public void ResetParameters() => _warmUpInitialized = false;
     }
 }
     

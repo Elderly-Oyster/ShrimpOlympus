@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.NPCCars;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
+using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
@@ -29,6 +31,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         [SerializeField] private CarConfig carConfig;
         [SerializeField] private NPCCarManager npcCarManager;
         [SerializeField] private FakeManager fakeManager;
+        [SerializeField] private List<ContainerHolder> containerHolders;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
@@ -38,8 +41,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             RegisterServices(builder);
             RegisterCarDependencies(builder);
             
+            builder.RegisterComponent(receiverManager);
             builder.AddMediatR(typeof(AddNewContainerCommand).Assembly);
-            builder.RegisterInstance(receiverManager);
             builder.Register<GameManager>(Lifetime.Singleton);
             builder.RegisterComponent(fakeManager);
             
@@ -64,6 +67,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private void RegisterCarDependencies(IContainerBuilder builder)
         {
+            builder.RegisterInstance(containerHolders);
             builder.RegisterComponent(containerManager);
             
             builder.RegisterComponent(carController)

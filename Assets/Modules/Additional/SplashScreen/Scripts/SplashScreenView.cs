@@ -1,5 +1,4 @@
 using CodeBase.Core.Modules;
-using CodeBase.Core.UI.ProgressBars;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
@@ -17,7 +16,7 @@ namespace Modules.Additional.SplashScreen.Scripts
         [SerializeField] private TMP_Text progressText;
         [SerializeField] private Image progressBar;
         
-        private CompositeDisposable _disposables;
+        private CompositeDisposable _disposables = new();
 
         public void SetupEventListeners(ReadOnlyReactiveProperty<string> progressStatus,
             ReadOnlyReactiveProperty<float> exponentialProgress)

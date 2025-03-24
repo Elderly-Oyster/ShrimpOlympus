@@ -9,13 +9,13 @@ using VContainer.Unity;
 
 namespace Modules.Additional.SplashScreen.Scripts
 {
-    public class SplashScreenPresenter : IScreenPresenter, IStartable
+    public class SplashScreenPresenter : IScreenPresenter
     {
         private readonly SplashScreenView _splashScreenView;
         private readonly SplashScreenModel _splashScreenModel;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
         
-        private Subject<Unit> _servicesLoaded = new();
+        private readonly Subject<Unit> _servicesLoaded = new();
         private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
         private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
 
@@ -33,14 +33,14 @@ namespace Modules.Additional.SplashScreen.Scripts
             _splashScreenModel = splashScreenModel;
             _screenCompletionSource = new TaskCompletionSource<bool>();
         }
-
-        public void Start() => Enter(null).Forget();
         
         public async UniTask Enter(object param)
         {
+            Debug.Log("SplashScreenPresenter entered");
             InitializeUI();
             await _splashScreenView.Show();
             await _splashScreenModel.WaitForTheEndOfRegistration();
+            Debug.Log("Registration Complete");
             await LoadDataForServices();
         }
 
@@ -50,7 +50,7 @@ namespace Modules.Additional.SplashScreen.Scripts
 
         private void InitializeUI()
         {
-            _splashScreenView.HideInstantly();
+            //_splashScreenView.HideInstantly();
             _splashScreenView.SetupEventListeners(ProgressStatus, ExponentialProgress);
         }
         

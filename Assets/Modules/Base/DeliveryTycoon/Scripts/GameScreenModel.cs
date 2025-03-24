@@ -35,24 +35,22 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         {
             StateMachine = new StateMachine<GameScreenState, GameScreenState>(GameScreenState.Initial);
             ConfigureStateMachine();
-            StateMachine.Fire(GameScreenState.Game);
+            StateMachine.Fire(GameScreenState.Loading);
         }
 
-        public void ChangeState(GameScreenState targetState)
-        {
+        public void ChangeState(GameScreenState targetState) => 
             StateMachine.Fire(targetState);
-        }
 
-        private void SubscribeToEvents()
-        {
+        private void SubscribeToEvents() => 
             _disposable.Add(_gameDataSystem.GameDataProperty.Subscribe(UpdateGameData));
-        }
 
         private void ConfigureStateMachine()
         {
+            StateMachine.Configure(GameScreenState.Loading)
+                .Permit(GameScreenState.Game, GameScreenState.Game);
             
             StateMachine.Configure(GameScreenState.Initial)
-                .Permit(GameScreenState.Game, GameScreenState.Game);
+                .Permit(GameScreenState.Loading, GameScreenState.Loading);
             
             StateMachine.Configure(GameScreenState.Game).
                 Permit(GameScreenState.UpgradePopup, GameScreenState.UpgradePopup);
@@ -61,14 +59,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 Permit(GameScreenState.Game, GameScreenState.Game);
         }
 
-        private void UpdateGameData(GameData gameData)
-        {
+        private void UpdateGameData(GameData gameData) => 
             _gameData.Value = gameData;
-        }
 
-        public void Dispose()
-        {
-            _disposable.Dispose();
-        }
+        public void Dispose() => _disposable.Dispose();
     }
 }

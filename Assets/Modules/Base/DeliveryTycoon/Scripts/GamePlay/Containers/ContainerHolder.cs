@@ -1,3 +1,4 @@
+using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Parcels;
 using UnityEngine;
 
@@ -18,6 +19,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers
             _hasInitializedContainer = true;
             _parcelType = parcelType;
             Debug.Log($" {name} activated with ParcelType {Type}");
+        }
+
+        public void SetParameters(ContainerHoldersData containerHoldersData)
+        {
+            _hasInitializedContainer = containerHoldersData.hasInitializedContainer;
+            _parcelType = containerHoldersData.parcelType;
         }
         
     }

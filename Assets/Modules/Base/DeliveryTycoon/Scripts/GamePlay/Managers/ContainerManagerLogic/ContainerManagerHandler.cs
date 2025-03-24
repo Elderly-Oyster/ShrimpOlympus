@@ -2,11 +2,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
+using UnityEngine;
 using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic.ContainerManagerOperations;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic
 {
-    public class ContainerManagerHandler : IRequestHandler<ContainerManagerOperations.AddNewContainerCommand>
+    public class ContainerManagerHandler : IRequestHandler<AddNewContainerCommand>
     {
         private ReceiverManager ReceiverManager { get;  set; }
         private GameDataSystem GameDataSystem { get; set; }
@@ -23,6 +24,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         public Task<Unit> Handle(AddNewContainerCommand request, CancellationToken cancellationToken)
         {
             ReceiverManager.UpdateReceiversTypes(request.ContainerHolders);
+            Debug.Log("ContainerManagerHolder " + request.ContainerHolders.Count);
             GameDataSystem.SetContainersData(GameDataSystem.ConvertToData(request.ContainerHolders));
             return Task.FromResult(Unit.Value);
         }

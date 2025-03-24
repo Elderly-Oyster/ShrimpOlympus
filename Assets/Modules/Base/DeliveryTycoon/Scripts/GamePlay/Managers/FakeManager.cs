@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -25,15 +23,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
         private bool _isInitialized;
 
         [Inject]
-        public void Construct(LoadingServiceProvider loadingServiceProvider)
-        {
+        public void Construct(LoadingServiceProvider loadingServiceProvider) => 
             _loadingServiceProvider = loadingServiceProvider;
-        }
 
         public void Initialize() =>
             _loadingServiceProvider.RegisterCommands("FakeManager", LoadAndInitializeBuildingsAsync);
 
-        public UniTask LoadAndInitializeBuildingsAsync()
+            public UniTask LoadAndInitializeBuildingsAsync()
             {
                 if (_isInitialized)
                 {
@@ -67,7 +63,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                     if (handle.Status == AsyncOperationStatus.Succeeded)
                     {
                         GameObject prefab = handle.Result;
-                        GameObject instance = UnityEngine.Object.Instantiate(prefab, GetSpawnPosition(loaded), Quaternion.identity, buildingParent);
+                        Instantiate(prefab, GetSpawnPosition(), Quaternion.identity, buildingParent);
                     }
                     else
                     {
@@ -82,9 +78,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                 _isInitialized = true;
             }
 
-            private Vector3 GetSpawnPosition(int index)
+            private Vector3 GetSpawnPosition()
             {
-                return new Vector3(index * 5f, 0f, 0f); // Simple horizontal layout
+                return new Vector3(-100, -100, -100); // Simple horizontal layout
             }
         }
     }

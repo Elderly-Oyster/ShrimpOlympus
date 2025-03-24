@@ -10,7 +10,7 @@ namespace CodeBase.Services
     {
         public readonly Dictionary<string, Func<UniTask>> Commands = new();
 
-        private Subject<Dictionary<string, Func<UniTask>>> _commandsDictionarySubject;
+        private readonly Subject<Dictionary<string, Func<UniTask>>> _commandsDictionarySubject = new();
         private readonly TaskCompletionSource<bool> _registrationCompleted = new();
 
         public Task WaitForRegistration => _registrationCompleted.Task;

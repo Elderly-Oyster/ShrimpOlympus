@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using R3;
+using UnityEngine;
 using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
@@ -27,6 +28,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             _saveSystem.AddSystem(this);
             GameDataProperty ??= new ReactiveProperty<GameData.GameData>();
             GameDataProperty.Value ??= new GameData.GameData();
+            // _dataLoaded = new TaskCompletionSource<bool>();
         }
 
         public int GetLevelData() => GameDataProperty.Value?.level ?? 0;
@@ -71,7 +73,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
         public void SetContainersData(List<ContainerHoldersData> containersData)
         {
             if (containersData == null) return;
-            GameDataProperty.Value.containersData = containersData;
+            GameDataProperty.Value.containersData = new List<ContainerHoldersData>(containersData);
+           
         }
         
         public List<ContainerHoldersData> ConvertToData(List<ContainerHolder> containerHolders)
@@ -81,29 +84,35 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             if (containerHolders.Count != data.Count)
                 return null;
 
-            for (int i = 0; i < containerHolders.Count; i++)
+            for (int i = 0; i <  GameDataProperty.Value.containersData.Count; i++)
             {
                 data[i].hasInitializedContainer = containerHolders[i].HasInitializedContainer;
                 data[i].parcelType = containerHolders[i].Type;
             }
+            
+            Debug.Log("Convert To Data counter: " + data.Count);
 
             return data;
         }
 
-        public async UniTask LoadData(SerializableDataContainer dataContainer)
+        public UniTask LoadData(SerializableDataContainer dataContainer)
         {
             if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData))
             {
+                GameDataProperty.Value = new GameData.GameData();
                 GameDataProperty.Value = loadedData;
                 if (GameDataProperty.Value == null)
                     GameDataProperty.Value = new GameData.GameData();
-                
-                _dataLoaded.TrySetResult(true);
             }
+            _dataLoaded.TrySetResult(true);
+            Debug.Log("GameDataSystem received game data");
+            return UniTask.CompletedTask;
         }
 
-        public void SaveData(SerializableDataContainer dataContainer) => 
-            dataContainer.SetData(GameDataKey, GameDataProperty.Value);
-            
+        public void SaveData(SerializableDataContainer dataContainer)
+        {
+            Debug.Log("Number of saved containers: " + GameDataProperty.CurrentValue.containersData.Count);
+            dataContainer.SetData(GameDataKey, GameDataProperty.CurrentValue);
+        }
     }
 }

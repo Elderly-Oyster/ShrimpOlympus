@@ -55,5 +55,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             _receiverManager.StartAssignReceivers();
             _npcCarManager.StartSpawnCars();
         }
+
+        public void EndGame() => _containerManager.ResetParameters();
     }
 }
