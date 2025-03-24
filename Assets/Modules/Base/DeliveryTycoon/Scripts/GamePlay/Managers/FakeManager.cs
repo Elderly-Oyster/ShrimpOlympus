@@ -82,6 +82,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             {
                 return new Vector3(-100, -100, -100); // Simple horizontal layout
             }
-        }
+
+            public void ResetParameters() => _loadingServiceProvider.UnregisterCommands("FakeManager");
+    }
     }
 

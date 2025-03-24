@@ -24,10 +24,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
         [Inject]
         public void Construct(SaveSystem saveSystem)
         {
-            _saveSystem = saveSystem;
-            _saveSystem.AddSystem(this);
             GameDataProperty ??= new ReactiveProperty<GameData.GameData>();
             GameDataProperty.Value ??= new GameData.GameData();
+            _saveSystem = saveSystem;
+            _saveSystem.AddSystem(this);
             // _dataLoaded = new TaskCompletionSource<bool>();
         }
 
@@ -79,12 +79,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
         
         public List<ContainerHoldersData> ConvertToData(List<ContainerHolder> containerHolders)
         {
-            List<ContainerHoldersData> data = GameDataProperty.Value.containersData;
+            List<ContainerHoldersData> data = GameDataProperty.CurrentValue.containersData;
             
             if (containerHolders.Count != data.Count)
                 return null;
 
-            for (int i = 0; i <  GameDataProperty.Value.containersData.Count; i++)
+            for (int i = 0; i <  GameDataProperty.CurrentValue.containersData.Count; i++)
             {
                 data[i].hasInitializedContainer = containerHolders[i].HasInitializedContainer;
                 data[i].parcelType = containerHolders[i].Type;
@@ -97,13 +97,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
 
         public UniTask LoadData(SerializableDataContainer dataContainer)
         {
-            if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData))
+            if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData) && loadedData != null)
             {
-                GameDataProperty.Value = new GameData.GameData();
                 GameDataProperty.Value = loadedData;
-                if (GameDataProperty.Value == null)
-                    GameDataProperty.Value = new GameData.GameData();
+                GameDataProperty.ForceNotify();
             }
+
             _dataLoaded.TrySetResult(true);
             Debug.Log("GameDataSystem received game data");
             return UniTask.CompletedTask;

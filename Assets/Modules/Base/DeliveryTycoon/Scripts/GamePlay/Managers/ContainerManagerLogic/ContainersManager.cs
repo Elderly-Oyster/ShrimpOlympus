@@ -244,7 +244,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
             _warmUpInitialized = true;
         }
         
-        public void ResetParameters() => _warmUpInitialized = false;
+        public void ResetParameters()
+        {
+            _warmUpInitialized = false;
+            _loadingServiceProvider.UnregisterCommands("ContainerManager");
+        }
     }
 }
     

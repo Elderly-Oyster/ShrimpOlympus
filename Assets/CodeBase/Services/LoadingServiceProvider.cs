@@ -17,7 +17,7 @@ namespace CodeBase.Services
 
         public void RegisterCommands(string name, Func<UniTask> command)
         {
-            Commands.TryAdd(command.Method.Name, command);
+            Commands.TryAdd(name, command);
             _commandsDictionarySubject.OnNext(new Dictionary<string, Func<UniTask>> { { name, command } });
         }
 
@@ -28,7 +28,7 @@ namespace CodeBase.Services
 
         public void ResetRegistrationProgress()
         {
-            _registrationCompleted.SetResult(false);
+            _registrationCompleted.TrySetResult(false);
         }
         
         public void CompleteRegistration()

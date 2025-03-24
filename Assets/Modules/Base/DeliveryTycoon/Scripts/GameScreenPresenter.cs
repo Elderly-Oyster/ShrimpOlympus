@@ -78,6 +78,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             );
             _screenView.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
             await _screenView.Show();
+            _loadingServiceProvider.ResetRegistrationProgress();
         }
 
         public async UniTask Execute() => await _screenCompletionSource.Task;
