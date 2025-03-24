@@ -32,25 +32,34 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterComponent(screenCanvas);
             builder.RegisterInstance(mainCamera);
-            builder.RegisterInstance(gameScreenView);
-            builder.RegisterInstance(upgradePopupView);
-            builder.AddMediatR(typeof(AddNewContainerCommand).Assembly);
-            builder.Register<GameDataSystem>(Lifetime.Singleton).As<GameDataSystem>();
-            builder.Register<LevelService>(Lifetime.Singleton);
-            builder.Register<CurrencyService>(Lifetime.Singleton);
 
+            RegisterViews(builder);
+            RegisterServices(builder);
             RegisterCarDependencies(builder);
             
+            builder.AddMediatR(typeof(AddNewContainerCommand).Assembly);
             builder.RegisterInstance(receiverManager);
             builder.Register<GameManager>(Lifetime.Singleton);
             builder.RegisterComponent(fakeManager);
             
-            builder.Register<GameScreenController>(Lifetime.Singleton);
-            builder.Register<GameScreenPresenter>(Lifetime.Singleton);
-            builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
-            builder.Register<GameScreenModel>(Lifetime.Singleton);
+            RegisterMvp(builder);
+        }
+
+        private void RegisterViews(IContainerBuilder builder)
+        {
+            builder.RegisterComponent(screenCanvas);
+            builder.RegisterInstance(gameScreenView);
+            builder.RegisterInstance(upgradePopupView);
+        }
+
+        private static void RegisterServices(IContainerBuilder builder)
+        {
+            builder.Register<GameDataSystem>(Lifetime.Singleton)
+                .As<GameDataSystem>();
+            
+            builder.Register<CurrencyService>(Lifetime.Singleton);
+            builder.Register<LevelService>(Lifetime.Singleton);
         }
 
         private void RegisterCarDependencies(IContainerBuilder builder)
@@ -68,6 +77,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.RegisterComponent(npcCarManager)
                 .AsImplementedInterfaces()
                 .AsSelf();
+        }
+
+        private static void RegisterMvp(IContainerBuilder builder)
+        {
+            builder.Register<GameScreenController>(Lifetime.Singleton);
+            builder.Register<GameScreenPresenter>(Lifetime.Singleton);
+            builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
+            builder.Register<GameScreenModel>(Lifetime.Singleton);
         }
     }
 }
