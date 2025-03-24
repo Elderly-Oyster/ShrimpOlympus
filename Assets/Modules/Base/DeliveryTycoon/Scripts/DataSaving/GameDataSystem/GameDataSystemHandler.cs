@@ -21,7 +21,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
         
         public Task<Unit> Handle(LoadDataCommand request, CancellationToken cancellationToken)
         {
-           _gameManager.StartGame(_gameManager.MusicVolume, _gameDataSystem.GameDataProperty.CurrentValue);
+           _gameManager.SendGameData(_gameDataSystem.GameDataProperty.CurrentValue);
            return Task.FromResult(Unit.Value);
         }
     }

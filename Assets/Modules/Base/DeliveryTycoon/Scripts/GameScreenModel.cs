@@ -30,8 +30,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             Debug.Log("GameScreenModel Created!");
             SubscribeToEvents();
         }
-
-        // TODO add initial state
+        
         public GameScreenModel()
         {
             StateMachine = new StateMachine<GameScreenState, GameScreenState>(GameScreenState.Initial);
@@ -41,14 +40,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public void ChangeState(GameScreenState targetState)
         {
-            Debug.Log("GameScreenModel ChangeState: " + targetState);
-            if (targetState == GameScreenState.UpgradePopup)
-            {
-                StateMachine.Fire(GameScreenState.UpgradePopup);
-                return;
-            }
-
-            StateMachine.Fire(GameScreenState.Game);
+            StateMachine.Fire(targetState);
         }
 
         private void SubscribeToEvents()
@@ -58,6 +50,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private void ConfigureStateMachine()
         {
+            
             StateMachine.Configure(GameScreenState.Initial)
                 .Permit(GameScreenState.Game, GameScreenState.Game);
             

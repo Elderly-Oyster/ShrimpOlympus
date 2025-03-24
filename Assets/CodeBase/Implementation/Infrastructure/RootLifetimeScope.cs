@@ -61,6 +61,7 @@ namespace CodeBase.Implementation.Infrastructure
             
             builder.Register<SceneService>(Lifetime.Singleton);
             builder.Register<SceneInstallerService>(Lifetime.Singleton);
+            builder.Register<LoadingServiceProvider>(Lifetime.Singleton);
         }
 
         private void RegisterLongInitializationService(IContainerBuilder builder)

@@ -2169,6 +2169,75 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7790538391088313120, guid: 99420a4e47be02047983a8de78548f17, type: 3}
   m_PrefabInstance: {fileID: 540396872}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &562669620
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 562669621}
+  - component: {fileID: 562669622}
+  m_Layer: 0
+  m_Name: FakeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &562669621
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562669620}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1457, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 732833685}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &562669622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 562669620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76a9d9343b6441319b09559ad0218c8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildingAddressableNames:
+  - Building_6
+  - Building_4
+  - Building_1
+  - Building_2
+  - Building_7
+  - Building_3
+  - Building_8
+  - Building_5
+  - Building_9
+  - Train
+  - Train_Carriage
+  - Tram_1
+  - Tram_2
+  - Tram_3
+  - Tram_4
+  - Ambulance
+  - Bulldozer
+  - Excavator
+  - Fire_Truck
+  - Gas_Truck
+  - Police
+  - Taxi
+  buildingParent: {fileID: 562669621}
+  initializedBuildingsFlags: 
 --- !u!114 &563007702 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2246986911970946996, guid: c37bb94640a85994b92f354cfbc47f43, type: 3}
@@ -3087,6 +3156,7 @@ Transform:
   - {fileID: 1440354002}
   - {fileID: 117921070}
   - {fileID: 977252727}
+  - {fileID: 562669621}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &742672964
@@ -3650,6 +3720,7 @@ MonoBehaviour:
   receiverManager: {fileID: 117921071}
   carConfig: {fileID: 11400000, guid: 9fbfafce04ba23e409b34db80420f5e2, type: 2}
   npcCarManager: {fileID: 977252728}
+  fakeManager: {fileID: 562669622}
 --- !u!1001 &882875608
 PrefabInstance:
   m_ObjectHideFlags: 0

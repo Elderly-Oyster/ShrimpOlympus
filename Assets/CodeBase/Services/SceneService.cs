@@ -12,7 +12,8 @@ namespace CodeBase.Services
     public enum AdditiveScenesMap
     {
         PopupsManager,
-        DynamicBackground
+        DynamicBackground,
+        SplashScreen,
     }
 
     public enum TestScenesMap  //TODO 
@@ -72,6 +73,7 @@ namespace CodeBase.Services
                 ScreenPresenterMap.Converter => new List<AdditiveScenesMap> {AdditiveScenesMap.DynamicBackground},
                 ScreenPresenterMap.MainMenu => new List<AdditiveScenesMap>(),
                 ScreenPresenterMap.TicTac => new List<AdditiveScenesMap>(),
+                ScreenPresenterMap.DeliveryTycoon => new List<AdditiveScenesMap>() { AdditiveScenesMap.SplashScreen},
                 _ => null
             };
             

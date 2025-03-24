@@ -23,6 +23,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
         public AudioClip IdleSound;
 
         [SerializeField] private Camera mainCamera;
+        
+        private AudioSystem _audioSystem;
 
         private float _speed;
         private float _targetRotation;
@@ -32,7 +34,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
         private CharacterController _controller;
         private AudioClip _currentSound;
         private AudioSource _audioSource;
-        
+
+        [Inject]
+        public void Construct(AudioSystem audioSystem)
+        {
+            _audioSystem = audioSystem;
+            SetMusicState(_audioSystem.MusicVolume);
+        }
+
         public void SetMusicState(float musicVolume)
         {
             if (musicVolume > 0)

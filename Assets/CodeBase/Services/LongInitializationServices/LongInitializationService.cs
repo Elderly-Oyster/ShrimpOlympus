@@ -8,7 +8,7 @@ namespace CodeBase.Services.LongInitializationServices
         private bool _isInitialized;
         protected static int DelayTime = 1;
 
-        public Task Init()   //why task and not UniTask?
+        public Task Init()   
         {
             if (!_isInitialized)
                 return InitializeAsync();

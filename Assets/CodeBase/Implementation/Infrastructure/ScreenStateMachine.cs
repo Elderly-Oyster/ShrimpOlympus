@@ -61,7 +61,7 @@ namespace CodeBase.Implementation.Infrastructure
             await _semaphoreSlim.WaitAsync(); //Asynchronously waits to enter the SemaphoreSlim.
             try
             {
-                Debug.Log("currentScreenPresetner - " + screenPresenterMap);
+                Debug.Log("currentScreenPresenter - " + screenPresenterMap);
                 CurrentScreenPresenterMap = screenPresenterMap;
 
                 await _sceneService.LoadScenesForModule(CurrentScreenPresenterMap);
@@ -70,21 +70,28 @@ namespace CodeBase.Implementation.Infrastructure
                 // creates children for the root installer
                 var sceneLifetimeScope =
                     _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
-                
-                    CurrentStateController = 
-                        _screenTypeMapper.ResolveController(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
-                    
-                    _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
-                    
-                    await CurrentStateController.Enter(param);
-                    await CurrentStateController.Execute();
-                    await CurrentStateController.Exit();
-                    
-                    CurrentStateController.Dispose();
+
+                CurrentStateController =
+                    _screenTypeMapper.ResolveController(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
+
+                _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
+
+                await CurrentStateController.Enter(param);
+                await CurrentStateController.Execute();
+                await CurrentStateController.Exit();
+
+                CurrentStateController.Dispose();
 
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }
-            finally { _semaphoreSlim.Release(); }
+            catch (Exception e)
+            {
+                Debug.LogError("Nothing works, good luck figuring out what's wrong. Here is your beloved exception: " + e); 
+            }
+            finally
+            {
+                _semaphoreSlim.Release(); 
+            }
         }
         
         /// <summary>

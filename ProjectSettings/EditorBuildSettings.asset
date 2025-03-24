@@ -26,5 +26,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Modules/Base/DeliveryTycoon/Scene/DeliveryTycoon.unity
     guid: ffcdee76e8d0f8241b1ae125da20bfaf
+  - enabled: 1
+    path: Assets/Modules/Additional/SplashScreen/Scene/SplashScreen.unity
+    guid: b17be873bd53f264ebed7bef2029cf59
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: b350deea38b5f984c8a6f1db80e26621, type: 2}

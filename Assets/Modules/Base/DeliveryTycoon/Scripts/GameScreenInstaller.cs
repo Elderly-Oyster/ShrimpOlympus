@@ -28,6 +28,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         [SerializeField] private ReceiverManager receiverManager;
         [SerializeField] private CarConfig carConfig;
         [SerializeField] private NPCCarManager npcCarManager;
+        [SerializeField] private FakeManager fakeManager;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
@@ -44,6 +45,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             
             builder.RegisterInstance(receiverManager);
             builder.Register<GameManager>(Lifetime.Singleton);
+            builder.RegisterComponent(fakeManager);
             
             builder.Register<GameScreenController>(Lifetime.Singleton);
             builder.Register<GameScreenPresenter>(Lifetime.Singleton);

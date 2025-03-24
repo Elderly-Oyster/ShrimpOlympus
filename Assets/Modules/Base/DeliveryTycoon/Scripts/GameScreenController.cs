@@ -1,6 +1,7 @@
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
+using Modules.Additional.SplashScreen.Scripts;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
@@ -21,18 +22,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         
         
         public GameScreenController(IScreenStateMachine screenStateMachine,
-            GameScreenModel screenModel, GameScreenPresenter gameScreenPresenter, UpgradePopupPresenter upgradePopupPresenter, GameDataSystem gameDataSystem)
+            GameScreenModel screenModel, GameScreenPresenter gameScreenPresenter,
+            UpgradePopupPresenter upgradePopupPresenter)
         {
             _screenStateMachine = screenStateMachine;
             _gameScreenPresenter = gameScreenPresenter;
             _upgradePopupPresenter = upgradePopupPresenter;
             _gameScreenModel = screenModel;
-            _gameScreenModel = screenModel;
             SubscribeToEvents();
             _completionSource = new UniTaskCompletionSource<bool>();
             _gameScreenModel.StateMachine.OnTransitionCompleted(OnStateChanged);
         }
-
+        
         private void SubscribeToEvents()
         {
             _disposables.Add(_gameScreenPresenter.OnMainMenuButtonClickedCommand.Subscribe(RunNewScreen));

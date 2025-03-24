@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CodeBase.Core.Systems;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Parcels;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.ReceiverBuildings;
 using UnityEngine;
+using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 {
@@ -13,6 +15,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
     { 
         [SerializeField] private List<ReceiverBuilding> receiverBuildings = new();
         [SerializeField] private AudioClip notificationSound;
+
+        private AudioSystem _audioSystem;
         
         private Coroutine _coroutine;
         private bool _assignReceivers = true;
@@ -27,9 +31,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
 
         public int MaxDemandingReceivers => _maxDemandingReceivers;
 
-        public void Initialize(List<ContainerHoldersData> containerHoldersData, int maxDemandingReceivers, float musicVolume)
+        [Inject]
+        public void Construct(AudioSystem audioSystem) => _audioSystem = audioSystem;
+
+        public void Initialize(List<ContainerHoldersData> containerHoldersData, int maxDemandingReceivers)
         {
-            _musicVolume = musicVolume;
+            _musicVolume = _audioSystem.MusicVolume;
             _audioSource = GetComponent<AudioSource>();
             _maxDemandingReceivers = maxDemandingReceivers;
             var containersParcelTypes = containerHoldersData.FindAll(x
@@ -37,7 +44,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             containersParcelTypes.Remove(ParcelType.None);
             _parcelTypes = containersParcelTypes;
             SortReceiverBuildings();
-            StartCoroutine(StartAssignReceivers());
+            
+        }
+
+        public void StartAssignReceivers()
+        {
+            StartCoroutine(AssignReceivers());
         }
 
         public void UpdateReceiversTypes(List<ContainerHolder> containerHolders)
@@ -81,7 +93,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
                 r.Parcel.ParcelType == ParcelType.MusicalInstruments);
         }
 
-        private IEnumerator StartAssignReceivers()
+        private IEnumerator AssignReceivers()
         {
             while (_assignReceivers)
             {

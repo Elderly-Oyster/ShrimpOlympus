@@ -25,7 +25,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers
             _carPool = carPool;
         }
 
-        public void Initialize()
+        public void StartSpawnCars()
         {
             _carSpawnEnabled = true;
             StartCoroutine(SpawnDecorationCars());
