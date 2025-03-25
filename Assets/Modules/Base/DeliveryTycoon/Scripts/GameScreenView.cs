@@ -17,7 +17,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         [SerializeField] private TMP_Text playerMoneyText;
         [SerializeField] private BaseProgressBarView experienceProgressBar;
         [SerializeField] private TMP_Text levelText;
-        
+
+        protected override void Awake()
+        {
+            base.Awake();
+            gameObject.SetActive(false);
+        }
+
         public void SetupEventListeners(ReactiveCommand<Unit> onMainMenuButtonClicked, ReactiveCommand<Unit> onUpgradePopupButtonClicked)
         {
             mainMenuButton.OnClickAsObservable()

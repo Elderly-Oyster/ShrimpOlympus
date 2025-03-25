@@ -16,6 +16,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
 
         private const string GameDataKey = "GameData";
         private readonly TaskCompletionSource<bool> _dataLoaded = new();
+        private bool _isLoaded;
         
         public ReactiveProperty<GameData.GameData> GameDataProperty { get; private set; } = new();
 
@@ -97,14 +98,21 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
 
         public UniTask LoadData(SerializableDataContainer dataContainer)
         {
-            if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData) && loadedData != null)
+            if (!_isLoaded)
             {
-                GameDataProperty.Value = loadedData;
-                GameDataProperty.ForceNotify();
+                if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData) && loadedData != null)
+                {
+                    //TODO the data is not overwritten properly, the list of containerHolderData is added to the existing one
+                    GameDataProperty.CurrentValue.containersData.Clear();
+                    GameDataProperty.Value = loadedData;
+                    GameDataProperty.ForceNotify();
+                }
+
+                _isLoaded = true;
+                _dataLoaded.TrySetResult(true);
+                Debug.Log("GameDataSystem received game data");
             }
 
-            _dataLoaded.TrySetResult(true);
-            Debug.Log("GameDataSystem received game data");
             return UniTask.CompletedTask;
         }
 

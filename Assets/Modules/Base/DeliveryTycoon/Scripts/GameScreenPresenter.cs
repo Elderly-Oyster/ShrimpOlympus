@@ -77,7 +77,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                _onUpgradePopupButtonClickedCommand
             );
             _screenView.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
-            await _screenView.Show();
+            //await _screenView.Show();
             _loadingServiceProvider.ResetRegistrationProgress();
         }
 

@@ -59,6 +59,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             {
                 case GameScreenState.Loading:
                 {
+                    _gameScreenPresenter.ShowGameScreenView();
                     break;
                 }
                 case GameScreenState.Game:

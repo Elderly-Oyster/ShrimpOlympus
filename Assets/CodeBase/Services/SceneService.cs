@@ -57,7 +57,7 @@ namespace CodeBase.Services
             if (additionalScenes != null)
             {
                 var sceneNames = additionalScenes.Select(scene => scene.ToString());
-                scenes.AddRange(sceneNames);
+                scenes.InsertRange(0, sceneNames);
             }
 
             Debug.Log("Loading scenes: " + string.Join(", ", scenes));
