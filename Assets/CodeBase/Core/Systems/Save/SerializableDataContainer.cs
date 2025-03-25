@@ -9,9 +9,9 @@ namespace CodeBase.Core.Systems.Save
 	{
 		[JsonConverter(typeof(TypedDictionaryConverter))]
 		[JsonProperty]
-		private readonly Dictionary<Type, IDictionary> _data = new Dictionary<Type, IDictionary>();
+		private readonly Dictionary<Type, IDictionary> _data = new();
 		[JsonProperty]
-		private readonly Dictionary<string, Type> _dataTypes = new Dictionary<string, Type>();
+		private readonly Dictionary<string, Type> _dataTypes = new();
 
 		public bool TryGet<T>(string dataName, out T dataValue)
 		{

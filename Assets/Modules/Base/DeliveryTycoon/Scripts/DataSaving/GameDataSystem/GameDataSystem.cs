@@ -14,8 +14,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
     {
         private SaveSystem _saveSystem;
 
-        private const string GameDataKey = "GameData";
+        private const string GameDataMoneyKey = "GameDataMoney";
+        private const string GameDataCapacityKey = "GameDataCapacity";
+        private const string NumberOfUnlockedUpgradesKey = "NumberOfUnlockedUpgrades";
+        private const string ExperienceKey = "Experience";
+        private const string LevelKey = "Level";
+        private const string MaxNumberOfOrdersKey = "MaxNumberOfOrders";
+        private const string ContainerHolderDataKey = "ContainerHolderData";
         private readonly TaskCompletionSource<bool> _dataLoaded = new();
+        
         private bool _isLoaded;
         
         public ReactiveProperty<GameData.GameData> GameDataProperty { get; private set; } = new();
@@ -100,15 +107,37 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
         {
             if (!_isLoaded)
             {
-                if (dataContainer.TryGet(GameDataKey, out GameData.GameData loadedData) && loadedData != null)
-                {
-                    //TODO the data is not overwritten properly, the list of containerHolderData is added to the existing one
-                    GameDataProperty.CurrentValue.containersData.Clear();
-                    GameDataProperty.Value = loadedData;
-                    GameDataProperty.ForceNotify();
-                }
+                // if (dataContainer.TryGet(GameDataMoneyKey, out GameData.GameData loadedGameData) && loadedGameData != null)
+                //     GameDataProperty.Value = loadedGameData;
+                
+                if (dataContainer.TryGet(GameDataMoneyKey, 
+                        out int loadedMoneyData))
+                    GameDataProperty.Value.money = loadedMoneyData;
+                
+                if (dataContainer.TryGet(GameDataCapacityKey, 
+                        out int loadedCapacityData))
+                    GameDataProperty.Value.capacity = loadedCapacityData;
+                
+                if (dataContainer.TryGet(NumberOfUnlockedUpgradesKey, 
+                        out int unlockedUpgradesData))
+                    GameDataProperty.Value.numberOfUnlockedUpgrades = unlockedUpgradesData;
+                
+                if (dataContainer.TryGet(ExperienceKey, 
+                        out int  experienceData))
+                    GameDataProperty.Value.experience = experienceData;
+                
+                if (dataContainer.TryGet(LevelKey, out int levelData))
+                    GameDataProperty.Value.level = levelData;
+                
+                if (dataContainer.TryGet(MaxNumberOfOrdersKey, 
+                        out int  maxNumberOfOrdersData))
+                    GameDataProperty.Value.maxNumberOfOrders = maxNumberOfOrdersData;
+                
+                if (dataContainer.TryGet(ContainerHolderDataKey, 
+                        out List<ContainerHoldersData> containerHoldersData) && containerHoldersData != null)
+                    GameDataProperty.Value.containersData = containerHoldersData;
 
-                _isLoaded = true;
+                _isLoaded= true;
                 _dataLoaded.TrySetResult(true);
                 Debug.Log("GameDataSystem received game data");
             }
@@ -119,7 +148,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
         public void SaveData(SerializableDataContainer dataContainer)
         {
             Debug.Log("Number of saved containers: " + GameDataProperty.CurrentValue.containersData.Count);
-            dataContainer.SetData(GameDataKey, GameDataProperty.CurrentValue);
+            dataContainer.SetData(GameDataMoneyKey, GameDataProperty.CurrentValue.money);
+            dataContainer.SetData(GameDataCapacityKey, GameDataProperty.CurrentValue.capacity);
+            dataContainer.SetData(NumberOfUnlockedUpgradesKey, GameDataProperty.CurrentValue.numberOfUnlockedUpgrades);
+            dataContainer.SetData(ExperienceKey, GameDataProperty.CurrentValue.experience);
+            dataContainer.SetData(LevelKey, GameDataProperty.CurrentValue.level);
+            dataContainer.SetData(MaxNumberOfOrdersKey, GameDataProperty.CurrentValue.maxNumberOfOrders);
+            dataContainer.SetData(ContainerHolderDataKey, GameDataProperty.CurrentValue.containersData);
+            
         }
     }
 }
