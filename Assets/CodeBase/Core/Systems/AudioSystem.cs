@@ -50,7 +50,7 @@ namespace CodeBase.Core.Systems
 
         public void SetMusicVolume(float volume)
         {
-            // Debug.Log("Set MusicVolume - " + volume);
+            Debug.Log("Set MusicVolume - " + volume);
             MusicVolume = volume > 0 ? volume : 0;
             musicAudioSource.volume = MusicVolume;
         }

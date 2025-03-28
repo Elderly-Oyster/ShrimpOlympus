@@ -7,6 +7,7 @@ using CodeBase.Services.SceneInstallerService;
 using CodeBase.Systems.PopupHub;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;
 using CodeBase.Systems.PopupHub.Popups.SecondPopup;
+using CodeBase.Systems.PopupHub.Popups.SettingsPopup;
 using CodeBase.Systems.PopupHub.Popups.ThirdPopup;
 using UnityEngine;
 using VContainer;
@@ -20,6 +21,7 @@ namespace Modules.Additional.PopupsManager.Scripts
         [SerializeField] private FirstPopup firstPopupPrefab;
         [SerializeField] private SecondPopup secondPopup;
         [SerializeField] private ThirdPopup thirdPopup;
+        [SerializeField] private SettingsPopup settingsPopupPrefab;
         
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
@@ -44,6 +46,9 @@ namespace Modules.Additional.PopupsManager.Scripts
                 .AsImplementedInterfaces();             
             builder.Register<BasePopupFactory<ThirdPopup>>(Lifetime.Transient)
                 .WithParameter(thirdPopup)
+                .AsImplementedInterfaces();
+            builder.Register<BasePopupFactory<SettingsPopup>>(Lifetime.Transient)
+                .WithParameter(settingsPopupPrefab)
                 .AsImplementedInterfaces();
         }
     }

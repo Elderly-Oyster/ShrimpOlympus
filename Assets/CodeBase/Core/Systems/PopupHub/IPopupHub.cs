@@ -11,5 +11,6 @@ namespace CodeBase.Core.Systems.PopupHub
         void OpenFirstPopup();
         void OpenSecondPopup();
         void OpenThirdPopup();
+        void OpenSettingsPopup();
     }
 }

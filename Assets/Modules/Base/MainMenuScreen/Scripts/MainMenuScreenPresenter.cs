@@ -18,7 +18,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly AudioSystem _audioSystem;
 
         private readonly ReactiveCommand<Unit> _secondPopupCommand = new();
-        private readonly ReactiveCommand<Unit> _firstPopupCommand = new();
+        private readonly ReactiveCommand<Unit> _settingsPopupCommand = new();
         private readonly ReactiveCommand<Unit> _converterCommand = new();
         private readonly ReactiveCommand<Unit> _ticTacCommand = new();
         private readonly ReactiveCommand<Unit> _tycoonCommand = new();
@@ -42,7 +42,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void SubscribeToUIUpdates()
         {
             _secondPopupCommand.Subscribe(_ => OnSecondPopupButtonClicked());
-            _firstPopupCommand.Subscribe(_ => OnFirstPopupButtonClicked());
+            _settingsPopupCommand.Subscribe(_ => OnSettingsPopupButtonClicked());
             _converterCommand.Subscribe(_ => OnConverterButtonClicked());
             _ticTacCommand.Subscribe(_ => OnTicTacButtonClicked());
             _tycoonCommand.Subscribe(_ => OnTycoonButtonClicked());
@@ -58,7 +58,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 _converterCommand,
                 _ticTacCommand,
                 _tycoonCommand,
-                _firstPopupCommand,
+                _settingsPopupCommand,
                 _secondPopupCommand,
                 _toggleSoundCommand
             );
@@ -84,7 +84,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void OnConverterButtonClicked() => RunNewScreen(ScreenPresenterMap.Converter);
         private void OnTicTacButtonClicked() => RunNewScreen(ScreenPresenterMap.TicTac);
         private void OnTycoonButtonClicked() => RunNewScreen(ScreenPresenterMap.DeliveryTycoon);
-        private void OnFirstPopupButtonClicked() => _popupHub.OpenFirstPopup();
+        private void OnSettingsPopupButtonClicked() => _popupHub.OpenSettingsPopup();
         private void OnSecondPopupButtonClicked() => _popupHub.OpenSecondPopup();
         private void OnSoundToggled(bool isOn) => _audioSystem.SetMusicVolume(isOn ? 1 : 0);
 

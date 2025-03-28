@@ -1,13 +1,14 @@
 ﻿using CodeBase.Core.Modules;
 using R3;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenView : BaseScreenView
     {
-        [SerializeField] private Button firstPopupButton;
+        [SerializeField] private Button settingsPopupButton;
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
@@ -29,7 +30,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             ReactiveCommand<Unit> converterCommand,
             ReactiveCommand<Unit> ticTacCommand,
             ReactiveCommand<Unit> tycoonCommand,
-            ReactiveCommand<Unit> firstPopupCommand,
+            ReactiveCommand<Unit> settingsPopupCommand,
             ReactiveCommand<Unit> secondPopupCommand,
             ReactiveCommand<bool> soundToggleCommand)
         {
@@ -44,8 +45,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
             tycoonButton.OnClickAsObservable()
                 .Subscribe(_ => tycoonCommand.Execute(default)).AddTo(this);
 
-            firstPopupButton.OnClickAsObservable()
-                .Subscribe(_ => firstPopupCommand.Execute(default))
+            settingsPopupButton.OnClickAsObservable()
+                .Subscribe(_ => settingsPopupCommand.Execute(default))
                 .AddTo(this);
 
             secondPopupButton.OnClickAsObservable()

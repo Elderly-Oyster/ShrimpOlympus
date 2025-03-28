@@ -9,6 +9,7 @@ using CodeBase.Services;
 using CodeBase.Services.EventMediator;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;
 using CodeBase.Systems.PopupHub.Popups.SecondPopup;
+using CodeBase.Systems.PopupHub.Popups.SettingsPopup;
 using CodeBase.Systems.PopupHub.Popups.ThirdPopup;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -27,6 +28,7 @@ namespace CodeBase.Systems.PopupHub
         [Inject] private IBasePopupFactory<FirstPopup> _firstPopupFactory;
         [Inject] private IBasePopupFactory<SecondPopup> _secondPopupFactory;
         [Inject] private IBasePopupFactory<ThirdPopup> _thirdPopupFactory;
+        [Inject] private IBasePopupFactory<SettingsPopup> _settingsPopupFactory;
         [Inject] private EventMediator _eventMediator;
 
         private readonly PopupsPriorityQueue _popup = new();
@@ -101,5 +103,6 @@ namespace CodeBase.Systems.PopupHub
         public void OpenFirstPopup() => CreateAndOpenPopup(_firstPopupFactory);
         public void OpenSecondPopup() => CreateAndOpenPopup(_secondPopupFactory);
         public void OpenThirdPopup() => CreateAndOpenPopup(_thirdPopupFactory);
+        public void OpenSettingsPopup () => CreateAndOpenPopup(_settingsPopupFactory);
     }
 }
