@@ -15,15 +15,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Container
         [SerializeField] protected BaseProgressBarView progressBar;
         [SerializeField] protected Image icon;
 
-        protected BaseCarController _carController;
-        protected bool _taskIsInProgress;
-        private float _timeToCompleteAction = 1.5f;
+        protected BaseCarController CarController;
+        private readonly float _timeToCompleteAction = 1.5f;
         private const float AnimateToZeroTime = 0.5f;
         private bool _actionCompleted;
         private Coroutine _taskCoroutine;
         private CancellationTokenSource _cts;
-        
-        public bool TaskIsInProgress => _taskIsInProgress;
 
         public Parcel Parcel => parcel;
 
@@ -33,37 +30,31 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Container
             progressBar.gameObject.SetActive(false);
         }
 
-        public void UpdateTimeToCompleteAction(float timeToCompleteAction)
-        {
-            _timeToCompleteAction = timeToCompleteAction;
-        }
-
         protected void  OnTriggerEnter(Collider other)
         { 
-            if (_carController == null && other.TryGetComponent(out BaseCarController car))
+            if (CarController == null && other.TryGetComponent(out BaseCarController car))
             {
-                _carController = car;
+                CarController = car;
                 ShowProgressBar();
-                _ = ExecuteTask(_carController);
+                _ = ExecuteTask(CarController);
             }
         }
 
         protected async void OnTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out BaseCarController carController) && carController == _carController)
+            if (other.TryGetComponent(out BaseCarController carController) && carController == CarController)
             {
                 _cts?.Cancel();
 
-                _carController = null;
+                CarController = null;
                 
                 if (!_actionCompleted)
                     await progressBar.AnimateToZero(AnimateToZeroTime, progressBar.CurrentRatio);
             }
         }
-        
-        protected async UniTask ExecuteTask(BaseCarController playerController = null)
+
+        private async UniTask ExecuteTask(BaseCarController playerController = null)
         {
-            _taskIsInProgress = true;
             _cts?.Cancel();
             _cts = new CancellationTokenSource();
             var token = _cts.Token;
@@ -82,7 +73,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Container
             }
             catch (TaskCanceledException)
             {
-                _taskIsInProgress = false;
                 _actionCompleted = false;
                  
             }
@@ -95,14 +85,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Container
         
         protected abstract void CompleteAction(BaseCarController carController);
         
-        private void ShowProgressBar()
-        {
-            progressBar.gameObject.SetActive(true);
-        }
+        private void ShowProgressBar() => progressBar.gameObject.SetActive(true);
 
-        protected void HideProgressBar()
-        {
-            progressBar.gameObject.SetActive(false);
-        }
+        protected void HideProgressBar() => progressBar.gameObject.SetActive(false);
     }
 }

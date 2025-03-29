@@ -15,10 +15,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Containers
         {
             if (carController == null) return;
             
-            _carController.LoadParcel(Parcel);
-            _carController = null;
-            _taskIsInProgress = false;
-             HideProgressBar();
+            CarController.LoadParcel(Parcel);
+            CarController = null;
+            HideProgressBar();
         }
     }
 }

@@ -26,13 +26,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.ReceiverBuildings
         {
             if (carController == null) return;
             
-            if (await _carController.UnloadParcel(Parcel))
+            if (await CarController.UnloadParcel(Parcel))
             {
                 Debug.Log("Parcel unloaded");
                 _demandParcel = false;
                 icon.enabled = false;
-                _carController = null;
-                _taskIsInProgress = false;
+                CarController = null;
                 triggerCollider.enabled = false;
                 StartCoroutine(ShowParcel());
             }

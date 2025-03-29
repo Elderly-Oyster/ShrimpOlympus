@@ -70,6 +70,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.RegisterInstance(containerHolders);
             builder.RegisterComponent(containerManager);
             
+            builder.Register<Inputs>(Lifetime.Singleton);
             builder.RegisterComponent(carController)
                 .AsImplementedInterfaces()
                 .As<CarController>();
