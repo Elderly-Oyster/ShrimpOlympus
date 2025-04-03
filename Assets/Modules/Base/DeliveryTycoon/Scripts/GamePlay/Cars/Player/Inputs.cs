@@ -8,7 +8,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
     {
         public Vector2 Move { get; private set; }
         
-        private InputSystem_Actions _inputSystemActions;
+        private readonly InputSystem_Actions _inputSystemActions;
         private InputAction _moveAction;
 
         public Inputs()

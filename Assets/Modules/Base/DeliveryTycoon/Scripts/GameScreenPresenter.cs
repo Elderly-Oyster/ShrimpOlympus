@@ -4,8 +4,8 @@ using CodeBase.Core.Modules;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.Save;
 using CodeBase.Services;
+using CodeBase.Systems.InputSystem;
 using Cysharp.Threading.Tasks;
-using Modules.Additional.SplashScreen.Scripts;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
@@ -16,7 +16,7 @@ using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public class GameScreenPresenter : IScreenPresenter
+    public class GameScreenPresenter : IScreenPresenter, IEscapeListener
     {
         private readonly LevelService _levelService;
         private readonly GameScreenModel _screenModel;
@@ -27,8 +27,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private readonly GameDataSystem _gameDataSystem;
         private readonly AudioSystem _audioSystem;
         private readonly SaveSystem _saveSystem;
+        private readonly InputSystem _inputSystem;
         private readonly LoadingServiceProvider _loadingServiceProvider;
-        private readonly SplashScreenPresenter _splashScreenPresenter;
         private CompositeDisposable _disposables = new();
         
         private readonly ReactiveCommand<ScreenPresenterMap> _onMainMenuButtonClicked = new();
@@ -39,14 +39,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         public GameScreenPresenter( GameScreenModel screenModel, 
             GameScreenView screenView, LevelService levelService,
             AudioSystem audioSystem, GameDataSystem gameDataSystem,
-            GameManager gameManager, SaveSystem saveSystem, CurrencyService currencyService, LoadingServiceProvider loadingServiceProvider, SplashScreenPresenter splashScreenPresenter)
+            GameManager gameManager, SaveSystem saveSystem, CurrencyService currencyService, 
+            LoadingServiceProvider loadingServiceProvider, InputSystem inputSystem)
         {
             _screenModel = screenModel;
             _screenView = screenView;
             _levelService = levelService;
             _currencyService = currencyService;
             _loadingServiceProvider = loadingServiceProvider;
-            _splashScreenPresenter = splashScreenPresenter;
+            _inputSystem = inputSystem;
             _audioSystem = audioSystem;
             _gameDataSystem = gameDataSystem;
             _gameManager = gameManager;
@@ -58,7 +59,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async UniTask Enter(object param)
         {
-            Debug.Log("GameScreenPresenter.Enter");
+            _inputSystem.AddEscapeListener(this);
             _screenView.HideInstantly();
             
             await _gameDataSystem.DataLoaded.Task;
@@ -93,6 +94,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async void ShowGameScreenView() => await _screenView.Show();
 
+        public void OnEscapePressed() => OnMainMenuButtonClicked();
+
         private void SubscribeToReactiveEvents()
         {
             _disposables.Add(_currencyService.Money.
@@ -115,7 +118,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         
         private void UpdateExperienceProgressBar(float experience) => 
             _screenView.UpdateExperience(experience);
-
 
         private void OnMainMenuButtonClicked() => 
             RunNewScreen(ScreenPresenterMap.MainMenu);

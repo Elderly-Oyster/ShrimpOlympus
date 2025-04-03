@@ -5,6 +5,7 @@ using CodeBase.Services.EventMediator;
 using CodeBase.Services.LongInitializationServices;
 using CodeBase.Services.SceneInstallerService;
 using CodeBase.Systems;
+using CodeBase.Systems.InputSystem;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;

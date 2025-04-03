@@ -14,7 +14,9 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button ticTacButton;
         [SerializeField] private Button tycoonButton;
         [SerializeField] private Toggle musicToggle;
-        
+
+        public Button TycoonButton => tycoonButton;
+
         protected override void Awake()
         {
             base.Awake();

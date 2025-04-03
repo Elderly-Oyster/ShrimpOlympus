@@ -4,8 +4,10 @@ using CodeBase.Core.UI;
 using CodeBase.Services;
 using CodeBase.Services.EventMediator;
 using CodeBase.Services.SceneInstallerService;
+using CodeBase.Systems.InputSystem;
 using CodeBase.Systems.PopupHub;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;
+using CodeBase.Systems.PopupHub.Popups.RebindingPopup;
 using CodeBase.Systems.PopupHub.Popups.SecondPopup;
 using CodeBase.Systems.PopupHub.Popups.SettingsPopup;
 using CodeBase.Systems.PopupHub.Popups.ThirdPopup;
@@ -22,6 +24,7 @@ namespace Modules.Additional.PopupsManager.Scripts
         [SerializeField] private SecondPopup secondPopup;
         [SerializeField] private ThirdPopup thirdPopup;
         [SerializeField] private SettingsPopup settingsPopupPrefab;
+        [SerializeField] private ThirdPopup rebindingPopupPrefab;
         
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
@@ -34,6 +37,8 @@ namespace Modules.Additional.PopupsManager.Scripts
             
             builder.Register<PopupHub>(Lifetime.Singleton)
                 .AsImplementedInterfaces();
+            
+            builder.Register<InputSystem>(Lifetime.Singleton);
         }
         
         private void RegisterPopupFactories(IContainerBuilder builder)
@@ -50,6 +55,9 @@ namespace Modules.Additional.PopupsManager.Scripts
             builder.Register<BasePopupFactory<SettingsPopup>>(Lifetime.Transient)
                 .WithParameter(settingsPopupPrefab)
                 .AsImplementedInterfaces();
+            // builder.Register<BasePopupFactory<RebindingPopup>>(Lifetime.Transient)
+            //     .WithParameter(rebindingPopupPrefab)
+            //     .AsImplementedInterfaces();
         }
     }
 }

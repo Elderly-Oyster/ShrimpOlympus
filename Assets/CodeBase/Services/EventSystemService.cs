@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using VContainer.Unity;
 
 namespace CodeBase.Services
@@ -7,17 +8,18 @@ namespace CodeBase.Services
     public class EventSystemService : IStartable
     {
         private const string EventSystemName = "EventSystem";
+        public EventSystem EventSystem { get; private set; }
 
         public void Start()
         {
-            var eventSystem = CreateEventSystem();
-            Object.DontDestroyOnLoad(eventSystem.gameObject);
+            EventSystem = CreateEventSystem();
+            Object.DontDestroyOnLoad(EventSystem.gameObject);
         }
 
         private static EventSystem CreateEventSystem()
         {
             var eventSystem = new GameObject(EventSystemName).AddComponent<EventSystem>();
-            eventSystem.gameObject.AddComponent<StandaloneInputModule>();
+            eventSystem.gameObject.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
             Object.DontDestroyOnLoad(eventSystem.gameObject);
             return eventSystem;
         }

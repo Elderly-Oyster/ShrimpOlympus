@@ -8,6 +8,7 @@ using CodeBase.Core.UI;
 using CodeBase.Services;
 using CodeBase.Services.EventMediator;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;
+using CodeBase.Systems.PopupHub.Popups.RebindingPopup;
 using CodeBase.Systems.PopupHub.Popups.SecondPopup;
 using CodeBase.Systems.PopupHub.Popups.SettingsPopup;
 using CodeBase.Systems.PopupHub.Popups.ThirdPopup;
@@ -29,6 +30,7 @@ namespace CodeBase.Systems.PopupHub
         [Inject] private IBasePopupFactory<SecondPopup> _secondPopupFactory;
         [Inject] private IBasePopupFactory<ThirdPopup> _thirdPopupFactory;
         [Inject] private IBasePopupFactory<SettingsPopup> _settingsPopupFactory;
+        //[Inject] private IBasePopupFactory<RebindingPopup> _rebindingPopupFactory;
         [Inject] private EventMediator _eventMediator;
 
         private readonly PopupsPriorityQueue _popup = new();
