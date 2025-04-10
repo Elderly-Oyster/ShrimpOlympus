@@ -17,7 +17,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly MainMenuScreenView _mainMenuScreenView;
         private readonly IPopupHub _popupHub;
         private readonly AudioSystem _audioSystem;
-        private readonly EventSystemService _eventSystemService;
+        private readonly InputSystemService _eventSystemService;
 
         private readonly ReactiveCommand<Unit> _secondPopupCommand = new();
         private readonly ReactiveCommand<Unit> _settingsPopupCommand = new();
@@ -28,7 +28,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
             MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView,
-            AudioSystem audioSystem, EventSystemService eventSystem)
+            AudioSystem audioSystem)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
@@ -36,7 +36,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _screenStateMachine = screenStateMachine;
             _mainMenuScreenView = mainMenuScreenView;
             _audioSystem = audioSystem;
-            _eventSystemService = eventSystem;
             _popupHub = popupHub;
 
             SubscribeToUIUpdates();
@@ -54,7 +53,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _eventSystemService.EventSystem.SetSelectedGameObject(_mainMenuScreenView.TycoonButton.gameObject);
             _mainMenuScreenView.Initialize(isMusicOn: _audioSystem.MusicVolume != 0);
             _mainMenuScreenView.HideInstantly();
 

@@ -20,7 +20,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
         private readonly GameDataSystem _gameDataSystem;
         private readonly Mediator _mediator;
-        private readonly InputSystem _inputSystem;
         private readonly CompositeDisposable _disposables = new();
         
         private const int BaseUpgradesCount = 120;
@@ -36,13 +35,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         private readonly ReactiveCommand<Unit> _onAddCapacityCommand = new();
         
         public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameScreenModel gameScreenModel,
-            GameDataSystem gameDataSystem, Mediator mediator, InputSystem inputSystem)
+            GameDataSystem gameDataSystem, Mediator mediator)
         {
             _upgradePopupView = upgradePopupView;
             _gameScreenModel = gameScreenModel;
             _gameDataSystem = gameDataSystem;
             _mediator = mediator;
-            _inputSystem = inputSystem;
             _screenCompletionSource = new TaskCompletionSource<bool>();
             _upgradePopupView.SetupEventListeners
             (
@@ -59,7 +57,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         public async UniTask Enter(object param)
         {
             Debug.Log("Enter for upgrade popup");
-            _inputSystem.AddEscapeListener(this);
             _upgradePopupView.HideInstantly();
             SetInteractableButtons();
             CalculateUpgradeAllCosts(_gameDataSystem.GameDataProperty.CurrentValue);

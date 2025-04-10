@@ -53,11 +53,11 @@ namespace CodeBase.Implementation.Infrastructure
                 .AsImplementedInterfaces()
                 .AsSelf();
             
-            builder.Register<AudioListenerService>(Lifetime.Singleton)
+            builder.Register<InputSystemService>(Lifetime.Singleton)
+                .As<IStartable>()
                 .AsSelf();
             
-            builder.Register<EventSystemService>(Lifetime.Singleton)
-                .As<IStartable>()
+            builder.Register<AudioListenerService>(Lifetime.Singleton)
                 .AsSelf();
             
             builder.Register<SceneService>(Lifetime.Singleton);

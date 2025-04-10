@@ -13,7 +13,7 @@ namespace Modules.Additional.SplashScreen.Scripts
         
         public Dictionary<string, Func<UniTask>> Commands = new();
 
-        public SplashScreenModel(LoadingServiceProvider loadingServiceProvider) =>
+        public SplashScreenModel(LoadingServiceProvider loadingServiceProvider) => 
             _loadingServiceProvider = loadingServiceProvider;
 
         public async UniTask WaitForTheEndOfRegistration()

@@ -52,7 +52,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private void RegisterViews(IContainerBuilder builder)
         {
             builder.RegisterComponent(screenCanvas);
-            builder.RegisterInstance(gameScreenView);
+            builder.RegisterComponent(gameScreenView).AsImplementedInterfaces().AsSelf();
             builder.RegisterInstance(upgradePopupView);
         }
 
@@ -70,7 +70,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             builder.RegisterInstance(containerHolders);
             builder.RegisterComponent(containerManager);
             
-            builder.Register<Inputs>(Lifetime.Singleton);
+            builder.Register<CarInputs>(Lifetime.Singleton);
             builder.RegisterComponent(carController)
                 .AsImplementedInterfaces()
                 .As<CarController>();

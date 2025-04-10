@@ -84,10 +84,10 @@ namespace CodeBase.Implementation.Infrastructure
 
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }
-            catch (Exception e)
-            {
-                Debug.LogError("Nothing works, good luck figuring out what's wrong. Here is your beloved exception: " + e); 
-            }
+            // catch (Exception e)
+            // {
+            //     Debug.LogError("Nothing works, good luck figuring out what's wrong. Here is your beloved exception: " + e); 
+            // }
             finally
             {
                 _semaphoreSlim.Release(); 

@@ -23,13 +23,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
         
         private AudioSystem _audioSystem;
         private Rigidbody _rigidbody;
-        private Inputs _input;
+        private CarInputs _carInput;
         private AudioSource _audioSource;
 
         [Inject]
-        public void Construct(AudioSystem audioSystem, Inputs input)
+        public void Construct(AudioSystem audioSystem, CarInputs carInput)
         {
-            _input = input;
+            _carInput = carInput;
             _audioSystem = audioSystem;
             SetMusicState(_audioSystem.MusicVolume);
         }
@@ -55,16 +55,16 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
             }
         }
         
-        private void OnDisable() => _input.Disable();
+        private void OnDisable() => _carInput.Disable();
         
         private void FixedUpdate()
         {
-            if (_input != null) HandleMovement();
+            if (_carInput != null) HandleMovement();
         }
 
         private void HandleMovement()
         {
-            Vector2 moveInput = _input.Move;
+            Vector2 moveInput = _carInput.Move;
 
             // Move forward/backward
             Vector3 moveForce = transform.forward * moveInput.y * acceleration;

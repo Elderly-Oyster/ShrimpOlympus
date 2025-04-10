@@ -4,19 +4,19 @@ using static UnityEngine.InputSystem.InputAction;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
 {
-    public class Inputs 
+    public class CarInputs 
     {
         public Vector2 Move { get; private set; }
         
         private readonly InputSystem_Actions _inputSystemActions;
         private InputAction _moveAction;
 
-        public Inputs()
+        public CarInputs()
         {
             _inputSystemActions = new InputSystem_Actions();
             _inputSystemActions.Enable();
-            _inputSystemActions.Player.Move.performed += OnMove;
-            _inputSystemActions.Player.Move.canceled += OnMoveCanceled;
+            _inputSystemActions.PlayerCar.Move.performed += OnMove;
+            _inputSystemActions.PlayerCar.Move.canceled += OnMoveCanceled;
         }
         
         public void Disable() => _inputSystemActions.Disable();

@@ -13,41 +13,41 @@ using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
 using R3;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public class GameScreenPresenter : IScreenPresenter, IEscapeListener
+    public class GameScreenPresenter : IScreenPresenter
     {
-        private readonly LevelService _levelService;
         private readonly GameScreenModel _screenModel;
         private readonly GameScreenView _screenView;
-        private readonly TaskCompletionSource<bool> _screenCompletionSource;
         private readonly CurrencyService _currencyService;
-        private readonly GameManager _gameManager;
+        private readonly LevelService _levelService;
         private readonly GameDataSystem _gameDataSystem;
         private readonly AudioSystem _audioSystem;
         private readonly SaveSystem _saveSystem;
-        private readonly InputSystem _inputSystem;
+        private readonly GameManager _gameManager;
         private readonly LoadingServiceProvider _loadingServiceProvider;
-        private CompositeDisposable _disposables = new();
-        
+        private readonly TaskCompletionSource<bool> _screenCompletionSource;
+
         private readonly ReactiveCommand<ScreenPresenterMap> _onMainMenuButtonClicked = new();
         private readonly ReactiveCommand<Unit> _onMainMenuButtonClickedCommand = new();
         private readonly ReactiveCommand<Unit> _onUpgradePopupButtonClickedCommand = new();
-        public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
         
-        public GameScreenPresenter( GameScreenModel screenModel, 
-            GameScreenView screenView, LevelService levelService,
-            AudioSystem audioSystem, GameDataSystem gameDataSystem,
-            GameManager gameManager, SaveSystem saveSystem, CurrencyService currencyService, 
-            LoadingServiceProvider loadingServiceProvider, InputSystem inputSystem)
+        private CompositeDisposable _disposables = new();
+        
+        public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
+
+        public GameScreenPresenter( GameScreenModel screenModel, GameScreenView screenView, LevelService levelService,
+            AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem, 
+            CurrencyService currencyService, 
+            LoadingServiceProvider loadingServiceProvider)
         {
             _screenModel = screenModel;
             _screenView = screenView;
             _levelService = levelService;
             _currencyService = currencyService;
             _loadingServiceProvider = loadingServiceProvider;
-            _inputSystem = inputSystem;
             _audioSystem = audioSystem;
             _gameDataSystem = gameDataSystem;
             _gameManager = gameManager;
@@ -59,7 +59,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async UniTask Enter(object param)
         {
-            _inputSystem.AddEscapeListener(this);
             _screenView.HideInstantly();
             
             await _gameDataSystem.DataLoaded.Task;
@@ -78,7 +77,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                _onUpgradePopupButtonClickedCommand
             );
             _screenView.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
-            //await _screenView.Show();
+            await _screenView.Show();
             _loadingServiceProvider.ResetRegistrationProgress();
         }
 
@@ -98,12 +97,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private void SubscribeToReactiveEvents()
         {
-            _disposables.Add(_currencyService.Money.
-                Subscribe(UpdateMoneyCounter));
-            _disposables.Add(_levelService.Level.
-                Subscribe(UpdateLevelText));
-            _disposables.Add(_levelService.ExperienceForProgressBar.
-                Subscribe(UpdateExperienceProgressBar));
+            _disposables.Add(_currencyService.Money.Subscribe(UpdateMoneyCounter));
+            _disposables.Add(_levelService.Level.Subscribe(UpdateLevelText));
+            _disposables.Add(_levelService.ExperienceForProgressBar.Subscribe(UpdateExperienceProgressBar));
         }
 
         private void SubscribeToUIUpdates()

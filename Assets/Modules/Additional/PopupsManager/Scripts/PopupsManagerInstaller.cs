@@ -1,13 +1,9 @@
-using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Core.Systems.PopupHub.Popups;
 using CodeBase.Core.UI;
-using CodeBase.Services;
 using CodeBase.Services.EventMediator;
 using CodeBase.Services.SceneInstallerService;
-using CodeBase.Systems.InputSystem;
 using CodeBase.Systems.PopupHub;
 using CodeBase.Systems.PopupHub.Popups.FirstPopup;
-using CodeBase.Systems.PopupHub.Popups.RebindingPopup;
 using CodeBase.Systems.PopupHub.Popups.SecondPopup;
 using CodeBase.Systems.PopupHub.Popups.SettingsPopup;
 using CodeBase.Systems.PopupHub.Popups.ThirdPopup;
@@ -37,8 +33,6 @@ namespace Modules.Additional.PopupsManager.Scripts
             
             builder.Register<PopupHub>(Lifetime.Singleton)
                 .AsImplementedInterfaces();
-            
-            builder.Register<InputSystem>(Lifetime.Singleton);
         }
         
         private void RegisterPopupFactories(IContainerBuilder builder)

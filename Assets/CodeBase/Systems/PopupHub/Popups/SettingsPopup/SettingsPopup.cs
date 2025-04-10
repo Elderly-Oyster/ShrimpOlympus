@@ -1,16 +1,18 @@
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Core.Systems.PopupHub.Popups;
+using CodeBase.Services;
 using CodeBase.Systems.InputSystem;
 using R3;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using VContainer;
 
 namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
 {
-    public class SettingsPopup : BasePopup, IEscapeListener
+    public class SettingsPopup : BasePopup
     { 
         [Header("Volume Sliders")]
         [SerializeField] private Slider musicVolumeSlider;
@@ -20,7 +22,7 @@ namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
         [SerializeField] private Button rebindPopupButton;
         
         [Inject] private AudioSystem _audioSystem;
-        [Inject] private InputSystem.InputSystem _inputSystem;
+        [Inject] private InputSystemService _inputSystemService;
         [Inject] private IObjectResolver _objectResolver;
         
         private IPopupHub _popupHub;
@@ -29,26 +31,15 @@ namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
 
         private void Start()
         {
-            _inputSystem.AddEscapeListener(this);
             SetInitialSettings();
-            SetUpSlidersListeners();
+            SetupEventListeners();
             _rebindPopupCommand.Subscribe(_ => OnOpenRebindPopupButtonClicked());
             rebindPopupButton.OnClickAsObservable()
                 .Subscribe(_ => _rebindPopupCommand.Execute(default))
                 .AddTo(this);
         }
 
-        public async void OnEscapePressed() => await Close();
-
-        private void SetUpSlidersListeners()
-        {
-            musicVolumeSlider.onValueChanged.AddListener(v => _audioSystem.SetMusicVolume(v));
-            musicVolumeSlider.onValueChanged.
-                AddListener(v => musicVolumeText.text = ((int)(v * 100)).ToString());
-            soundVolumeSlider.onValueChanged.AddListener(v => _audioSystem.SetSoundsVolume(v));
-            soundVolumeSlider.onValueChanged.
-                AddListener(v => soundVolumeText.text = ((int)(v * 100)).ToString());
-        }
+        public async void OnEscapePressed(InputAction.CallbackContext callbackContext) => await Close();
 
         private void SetInitialSettings()
         {
@@ -56,6 +47,25 @@ namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
             musicVolumeText.text = ((int)(_audioSystem.MusicVolume * 100)).ToString();
             soundVolumeSlider.value = _audioSystem.SoundsVolume * 100;
             soundVolumeText.text = ((int)(_audioSystem.SoundsVolume * 100)).ToString();
+        }
+
+        private void SetupEventListeners()
+        {
+            musicVolumeSlider.onValueChanged.AddListener(v => _audioSystem.SetMusicVolume(v));
+            musicVolumeSlider.onValueChanged.
+                AddListener(v => musicVolumeText.text = ((int)(v * 100)).ToString());
+            soundVolumeSlider.onValueChanged.AddListener(v => _audioSystem.SetSoundsVolume(v));
+            soundVolumeSlider.onValueChanged.
+                AddListener(v => soundVolumeText.text = ((int)(v * 100)).ToString());
+            
+            _inputSystemService.InputActions.UI.Cancel.performed -= OnEscapePressed;
+        }
+
+        private void RemoveEventListeners()
+        {
+            musicVolumeSlider.onValueChanged.RemoveAllListeners();
+            soundVolumeSlider.onValueChanged.RemoveAllListeners();
+            _inputSystemService.InputActions.UI.Cancel.performed -= OnEscapePressed;
         }
 
         private void OnOpenRebindPopupButtonClicked()

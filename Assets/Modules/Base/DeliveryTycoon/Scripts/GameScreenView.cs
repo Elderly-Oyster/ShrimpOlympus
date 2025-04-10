@@ -1,12 +1,15 @@
+using System;
 using System.Threading;
 using CodeBase.Core.Modules;
 using CodeBase.Core.UI.ProgressBars;
+using CodeBase.Services;
 using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
@@ -17,38 +20,50 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         [SerializeField] private TMP_Text playerMoneyText;
         [SerializeField] private BaseProgressBarView experienceProgressBar;
         [SerializeField] private TMP_Text levelText;
+        private InputSystemService _inputSystemService;
 
-        protected override void Awake()
+        [Inject]
+        private void Construct(InputSystemService inputSystemService)
         {
-            base.Awake();
-            gameObject.SetActive(false);
+            _inputSystemService = inputSystemService;
         }
 
-        public void SetupEventListeners(ReactiveCommand<Unit> onMainMenuButtonClicked, ReactiveCommand<Unit> onUpgradePopupButtonClicked)
+        public void SetupEventListeners(ReactiveCommand<Unit> openMainMenuCommand, 
+            ReactiveCommand<Unit> onUpgradePopupButtonClicked)
         {
             mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => onMainMenuButtonClicked.Execute(default))
+                .Subscribe(_ => openMainMenuCommand.Execute(default))
                 .AddTo(this);
+
+            var cancelPerformedObservable = Observable.FromEvent(
+                (Action<InputAction.CallbackContext> h) => _inputSystemService.InputActions.UI.Cancel.performed += h,
+                h => _inputSystemService.InputActions.UI.Cancel.performed -= h
+            );
+            
+            cancelPerformedObservable
+                .Subscribe(_ => openMainMenuCommand.Execute(default))
+                .AddTo(this);
+            
+            _inputSystemService.InputActions.UI.Cancel.performed += _ => Debug.Log("МЫ НАЖАЛИ КНОПКУ ЗАКРЫТЬ");
+
             upgradePopupButton.OnClickAsObservable()
                 .Subscribe(_ => onUpgradePopupButtonClicked.Execute(default))
                 .AddTo(this);
         }
 
-        public void InitializeVisualElements( int playerMoney, int level)
+        public void InitializeVisualElements(int playerMoney, int level)
         {
             UpdatePlayerMoney(playerMoney);
             experienceProgressBar.AnimateToZero(0, experienceProgressBar.CurrentRatio).Forget();
             UpdateLevel(level);
         }
         
-        public void UpdatePlayerMoney(int playerMoney) => 
-            playerMoneyText.text = "Money  " + playerMoney;
+        public void UpdatePlayerMoney(int playerMoney) => playerMoneyText.text = "Money  " + playerMoney;
+
+        public void UpdateLevel(int level) => levelText.text = "Level " + level;
 
         public void UpdateExperience(float experience) => 
             experienceProgressBar.Animate(0.5f, CancellationToken.None, experience).Forget();
-
-        public void UpdateLevel(int level) =>
-            levelText.text = "Level " + level;
 
         public override void Dispose()
         {

@@ -9,7 +9,8 @@
         "Unity.TextMeshPro",
         "DOTween.Modules",
         "UniTask.DOTween",
-        "Services"
+        "Services",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
