@@ -35,17 +35,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 .Subscribe(_ => openMainMenuCommand.Execute(default))
                 .AddTo(this);
 
-            var cancelPerformedObservable = Observable.FromEvent(
-                (Action<InputAction.CallbackContext> h) => _inputSystemService.InputActions.UI.Cancel.performed += h,
-                h => _inputSystemService.InputActions.UI.Cancel.performed -= h
-            );
+            //TODO Some bug with creating new Action called Exit Game. It will be Jump for testing
+            var cancelPerformedObservable = 
+                _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.PlayerCar.Jump);
             
             cancelPerformedObservable
                 .Subscribe(_ => openMainMenuCommand.Execute(default))
                 .AddTo(this);
             
-            _inputSystemService.InputActions.UI.Cancel.performed += _ => Debug.Log("МЫ НАЖАЛИ КНОПКУ ЗАКРЫТЬ");
-
             upgradePopupButton.OnClickAsObservable()
                 .Subscribe(_ => onUpgradePopupButtonClicked.Execute(default))
                 .AddTo(this);

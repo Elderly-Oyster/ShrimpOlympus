@@ -1,4 +1,5 @@
 using System;
+using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -113,6 +114,20 @@ namespace CodeBase.Services
             return $"{mapName}/{actionName}";
         }
 
+        public Observable<Unit> GetPerformedObservable(InputAction action)
+        {
+            if (action == null)
+            {
+                Debug.LogWarning("InputAction is null. Cannot create Observable.");
+                return Observable.Empty<Unit>(); // Возвращаем пустой Observable в случае ошибки
+            }
+
+            return Observable.FromEvent(
+                (Action<InputAction.CallbackContext> h) => action.performed += h,
+                h => action.performed -= h
+            ).Select(_ => Unit.Default); // Преобразуем в Unit для унификации
+        }
+        
         public void Dispose()
         {
             if (InputActions == null) return;
@@ -148,9 +163,6 @@ namespace CodeBase.Services
         private void InitializeInputActions()
         {
             InputActions = new InputSystem_Actions();
-            SwitchToUI();
-            // Optionally enable ContextualActions if needed
-            // InputActions.ContextualActions.Interact.performed += ctx => OnContextualActionPerformed?.Invoke();
         }
 
         /// <summary>

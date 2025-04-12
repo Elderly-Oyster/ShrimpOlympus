@@ -39,9 +39,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
 
         public GameScreenPresenter( GameScreenModel screenModel, GameScreenView screenView, LevelService levelService,
-            AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem, 
-            CurrencyService currencyService, 
-            LoadingServiceProvider loadingServiceProvider)
+            AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem,
+            CurrencyService currencyService, LoadingServiceProvider loadingServiceProvider)
         {
             _screenModel = screenModel;
             _screenView = screenView;
