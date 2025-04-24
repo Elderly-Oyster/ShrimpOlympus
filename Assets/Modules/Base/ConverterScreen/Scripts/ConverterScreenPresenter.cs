@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenPresenter : IStateController
+    public class ConverterScreenPresenter : IModuleController
     {
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly ConverterScreenModel _converterScreenModel;

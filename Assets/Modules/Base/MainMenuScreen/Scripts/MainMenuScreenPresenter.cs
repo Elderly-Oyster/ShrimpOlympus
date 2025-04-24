@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenPresenter : IStateController
+    public class MainMenuScreenPresenter : IModuleController
     {
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly MainMenuScreenModel _mainMenuScreenModel;

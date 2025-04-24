@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 
 namespace CodeBase.Core.Patterns.Architecture.MVP
 {
-    public interface IStateController : IDisposable
+    public interface IModuleController : IDisposable
     {
         UniTask Enter(object param);
         UniTask Execute();

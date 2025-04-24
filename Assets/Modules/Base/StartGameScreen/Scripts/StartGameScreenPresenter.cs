@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenPresenter : IStateController
+    public class StartGameScreenPresenter : IModuleController
     {
         private const int TooltipDelay = 3000;
         private const int AppFrameRate = 60;

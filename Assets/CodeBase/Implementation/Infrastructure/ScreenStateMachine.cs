@@ -27,7 +27,7 @@ namespace CodeBase.Implementation.Infrastructure
         public ScreenPresenterMap CurrentScreenPresenterMap { get; private set; } = ScreenPresenterMap.None;
         public IScreenPresenter CurrentPresenter { get; private set; }
 
-        private IStateController CurrentStateController { get; set; }
+        private IModuleController CurrentModuleController { get; set; }
         
         public void Start() => RunScreen(SceneManager.GetActiveScene().name);
 
@@ -71,16 +71,16 @@ namespace CodeBase.Implementation.Infrastructure
                 var sceneLifetimeScope =
                     _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
 
-                CurrentStateController =
+                CurrentModuleController =
                     _screenTypeMapper.ResolveController(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
 
                 _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
 
-                await CurrentStateController.Enter(param);
-                await CurrentStateController.Execute();
-                await CurrentStateController.Exit();
+                await CurrentModuleController.Enter(param);
+                await CurrentModuleController.Execute();
+                await CurrentModuleController.Exit();
 
-                CurrentStateController.Dispose();
+                CurrentModuleController.Dispose();
 
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }

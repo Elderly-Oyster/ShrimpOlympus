@@ -86,7 +86,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         private static void RegisterMvp(IContainerBuilder builder)
         {
-            builder.Register<GameScreenController>(Lifetime.Singleton);
+            builder.Register<GameModuleController>(Lifetime.Singleton);
             builder.Register<GameScreenPresenter>(Lifetime.Singleton);
             builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
             builder.Register<GameScreenModel>(Lifetime.Singleton);

@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public class GameScreenController : IStateController
+    public class GameModuleController : IModuleController
     {
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly GameScreenPresenter _gameScreenPresenter;
@@ -19,7 +19,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly CompositeDisposable _disposables = new();
         
-        public GameScreenController(IScreenStateMachine screenStateMachine,
+        public GameModuleController(IScreenStateMachine screenStateMachine,
             GameScreenModel screenModel, GameScreenPresenter gameScreenPresenter,
             UpgradePopupPresenter upgradePopupPresenter, SplashScreenPresenter splashScreenPresenter)
         {

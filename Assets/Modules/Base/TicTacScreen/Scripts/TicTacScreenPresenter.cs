@@ -7,7 +7,7 @@ using R3;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenPresenter : IStateController
+    public class TicTacScreenPresenter : IModuleController
     {
         private readonly TicTacView _ticTacView;
         private readonly IScreenStateMachine _screenStateMachine;

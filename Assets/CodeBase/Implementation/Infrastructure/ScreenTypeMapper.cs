@@ -28,14 +28,14 @@ namespace CodeBase.Implementation.Infrastructure
                 { ScreenPresenterMap.Converter, typeof(ConverterScreenPresenter) },
                 { ScreenPresenterMap.MainMenu, typeof(MainMenuScreenPresenter) },
                 { ScreenPresenterMap.TicTac, typeof(TicTacScreenPresenter) },
-                { ScreenPresenterMap.DeliveryTycoon, typeof(GameScreenController)}
+                { ScreenPresenterMap.DeliveryTycoon, typeof(GameModuleController)}
             };
         }
 
         public IScreenPresenter Resolve(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) => 
             (IScreenPresenter)objectResolver.Resolve(_map[screenPresenterMap]);
         
-        public IStateController ResolveController(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) =>
-        (IStateController)objectResolver.Resolve(_map[screenPresenterMap]);
+        public IModuleController ResolveController(ScreenPresenterMap screenPresenterMap, IObjectResolver objectResolver) =>
+        (IModuleController)objectResolver.Resolve(_map[screenPresenterMap]);
     }
 }
