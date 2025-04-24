@@ -8,17 +8,17 @@ namespace Modules.Template.TemplateScreen.Scripts
 {
     public class TemplateScreenInstaller : SceneInstaller
     {
-        [SerializeField] private TemplateScreenView templateScreenView;
         [SerializeField] private BaseScreenCanvas screenCanvas;
         [SerializeField] private Camera mainCamera;
+        [SerializeField] private TemplateScreenView templateScreenView;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterComponent(screenCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(templateScreenView).As<TemplateScreenView>();
-            builder.Register<TemplatePresenter>(Lifetime.Singleton);
+            builder.RegisterComponent(templateScreenView).AsImplementedInterfaces().AsSelf();
+            builder.Register<TemplateScreenPresenter>(Lifetime.Singleton);
             builder.Register<TemplateScreenModel>(Lifetime.Singleton);
         }
     }

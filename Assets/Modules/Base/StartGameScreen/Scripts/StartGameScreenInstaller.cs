@@ -8,7 +8,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenInstaller : SceneInstaller
     {
-        [SerializeField] private StartGameScreenView startGameScreenView;
+        [SerializeField] private StartGameView startGameView;
         [SerializeField] private BaseScreenCanvas screenCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,7 +17,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             builder.RegisterComponent(screenCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(startGameScreenView).As<StartGameScreenView>();
+            builder.RegisterInstance(startGameView).As<StartGameView>();
             builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
             builder.Register<StartGameScreenModel>(Lifetime.Singleton);
         }

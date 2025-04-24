@@ -30,11 +30,11 @@ namespace CodeBase.Editor.ModuleCreator.Tasks
 
         private static void AwaitTaskCompleted()
         {
-            UniTask.ToCoroutine(async () =>
-            {
-                await UniTaskCompletionSource.Task;
-                Debug.Log("Tasks Completed");
-            });
+            // UniTask.ToCoroutine(async () =>
+            // {
+            //     await UniTaskCompletionSource.Task;
+            //     Debug.Log("Tasks Completed");
+            // });
         }
 
         public static void EnqueueTask(Task task)

@@ -234,10 +234,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2f165ba4834f99aa7e58fae569bdae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectsToDelete: []
-  splashScreenView: {fileID: 2111947870}
-  screenCanvas: {fileID: 1609517733}
-  mainCamera: {fileID: 915724101}
+  objectsToDelete:
+  - {fileID: 915724099}
+  splashView: {fileID: 2111947870}
 --- !u!4 &1449534347
 Transform:
   m_ObjectHideFlags: 0
@@ -505,6 +504,6 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1449534347}
   - {fileID: 915724102}
   - {fileID: 1609517737}
-  - {fileID: 1449534347}

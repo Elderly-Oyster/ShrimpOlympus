@@ -9,10 +9,10 @@ namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenPresenter : IStateController
     {
-        private readonly TicTacScreenView _ticTacScreenView;
+        private readonly TicTacView _ticTacView;
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly TicTacScreenModel _newModuleScreenModel;
-        private readonly TicTacScreenView _newModuleScreenView;
+        private readonly TicTacView _newModuleView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly TicTacScreenModel _ticTacScreenModel;
         private readonly IPopupHub _popupHub;
@@ -23,15 +23,15 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly ReactiveCommand<Unit> _thirdPopupCommand = new ReactiveCommand<Unit>();
 
         public TicTacScreenPresenter(IScreenStateMachine screenStateMachine,
-            TicTacScreenModel newModuleScreenModel, TicTacScreenView newModuleScreenView, 
-            TicTacScreenView ticTacScreenView, TicTacScreenModel ticTacScreenModel, IPopupHub popupHub)
+            TicTacScreenModel newModuleScreenModel, TicTacView newModuleView, 
+            TicTacView ticTacView, TicTacScreenModel ticTacScreenModel, IPopupHub popupHub)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
             _screenStateMachine = screenStateMachine;
             _newModuleScreenModel = newModuleScreenModel;
-            _newModuleScreenView = newModuleScreenView;
-            _ticTacScreenView = ticTacScreenView;
+            _newModuleView = newModuleView;
+            _ticTacView = ticTacView;
             _ticTacScreenModel = ticTacScreenModel;
             _popupHub = popupHub;
         }
@@ -47,21 +47,21 @@ namespace Modules.Base.TicTacScreen.Scripts
         public async UniTask Enter(object param)
         {
             _ticTacScreenModel.InitializeGame();
-            _newModuleScreenView.gameObject.SetActive(false);
+            _newModuleView.gameObject.SetActive(false);
             SubscribeToUIUpdates();
-            _ticTacScreenView.SetupEventListeners(_mainMenuCommand, _cellCommand, _restartCommand, 
+            _ticTacView.SetupEventListeners(_mainMenuCommand, _cellCommand, _restartCommand, 
                 _thirdPopupCommand);
-            _ticTacScreenView.ClearBoard();
-            await _newModuleScreenView.Show();
+            _ticTacView.ClearBoard();
+            await _newModuleView.Show();
         }
 
         public async UniTask Execute() => await _completionSource.Task;
 
-        public async UniTask Exit() => await _ticTacScreenView.Hide();
+        public async UniTask Exit() => await _ticTacView.Hide();
 
         public void Dispose()
         {
-            _newModuleScreenView.Dispose();
+            _newModuleView.Dispose();
             _newModuleScreenModel.Dispose();
         }
 
@@ -76,28 +76,28 @@ namespace Modules.Base.TicTacScreen.Scripts
         private void OnCellClicked(int x, int y)
         {
             _ticTacScreenModel.MakeMove(x, y);
-            _ticTacScreenView.UpdateBoard(_ticTacScreenModel.Board);
+            _ticTacView.UpdateBoard(_ticTacScreenModel.Board);
             char winner = _ticTacScreenModel.CheckWinner();
             if (winner != '\0')
             {
-                _ticTacScreenView.ShowWinner(winner);
-                _ticTacScreenView.BlockBoard();
-                _ticTacScreenView.AnimateRestartButton();
+                _ticTacView.ShowWinner(winner);
+                _ticTacView.BlockBoard();
+                _ticTacView.AnimateRestartButton();
             }
             else if (_ticTacScreenModel.IsBoardFull())
             {
-                _ticTacScreenView.ShowDraw();
-                _ticTacScreenView.BlockBoard();
-                _ticTacScreenView.AnimateRestartButton();
+                _ticTacView.ShowDraw();
+                _ticTacView.BlockBoard();
+                _ticTacView.AnimateRestartButton();
             }
         }
 
         private void OnRestartButtonClicked()
         {
             _ticTacScreenModel.InitializeGame();
-            _ticTacScreenView.ClearBoard();
-            _ticTacScreenView.UnblockBoard(); 
-            _ticTacScreenView.StopAnimateRestartButton();
+            _ticTacView.ClearBoard();
+            _ticTacView.UnblockBoard(); 
+            _ticTacView.StopAnimateRestartButton();
         }
 
         private void OnThirdPopupButtonClicked() => _popupHub.OpenThirdPopup();

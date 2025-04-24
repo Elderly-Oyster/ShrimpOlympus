@@ -20,7 +20,7 @@ namespace CodeBase.Tests.Editor.ModuleCreator
                 PathManager.TemplateViewsFolderPath);
             Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Scripts",
                 PathManager.TemplateScriptsFolderPath);
-            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/UI/TemplateScreenView.prefab",
+            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/UI/TemplateView.prefab",
                 PathManager.TemplateViewPrefabPath);
         }
 

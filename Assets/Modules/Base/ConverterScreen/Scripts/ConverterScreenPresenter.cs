@@ -13,7 +13,7 @@ namespace Modules.Base.ConverterScreen.Scripts
     {
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly ConverterScreenModel _converterScreenModel;
-        private readonly ConverterScreenView _converterScreenView;
+        private readonly ConverterView _converterView;
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         
@@ -26,11 +26,11 @@ namespace Modules.Base.ConverterScreen.Scripts
 
 
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
-            ConverterScreenView converterScreenView, DynamicParticleController dynamicParticleController)
+            ConverterView converterView, DynamicParticleController dynamicParticleController)
         {
             _screenStateMachine = screenStateMachine;
             _converterScreenModel = converterScreenModel;
-            _converterScreenView = converterScreenView;
+            _converterView = converterView;
             _dynamicParticleController = dynamicParticleController;
             
             _completionSource = new UniTaskCompletionSource<bool>();
@@ -50,20 +50,20 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _converterScreenView.HideInstantly();
-            _converterScreenView.SetupEventListeners(
+            _converterView.HideInstantly();
+            _converterView.SetupEventListeners(
                 _determineSourceCurrencyCommand,
                 _determineTargetCurrencyCommand,
                 _sourceAmountChangedCommand,
                 _targetAmountChangedCommand,
                 _handleAmountScrollBarChangedCommand,
                 _backButtonCommand);
-            await _converterScreenView.Show();
+            await _converterView.Show();
         }
 
         public async UniTask Execute() => await _completionSource.Task;
 
-        public async UniTask Exit() => await _converterScreenView.Hide();
+        public async UniTask Exit() => await _converterView.Hide();
 
         private readonly Dictionary<string, Currencies> _currencyToName = new()
         {
@@ -76,13 +76,13 @@ namespace Modules.Base.ConverterScreen.Scripts
         private void DetermineSourceCurrency(string name)
         {
             _converterScreenModel.SelectSourceCurrency(_currencyToName[name]);
-            CountTargetMoney(_converterScreenView.CurrentSourceAmount);
+            CountTargetMoney(_converterView.CurrentSourceAmount);
         }
 
         private void DetermineTargetCurrency(string name) 
         {
             _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
-            CountTargetMoney(_converterScreenView.CurrentSourceAmount);
+            CountTargetMoney(_converterView.CurrentSourceAmount);
         }
 
         private void OnSourceAmountChanged(string value)
@@ -98,18 +98,18 @@ namespace Modules.Base.ConverterScreen.Scripts
         }
 
         private void CountSourceMoney(float count) =>
-            _converterScreenView.UpdateSourceText(_converterScreenModel.ConvertTargetToSource(count));
+            _converterView.UpdateSourceText(_converterScreenModel.ConvertTargetToSource(count));
 
         private void HandleAmountScrollBarChanged(float scrollValue)
         {
             _dynamicParticleController.parameter = scrollValue;
             var intValue = Mathf.RoundToInt(scrollValue * 200);
-            _converterScreenView.UpdateSourceText(intValue);
+            _converterView.UpdateSourceText(intValue);
             CountTargetMoney(intValue); 
         }
         
         private void CountTargetMoney(float count) =>
-            _converterScreenView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
+            _converterView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
 
         private void OnExitButtonClicked() => 
             RunNewScreen(ScreenPresenterMap.MainMenu);
@@ -122,7 +122,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         public void Dispose()
         {
-            _converterScreenView.Dispose();
+            _converterView.Dispose();
             _converterScreenModel.Dispose();
         }
     }

@@ -19,7 +19,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private ReactiveProperty<GameData> _gameData = new();
         private CompositeDisposable _disposable = new();
 
-        public readonly StateMachine<GameScreenState, GameScreenState> StateMachine;
+        public readonly StateMachine<GameScreenStates, GameScreenStates> StateMachine;
         public ReadOnlyReactiveProperty<GameData> GameData => _gameData;
 
         [Inject]
@@ -33,30 +33,30 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         
         public GameScreenModel()
         {
-            StateMachine = new StateMachine<GameScreenState, GameScreenState>(GameScreenState.Initial);
+            StateMachine = new StateMachine<GameScreenStates, GameScreenStates>(GameScreenStates.Initial);
             ConfigureStateMachine();
-            StateMachine.Fire(GameScreenState.Loading);
+            StateMachine.Fire(GameScreenStates.Loading);
         }
 
-        public void ChangeState(GameScreenState targetState) => 
-            StateMachine.Fire(targetState);
+        public void ChangeState(GameScreenStates targetStates) => 
+            StateMachine.Fire(targetStates);
 
         private void SubscribeToEvents() => 
             _disposable.Add(_gameDataSystem.GameDataProperty.Subscribe(UpdateGameData));
 
         private void ConfigureStateMachine()
         {
-            StateMachine.Configure(GameScreenState.Loading)
-                .Permit(GameScreenState.Game, GameScreenState.Game);
+            StateMachine.Configure(GameScreenStates.Loading)
+                .Permit(GameScreenStates.Game, GameScreenStates.Game);
             
-            StateMachine.Configure(GameScreenState.Initial)
-                .Permit(GameScreenState.Loading, GameScreenState.Loading);
+            StateMachine.Configure(GameScreenStates.Initial)
+                .Permit(GameScreenStates.Loading, GameScreenStates.Loading);
             
-            StateMachine.Configure(GameScreenState.Game).
-                Permit(GameScreenState.UpgradePopup, GameScreenState.UpgradePopup);
+            StateMachine.Configure(GameScreenStates.Game).
+                Permit(GameScreenStates.UpgradePopup, GameScreenStates.UpgradePopup);
             
-            StateMachine.Configure(GameScreenState.UpgradePopup).
-                Permit(GameScreenState.Game, GameScreenState.Game);
+            StateMachine.Configure(GameScreenStates.UpgradePopup).
+                Permit(GameScreenStates.Game, GameScreenStates.Game);
         }
 
         private void UpdateGameData(GameData gameData) => 

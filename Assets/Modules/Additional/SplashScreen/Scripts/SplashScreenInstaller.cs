@@ -6,11 +6,11 @@ namespace Modules.Additional.SplashScreen.Scripts
 {
     public class SplashScreenInstaller : SceneInstaller
     {
-        [SerializeField] private SplashScreenView splashScreenView;
+        [SerializeField] private SplashView splashView;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterInstance(splashScreenView).As<SplashScreenView>();
+            builder.RegisterInstance(splashView).As<SplashView>();
             builder.Register<SplashScreenPresenter>(Lifetime.Singleton);
             builder.Register<SplashScreenModel>(Lifetime.Singleton);
         }

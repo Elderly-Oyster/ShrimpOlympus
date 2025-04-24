@@ -10,7 +10,8 @@
         "DOTween.Modules",
         "UniTask.DOTween",
         "Services",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Systems"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

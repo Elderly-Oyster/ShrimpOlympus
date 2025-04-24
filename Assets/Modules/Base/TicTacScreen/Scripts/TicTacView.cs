@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenView : BaseScreenView
+    public class TicTacView : BaseView
     {
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button thirdPopupButton;

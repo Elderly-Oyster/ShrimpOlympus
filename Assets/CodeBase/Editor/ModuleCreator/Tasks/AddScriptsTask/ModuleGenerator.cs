@@ -93,7 +93,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
             bool createView,
             bool createModel)
         {
-            var scriptsToCreate = new List<(bool shouldCreate, string templateFile, string outputFile)>
+            var scriptsToCreate = new List<(bool isRequired, string templateFile, string outputFile)>
             {
                 (createInstaller, "TemplateScreenInstaller.cs", $"{moduleName}ScreenInstaller.cs"),
                 (createPresenter, "TemplateScreenPresenter.cs", $"{moduleName}ScreenPresenter.cs"),

@@ -7,7 +7,7 @@ namespace CodeBase.Core.Modules
 {
     [RequireComponent(typeof(CanvasGroup))]
     [RequireComponent(typeof(Canvas))]
-    public abstract class BaseScreenView : MonoBehaviour, IView
+    public abstract class BaseView : MonoBehaviour, IView
     {
         [SerializeField] private BaseAnimationElement animationElement;
         private CanvasGroup _canvasGroup;
@@ -15,7 +15,6 @@ namespace CodeBase.Core.Modules
 
         protected virtual void Awake()
         {
-            Debug.Log("Awake works for " + gameObject.name);
             _canvasGroup = GetComponent<CanvasGroup>();
             _canvas = GetComponent<Canvas>();
         }

@@ -2,8 +2,6 @@ using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.SplashScreen.Scripts;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
 using R3;
 using Stateless;
@@ -39,7 +37,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         {
             _disposables.Add(_gameScreenPresenter.OnMainMenuButtonClickedCommand.Subscribe(RunNewScreen));
             _disposables.Add(_splashScreenPresenter.ServicesLoaded.
-                Subscribe(_ => _gameScreenModel.StateMachine.Fire(GameScreenState.Game)));
+                Subscribe(_ => _gameScreenModel.StateMachine.Fire(GameScreenStates.Game)));
         }
 
         public async UniTask Enter(object param)
@@ -52,17 +50,17 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async UniTask Exit() => await _gameScreenPresenter.Exit();
 
-        private async void OnStateChanged(StateMachine<GameScreenState, GameScreenState>.Transition transition)
+        private async void OnStateChanged(StateMachine<GameScreenStates, GameScreenStates>.Transition transition)
         {
             Debug.Log(transition.Destination);
             switch (transition.Destination)
             {
-                case GameScreenState.Loading:
+                case GameScreenStates.Loading:
                 {
                     _gameScreenPresenter.ShowGameScreenView();
                     break;
                 }
-                case GameScreenState.Game:
+                case GameScreenStates.Game:
                 {
                     await _splashScreenPresenter.Exit();
                     await _upgradePopupPresenter.Exit();
@@ -70,7 +68,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                     break;
                 }
 
-                case GameScreenState.UpgradePopup:
+                case GameScreenStates.UpgradePopup:
                 {
                     await _upgradePopupPresenter.Enter(null);
                     break;

@@ -1,4 +1,3 @@
-using System;
 using System.Threading;
 using CodeBase.Core.Modules;
 using CodeBase.Core.UI.ProgressBars;
@@ -7,13 +6,12 @@ using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public class GameScreenView : BaseScreenView
+    public class GameView : BaseView
     {
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button upgradePopupButton;
@@ -35,9 +33,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 .Subscribe(_ => openMainMenuCommand.Execute(default))
                 .AddTo(this);
 
-            //TODO Some bug with creating new Action called Exit Game. It will be Jump for testing
             var cancelPerformedObservable = 
-                _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.PlayerCar.Jump);
+                _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
             
             cancelPerformedObservable
                 .Subscribe(_ => openMainMenuCommand.Execute(default))

@@ -550,7 +550,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  mainMenuScreenView: {fileID: 862981117}
+  mainMenuView: {fileID: 862981117}
   screensCanvas: {fileID: 352199503}
   mainCamera: {fileID: 838462636}
 --- !u!4 &1461079802

@@ -21,7 +21,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
     
     public class GameInstallerForScene : SceneInstaller
     {
-        [SerializeField] private GameScreenView gameScreenView;
+        [SerializeField] private GameView gameView;
         [SerializeField] private UpgradePopupView upgradePopupView;
         [SerializeField] private BaseScreenCanvas screenCanvas;
         [SerializeField] private Camera mainCamera;
@@ -52,7 +52,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private void RegisterViews(IContainerBuilder builder)
         {
             builder.RegisterComponent(screenCanvas);
-            builder.RegisterComponent(gameScreenView).AsImplementedInterfaces().AsSelf();
+            builder.RegisterComponent(gameView).AsImplementedInterfaces().AsSelf();
             builder.RegisterInstance(upgradePopupView);
         }
 

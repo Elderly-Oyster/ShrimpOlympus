@@ -8,7 +8,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
 {
     public class MainMenuScreenInstaller : SceneInstaller
     {
-        [SerializeField] private MainMenuScreenView mainMenuScreenView;
+        [SerializeField] private MainMenuView mainMenuView;
         [SerializeField] private BaseScreenCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,7 +17,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(mainMenuScreenView).As<MainMenuScreenView>();
+            builder.RegisterInstance(mainMenuView).As<MainMenuView>();
             builder.Register<MainMenuScreenPresenter>(Lifetime.Singleton);
             builder.Register<MainMenuScreenModel>(Lifetime.Singleton);
         }

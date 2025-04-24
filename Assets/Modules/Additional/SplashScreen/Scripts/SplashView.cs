@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Modules.Additional.SplashScreen.Scripts
 {
-    public class SplashScreenView : BaseScreenView
+    public class SplashView : BaseView
     {
         [Header("Progress UI Components")]
         [SerializeField] private CanvasGroup progressBarCanvasGroup;

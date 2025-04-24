@@ -53,14 +53,14 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
                 return;
             }
 
-            TemplateScreenView templateViewComponent = prefabContents.GetComponent<TemplateScreenView>();
-            if (templateViewComponent == null)
+            TemplateScreenView templateScreenViewComponent = prefabContents.GetComponent<TemplateScreenView>();
+            if (templateScreenViewComponent == null)
             {
                 Debug.LogError("TemplateScreenView component not found in prefab.");
                 return;
             }
 
-            SerializedObject serializedObject = new SerializedObject(templateViewComponent);
+            SerializedObject serializedObject = new SerializedObject(templateScreenViewComponent);
             SerializedProperty scriptProperty = serializedObject.FindProperty("m_Script");
 
             if (scriptProperty != null)

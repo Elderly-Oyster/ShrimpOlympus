@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
-    public class ConverterScreenView : BaseScreenView
+    public class ConverterView : BaseView
     {
         [SerializeField] private TMP_InputField sourceAmountInputField;
         [SerializeField] private TMP_InputField targetAmountInputField;

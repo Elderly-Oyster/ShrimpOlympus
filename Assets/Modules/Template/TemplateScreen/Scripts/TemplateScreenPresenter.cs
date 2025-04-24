@@ -5,7 +5,7 @@ using R3;
 
 namespace Modules.Template.TemplateScreen.Scripts
 {
-    public class TemplatePresenter : IScreenPresenter
+    public class TemplateScreenPresenter : IScreenPresenter
     {
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly TemplateScreenModel _screenModel;
@@ -14,7 +14,7 @@ namespace Modules.Template.TemplateScreen.Scripts
         
         private readonly ReactiveCommand<Unit> _mainMenuCommand = new();
         
-        public TemplatePresenter(IScreenStateMachine screenStateMachine, 
+        public TemplateScreenPresenter(IScreenStateMachine screenStateMachine, 
             TemplateScreenModel screenModel, TemplateScreenView screenView)
         {
             _screenStateMachine = screenStateMachine;

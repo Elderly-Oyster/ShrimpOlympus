@@ -8,7 +8,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 {
     public class TicTacScreenInstaller : SceneInstaller
     {
-        [SerializeField] private TicTacScreenView ticTacScreenView;
+        [SerializeField] private TicTacView ticTacView;
         [SerializeField] private BaseScreenCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,7 +17,7 @@ namespace Modules.Base.TicTacScreen.Scripts
             builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(ticTacScreenView).As<TicTacScreenView>();
+            builder.RegisterInstance(ticTacView).As<TicTacView>();
             builder.Register<TicTacScreenPresenter>(Lifetime.Singleton);
             builder.Register<TicTacScreenModel>(Lifetime.Singleton);
         }

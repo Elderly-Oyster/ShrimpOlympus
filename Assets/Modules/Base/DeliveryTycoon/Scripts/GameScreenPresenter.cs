@@ -20,7 +20,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
     public class GameScreenPresenter : IScreenPresenter
     {
         private readonly GameScreenModel _screenModel;
-        private readonly GameScreenView _screenView;
+        private readonly GameView _view;
         private readonly CurrencyService _currencyService;
         private readonly LevelService _levelService;
         private readonly GameDataSystem _gameDataSystem;
@@ -38,12 +38,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         
         public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
 
-        public GameScreenPresenter( GameScreenModel screenModel, GameScreenView screenView, LevelService levelService,
+        public GameScreenPresenter( GameScreenModel screenModel, GameView view, LevelService levelService,
             AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem,
             CurrencyService currencyService, LoadingServiceProvider loadingServiceProvider)
         {
             _screenModel = screenModel;
-            _screenView = screenView;
+            _view = view;
             _levelService = levelService;
             _currencyService = currencyService;
             _loadingServiceProvider = loadingServiceProvider;
@@ -58,7 +58,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public async UniTask Enter(object param)
         {
-            _screenView.HideInstantly();
+            _view.HideInstantly();
             
             await _gameDataSystem.DataLoaded.Task;
             _gameManager.SendGameData(_gameDataSystem.GameDataProperty.CurrentValue);
@@ -70,13 +70,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             if (musicVolume > 0) 
                 _audioSystem.PlayGameMelody();
             
-            _screenView.SetupEventListeners
+            _view.SetupEventListeners
             (
                _onMainMenuButtonClickedCommand,
                _onUpgradePopupButtonClickedCommand
             );
-            _screenView.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
-            await _screenView.Show();
+            _view.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
+            await _view.Show();
             _loadingServiceProvider.ResetRegistrationProgress();
         }
 
@@ -87,10 +87,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _gameManager.EndGame();
             _saveSystem.SaveData().Forget();
             _screenCompletionSource.TrySetResult(true);
-            await _screenView.Hide();
+            await _view.Hide();
         }
 
-        public async void ShowGameScreenView() => await _screenView.Show();
+        public async void ShowGameScreenView() => await _view.Show();
 
         public void OnEscapePressed() => OnMainMenuButtonClicked();
 
@@ -107,20 +107,20 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _onUpgradePopupButtonClickedCommand.Subscribe(_ => OnUpgradePopupButtonClicked());
         }
         
-        private void UpdateMoneyCounter(int money) => _screenView.UpdatePlayerMoney(money);
+        private void UpdateMoneyCounter(int money) => _view.UpdatePlayerMoney(money);
         
-        private void UpdateLevelText(int level) => _screenView.UpdateLevel(level);
+        private void UpdateLevelText(int level) => _view.UpdateLevel(level);
         
         private void UpdateExperienceProgressBar(float experience) => 
-            _screenView.UpdateExperience(experience);
+            _view.UpdateExperience(experience);
 
         private void OnMainMenuButtonClicked() => 
             RunNewScreen(ScreenPresenterMap.MainMenu);
 
         private async void OnUpgradePopupButtonClicked()
         {
-            _screenModel.ChangeState(GameScreenState.UpgradePopup);
-            await _screenView.Hide();
+            _screenModel.ChangeState(GameScreenStates.UpgradePopup);
+            await _view.Hide();
         }
 
         private void RunNewScreen(ScreenPresenterMap screen) => 
@@ -128,7 +128,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
         public void Dispose()
         {
-            _screenView.Dispose();
+            _view.Dispose();
             _screenModel.Dispose();
         }
     }

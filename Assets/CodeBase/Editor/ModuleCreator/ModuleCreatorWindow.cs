@@ -27,7 +27,7 @@ namespace CodeBase.Editor.ModuleCreator
 
         public enum FolderType { Additional, Base, Test }
 
-        private static readonly string TrackingFilePath = "Assets/Scripts/Editor/ModuleCreator/CreatedModules.json";
+        private static readonly string TrackingFilePath = "Assets/CodeBase/Editor/ModuleCreator/CreatedModules.json";
         private List<string> _createdModules = new List<string>();
 
         [MenuItem("Tools/Create Module")]
@@ -96,7 +96,7 @@ namespace CodeBase.Editor.ModuleCreator
                 var addPrefabTask = new AddPrefabTask(_moduleName, targetModuleFolderPath);
                 TaskQueue.EnqueueTask(addPrefabTask);
             }
-
+        
             if (_createScene)
             {
                 var createSceneTask = new CreateSceneTask(_moduleName, targetModuleFolderPath);
@@ -105,7 +105,7 @@ namespace CodeBase.Editor.ModuleCreator
             
             _createdModules.Add(targetModuleFolderPath);
             SaveCreatedModules();
-
+        
             Debug.Log("Before await");
             await TaskQueue.UniTaskCompletionSource.Task;
             Debug.Log("After await");

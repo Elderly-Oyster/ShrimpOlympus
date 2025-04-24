@@ -8,7 +8,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 {
     public class ConverterScreenInstaller : SceneInstaller
     {
-        [SerializeField] private ConverterScreenView converterScreenView;
+        [SerializeField] private ConverterView converterView;
         [SerializeField] private BaseScreenCanvas screensCanvas;
         [SerializeField] private Camera mainCamera;
 
@@ -17,7 +17,7 @@ namespace Modules.Base.ConverterScreen.Scripts
             builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(converterScreenView).As<ConverterScreenView>();
+            builder.RegisterInstance(converterView).As<ConverterView>();
             builder.Register<ConverterScreenPresenter>(Lifetime.Singleton);
             builder.Register<ConverterScreenModel>(Lifetime.Singleton);
         }

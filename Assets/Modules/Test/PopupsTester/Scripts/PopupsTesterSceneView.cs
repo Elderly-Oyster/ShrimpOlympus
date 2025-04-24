@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Modules.Test.PopupsTester.Scripts
 {
-    public class PopupsTesterSceneView : BaseScreenView
+    public class PopupsTesterSceneView : BaseView
     {
         [SerializeField] public Transform buttonsParent;
         private List<TestButtonView> _testButtonViews;

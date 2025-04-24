@@ -17,56 +17,59 @@ namespace CodeBase.Services
     {
         private const string EventSystemObjectName = "EventSystem";
 
-        public InputSystem_Actions InputActions { get; private set; }
-        private EventSystem _eventSystem;
+        private static InputSystemUIInputModule _uiInputModule;
+        private static EventSystem _eventSystem;
 
+        public InputSystem_Actions InputActions { get; private set; }
+        
         public event Action OnSwitchToUI;
         public event Action OnSwitchToPlayerHumanoid;
-
+        
         public void Start()
         {
+            CreateInputSystemActions();
             InitializeEventSystem();
-            InitializeInputActions();
+            InputActions.UI.Enable(); // Включаем UI Action Map по умолчанию
         }
-
+        
         /// <summary>
-        /// Enables only the UI Action Map, disabling all others.
+        /// Enables only the UI Action Map, keeping it always enabled.
         /// </summary>
         public void SwitchToUI()
         {
             InputActions.PlayerCar.Disable();
-            InputActions.UI.Enable();
+            InputActions.UI.Enable(); // Убеждаемся, что UI всегда включён
             Debug.Log("Switched to UI mode.");
             OnSwitchToUI?.Invoke();
         }
 
         /// <summary>
-        /// Enables PlayerHumanoid Action Map, disabling VehicleControls and UI.
+        /// Enables PlayerHumanoid Action Map, keeping UI enabled.
         /// </summary>
         public void SwitchToPlayerCar()
         {
             InputActions.PlayerCar.Enable();
-            InputActions.UI.Disable();
+            InputActions.UI.Enable(); // UI остаётся включённым
             Debug.Log("Switched to PlayerHumanoid mode.");
             OnSwitchToPlayerHumanoid?.Invoke();
         }
 
         /// <summary>
-        /// Enables the UI Action Map without affecting other Action Maps.
+        /// Enables the UI Action Map without affecting other Action Maps (always enabled by default).
         /// </summary>
         public void EnableUI()
         {
             InputActions.UI.Enable();
-            Debug.Log("UI Action Map enabled.");
+            Debug.Log("UI Action Map ensured to be enabled.");
         }
 
         /// <summary>
-        /// Disables the UI Action Map.
+        /// Disables the UI Action Map (now overridden to do nothing to keep UI always enabled).
         /// </summary>
         public void DisableUI()
         {
-            InputActions.UI.Disable();
-            Debug.Log("UI Action Map disabled.");
+            Debug.LogWarning("UI Action Map cannot be disabled as per design.");
+            InputActions.UI.Enable(); // Игнорируем попытку отключения
         }
 
         /// <summary>
@@ -77,8 +80,8 @@ namespace CodeBase.Services
         /// <summary>
         /// Checks if the PlayerHumanoid Action Map is enabled.
         /// </summary>
-        public bool IsPlayerInputEnabled() => InputActions.PlayerCar.enabled;
-
+        public bool IsPlayerHumanoidInputEnabled() => InputActions.PlayerCar.enabled;
+        
         /// <summary>
         /// Sets the first selected object for UI navigation.
         /// </summary>
@@ -98,7 +101,6 @@ namespace CodeBase.Services
             }
 
             _eventSystem.SetSelectedGameObject(selectedObject.gameObject);
-            Debug.Log($"First selected object set to: {selectedObject.name}");
         }
         
         public string GetFullActionPath(InputAction action)
@@ -113,7 +115,7 @@ namespace CodeBase.Services
             string actionName = action.name;
             return $"{mapName}/{actionName}";
         }
-
+        
         public Observable<Unit> GetPerformedObservable(InputAction action)
         {
             if (action == null)
@@ -127,13 +129,24 @@ namespace CodeBase.Services
                 h => action.performed -= h
             ).Select(_ => Unit.Default); // Преобразуем в Unit для унификации
         }
+
+        //TODO Изучить
+        // public static Observable<Unit> AsObservable(this UnityEngine.Events.UnityEvent unityEvent, CancellationToken cancellationToken = default)
+        // {
+        //     return Observable.FromEvent(h => new UnityAction(h), h => unityEvent.AddListener(h), h => unityEvent.RemoveListener(h), cancellationToken);
+        // }
+        //
+        // public static Observable<T> AsObservable<T>(this UnityEngine.Events.UnityEvent<T> unityEvent, CancellationToken cancellationToken = default)
+        // {
+        //     return Observable.FromEvent<UnityAction<T>, T>(h => new UnityAction<T>(h), h => unityEvent.AddListener(h), h => unityEvent.RemoveListener(h), cancellationToken);
+        // }
         
         public void Dispose()
         {
             if (InputActions == null) return;
 
-            InputActions.UI.Disable();
             InputActions.PlayerCar.Disable();
+            InputActions.UI.Disable();
             
             InputActions.Disable();
             InputActions.Dispose();
@@ -142,14 +155,15 @@ namespace CodeBase.Services
         /// <summary>
         /// Initializes the EventSystem, creating a new one if it doesn't exist.
         /// </summary>
-        private void InitializeEventSystem()
+        private void InitializeEventSystem()    
         {
             _eventSystem = Object.FindObjectOfType<EventSystem>();
             if (_eventSystem == null)
             {
                 _eventSystem = CreateEventSystem();
+                _uiInputModule.actionsAsset = InputActions.asset;
                 Object.DontDestroyOnLoad(_eventSystem.gameObject);
-                Debug.Log("Created new EventSystem.");
+                // Debug.Log("Created new EventSystem.");
             }
             else
             {
@@ -160,10 +174,7 @@ namespace CodeBase.Services
         /// <summary>
         /// Initializes the InputSystem_Actions.
         /// </summary>
-        private void InitializeInputActions()
-        {
-            InputActions = new InputSystem_Actions();
-        }
+        private void CreateInputSystemActions() => InputActions = new InputSystem_Actions();
 
         /// <summary>
         /// Creates a new EventSystem with an InputSystemUIInputModule.
@@ -172,7 +183,7 @@ namespace CodeBase.Services
         private static EventSystem CreateEventSystem()
         {
             var eventSystem = new GameObject(EventSystemObjectName).AddComponent<EventSystem>();
-            eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
+            _uiInputModule = eventSystem.gameObject.AddComponent<InputSystemUIInputModule>();
             return eventSystem;
         }
     }

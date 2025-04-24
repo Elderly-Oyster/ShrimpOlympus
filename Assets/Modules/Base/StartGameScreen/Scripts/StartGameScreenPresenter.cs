@@ -11,33 +11,33 @@ namespace Modules.Base.StartGameScreen.Scripts
 {
     public class StartGameScreenPresenter : IStateController
     {
+        private const int TooltipDelay = 3000;
+        private const int AppFrameRate = 60;
+       
+        private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private readonly UniTaskCompletionSource<bool> _completionSource;
+        private readonly StartGameScreenModel _startGameScreenModel;
+        private readonly StartGameView _startGameView;
+        private readonly IScreenStateMachine _screenStateMachine;
+        
+        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
+        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
+        private readonly ReactiveCommand<Unit> _startCommand = new();
+        
         public ReadOnlyReactiveProperty<string> ProgressStatus => 
             _progressStatus.ToReadOnlyReactiveProperty();
         public ReadOnlyReactiveProperty<float> ExponentialProgress => 
             _exponentialProgress.ToReadOnlyReactiveProperty();
         public ReactiveCommand<Unit> StartCommand => _startCommand;
         
-        private readonly ReactiveProperty<string> _progressStatus = new(string.Empty);
-        private readonly ReactiveProperty<float> _exponentialProgress = new(0f);
-        private readonly ReactiveCommand<Unit> _startCommand = new();
-        
-        private readonly CancellationTokenSource _cancellationTokenSource = new();
-        private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly StartGameScreenModel _startGameScreenModel;
-        private readonly StartGameScreenView _startGameScreenView;
-        private readonly IScreenStateMachine _screenStateMachine;
-
-        private const int TooltipDelay = 3000;
-        private const int AppFrameRate = 60;
-        
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
-            StartGameScreenModel startGameScreenModel, StartGameScreenView startGameScreenView)
+            StartGameScreenModel startGameScreenModel, StartGameView startGameView)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             
             _screenStateMachine = screenStateMachine;
             _startGameScreenModel = startGameScreenModel;
-            _startGameScreenView = startGameScreenView;
+            _startGameView = startGameView;
 
             SubscribeToUIUpdates();
         }
@@ -58,7 +58,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _startGameScreenModel.DoTweenInit();
             _startGameScreenModel.RegisterCommands();
 
-            await _startGameScreenView.Show();
+            await _startGameView.Show();
 
             await InitializeServices();
 
@@ -67,8 +67,8 @@ namespace Modules.Base.StartGameScreen.Scripts
         
         private void InitializeUI()
         {
-            _startGameScreenView.HideInstantly();
-            _startGameScreenView.SetupEventListeners(StartCommand,
+            _startGameView.HideInstantly();
+            _startGameView.SetupEventListeners(StartCommand,
                 ProgressStatus, ExponentialProgress); 
         }
 
@@ -100,7 +100,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         public async UniTask Exit()
         {
             _cancellationTokenSource?.Cancel();
-            await _startGameScreenView.Hide();
+            await _startGameView.Hide();
         }
 
         private static void SetApplicationFrameRate() => 
@@ -114,9 +114,9 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private void OnContinueButtonPressed() => RunMainMenuScreen(ScreenPresenterMap.MainMenu);
 
-        private void SetVersionText(string appVersion) => _startGameScreenView.SetVersionText(appVersion);
+        private void SetVersionText(string appVersion) => _startGameView.SetVersionText(appVersion);
 
-        private void ShowAnimations() => _startGameScreenView.ShowAnimations(_cancellationTokenSource.Token);
+        private void ShowAnimations() => _startGameView.ShowAnimations(_cancellationTokenSource.Token);
 
         private async UniTaskVoid ShowTooltips()
         {
@@ -126,7 +126,7 @@ namespace Modules.Base.StartGameScreen.Scripts
                 while (!token.IsCancellationRequested)
                 {
                     var tooltip = _startGameScreenModel.GetNextTooltip();
-                    _startGameScreenView.SetTooltipText(tooltip);
+                    _startGameView.SetTooltipText(tooltip);
                     await UniTask.Delay(TooltipDelay, cancellationToken: token);
                 }
             }
@@ -140,7 +140,7 @@ namespace Modules.Base.StartGameScreen.Scripts
                 _cancellationTokenSource.Cancel();
             _cancellationTokenSource?.Dispose();
             
-            _startGameScreenView.Dispose();
+            _startGameView.Dispose();
             _startGameScreenModel.Dispose();
         }
     }

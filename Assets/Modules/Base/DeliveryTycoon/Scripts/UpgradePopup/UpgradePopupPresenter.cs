@@ -72,7 +72,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         
         public async UniTask Exit()
         {
-            await _upgradePopupView.Hide();
+            if (_upgradePopupView.isActiveAndEnabled) await _upgradePopupView.Hide();
             _screenCompletionSource.TrySetResult(true);
         }
 
@@ -93,7 +93,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 
         private void ClosePopup()
         {
-            _gameScreenModel.ChangeState(GameScreenState.Game);
+            _gameScreenModel.ChangeState(GameScreenStates.Game);
         }
         
         private async void OnBuyContainerButtonClicked()

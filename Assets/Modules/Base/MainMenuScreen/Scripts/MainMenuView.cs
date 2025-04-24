@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenView : BaseScreenView
+    public class MainMenuView : BaseView
     {
         [SerializeField] private Button settingsPopupButton;
         [SerializeField] private Button secondPopupButton;

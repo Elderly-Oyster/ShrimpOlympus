@@ -14,7 +14,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly MainMenuScreenModel _mainMenuScreenModel;
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly MainMenuScreenView _mainMenuScreenView;
+        private readonly MainMenuView _mainMenuView;
         private readonly IPopupHub _popupHub;
         private readonly AudioSystem _audioSystem;
         private readonly InputSystemService _eventSystemService;
@@ -27,14 +27,14 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
-            MainMenuScreenModel mainMenuScreenModel, MainMenuScreenView mainMenuScreenView,
+            MainMenuScreenModel mainMenuScreenModel, MainMenuView mainMenuView,
             AudioSystem audioSystem)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
             _mainMenuScreenModel = mainMenuScreenModel;
             _screenStateMachine = screenStateMachine;
-            _mainMenuScreenView = mainMenuScreenView;
+            _mainMenuView = mainMenuView;
             _audioSystem = audioSystem;
             _popupHub = popupHub;
 
@@ -53,10 +53,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _mainMenuScreenView.Initialize(isMusicOn: _audioSystem.MusicVolume != 0);
-            _mainMenuScreenView.HideInstantly();
+            _mainMenuView.Initialize(isMusicOn: _audioSystem.MusicVolume != 0);
+            _mainMenuView.HideInstantly();
 
-            _mainMenuScreenView.SetupEventListeners(
+            _mainMenuView.SetupEventListeners(
                 _converterCommand,
                 _ticTacCommand,
                 _tycoonCommand,
@@ -65,7 +65,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 _toggleSoundCommand
             );
 
-            await _mainMenuScreenView.Show();
+            await _mainMenuView.Show();
             _audioSystem.PlayMainMenuMelody();
         }
 
@@ -73,13 +73,13 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Exit()
         {
-            await _mainMenuScreenView.Hide();
+            await _mainMenuView.Hide();
             _audioSystem.StopMusic();
         }
 
         public void Dispose()
         {
-            _mainMenuScreenView.Dispose();
+            _mainMenuView.Dispose();
             _mainMenuScreenModel.Dispose();
         }
 

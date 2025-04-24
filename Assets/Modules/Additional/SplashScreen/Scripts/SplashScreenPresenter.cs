@@ -11,7 +11,7 @@ namespace Modules.Additional.SplashScreen.Scripts
 {
     public class SplashScreenPresenter : IScreenPresenter
     {
-        private readonly SplashScreenView _splashScreenView;
+        private readonly SplashView _splashView;
         private readonly SplashScreenModel _splashScreenModel;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
         
@@ -26,10 +26,10 @@ namespace Modules.Additional.SplashScreen.Scripts
        
         public Observable<Unit> ServicesLoaded => _servicesLoaded;
 
-        public SplashScreenPresenter(SplashScreenView splashScreenView, SplashScreenModel splashScreenModel)
+        public SplashScreenPresenter(SplashView splashView, SplashScreenModel splashScreenModel)
         {
             Debug.Log("SplashScreenPresenter was born");
-            _splashScreenView = splashScreenView;
+            _splashView = splashView;
             _splashScreenModel = splashScreenModel;
             _screenCompletionSource = new TaskCompletionSource<bool>();
         }
@@ -38,7 +38,7 @@ namespace Modules.Additional.SplashScreen.Scripts
         {
             Debug.Log("SplashScreenPresenter entered");
             InitializeUI();
-            await _splashScreenView.Show();
+            await _splashView.Show();
             await _splashScreenModel.WaitForTheEndOfRegistration();
             Debug.Log("Registration Complete");
             await LoadDataForServices();
@@ -46,12 +46,12 @@ namespace Modules.Additional.SplashScreen.Scripts
 
         public async UniTask Execute() => await _screenCompletionSource.Task;
 
-        public async UniTask Exit() => await _splashScreenView.Hide();
+        public async UniTask Exit() => await _splashView.Hide();
 
         private void InitializeUI()
         {
-            //_splashScreenView.HideInstantly();
-            _splashScreenView.SetupEventListeners(ProgressStatus, ExponentialProgress);
+            //_splashView.HideInstantly();
+            _splashView.SetupEventListeners(ProgressStatus, ExponentialProgress);
         }
         
         private async UniTask LoadDataForServices()

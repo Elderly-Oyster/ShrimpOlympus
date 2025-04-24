@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameScreenView : BaseScreenView
+    public class StartGameView : BaseView
     {
         [Header("UI Interaction Components")]
         [SerializeField] private Button continueButton;

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 {
-    public class UpgradePopupView : BaseScreenView
+    public class UpgradePopupView : BaseView
     {
         [SerializeField] private Button addCapacityButton;
         [SerializeField] private Button promoteCompanyButton;

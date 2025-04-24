@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -267,7 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  converterScreenView: {fileID: 1601817687}
+  converterView: {fileID: 1601817687}
   screensCanvas: {fileID: 414013163}
   mainCamera: {fileID: 519420031}
 --- !u!1 &519420028
@@ -507,6 +506,6 @@ MonoBehaviour:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 436144739}
   - {fileID: 519420032}
   - {fileID: 414013167}
-  - {fileID: 436144739}
