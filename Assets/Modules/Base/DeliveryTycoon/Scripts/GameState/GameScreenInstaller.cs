@@ -16,7 +16,7 @@ using VContainer.Unity;
 using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic.ContainerManagerOperations;
 
 
-namespace Modules.Base.DeliveryTycoon.Scripts
+namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 {
     
     public class GameInstallerForScene : SceneInstaller

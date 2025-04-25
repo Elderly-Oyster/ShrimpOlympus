@@ -2,6 +2,7 @@ using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.SplashScreen.Scripts;
+using Modules.Base.DeliveryTycoon.Scripts.GameState;
 using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
 using R3;
 using Stateless;
@@ -16,7 +17,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private readonly UpgradePopupPresenter _upgradePopupPresenter;
         private readonly SplashScreenPresenter _splashScreenPresenter;
         private readonly GameScreenModel _gameScreenModel;
-        private readonly UniTaskCompletionSource<bool> _completionSource;
+        private readonly UniTaskCompletionSource<bool> _moduleCompletionSource;
         private readonly CompositeDisposable _disposables = new();
         
         public GameModuleController(IScreenStateMachine screenStateMachine,
@@ -29,15 +30,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _splashScreenPresenter = splashScreenPresenter;
             _gameScreenModel = screenModel;
             SubscribeToEvents();
-            _completionSource = new UniTaskCompletionSource<bool>();
+            _moduleCompletionSource = new UniTaskCompletionSource<bool>();
             _gameScreenModel.StateMachine.OnTransitionCompleted(OnStateChanged);
-        }
-        
-        private void SubscribeToEvents()
-        {
-            _disposables.Add(_gameScreenPresenter.OnMainMenuButtonClickedCommand.Subscribe(RunNewScreen));
-            _disposables.Add(_splashScreenPresenter.ServicesLoaded.
-                Subscribe(_ => _gameScreenModel.StateMachine.Fire(GameScreenStates.Game)));
         }
 
         public async UniTask Enter(object param)
@@ -46,39 +40,48 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             await _splashScreenPresenter.Enter(null);
         }
 
-        public async UniTask Execute() => await _completionSource.Task;
+        public async UniTask Execute() => await _moduleCompletionSource.Task;
 
         public async UniTask Exit() => await _gameScreenPresenter.Exit();
 
-        private async void OnStateChanged(StateMachine<GameScreenStates, GameScreenStates>.Transition transition)
+        private void SubscribeToEvents()
+        {
+            _disposables.Add(_gameScreenPresenter.OnMainMenuButtonClickedCommand.Subscribe(RunNewScreen));
+            _disposables.Add(_splashScreenPresenter.ServicesLoaded.
+                Subscribe(_ => _gameScreenModel.StateMachine.Fire(GameModuleStates.Game)));
+        }
+
+        private async void OnStateChanged(StateMachine<GameModuleStates, GameModuleStates>.Transition transition)
         {
             Debug.Log(transition.Destination);
             switch (transition.Destination)
             {
-                case GameScreenStates.Loading:
+                case GameModuleStates.Loading:
                 {
-                    _gameScreenPresenter.ShowGameScreenView();
+                    //TODO async refactoring
+                    _gameScreenPresenter.ShowState();
                     break;
                 }
-                case GameScreenStates.Game:
+                case GameModuleStates.Game:
                 {
                     await _splashScreenPresenter.Exit();
                     await _upgradePopupPresenter.Exit();
-                    _gameScreenPresenter.ShowGameScreenView();
+                    _gameScreenPresenter.ShowState();
                     break;
                 }
 
-                case GameScreenStates.UpgradePopup:
+                case GameModuleStates.UpgradePopup:
                 {
+                    _gameScreenPresenter.HideState();
                     await _upgradePopupPresenter.Enter(null);
                     break;
                 }
             }
         }
 
-        private void RunNewScreen(ScreenPresenterMap screen)
+        private void RunNewScreen(ModulesMap screen)
         {
-            _completionSource.TrySetResult(true);
+            _moduleCompletionSource.TrySetResult(true);
             _screenStateMachine.RunScreen(screen);
         }
 

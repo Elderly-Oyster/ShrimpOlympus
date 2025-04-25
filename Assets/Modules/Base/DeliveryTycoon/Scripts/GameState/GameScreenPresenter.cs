@@ -4,18 +4,14 @@ using CodeBase.Core.Modules;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.Save;
 using CodeBase.Services;
-using CodeBase.Systems.InputSystem;
 using Cysharp.Threading.Tasks;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
 using R3;
-using UnityEngine;
-using UnityEngine.InputSystem;
 
-namespace Modules.Base.DeliveryTycoon.Scripts
+namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 {
     public class GameScreenPresenter : IScreenPresenter
     {
@@ -30,13 +26,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private readonly LoadingServiceProvider _loadingServiceProvider;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
 
-        private readonly ReactiveCommand<ScreenPresenterMap> _onMainMenuButtonClicked = new();
+        private readonly ReactiveCommand<ModulesMap> _onMainMenuButtonClicked = new();
         private readonly ReactiveCommand<Unit> _onMainMenuButtonClickedCommand = new();
         private readonly ReactiveCommand<Unit> _onUpgradePopupButtonClickedCommand = new();
         
         private CompositeDisposable _disposables = new();
         
-        public ReactiveCommand<ScreenPresenterMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
+        public ReactiveCommand<ModulesMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
 
         public GameScreenPresenter( GameScreenModel screenModel, GameView view, LevelService levelService,
             AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem,
@@ -90,7 +86,17 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             await _view.Hide();
         }
 
-        public async void ShowGameScreenView() => await _view.Show();
+        public async UniTask ShowState()
+        {
+            await _view.Show();
+            //other hide sub-state logic
+        }
+
+        public async UniTask HideState()
+        {
+            await _view.Hide();
+            //other hide sub-state logic
+        }
 
         public void OnEscapePressed() => OnMainMenuButtonClicked();
 
@@ -115,17 +121,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _view.UpdateExperience(experience);
 
         private void OnMainMenuButtonClicked() => 
-            RunNewScreen(ScreenPresenterMap.MainMenu);
+            _onMainMenuButtonClicked.Execute(ModulesMap.MainMenu);
 
         private async void OnUpgradePopupButtonClicked()
         {
-            _screenModel.ChangeState(GameScreenStates.UpgradePopup);
+            _screenModel.ChangeState(GameModuleStates.UpgradePopup);
+            //TODO Remove and refactor this moment
             await _view.Hide();
         }
-
-        private void RunNewScreen(ScreenPresenterMap screen) => 
-            _onMainMenuButtonClicked.Execute(screen);
-
+        
         public void Dispose()
         {
             _view.Dispose();

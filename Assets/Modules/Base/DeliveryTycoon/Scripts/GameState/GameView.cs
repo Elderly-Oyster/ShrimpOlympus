@@ -9,7 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Modules.Base.DeliveryTycoon.Scripts
+namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 {
     public class GameView : BaseView
     {

@@ -50,10 +50,10 @@ namespace CodeBase.Services
 
         public void AddActiveScene(string sceneName) => _activeModuleScenes.Add(sceneName);
 
-        public async UniTask LoadScenesForModule(ScreenPresenterMap screenPresenterMap)
+        public async UniTask LoadScenesForModule(ModulesMap modulesMap)
         {
-            List<string> scenes = new List<string> { screenPresenterMap.ToString() };
-            IEnumerable<AdditiveScenesMap> additionalScenes = GetAdditionalScenes(screenPresenterMap);
+            List<string> scenes = new List<string> { modulesMap.ToString() };
+            IEnumerable<AdditiveScenesMap> additionalScenes = GetAdditionalScenes(modulesMap);
             if (additionalScenes != null)
             {
                 var sceneNames = additionalScenes.Select(scene => scene.ToString());
@@ -65,15 +65,15 @@ namespace CodeBase.Services
             _activeModuleScenes = scenes;
         }
 
-        private static IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ScreenPresenterMap screenPresenterMap)
+        private static IEnumerable<AdditiveScenesMap> GetAdditionalScenes(ModulesMap modulesMap)
         {
-            return screenPresenterMap switch
+            return modulesMap switch
             {
-                ScreenPresenterMap.StartGame => new List<AdditiveScenesMap>(),
-                ScreenPresenterMap.Converter => new List<AdditiveScenesMap> {AdditiveScenesMap.DynamicBackground},
-                ScreenPresenterMap.MainMenu => new List<AdditiveScenesMap>(),
-                ScreenPresenterMap.TicTac => new List<AdditiveScenesMap>(),
-                ScreenPresenterMap.DeliveryTycoon => new List<AdditiveScenesMap>() { AdditiveScenesMap.SplashScreen},
+                ModulesMap.StartGame => new List<AdditiveScenesMap>(),
+                ModulesMap.Converter => new List<AdditiveScenesMap> {AdditiveScenesMap.DynamicBackground},
+                ModulesMap.MainMenu => new List<AdditiveScenesMap>(),
+                ModulesMap.TicTac => new List<AdditiveScenesMap>(),
+                ModulesMap.DeliveryTycoon => new List<AdditiveScenesMap>() { AdditiveScenesMap.SplashScreen},
                 _ => null
             };
             

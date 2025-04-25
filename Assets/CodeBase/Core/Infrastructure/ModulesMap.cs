@@ -1,6 +1,6 @@
 namespace CodeBase.Core.Infrastructure
 {
-    public enum ScreenPresenterMap
+    public enum ModulesMap
     {
         None,
         StartGame,

@@ -112,9 +112,9 @@ namespace Modules.Base.ConverterScreen.Scripts
             _converterView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
 
         private void OnExitButtonClicked() => 
-            RunNewScreen(ScreenPresenterMap.MainMenu);
+            RunNewScreen(ModulesMap.MainMenu);
 
-        private void RunNewScreen(ScreenPresenterMap screen)
+        private void RunNewScreen(ModulesMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunScreen(screen);

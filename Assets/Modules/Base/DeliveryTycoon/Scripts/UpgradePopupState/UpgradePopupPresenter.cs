@@ -6,6 +6,7 @@ using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
+using Modules.Base.DeliveryTycoon.Scripts.GameState;
 using R3;
 using UnityEngine;
 using Unit = R3.Unit;
@@ -93,7 +94,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 
         private void ClosePopup()
         {
-            _gameScreenModel.ChangeState(GameScreenStates.Game);
+            _gameScreenModel.ChangeState(GameModuleStates.Game);
         }
         
         private async void OnBuyContainerButtonClicked()

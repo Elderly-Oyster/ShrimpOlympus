@@ -24,9 +24,9 @@ namespace CodeBase.Implementation.Infrastructure
 
             RegisterSystems(builder);
                 
-            builder.Register<ScreenTypeMapper>(Lifetime.Singleton);
+            builder.Register<ModuleTypeMapper>(Lifetime.Singleton);
 
-            builder.Register<ScreenStateMachine>(Lifetime.Singleton)
+            builder.Register<ModuleStateMachine>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 .AsSelf();
         }

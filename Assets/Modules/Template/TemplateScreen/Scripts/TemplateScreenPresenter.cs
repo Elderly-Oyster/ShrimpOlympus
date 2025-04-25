@@ -46,9 +46,9 @@ namespace Modules.Template.TemplateScreen.Scripts
             _mainMenuCommand.Subscribe(_ =>OnMainMenuButtonClicked());
 
         private void OnMainMenuButtonClicked() => 
-            RunNewScreen(ScreenPresenterMap.MainMenu);
+            RunNewScreen(ModulesMap.MainMenu);
 
-        private void RunNewScreen(ScreenPresenterMap screen)
+        private void RunNewScreen(ModulesMap screen)
         {
             _screenCompletionSource.TrySetResult();
             _screenStateMachine.RunScreen(screen);

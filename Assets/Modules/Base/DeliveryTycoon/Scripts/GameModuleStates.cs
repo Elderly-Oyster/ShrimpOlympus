@@ -1,6 +1,6 @@
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public enum GameScreenStates
+    public enum GameModuleStates
     {
         Initial,
         Loading,

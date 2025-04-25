@@ -83,14 +83,14 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _mainMenuScreenModel.Dispose();
         }
 
-        private void OnConverterButtonClicked() => RunNewScreen(ScreenPresenterMap.Converter);
-        private void OnTicTacButtonClicked() => RunNewScreen(ScreenPresenterMap.TicTac);
-        private void OnTycoonButtonClicked() => RunNewScreen(ScreenPresenterMap.DeliveryTycoon);
+        private void OnConverterButtonClicked() => RunNewScreen(ModulesMap.Converter);
+        private void OnTicTacButtonClicked() => RunNewScreen(ModulesMap.TicTac);
+        private void OnTycoonButtonClicked() => RunNewScreen(ModulesMap.DeliveryTycoon);
         private void OnSettingsPopupButtonClicked() => _popupHub.OpenSettingsPopup();
         private void OnSecondPopupButtonClicked() => _popupHub.OpenSecondPopup();
         private void OnSoundToggled(bool isOn) => _audioSystem.SetMusicVolume(isOn ? 1 : 0);
 
-        private void RunNewScreen(ScreenPresenterMap screen)
+        private void RunNewScreen(ModulesMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunScreen(screen);

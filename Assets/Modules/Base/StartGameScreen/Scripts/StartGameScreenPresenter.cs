@@ -106,13 +106,13 @@ namespace Modules.Base.StartGameScreen.Scripts
         private static void SetApplicationFrameRate() => 
             Application.targetFrameRate = AppFrameRate;
 
-        private void RunMainMenuScreen(ScreenPresenterMap screen)
+        private void RunMainMenuScreen(ModulesMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunScreen(screen);
         }
 
-        private void OnContinueButtonPressed() => RunMainMenuScreen(ScreenPresenterMap.MainMenu);
+        private void OnContinueButtonPressed() => RunMainMenuScreen(ModulesMap.MainMenu);
 
         private void SetVersionText(string appVersion) => _startGameView.SetVersionText(appVersion);
 

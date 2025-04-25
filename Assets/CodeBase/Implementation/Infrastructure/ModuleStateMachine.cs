@@ -13,18 +13,18 @@ using VContainer.Unity;
 
 namespace CodeBase.Implementation.Infrastructure
 {
-    public class ScreenStateMachine : IScreenStateMachine, IStartable
+    public class ModuleStateMachine : IScreenStateMachine, IStartable
     {
         [Inject] private readonly AudioListenerService _audioListenerService;
         [Inject] private readonly SceneInstallerService _sceneInstallerService;
-        [Inject] private readonly ScreenTypeMapper _screenTypeMapper;
+        [Inject] private readonly ModuleTypeMapper _moduleTypeMapper;
         [Inject] private readonly SceneService _sceneService;
         [Inject] private readonly IObjectResolver _resolver;
         
         // reducing the number of threads to one
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); 
         
-        public ScreenPresenterMap CurrentScreenPresenterMap { get; private set; } = ScreenPresenterMap.None;
+        public ModulesMap CurrentModulesMap { get; private set; } = ModulesMap.None;
         public IScreenPresenter CurrentPresenter { get; private set; }
 
         private IModuleController CurrentModuleController { get; set; }
@@ -33,10 +33,10 @@ namespace CodeBase.Implementation.Infrastructure
 
         private void RunScreen(string sceneName, object param = null)
         {
-            ScreenPresenterMap? screenModelMap = SceneNameToEnum(sceneName);
+            ModulesMap? screenModelMap = SceneNameToEnum(sceneName);
             
             if (screenModelMap != null)
-                RunScreen((ScreenPresenterMap)screenModelMap, param).Forget(); 
+                RunScreen((ModulesMap)screenModelMap, param).Forget(); 
             else
             {
                 _sceneService.AddActiveScene(sceneName);
@@ -48,11 +48,11 @@ namespace CodeBase.Implementation.Infrastructure
         /// <summary>
         /// Launches a new screen state (only after the previous state finishes execution).
         /// </summary>
-        /// <param name="screenPresenterMap">Type of the screen.</param>
+        /// <param name="modulesMap">Type of the screen.</param>
         /// <param name="param">Parameters to pass to Presenter.</param>
-        public async UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null)
+        public async UniTaskVoid RunScreen(ModulesMap modulesMap, object param = null)
         {
-            if (CheckIsSameScreen(screenPresenterMap))
+            if (CheckIsSameScreen(modulesMap))
             {
                 Debug.LogWarning("⚠️ The same screen is already active.");
                 return;
@@ -61,10 +61,10 @@ namespace CodeBase.Implementation.Infrastructure
             await _semaphoreSlim.WaitAsync(); //Asynchronously waits to enter the SemaphoreSlim.
             try
             {
-                Debug.Log("currentScreenPresenter - " + screenPresenterMap);
-                CurrentScreenPresenterMap = screenPresenterMap;
+                Debug.Log("currentScreenPresenter - " + modulesMap);
+                CurrentModulesMap = modulesMap;
 
-                await _sceneService.LoadScenesForModule(CurrentScreenPresenterMap);
+                await _sceneService.LoadScenesForModule(CurrentModulesMap);
                 await _sceneService.UnloadUnusedScenesAsync();
 
                 // creates children for the root installer
@@ -72,7 +72,7 @@ namespace CodeBase.Implementation.Infrastructure
                     _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
 
                 CurrentModuleController =
-                    _screenTypeMapper.ResolveController(CurrentScreenPresenterMap, sceneLifetimeScope.Container);
+                    _moduleTypeMapper.ResolveModuleController(CurrentModulesMap, sceneLifetimeScope.Container);
 
                 _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
 
@@ -97,13 +97,13 @@ namespace CodeBase.Implementation.Infrastructure
         /// <summary>
         /// Checks if the requested screen is already active.
         /// </summary>
-        private bool CheckIsSameScreen(ScreenPresenterMap screenViewModelMap) => 
-            screenViewModelMap == CurrentScreenPresenterMap;
+        private bool CheckIsSameScreen(ModulesMap screenViewModelMap) => 
+            screenViewModelMap == CurrentModulesMap;
 
         //tries to convert screen name in string to its name in enum. Can return null if the sceneName is not found
-        private static ScreenPresenterMap? SceneNameToEnum(string sceneName)
+        private static ModulesMap? SceneNameToEnum(string sceneName)
         {
-            if (Enum.TryParse(sceneName, out ScreenPresenterMap result)) return result;
+            if (Enum.TryParse(sceneName, out ModulesMap result)) return result;
             return null;
         }
     }

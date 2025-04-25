@@ -7,13 +7,13 @@ namespace CodeBase.Core.Infrastructure
     {
         public IScreenPresenter CurrentPresenter { get; }
         
-        UniTaskVoid RunScreen(ScreenPresenterMap screenPresenterMap, object param = null);
+        UniTaskVoid RunScreen(ModulesMap modulesMap, object param = null);
     }
     
     public static class RootControllerExtension
     {
-        public static UniTaskVoid RunModel(this IScreenStateMachine self, ScreenPresenterMap screenPresenterMap) => 
-            self.RunScreen(screenPresenterMap);
+        public static UniTaskVoid RunModel(this IScreenStateMachine self, ModulesMap modulesMap) => 
+            self.RunScreen(modulesMap);
     }
 }
 

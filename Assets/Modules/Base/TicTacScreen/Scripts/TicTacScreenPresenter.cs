@@ -65,13 +65,13 @@ namespace Modules.Base.TicTacScreen.Scripts
             _newModuleScreenModel.Dispose();
         }
 
-        private void RunNewScreen(ScreenPresenterMap screen)
+        private void RunNewScreen(ModulesMap screen)
         {
             _completionSource.TrySetResult(true);
             _screenStateMachine.RunScreen(screen);
         }
 
-        private void OnMainMenuButtonClicked() => RunNewScreen(ScreenPresenterMap.MainMenu);
+        private void OnMainMenuButtonClicked() => RunNewScreen(ModulesMap.MainMenu);
 
         private void OnCellClicked(int x, int y)
         {
