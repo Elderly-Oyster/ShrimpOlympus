@@ -107,6 +107,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExitGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""873b367c-8488-4be9-8f6b-96d84e9ea59d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenUpgradePopup"",
+                    ""type"": ""Button"",
+                    ""id"": ""274fcf2d-d8bc-47b4-b0cd-036128baa788"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -492,6 +510,39 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fa3459ab-e09d-45d0-8045-7eaea43d3a9e"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ExitGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3ad9d959-34c7-4f2e-9a52-d71f6f4cbd28"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Gamepad"",
+                    ""action"": ""ExitGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9244b357-4699-42e7-a3b1-920e048ec187"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenUpgradePopup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1130,6 +1181,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_PlayerCar_Previous = m_PlayerCar.FindAction("Previous", throwIfNotFound: true);
         m_PlayerCar_Next = m_PlayerCar.FindAction("Next", throwIfNotFound: true);
         m_PlayerCar_Sprint = m_PlayerCar.FindAction("Sprint", throwIfNotFound: true);
+        m_PlayerCar_ExitGame = m_PlayerCar.FindAction("ExitGame", throwIfNotFound: true);
+        m_PlayerCar_OpenUpgradePopup = m_PlayerCar.FindAction("OpenUpgradePopup", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1219,6 +1272,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerCar_Previous;
     private readonly InputAction m_PlayerCar_Next;
     private readonly InputAction m_PlayerCar_Sprint;
+    private readonly InputAction m_PlayerCar_ExitGame;
+    private readonly InputAction m_PlayerCar_OpenUpgradePopup;
     public struct PlayerCarActions
     {
         private @InputSystem_Actions m_Wrapper;
@@ -1232,6 +1287,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         public InputAction @Previous => m_Wrapper.m_PlayerCar_Previous;
         public InputAction @Next => m_Wrapper.m_PlayerCar_Next;
         public InputAction @Sprint => m_Wrapper.m_PlayerCar_Sprint;
+        public InputAction @ExitGame => m_Wrapper.m_PlayerCar_ExitGame;
+        public InputAction @OpenUpgradePopup => m_Wrapper.m_PlayerCar_OpenUpgradePopup;
         public InputActionMap Get() { return m_Wrapper.m_PlayerCar; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1268,6 +1325,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started += instance.OnSprint;
             @Sprint.performed += instance.OnSprint;
             @Sprint.canceled += instance.OnSprint;
+            @ExitGame.started += instance.OnExitGame;
+            @ExitGame.performed += instance.OnExitGame;
+            @ExitGame.canceled += instance.OnExitGame;
+            @OpenUpgradePopup.started += instance.OnOpenUpgradePopup;
+            @OpenUpgradePopup.performed += instance.OnOpenUpgradePopup;
+            @OpenUpgradePopup.canceled += instance.OnOpenUpgradePopup;
         }
 
         private void UnregisterCallbacks(IPlayerCarActions instance)
@@ -1299,6 +1362,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Sprint.started -= instance.OnSprint;
             @Sprint.performed -= instance.OnSprint;
             @Sprint.canceled -= instance.OnSprint;
+            @ExitGame.started -= instance.OnExitGame;
+            @ExitGame.performed -= instance.OnExitGame;
+            @ExitGame.canceled -= instance.OnExitGame;
+            @OpenUpgradePopup.started -= instance.OnOpenUpgradePopup;
+            @OpenUpgradePopup.performed -= instance.OnOpenUpgradePopup;
+            @OpenUpgradePopup.canceled -= instance.OnOpenUpgradePopup;
         }
 
         public void RemoveCallbacks(IPlayerCarActions instance)
@@ -1498,6 +1567,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         void OnPrevious(InputAction.CallbackContext context);
         void OnNext(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
+        void OnExitGame(InputAction.CallbackContext context);
+        void OnOpenUpgradePopup(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

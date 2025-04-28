@@ -656,14 +656,14 @@ GameObject:
   - component: {fileID: 8006773272996431347}
   - component: {fileID: 3721616614393648447}
   - component: {fileID: 140403774526292463}
-  - component: {fileID: 3306681384420476451}
+  - component: {fileID: 6837136494573620177}
   m_Layer: 5
   m_Name: UpgradePopupView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7034640643637539368
 RectTransform:
   m_ObjectHideFlags: 0
@@ -750,7 +750,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 8006773272996431347}
   fadeDuration: 0.4
---- !u!114 &3306681384420476451
+--- !u!114 &6837136494573620177
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -762,15 +762,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5c9186817a3499681ab1481cc4d662e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationElement: {fileID: 140403774526292463}
-  addCapacityButton: {fileID: 5934219137340460}
-  promoteCompanyButton: {fileID: 7976175995115154330}
-  hireEmployeeButton: {fileID: 7169172468864476680}
-  buyContainerButton: {fileID: 791932199121139674}
-  backToGameButton: {fileID: 918709926650124188}
-  addCapacityText: {fileID: 6415066912813172890}
-  promoteCompanyText: {fileID: 7879937696345592495}
-  hireEmployeeText: {fileID: 4257986034016727015}
+  animationElement: {fileID: 0}
+  addCapacityButton: {fileID: 0}
+  promoteCompanyButton: {fileID: 0}
+  hireEmployeeButton: {fileID: 0}
+  buyContainerButton: {fileID: 0}
+  backToGameButton: {fileID: 0}
+  addCapacityText: {fileID: 0}
+  promoteCompanyText: {fileID: 0}
+  hireEmployeeText: {fileID: 0}
 --- !u!1 &4368908060539658337
 GameObject:
   m_ObjectHideFlags: 0

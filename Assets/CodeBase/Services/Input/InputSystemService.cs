@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -20,6 +21,7 @@ namespace CodeBase.Services
         private static InputSystemUIInputModule _uiInputModule;
         private static EventSystem _eventSystem;
 
+        private Dictionary<string, bool> _currentMapConfiguration = new();
         public InputSystem_Actions InputActions { get; private set; }
         
         public event Action OnSwitchToUI;
@@ -52,6 +54,30 @@ namespace CodeBase.Services
             InputActions.UI.Enable(); // UI остаётся включённым
             Debug.Log("Switched to PlayerHumanoid mode.");
             OnSwitchToPlayerHumanoid?.Invoke();
+        }
+
+        public void DisableInputAndSaveActiveMaps()
+        {
+            _currentMapConfiguration.Clear();
+            
+            foreach (var map in InputActions.asset.actionMaps)
+            {
+                _currentMapConfiguration[map.name] = map.enabled;
+            }
+            
+            InputActions.Disable();
+        }
+
+        public void EnablePreviouslyActiveMaps()
+        {
+            foreach (var map in InputActions.asset.actionMaps)
+            {
+                if (_currentMapConfiguration.TryGetValue(map.name, out bool wasEnabled))
+                {
+                    if (wasEnabled)
+                        map.Enable();
+                }
+            }
         }
 
         /// <summary>
@@ -125,8 +151,8 @@ namespace CodeBase.Services
             }
 
             return Observable.FromEvent(
-                (Action<InputAction.CallbackContext> h) => action.performed += h,
-                h => action.performed -= h
+                (Action<InputAction.CallbackContext> h) => action.started += h,
+                h => action.started -= h
             ).Select(_ => Unit.Default); // Преобразуем в Unit для унификации
         }
 

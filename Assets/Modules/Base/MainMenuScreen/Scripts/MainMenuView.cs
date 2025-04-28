@@ -1,8 +1,10 @@
 ﻿using CodeBase.Core.Modules;
+using CodeBase.Services;
 using R3;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using VContainer;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
@@ -15,7 +17,15 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button tycoonButton;
         [SerializeField] private Toggle musicToggle;
 
+        private InputSystemService _inputSystemService;
+        
         public Button TycoonButton => tycoonButton;
+
+        [Inject]
+        public void Construct(InputSystemService inputSystemService)
+        {
+            _inputSystemService = inputSystemService;
+        }
 
         protected override void Awake()
         {
@@ -36,6 +46,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
             ReactiveCommand<Unit> secondPopupCommand,
             ReactiveCommand<bool> soundToggleCommand)
         {
+            _inputSystemService.SwitchToUI();
+            
             converterButton.OnClickAsObservable()
                 .Subscribe(_ => converterCommand.Execute(default))
                 .AddTo(this);

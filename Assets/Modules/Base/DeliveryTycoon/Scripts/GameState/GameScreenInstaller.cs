@@ -9,7 +9,8 @@ using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
-using Modules.Base.DeliveryTycoon.Scripts.UpgradePopup;
+using Modules.Base.DeliveryTycoon.Scripts.PausePopup;
+using Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -23,6 +24,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
     {
         [SerializeField] private GameView gameView;
         [SerializeField] private UpgradePopupView upgradePopupView;
+        [SerializeField] private PauseView pauseView;
         [SerializeField] private BaseScreenCanvas screenCanvas;
         [SerializeField] private Camera mainCamera;
         [SerializeField] private ContainerManager containerManager;
@@ -53,7 +55,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         {
             builder.RegisterComponent(screenCanvas);
             builder.RegisterComponent(gameView).AsImplementedInterfaces().AsSelf();
-            builder.RegisterInstance(upgradePopupView);
+            builder.RegisterComponent(upgradePopupView).AsImplementedInterfaces().AsSelf();
+            builder.RegisterComponent(pauseView).AsImplementedInterfaces().AsSelf();
         }
 
         private static void RegisterServices(IContainerBuilder builder)
@@ -89,6 +92,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
             builder.Register<GameModuleController>(Lifetime.Singleton);
             builder.Register<GameScreenPresenter>(Lifetime.Singleton);
             builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
+            builder.Register<PauseScreenPresenter>(Lifetime.Singleton);
             builder.Register<GameScreenModel>(Lifetime.Singleton);
         }
     }

@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
+namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 {
     public static class UpgradePopupOperations
     {

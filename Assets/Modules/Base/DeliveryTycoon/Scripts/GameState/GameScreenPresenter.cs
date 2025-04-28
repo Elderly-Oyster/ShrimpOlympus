@@ -29,6 +29,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         private readonly ReactiveCommand<ModulesMap> _onMainMenuButtonClicked = new();
         private readonly ReactiveCommand<Unit> _onMainMenuButtonClickedCommand = new();
         private readonly ReactiveCommand<Unit> _onUpgradePopupButtonClickedCommand = new();
+        private readonly ReactiveCommand<Unit> _pausePopupCommand = new();
         
         private CompositeDisposable _disposables = new();
         
@@ -68,11 +69,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
             
             _view.SetupEventListeners
             (
-               _onMainMenuButtonClickedCommand,
-               _onUpgradePopupButtonClickedCommand
+               //_onMainMenuButtonClickedCommand,
+               _onUpgradePopupButtonClickedCommand, 
+               _pausePopupCommand
             );
+            
             _view.InitializeVisualElements(_gameDataSystem.GetMoneyData(), _gameDataSystem.GetLevelData());
-            await _view.Show();
             _loadingServiceProvider.ResetRegistrationProgress();
         }
 
@@ -83,7 +85,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
             _gameManager.EndGame();
             _saveSystem.SaveData().Forget();
             _screenCompletionSource.TrySetResult(true);
-            await _view.Hide();
+            //await _view.Hide();
         }
 
         public async UniTask ShowState()
@@ -97,8 +99,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
             await _view.Hide();
             //other hide sub-state logic
         }
-
-        public void OnEscapePressed() => OnMainMenuButtonClicked();
+        
+        public void HideStateInstantly() => _view.HideInstantly();
 
         private void SubscribeToReactiveEvents()
         {
@@ -109,8 +111,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 
         private void SubscribeToUIUpdates()
         {
-            _onMainMenuButtonClickedCommand.Subscribe(_ => OnMainMenuButtonClicked());
-            _onUpgradePopupButtonClickedCommand.Subscribe(_ => OnUpgradePopupButtonClicked());
+            //_onMainMenuButtonClickedCommand.Subscribe(_ => OnMainMenuButtonClicked());
+            _onUpgradePopupButtonClickedCommand.Subscribe(async _ => await OnUpgradePopupButtonClicked());
+            _pausePopupCommand.Subscribe(async _ => await OnPausePopupButtonClicked());
+            
         }
         
         private void UpdateMoneyCounter(int money) => _view.UpdatePlayerMoney(money);
@@ -123,11 +127,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         private void OnMainMenuButtonClicked() => 
             _onMainMenuButtonClicked.Execute(ModulesMap.MainMenu);
 
-        private async void OnUpgradePopupButtonClicked()
+        private async UniTask OnPausePopupButtonClicked() => await _screenModel.ChangeState(GameModuleStates.Pause);
+
+        private async UniTask OnUpgradePopupButtonClicked()
         {
-            _screenModel.ChangeState(GameModuleStates.UpgradePopup);
-            //TODO Remove and refactor this moment
-            await _view.Hide();
+            await _screenModel.ChangeState(GameModuleStates.UpgradePopup);
         }
         
         public void Dispose()

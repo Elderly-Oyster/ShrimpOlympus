@@ -27,7 +27,9 @@ namespace CodeBase.Implementation.UI.Views.Animations.ShowHideAnimations
             await canvasGroup.DOFade(1, fadeDuration);
         }
 
-        public override async UniTask Hide() => 
-            await canvasGroup.DOFade(0, fadeDuration);
+        public override async UniTask Hide()
+        {
+                await canvasGroup.DOFade(0, fadeDuration);
+        }
     }
 }

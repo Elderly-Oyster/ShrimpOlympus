@@ -1,14 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
+namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 {
     public class UpgradePopupHandler : 
         IRequestHandler<UpgradePopupOperations.ContainerBoughtCommand>,

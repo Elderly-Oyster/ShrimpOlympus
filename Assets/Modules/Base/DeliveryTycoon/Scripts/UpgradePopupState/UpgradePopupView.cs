@@ -1,12 +1,14 @@
 using System.Collections.Generic;
 using CodeBase.Core.Modules;
+using CodeBase.Services;
 using R3;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+using VContainer;
+using Unit = R3.Unit;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
+namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 {
     public class UpgradePopupView : BaseView
     {
@@ -21,10 +23,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 
         private List<Button> _buttons = new();
         private List<Button> _interactableButtons = new();
+        private InputSystemService _inputSystemService;
 
         public List<Button> Buttons => _buttons;
 
         public List<Button> InteractableButtons => _interactableButtons;
+        
+        [Inject] 
+        public void Construct(InputSystemService inputSystemService) => 
+            _inputSystemService = inputSystemService;
 
         public void SetupEventListeners(ReactiveCommand<Unit> onCloseButtonClicked, 
             ReactiveCommand<Unit> buyContainerButtonClicked, ReactiveCommand<Unit> promoteCompanyButtonClicked,
@@ -42,6 +49,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
             backToGameButton.OnClickAsObservable().
                 Subscribe(_ => onCloseButtonClicked.Execute(default))
                 .AddTo(this);
+            
+            var cancelPerformedAsObservable =
+                _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
+            
+            cancelPerformedAsObservable
+                .Where(_ => IsActive)
+                .Subscribe(_ => onCloseButtonClicked.Execute(default))
+                .AddTo(this);
+            
             SetInitialConfiguration();
         }
 

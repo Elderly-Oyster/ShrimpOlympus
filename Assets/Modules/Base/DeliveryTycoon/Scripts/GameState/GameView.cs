@@ -21,26 +21,38 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         private InputSystemService _inputSystemService;
 
         [Inject]
-        private void Construct(InputSystemService inputSystemService)
-        {
+        private void Construct(InputSystemService inputSystemService) => 
             _inputSystemService = inputSystemService;
-        }
 
-        public void SetupEventListeners(ReactiveCommand<Unit> openMainMenuCommand, 
-            ReactiveCommand<Unit> onUpgradePopupButtonClicked)
+        public void SetupEventListeners(//ReactiveCommand<Unit> openMainMenuCommand, 
+            ReactiveCommand<Unit> onUpgradePopupButtonClicked, ReactiveCommand<Unit> pausePopupCommand)
         {
-            mainMenuButton.OnClickAsObservable()
-                .Subscribe(_ => openMainMenuCommand.Execute(default))
-                .AddTo(this);
+            // mainMenuButton.OnClickAsObservable()
+            //     .Subscribe(_ => openMainMenuCommand.Execute(default))
+            //     .AddTo(this);
 
             var cancelPerformedObservable = 
                 _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
             
             cancelPerformedObservable
-                .Subscribe(_ => openMainMenuCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ =>
+                {
+                    Debug.Log("Game View state is " + IsActive);
+                    pausePopupCommand.Execute(default);
+                })
                 .AddTo(this);
             
             upgradePopupButton.OnClickAsObservable()
+                .Subscribe( _ => onUpgradePopupButtonClicked.Execute(default))
+                .AddTo(this);
+
+            var upgradePopupObservable =
+                _inputSystemService
+                    .GetPerformedObservable(_inputSystemService.InputActions.PlayerCar.OpenUpgradePopup);
+            
+            upgradePopupObservable
+                .Where(_ => IsActive)
                 .Subscribe(_ => onUpgradePopupButtonClicked.Execute(default))
                 .AddTo(this);
         }

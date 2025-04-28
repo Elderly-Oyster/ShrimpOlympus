@@ -17,7 +17,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             builder.RegisterComponent(screensCanvas);
             builder.RegisterInstance(mainCamera);
 
-            builder.RegisterInstance(mainMenuView).As<MainMenuView>();
+            builder.RegisterComponent(mainMenuView).As<MainMenuView>();
             builder.Register<MainMenuScreenPresenter>(Lifetime.Singleton);
             builder.Register<MainMenuScreenModel>(Lifetime.Singleton);
         }

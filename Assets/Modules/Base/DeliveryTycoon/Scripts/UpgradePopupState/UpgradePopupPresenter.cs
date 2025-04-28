@@ -1,24 +1,22 @@
 using System.Threading.Tasks;
 using CodeBase.Core.Modules;
-using CodeBase.Systems.InputSystem;
 using Cysharp.Threading.Tasks;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
-using Modules.Base.DeliveryTycoon.Scripts.GameState;
 using R3;
 using UnityEngine;
 using Unit = R3.Unit;
 
-namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
+namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 {
-    public class UpgradePopupPresenter : IScreenPresenter, IEscapeListener
+    public class UpgradePopupPresenter : IScreenPresenter
     {
         
         private readonly UpgradePopupView _upgradePopupView;
         private readonly GameScreenModel _gameScreenModel;
-        private readonly TaskCompletionSource<bool> _screenCompletionSource;
+        private TaskCompletionSource<bool> _screenCompletionSource;
         private readonly GameDataSystem _gameDataSystem;
         private readonly Mediator _mediator;
         private readonly CompositeDisposable _disposables = new();
@@ -42,7 +40,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
             _gameScreenModel = gameScreenModel;
             _gameDataSystem = gameDataSystem;
             _mediator = mediator;
-            _screenCompletionSource = new TaskCompletionSource<bool>();
+            
+            
             _upgradePopupView.SetupEventListeners
             (
                 _onClosePopupCommand,
@@ -50,6 +49,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
                 _onPromoteCompanyCommand,
                 _onAddCapacityCommand
             );
+            
             SubscribeToReactiveEvents();
             SubscribeToUIUpdates();
         }
@@ -58,6 +58,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         public async UniTask Enter(object param)
         {
             Debug.Log("Enter for upgrade popup");
+            _screenCompletionSource = new TaskCompletionSource<bool>();
             _upgradePopupView.HideInstantly();
             SetInteractableButtons();
             CalculateUpgradeAllCosts(_gameDataSystem.GameDataProperty.CurrentValue);
@@ -73,15 +74,20 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
         
         public async UniTask Exit()
         {
-            if (_upgradePopupView.isActiveAndEnabled) await _upgradePopupView.Hide();
-            _screenCompletionSource.TrySetResult(true);
+            if (_upgradePopupView.isActiveAndEnabled)
+            {
+                await _upgradePopupView.Hide();
+                _screenCompletionSource.TrySetResult(true);
+            }
         }
-
-        public void OnEscapePressed() => ClosePopup();
+        
+        public async UniTask HideState() => await _upgradePopupView.Hide();
+        
+        public void HideStateInstantly() => _upgradePopupView.HideInstantly();
 
         private void SubscribeToUIUpdates()
         {
-            _onClosePopupCommand.Subscribe(_ => ClosePopup());
+            _onClosePopupCommand.Subscribe(async _ => await ClosePopup());
             _onBuyContainerCommand.Subscribe(_ => OnBuyContainerButtonClicked());
             _onPromoteCompanyCommand.Subscribe(_ => OnPromoteCompanyButtonClicked());
             _onAddCapacityCommand.Subscribe(_ => OnAddCapacityButtonClicked());
@@ -89,12 +95,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopup
 
         private void SubscribeToReactiveEvents()
         {
-            _disposables.Add(_gameDataSystem.GameDataProperty.Subscribe(_ => CalculateUpgradeAllCosts(_)));
+            _disposables.Add(_gameDataSystem.GameDataProperty.Subscribe(CalculateUpgradeAllCosts));
         }
 
-        private void ClosePopup()
+        private async UniTask ClosePopup()
         {
-            _gameScreenModel.ChangeState(GameModuleStates.Game);
+            await _gameScreenModel.ChangeState(GameModuleStates.Game);
         }
         
         private async void OnBuyContainerButtonClicked()

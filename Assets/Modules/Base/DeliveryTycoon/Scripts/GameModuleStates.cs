@@ -5,6 +5,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         Initial,
         Loading,
         Game,
-        UpgradePopup
+        UpgradePopup, 
+        Pause
     }
 }
