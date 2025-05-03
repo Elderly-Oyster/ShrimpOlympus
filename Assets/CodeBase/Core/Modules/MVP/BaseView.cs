@@ -3,7 +3,7 @@ using CodeBase.Core.UI.Views.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CodeBase.Core.Modules
+namespace CodeBase.Core.Modules.MVP
 {
     [RequireComponent(typeof(CanvasGroup))]
     [RequireComponent(typeof(Canvas))]

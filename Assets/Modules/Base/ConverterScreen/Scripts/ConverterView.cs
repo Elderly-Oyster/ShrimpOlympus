@@ -1,5 +1,6 @@
 ﻿using System.Globalization;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using R3;
 using TMPro;
 using UnityEngine;

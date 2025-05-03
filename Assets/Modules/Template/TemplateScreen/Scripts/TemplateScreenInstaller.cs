@@ -1,3 +1,4 @@
+using CodeBase.Core.Modules.Installer;
 using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using UnityEngine;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Services;
 using R3;
 using TMPro;

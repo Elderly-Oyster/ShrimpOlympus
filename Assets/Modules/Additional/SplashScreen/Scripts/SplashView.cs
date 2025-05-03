@@ -1,4 +1,5 @@
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;

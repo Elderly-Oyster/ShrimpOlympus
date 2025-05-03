@@ -1,4 +1,5 @@
 using System;
+using CodeBase.Core.Modules.Installer;
 using CodeBase.Services.SceneInstallerService;
 using R3;
 using UnityEngine;

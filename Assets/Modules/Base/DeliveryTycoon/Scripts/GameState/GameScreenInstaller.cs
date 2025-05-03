@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CodeBase.Core.Modules.Installer;
 using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
