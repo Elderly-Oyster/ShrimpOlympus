@@ -12,7 +12,7 @@ namespace Modules.Additional.SplashScreen.Scripts
         {
             builder.RegisterInstance(splashView).As<SplashView>();
             builder.Register<SplashScreenPresenter>(Lifetime.Singleton);
-            builder.Register<SplashScreenModel>(Lifetime.Singleton);
+            builder.Register<SplashScreenModuleModel>(Lifetime.Singleton);
         }
     }
 }

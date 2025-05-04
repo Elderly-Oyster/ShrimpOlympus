@@ -1,5 +1,5 @@
 using CodeBase.Core.Modules;
-using CodeBase.Core.Modules.MVP;
+using CodeBase.Core.UI.Views;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
 using R3;

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Services;
 using CodeBase.Services.EventMediator;
@@ -14,7 +15,7 @@ namespace Modules.Test.PopupsTester.Scripts
     public class PopupsTesterScenePresenter : IScreenPresenter, IStartable
     {
         private readonly CompositeDisposable _disposables = new();
-        private readonly PopupsTesterSceneModel _popupsTesterSceneModel;
+        private readonly PopupsTesterSceneModuleModel _popupsTesterSceneModuleModel;
         private readonly PopupsTesterSceneView _popupsTesterSceneView;
         private readonly Func<Action, TestButtonView> _buttonFactory;
         private readonly List<TestButtonView> _buttons = new();
@@ -23,10 +24,10 @@ namespace Modules.Test.PopupsTester.Scripts
         private readonly Dictionary<TestButtonView, ReactiveCommand<Unit>> _buttonCommandMap = new();
 
         public PopupsTesterScenePresenter(Func<Action, TestButtonView> buttonFactory, EventMediator eventMediator,
-            PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModel popupsTesterSceneModel)
+            PopupsTesterSceneView popupsTesterSceneView, PopupsTesterSceneModuleModel popupsTesterSceneModuleModel)
         {
             _popupsTesterSceneView = popupsTesterSceneView;
-            _popupsTesterSceneModel = popupsTesterSceneModel;
+            _popupsTesterSceneModuleModel = popupsTesterSceneModuleModel;
             _buttonFactory = buttonFactory;
             _eventMediator = eventMediator;
         }
@@ -35,7 +36,7 @@ namespace Modules.Test.PopupsTester.Scripts
         
         public async UniTask Enter(object param)
         {
-            var popupActions = _popupsTesterSceneModel.GetPopupHubActions();
+            var popupActions = _popupsTesterSceneModuleModel.GetPopupHubActions();
             foreach (var action in popupActions)
                 CreateButton(action);
 
@@ -85,7 +86,7 @@ namespace Modules.Test.PopupsTester.Scripts
         {
             _disposables.Dispose();
             _popupsTesterSceneView.Dispose();
-            _popupsTesterSceneModel.Dispose();
+            _popupsTesterSceneModuleModel.Dispose();
         }
     }
 }

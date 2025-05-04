@@ -1,9 +1,8 @@
-﻿using CodeBase.Core.Patterns.Architecture.MVP;
-using CodeBase.Core.UI.Views.Animations;
+﻿using CodeBase.Core.UI.Views.Animations;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CodeBase.Core.Modules.MVP
+namespace CodeBase.Core.UI.Views
 {
     [RequireComponent(typeof(CanvasGroup))]
     [RequireComponent(typeof(Canvas))]

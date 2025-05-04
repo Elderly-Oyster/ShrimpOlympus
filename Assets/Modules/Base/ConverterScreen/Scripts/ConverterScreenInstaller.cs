@@ -20,7 +20,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
             builder.RegisterInstance(converterView).As<ConverterView>();
             builder.Register<ConverterScreenPresenter>(Lifetime.Singleton);
-            builder.Register<ConverterScreenModel>(Lifetime.Singleton);
+            builder.Register<ConverterModuleModel>(Lifetime.Singleton);
         }
     }
 }

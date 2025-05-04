@@ -1,4 +1,5 @@
 ﻿using CodeBase.Core.Infrastructure;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.PopupHub;
@@ -12,7 +13,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
     public class MainMenuScreenPresenter : IModuleController
     {
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly MainMenuScreenModel _mainMenuScreenModel;
+        private readonly MainMenuModuleModel _mainMenuModuleModel;
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly MainMenuView _mainMenuView;
         private readonly IPopupHub _popupHub;
@@ -27,12 +28,12 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
-            MainMenuScreenModel mainMenuScreenModel, MainMenuView mainMenuView,
+            MainMenuModuleModel mainMenuModuleModel, MainMenuView mainMenuView,
             AudioSystem audioSystem)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
-            _mainMenuScreenModel = mainMenuScreenModel;
+            _mainMenuModuleModel = mainMenuModuleModel;
             _screenStateMachine = screenStateMachine;
             _mainMenuView = mainMenuView;
             _audioSystem = audioSystem;
@@ -80,7 +81,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void Dispose()
         {
             _mainMenuView.Dispose();
-            _mainMenuScreenModel.Dispose();
+            _mainMenuModuleModel.Dispose();
         }
 
         private void OnConverterButtonClicked() => RunNewScreen(ModulesMap.Converter);

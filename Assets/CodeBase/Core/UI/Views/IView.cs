@@ -1,7 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 
-namespace CodeBase.Core.Patterns.Architecture.MVP
+namespace CodeBase.Core.UI.Views
 {
     public interface IView : IDisposable
     {

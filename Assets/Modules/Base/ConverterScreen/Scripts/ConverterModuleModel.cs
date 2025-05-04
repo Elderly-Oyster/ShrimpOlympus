@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -10,13 +11,13 @@ namespace Modules.Base.ConverterScreen.Scripts
         Pln,
         Pr
     }
-    public class ConverterScreenModel : IScreenModel
+    public class ConverterModuleModel : IModuleModel
     {
 
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
 
-        public ConverterScreenModel() { }
+        public ConverterModuleModel() { }
 
         private readonly Dictionary<Currencies, float> _currencyToEuroRate = new()
         {

@@ -12,7 +12,7 @@ namespace CodeBase.Editor.ModuleCreator.Base
             "TemplateScreenInstaller.cs",
             "TemplateScreenPresenter.cs",
             "TemplateScreenView.cs",
-            "TemplateScreenModel.cs"
+            "TemplateModuleModel.cs"
         };
 
         public static bool AreTemplatesAvailable(bool createAsmdef)

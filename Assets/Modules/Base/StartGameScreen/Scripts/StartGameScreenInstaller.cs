@@ -14,7 +14,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 
             builder.RegisterInstance(startGameView).As<StartGameView>();
             builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
-            builder.Register<StartGameScreenModel>(Lifetime.Singleton);
+            builder.Register<StartGameModuleModel>(Lifetime.Singleton);
         }
     }
 }

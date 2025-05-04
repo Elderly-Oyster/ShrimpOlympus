@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Modules.Base.ConverterScreen.Scripts;
 using Modules.Base.DeliveryTycoon.Scripts;

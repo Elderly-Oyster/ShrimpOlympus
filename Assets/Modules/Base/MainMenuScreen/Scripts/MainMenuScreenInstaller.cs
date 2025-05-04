@@ -15,7 +15,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
             builder.RegisterComponent(mainMenuView).As<MainMenuView>();
             builder.Register<MainMenuScreenPresenter>(Lifetime.Singleton);
-            builder.Register<MainMenuScreenModel>(Lifetime.Singleton);
+            builder.Register<MainMenuModuleModel>(Lifetime.Singleton);
         }
     }
 }

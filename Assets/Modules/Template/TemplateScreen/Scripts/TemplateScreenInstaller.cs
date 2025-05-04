@@ -20,7 +20,7 @@ namespace Modules.Template.TemplateScreen.Scripts
 
             builder.RegisterComponent(templateScreenView).AsImplementedInterfaces().AsSelf();
             builder.Register<TemplateScreenPresenter>(Lifetime.Singleton);
-            builder.Register<TemplateScreenModel>(Lifetime.Singleton);
+            builder.Register<TemplateModuleModel>(Lifetime.Singleton);
         }
     }
 }

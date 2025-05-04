@@ -19,7 +19,7 @@ namespace Modules.Test.PopupsTester.Scripts
             builder.Register<PopupsTesterScenePresenter>(Lifetime.Singleton)
                 .As<IStartable>()
                 .AsSelf();
-            builder.Register<PopupsTesterSceneModel>(Lifetime.Singleton);
+            builder.Register<PopupsTesterSceneModuleModel>(Lifetime.Singleton);
             
             builder.RegisterFactory<Action, TestButtonView>(action =>
             {

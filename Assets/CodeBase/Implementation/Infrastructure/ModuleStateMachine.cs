@@ -2,6 +2,7 @@
 using System.Threading;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Services;
 using CodeBase.Services.SceneInstallerService;

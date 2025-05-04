@@ -98,7 +98,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
                 (createInstaller, "TemplateScreenInstaller.cs", $"{moduleName}ScreenInstaller.cs"),
                 (createPresenter, "TemplateScreenPresenter.cs", $"{moduleName}ScreenPresenter.cs"),
                 (createView, "TemplateScreenView.cs", $"{moduleName}ScreenView.cs"),
-                (createModel, "TemplateScreenModel.cs", $"{moduleName}ScreenModel.cs"),
+                (createModel, "TemplateModuleModel.cs", $"{moduleName}ScreenModel.cs"),
             };
 
             foreach (var (shouldCreate, templateFile, outputFile) in scriptsToCreate)
