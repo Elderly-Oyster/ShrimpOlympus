@@ -1,8 +1,9 @@
 ﻿using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 
 namespace Modules.Base.TicTacScreen.Scripts
 {
-    public class TicTacScreenModel : IScreenModel
+    public class TicTacModuleModel : IModuleModel
     {
         private const int BoardSize = 3;
         private const char PlayerX = 'X';
@@ -23,7 +24,7 @@ namespace Modules.Base.TicTacScreen.Scripts
             new[] {0, 2, 1, 1, 2, 0}  
         };
 
-        public TicTacScreenModel() { }
+        public TicTacModuleModel() { }
 
         public void InitializeGame()
         {

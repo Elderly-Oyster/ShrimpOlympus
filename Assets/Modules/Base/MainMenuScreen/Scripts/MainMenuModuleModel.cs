@@ -1,10 +1,11 @@
 ﻿using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenModel : IScreenModel
+    public class MainMenuModuleModel : IModuleModel
     {
-        public MainMenuScreenModel() { }
+        public MainMenuModuleModel() { }
 
         public void Dispose() { }
     }

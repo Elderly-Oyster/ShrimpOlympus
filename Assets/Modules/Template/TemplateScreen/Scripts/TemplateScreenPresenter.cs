@@ -1,5 +1,6 @@
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using R3;
 
@@ -8,17 +9,17 @@ namespace Modules.Template.TemplateScreen.Scripts
     public class TemplateScreenPresenter : IScreenPresenter
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly TemplateScreenModel _screenModel;
+        private readonly TemplateModuleModel _moduleModel;
         private readonly TemplateScreenView _screenView;
         private readonly UniTaskCompletionSource _screenCompletionSource;
         
         private readonly ReactiveCommand<Unit> _mainMenuCommand = new();
         
         public TemplateScreenPresenter(IScreenStateMachine screenStateMachine, 
-            TemplateScreenModel screenModel, TemplateScreenView screenView)
+            TemplateModuleModel moduleModel, TemplateScreenView screenView)
         {
             _screenStateMachine = screenStateMachine;
-            _screenModel = screenModel;
+            _moduleModel = moduleModel;
             _screenView = screenView;
             _screenCompletionSource = new UniTaskCompletionSource();
         }
@@ -31,15 +32,13 @@ namespace Modules.Template.TemplateScreen.Scripts
             
             await _screenView.Show();
         }
-
-        public async UniTask Execute() => await _screenCompletionSource.Task;
-
+        
         public async UniTask Exit() => await _screenView.Hide();
 
         public void Dispose()
         {
             _screenView.Dispose();
-            _screenModel.Dispose();
+            _moduleModel.Dispose();
         }
 
         private void SubscribeToUIUpdates() => 

@@ -1,4 +1,5 @@
-﻿using CodeBase.Core.UI;
+﻿using CodeBase.Core.Modules.Installer;
+using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
@@ -19,7 +20,7 @@ namespace Modules.Base.ConverterScreen.Scripts
 
             builder.RegisterInstance(converterView).As<ConverterView>();
             builder.Register<ConverterScreenPresenter>(Lifetime.Singleton);
-            builder.Register<ConverterScreenModel>(Lifetime.Singleton);
+            builder.Register<ConverterModuleModel>(Lifetime.Singleton);
         }
     }
 }

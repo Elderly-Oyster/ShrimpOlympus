@@ -1,4 +1,5 @@
 ﻿using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 
 namespace CodeBase.Core.Infrastructure

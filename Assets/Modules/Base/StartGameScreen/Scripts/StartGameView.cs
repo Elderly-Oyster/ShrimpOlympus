@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using CodeBase.Core.Modules;
+using CodeBase.Core.UI.Views;
 using CodeBase.Core.UI.Views.Animations;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;

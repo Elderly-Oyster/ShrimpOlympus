@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using MediatR;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameData;
@@ -15,7 +16,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
     {
         
         private readonly UpgradePopupView _upgradePopupView;
-        private readonly GameScreenModel _gameScreenModel;
+        private readonly GameModuleModel _gameModuleModel;
         private TaskCompletionSource<bool> _screenCompletionSource;
         private readonly GameDataSystem _gameDataSystem;
         private readonly Mediator _mediator;
@@ -33,11 +34,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
         private readonly ReactiveCommand<Unit> _onPromoteCompanyCommand = new();
         private readonly ReactiveCommand<Unit> _onAddCapacityCommand = new();
         
-        public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameScreenModel gameScreenModel,
+        public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameModuleModel gameModuleModel,
             GameDataSystem gameDataSystem, Mediator mediator)
         {
             _upgradePopupView = upgradePopupView;
-            _gameScreenModel = gameScreenModel;
+            _gameModuleModel = gameModuleModel;
             _gameDataSystem = gameDataSystem;
             _mediator = mediator;
             
@@ -70,7 +71,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
             await _upgradePopupView.Show();
         }
 
-        public async UniTask Execute() => await _screenCompletionSource.Task;
         
         public async UniTask Exit()
         {
@@ -100,7 +100,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 
         private async UniTask ClosePopup()
         {
-            await _gameScreenModel.ChangeState(GameModuleStates.Game);
+            await _gameModuleModel.ChangeState(GameModuleStates.Game);
         }
         
         private async void OnBuyContainerButtonClicked()

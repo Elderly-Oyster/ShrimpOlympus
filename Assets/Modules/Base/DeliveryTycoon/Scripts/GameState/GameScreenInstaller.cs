@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using CodeBase.Core.Modules.Installer;
 using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
@@ -93,7 +94,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
             builder.Register<GameScreenPresenter>(Lifetime.Singleton);
             builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
             builder.Register<PauseScreenPresenter>(Lifetime.Singleton);
-            builder.Register<GameScreenModel>(Lifetime.Singleton);
+            builder.Register<GameModuleModel>(Lifetime.Singleton);
         }
     }
 }

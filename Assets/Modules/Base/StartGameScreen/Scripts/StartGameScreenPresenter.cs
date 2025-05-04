@@ -2,6 +2,7 @@
 using System.Threading;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -16,7 +17,7 @@ namespace Modules.Base.StartGameScreen.Scripts
        
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly StartGameScreenModel _startGameScreenModel;
+        private readonly StartGameModuleModel _startGameModuleModel;
         private readonly StartGameView _startGameView;
         private readonly IScreenStateMachine _screenStateMachine;
         
@@ -31,12 +32,12 @@ namespace Modules.Base.StartGameScreen.Scripts
         public ReactiveCommand<Unit> StartCommand => _startCommand;
         
         public StartGameScreenPresenter(IScreenStateMachine screenStateMachine,
-            StartGameScreenModel startGameScreenModel, StartGameView startGameView)
+            StartGameModuleModel startGameModuleModel, StartGameView startGameView)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
             
             _screenStateMachine = screenStateMachine;
-            _startGameScreenModel = startGameScreenModel;
+            _startGameModuleModel = startGameModuleModel;
             _startGameView = startGameView;
 
             SubscribeToUIUpdates();
@@ -55,8 +56,8 @@ namespace Modules.Base.StartGameScreen.Scripts
             InitializeUI();
     
             ShowTooltips().Forget();
-            _startGameScreenModel.DoTweenInit();
-            _startGameScreenModel.RegisterCommands();
+            _startGameModuleModel.DoTweenInit();
+            _startGameModuleModel.RegisterCommands();
 
             await _startGameView.Show();
 
@@ -74,10 +75,10 @@ namespace Modules.Base.StartGameScreen.Scripts
 
         private async UniTask InitializeServices()
         {
-            var timing = 1f / _startGameScreenModel.Commands.Count;
+            var timing = 1f / _startGameModuleModel.Commands.Count;
             var currentTiming = timing;
             
-            foreach (var (serviceName, initFunction) in _startGameScreenModel.Commands)
+            foreach (var (serviceName, initFunction) in _startGameModuleModel.Commands)
             {
                 _progressStatus.Value = $"Loading: {serviceName}";
                 _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);
@@ -125,7 +126,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             {
                 while (!token.IsCancellationRequested)
                 {
-                    var tooltip = _startGameScreenModel.GetNextTooltip();
+                    var tooltip = _startGameModuleModel.GetNextTooltip();
                     _startGameView.SetTooltipText(tooltip);
                     await UniTask.Delay(TooltipDelay, cancellationToken: token);
                 }
@@ -141,7 +142,7 @@ namespace Modules.Base.StartGameScreen.Scripts
             _cancellationTokenSource?.Dispose();
             
             _startGameView.Dispose();
-            _startGameScreenModel.Dispose();
+            _startGameModuleModel.Dispose();
         }
     }
 }

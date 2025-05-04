@@ -1,25 +1,21 @@
-﻿using CodeBase.Core.UI;
-using CodeBase.Services.SceneInstallerService;
+﻿using CodeBase.Core.Modules.Installer;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenInstaller : SceneInstaller
+    public class MainMenuScreenInstaller : BaseModuleSceneInstaller
     {
         [SerializeField] private MainMenuView mainMenuView;
-        [SerializeField] private BaseScreenCanvas screensCanvas;
-        [SerializeField] private Camera mainCamera;
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterComponent(screensCanvas);
-            builder.RegisterInstance(mainCamera);
+            base.RegisterSceneDependencies(builder);
 
             builder.RegisterComponent(mainMenuView).As<MainMenuView>();
             builder.Register<MainMenuScreenPresenter>(Lifetime.Singleton);
-            builder.Register<MainMenuScreenModel>(Lifetime.Singleton);
+            builder.Register<MainMenuModuleModel>(Lifetime.Singleton);
         }
     }
 }

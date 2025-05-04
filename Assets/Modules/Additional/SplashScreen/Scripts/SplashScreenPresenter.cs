@@ -12,7 +12,7 @@ namespace Modules.Additional.SplashScreen.Scripts
     public class SplashScreenPresenter : IScreenPresenter
     {
         private readonly SplashView _splashView;
-        private readonly SplashScreenModel _splashScreenModel;
+        private readonly SplashScreenModuleModel _splashScreenModuleModel;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
         
         private readonly Subject<Unit> _servicesLoaded = new();
@@ -26,11 +26,11 @@ namespace Modules.Additional.SplashScreen.Scripts
        
         public Observable<Unit> ServicesLoaded => _servicesLoaded;
 
-        public SplashScreenPresenter(SplashView splashView, SplashScreenModel splashScreenModel)
+        public SplashScreenPresenter(SplashView splashView, SplashScreenModuleModel splashScreenModuleModel)
         {
             Debug.Log("SplashScreenPresenter was born");
             _splashView = splashView;
-            _splashScreenModel = splashScreenModel;
+            _splashScreenModuleModel = splashScreenModuleModel;
             _screenCompletionSource = new TaskCompletionSource<bool>();
         }
         
@@ -39,12 +39,11 @@ namespace Modules.Additional.SplashScreen.Scripts
             Debug.Log("SplashScreenPresenter entered");
             InitializeUI();
             await _splashView.Show();
-            await _splashScreenModel.WaitForTheEndOfRegistration();
+            await _splashScreenModuleModel.WaitForTheEndOfRegistration();
             Debug.Log("Registration Complete");
             await LoadDataForServices();
         }
 
-        public async UniTask Execute() => await _screenCompletionSource.Task;
 
         public async UniTask Exit() => await _splashView.Hide();
 
@@ -56,10 +55,10 @@ namespace Modules.Additional.SplashScreen.Scripts
         
         private async UniTask LoadDataForServices()
         {
-            var timing = 1f / _splashScreenModel.Commands.Count;
+            var timing = 1f / _splashScreenModuleModel.Commands.Count;
             var currentTiming = timing;
             
-            foreach (var (serviceName, initFunction) in _splashScreenModel.Commands)
+            foreach (var (serviceName, initFunction) in _splashScreenModuleModel.Commands)
             {
                 _progressStatus.Value = $"Loading: {serviceName}";
                 _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);

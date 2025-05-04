@@ -1,5 +1,6 @@
 ﻿using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
@@ -11,10 +12,10 @@ namespace Modules.Base.TicTacScreen.Scripts
     {
         private readonly TicTacView _ticTacView;
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly TicTacScreenModel _newModuleScreenModel;
+        private readonly TicTacModuleModel _newModuleModuleModel;
         private readonly TicTacView _newModuleView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly TicTacScreenModel _ticTacScreenModel;
+        private readonly TicTacModuleModel _ticTacModuleModel;
         private readonly IPopupHub _popupHub;
         
         private readonly ReactiveCommand<int[]> _cellCommand = new ReactiveCommand<int[]>();
@@ -23,16 +24,16 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly ReactiveCommand<Unit> _thirdPopupCommand = new ReactiveCommand<Unit>();
 
         public TicTacScreenPresenter(IScreenStateMachine screenStateMachine,
-            TicTacScreenModel newModuleScreenModel, TicTacView newModuleView, 
-            TicTacView ticTacView, TicTacScreenModel ticTacScreenModel, IPopupHub popupHub)
+            TicTacModuleModel newModuleModuleModel, TicTacView newModuleView, 
+            TicTacView ticTacView, TicTacModuleModel ticTacModuleModel, IPopupHub popupHub)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
             _screenStateMachine = screenStateMachine;
-            _newModuleScreenModel = newModuleScreenModel;
+            _newModuleModuleModel = newModuleModuleModel;
             _newModuleView = newModuleView;
             _ticTacView = ticTacView;
-            _ticTacScreenModel = ticTacScreenModel;
+            _ticTacModuleModel = ticTacModuleModel;
             _popupHub = popupHub;
         }
 
@@ -46,7 +47,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _ticTacScreenModel.InitializeGame();
+            _ticTacModuleModel.InitializeGame();
             _newModuleView.gameObject.SetActive(false);
             SubscribeToUIUpdates();
             _ticTacView.SetupEventListeners(_mainMenuCommand, _cellCommand, _restartCommand, 
@@ -62,7 +63,7 @@ namespace Modules.Base.TicTacScreen.Scripts
         public void Dispose()
         {
             _newModuleView.Dispose();
-            _newModuleScreenModel.Dispose();
+            _newModuleModuleModel.Dispose();
         }
 
         private void RunNewScreen(ModulesMap screen)
@@ -75,16 +76,16 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         private void OnCellClicked(int x, int y)
         {
-            _ticTacScreenModel.MakeMove(x, y);
-            _ticTacView.UpdateBoard(_ticTacScreenModel.Board);
-            char winner = _ticTacScreenModel.CheckWinner();
+            _ticTacModuleModel.MakeMove(x, y);
+            _ticTacView.UpdateBoard(_ticTacModuleModel.Board);
+            char winner = _ticTacModuleModel.CheckWinner();
             if (winner != '\0')
             {
                 _ticTacView.ShowWinner(winner);
                 _ticTacView.BlockBoard();
                 _ticTacView.AnimateRestartButton();
             }
-            else if (_ticTacScreenModel.IsBoardFull())
+            else if (_ticTacModuleModel.IsBoardFull())
             {
                 _ticTacView.ShowDraw();
                 _ticTacView.BlockBoard();
@@ -94,7 +95,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         private void OnRestartButtonClicked()
         {
-            _ticTacScreenModel.InitializeGame();
+            _ticTacModuleModel.InitializeGame();
             _ticTacView.ClearBoard();
             _ticTacView.UnblockBoard(); 
             _ticTacView.StopAnimateRestartButton();

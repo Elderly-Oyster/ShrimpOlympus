@@ -1,19 +1,18 @@
 using System;
 using System.Collections.Generic;
-using CodeBase.Core.Patterns.Architecture.MVP;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
-using R3;
 
 namespace Modules.Additional.SplashScreen.Scripts
 {
-    public class SplashScreenModel : IModel
+    public class SplashScreenModuleModel : IModuleModel
     {
         private readonly LoadingServiceProvider _loadingServiceProvider;
         
         public Dictionary<string, Func<UniTask>> Commands = new();
 
-        public SplashScreenModel(LoadingServiceProvider loadingServiceProvider) => 
+        public SplashScreenModuleModel(LoadingServiceProvider loadingServiceProvider) => 
             _loadingServiceProvider = loadingServiceProvider;
 
         public async UniTask WaitForTheEndOfRegistration()
@@ -21,5 +20,7 @@ namespace Modules.Additional.SplashScreen.Scripts
             await _loadingServiceProvider.WaitForRegistration;
             Commands = _loadingServiceProvider.Commands;
         }
+
+        public void Dispose() { }
     }
 }

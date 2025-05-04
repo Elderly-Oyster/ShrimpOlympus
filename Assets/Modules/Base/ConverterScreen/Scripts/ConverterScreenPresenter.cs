@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground.Scripts;
@@ -12,7 +13,7 @@ namespace Modules.Base.ConverterScreen.Scripts
     public class ConverterScreenPresenter : IModuleController
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly ConverterScreenModel _converterScreenModel;
+        private readonly ConverterModuleModel _converterModuleModel;
         private readonly ConverterView _converterView;
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
@@ -25,11 +26,11 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly ReactiveCommand<Unit> _backButtonCommand = new ReactiveCommand<Unit>();
 
 
-        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterScreenModel converterScreenModel, 
+        public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterModuleModel converterModuleModel, 
             ConverterView converterView, DynamicParticleController dynamicParticleController)
         {
             _screenStateMachine = screenStateMachine;
-            _converterScreenModel = converterScreenModel;
+            _converterModuleModel = converterModuleModel;
             _converterView = converterView;
             _dynamicParticleController = dynamicParticleController;
             
@@ -75,13 +76,13 @@ namespace Modules.Base.ConverterScreen.Scripts
 
         private void DetermineSourceCurrency(string name)
         {
-            _converterScreenModel.SelectSourceCurrency(_currencyToName[name]);
+            _converterModuleModel.SelectSourceCurrency(_currencyToName[name]);
             CountTargetMoney(_converterView.CurrentSourceAmount);
         }
 
         private void DetermineTargetCurrency(string name) 
         {
-            _converterScreenModel.SelectTargetCurrency(_currencyToName[name]);
+            _converterModuleModel.SelectTargetCurrency(_currencyToName[name]);
             CountTargetMoney(_converterView.CurrentSourceAmount);
         }
 
@@ -98,7 +99,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         }
 
         private void CountSourceMoney(float count) =>
-            _converterView.UpdateSourceText(_converterScreenModel.ConvertTargetToSource(count));
+            _converterView.UpdateSourceText(_converterModuleModel.ConvertTargetToSource(count));
 
         private void HandleAmountScrollBarChanged(float scrollValue)
         {
@@ -109,7 +110,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         }
         
         private void CountTargetMoney(float count) =>
-            _converterView.UpdateTargetText(_converterScreenModel.ConvertSourceToTarget(count));
+            _converterView.UpdateTargetText(_converterModuleModel.ConvertSourceToTarget(count));
 
         private void OnExitButtonClicked() => 
             RunNewScreen(ModulesMap.MainMenu);
@@ -123,7 +124,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         public void Dispose()
         {
             _converterView.Dispose();
-            _converterScreenModel.Dispose();
+            _converterModuleModel.Dispose();
         }
     }
 }

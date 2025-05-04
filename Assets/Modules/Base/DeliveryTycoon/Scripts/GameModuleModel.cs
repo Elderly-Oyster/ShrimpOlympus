@@ -1,5 +1,6 @@
 using System.Threading;
 using CodeBase.Core.Modules;
+using CodeBase.Core.Modules.MVP;
 using CodeBase.Core.Systems.Save;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
@@ -12,7 +13,7 @@ using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public class GameScreenModel : IScreenModel
+    public class GameModuleModel : IModuleModel
     {
         private GameDataSystem _gameDataSystem;
         private SaveSystem _saveSystem;
@@ -32,11 +33,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             _gameDataSystem = gameDataSystem;
             _saveSystem = saveSystem;
             _inputSystemService = inputSystemService;
-            Debug.Log("GameScreenModel Created!");
+            Debug.Log("GameModuleModel Created!");
             SubscribeToEvents();
         }
         
-        public GameScreenModel()
+        public GameModuleModel()
         {
             StateMachine = new StateMachine<GameModuleStates, GameModuleStates>(GameModuleStates.Initial);
             ConfigureStateMachine();

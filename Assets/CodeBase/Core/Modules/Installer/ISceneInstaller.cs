@@ -1,6 +1,6 @@
 using VContainer;
 
-namespace CodeBase.Services.SceneInstallerService
+namespace CodeBase.Core.Modules.Installer
 {
     public interface ISceneInstaller
     {
