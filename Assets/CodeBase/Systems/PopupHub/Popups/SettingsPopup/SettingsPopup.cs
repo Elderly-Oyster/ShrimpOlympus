@@ -19,7 +19,7 @@ namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
         [SerializeField] private Slider soundVolumeSlider;
         [SerializeField] private TMP_Text musicVolumeText;
         [SerializeField] private TMP_Text soundVolumeText;
-        [SerializeField] private Button rebindPopupButton;
+        // [SerializeField] private Button rebindPopupButton;
         
         [Inject] private AudioSystem _audioSystem;
         [Inject] private InputSystemService _inputSystemService;
@@ -34,9 +34,9 @@ namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
             SetInitialSettings();
             SetupEventListeners();
             _rebindPopupCommand.Subscribe(_ => OnOpenRebindPopupButtonClicked());
-            rebindPopupButton.OnClickAsObservable()
-                .Subscribe(_ => _rebindPopupCommand.Execute(default))
-                .AddTo(this);
+            // rebindPopupButton.OnClickAsObservable()
+            //     .Subscribe(_ => _rebindPopupCommand.Execute(default))
+            //     .AddTo(this);
         }
 
         public async void OnEscapePressed(InputAction.CallbackContext callbackContext) => await Close();

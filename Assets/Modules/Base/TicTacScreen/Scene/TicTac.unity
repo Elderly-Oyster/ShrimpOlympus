@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -217,7 +216,7 @@ GameObject:
   - component: {fileID: 1170283957}
   - component: {fileID: 1170283958}
   m_Layer: 0
-  m_Name: TicTocInstaller
+  m_Name: TicTacInstaller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -251,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  ticTacScreenView: {fileID: 2097883547}
+  ticTacView: {fileID: 2097883547}
   screensCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
 --- !u!1 &1609517732
@@ -491,6 +490,6 @@ CanvasGroup:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1170283957}
   - {fileID: 915724102}
   - {fileID: 1609517737}
-  - {fileID: 1170283957}
