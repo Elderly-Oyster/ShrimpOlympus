@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Core.Modules.Installer;
 using CodeBase.Core.UI;
-using CodeBase.Services.SceneInstallerService;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.NPCCars;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
@@ -10,6 +9,7 @@ using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
+using Modules.Base.DeliveryTycoon.Scripts.GameState;
 using Modules.Base.DeliveryTycoon.Scripts.PausePopup;
 using Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState;
 using UnityEngine;
@@ -18,16 +18,14 @@ using VContainer.Unity;
 using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManagerLogic.ContainerManagerOperations;
 
 
-namespace Modules.Base.DeliveryTycoon.Scripts.GameState
+namespace Modules.Base.DeliveryTycoon.Scripts
 {
     
-    public class GameInstallerForScene : SceneInstaller
+    public class GameInstallerForScene : BaseModuleSceneInstaller
     {
         [SerializeField] private GameView gameView;
         [SerializeField] private UpgradePopupView upgradePopupView;
         [SerializeField] private PauseView pauseView;
-        [SerializeField] private BaseScreenCanvas screenCanvas;
-        [SerializeField] private Camera mainCamera;
         [SerializeField] private ContainerManager containerManager;
         [SerializeField] private CarController carController;
         [SerializeField] private ReceiverManager receiverManager;
@@ -38,8 +36,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterInstance(mainCamera);
-
+            base.RegisterSceneDependencies(builder);
+            
             RegisterViews(builder);
             RegisterServices(builder);
             RegisterCarDependencies(builder);
@@ -54,7 +52,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 
         private void RegisterViews(IContainerBuilder builder)
         {
-            builder.RegisterComponent(screenCanvas);
             builder.RegisterComponent(gameView).AsImplementedInterfaces().AsSelf();
             builder.RegisterComponent(upgradePopupView).AsImplementedInterfaces().AsSelf();
             builder.RegisterComponent(pauseView).AsImplementedInterfaces().AsSelf();
