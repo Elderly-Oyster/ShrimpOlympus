@@ -846,9 +846,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  startGameView: {fileID: 2097883545}
-  screenCanvas: {fileID: 1609517733}
+  screensCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
+  startGameView: {fileID: 2097883545}
 --- !u!1 &1381388253
 GameObject:
   m_ObjectHideFlags: 0
