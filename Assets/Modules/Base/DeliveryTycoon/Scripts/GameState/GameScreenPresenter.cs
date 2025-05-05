@@ -70,7 +70,6 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
             
             _view.SetupEventListeners
             (
-               //_onMainMenuButtonClickedCommand,
                _onUpgradePopupButtonClickedCommand, 
                _pausePopupCommand
             );

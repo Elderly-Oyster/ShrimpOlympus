@@ -1,5 +1,7 @@
+using CodeBase.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using VContainer;
 using static UnityEngine.InputSystem.InputAction;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
@@ -10,11 +12,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
         
         private readonly InputSystem_Actions _inputSystemActions;
         private InputAction _moveAction;
-
-        public CarInputs()
+        private readonly InputSystemService _inputSystemService;
+        
+        public CarInputs(InputSystemService inputSystemService)
         {
-            _inputSystemActions = new InputSystem_Actions();
-            _inputSystemActions.Enable();
+            _inputSystemService = inputSystemService;
+            _inputSystemActions = _inputSystemService.InputActions;
             _inputSystemActions.PlayerCar.Move.performed += OnMove;
             _inputSystemActions.PlayerCar.Move.canceled += OnMoveCanceled;
         }

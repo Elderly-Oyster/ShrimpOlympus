@@ -3874,11 +3874,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
+  screensCanvas: {fileID: 428323131}
+  mainCamera: {fileID: 330585545}
   gameView: {fileID: 1833685693}
   upgradePopupView: {fileID: 1521620098}
   pauseView: {fileID: 2135844064}
-  screenCanvas: {fileID: 428323131}
-  mainCamera: {fileID: 330585545}
   containerManager: {fileID: 1440354001}
   carController: {fileID: 1335716698}
   receiverManager: {fileID: 117921071}
@@ -7525,17 +7525,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 428323130}
     m_Modifications:
-    - target: {fileID: 2694675324253553079, guid: 9ea88861e77583742a23a671ed9478bf, type: 3}
-      propertyPath: m_fontSize
-      value: 26.8
-      objectReference: {fileID: 0}
     - target: {fileID: 3545869489180579486, guid: 9ea88861e77583742a23a671ed9478bf, type: 3}
       propertyPath: m_Name
       value: GameView
-      objectReference: {fileID: 0}
-    - target: {fileID: 3545869489180579486, guid: 9ea88861e77583742a23a671ed9478bf, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7034640643637539368, guid: 9ea88861e77583742a23a671ed9478bf, type: 3}
       propertyPath: m_Pivot.x
@@ -7616,10 +7608,6 @@ PrefabInstance:
     - target: {fileID: 7034640643637539368, guid: 9ea88861e77583742a23a671ed9478bf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9120339899840274926, guid: 9ea88861e77583742a23a671ed9478bf, type: 3}
-      propertyPath: m_fontSize
-      value: 28.65
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

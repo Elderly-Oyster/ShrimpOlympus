@@ -14,7 +14,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 {
     public class GameView : BaseView
     {
-        [SerializeField] private Button mainMenuButton;
+        [SerializeField] private Button pausePopupButton;
         [SerializeField] private Button upgradePopupButton;
         [SerializeField] private TMP_Text playerMoneyText;
         [SerializeField] private BaseProgressBarView experienceProgressBar;
@@ -25,12 +25,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         private void Construct(InputSystemService inputSystemService) => 
             _inputSystemService = inputSystemService;
 
-        public void SetupEventListeners(//ReactiveCommand<Unit> openMainMenuCommand, 
-            ReactiveCommand<Unit> onUpgradePopupButtonClicked, ReactiveCommand<Unit> pausePopupCommand)
+        public void SetupEventListeners(ReactiveCommand<Unit> onUpgradePopupButtonClicked,
+            ReactiveCommand<Unit> pausePopupCommand)
         {
-            // mainMenuButton.OnClickAsObservable()
-            //     .Subscribe(_ => openMainMenuCommand.Execute(default))
-            //     .AddTo(this);
+            
+            pausePopupButton.OnClickAsObservable()
+                .Subscribe( _ => pausePopupCommand.Execute(default))
+                .AddTo(this);
+
 
             var cancelPerformedObservable = 
                 _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
@@ -80,7 +82,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 
         private void RemoveEventListeners()
         {
-            mainMenuButton.onClick.RemoveAllListeners();
+            // pausePopupButton.onClick.RemoveAllListeners();
+            // upgradePopupButton.onClick.RemoveAllListeners();
         }
     }
 }
