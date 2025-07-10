@@ -3,7 +3,7 @@ using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace CodeBase.Core.UI.ProgressBars
+namespace CodeBase.Core.UI.Widgets.ProgressBars
 {
     public abstract class BaseProgressBarView : MonoBehaviour, IProgress<float>
     {

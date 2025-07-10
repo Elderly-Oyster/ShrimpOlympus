@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.Save;
@@ -14,9 +13,9 @@ using R3;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GameState
 {
-    public class GameScreenPresenter : IScreenPresenter
+    public class GamePresenter : IPresenter
     {
-        private readonly GameModuleModel _moduleModel;
+        private readonly GameModel _model;
         private readonly GameView _view;
         private readonly CurrencyService _currencyService;
         private readonly LevelService _levelService;
@@ -36,11 +35,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         
         public ReactiveCommand<ModulesMap> OnMainMenuButtonClickedCommand => _onMainMenuButtonClicked;
 
-        public GameScreenPresenter( GameModuleModel moduleModel, GameView view, LevelService levelService,
+        public GamePresenter( GameModel model, GameView view, LevelService levelService,
             AudioSystem audioSystem, GameDataSystem gameDataSystem, GameManager gameManager, SaveSystem saveSystem,
             CurrencyService currencyService, LoadingServiceProvider loadingServiceProvider)
         {
-            _moduleModel = moduleModel;
+            _model = model;
             _view = view;
             _levelService = levelService;
             _currencyService = currencyService;
@@ -125,18 +124,18 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GameState
         private void OnMainMenuButtonClicked() => 
             _onMainMenuButtonClicked.Execute(ModulesMap.MainMenu);
 
-        private async UniTask OnPausePopupButtonClicked() => await _moduleModel.ChangeState(GameModuleStates.Pause);
+        private async UniTask OnPausePopupButtonClicked() => await _model.ChangeState(GameModuleStates.Pause);
 
         private async UniTask OnUpgradePopupButtonClicked()
         {
-            await _moduleModel.ChangeState(GameModuleStates.UpgradePopup);
+            await _model.ChangeState(GameModuleStates.UpgradePopup);
         }
         
         public void Dispose()
         {
             _view.Dispose();
             _disposables.Dispose();
-            _moduleModel.Dispose();
+            _model.Dispose();
         }
     }
 }

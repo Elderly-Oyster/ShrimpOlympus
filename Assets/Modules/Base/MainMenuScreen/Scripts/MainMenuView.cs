@@ -1,9 +1,7 @@
-﻿using CodeBase.Core.Modules;
-using CodeBase.Core.UI.Views;
+﻿using CodeBase.Core.UI.Views;
 using CodeBase.Services;
 using R3;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VContainer;
 

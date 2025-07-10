@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace CodeBase.Core.Modules.Installer
+namespace CodeBase.Services.SceneInstallerService
 {
     public class BaseModuleSceneInstaller : SceneInstaller
     {

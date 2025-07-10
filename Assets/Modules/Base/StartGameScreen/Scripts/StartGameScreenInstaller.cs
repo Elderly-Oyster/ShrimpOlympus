@@ -1,4 +1,4 @@
-﻿using CodeBase.Core.Modules.Installer;
+﻿using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 
@@ -14,7 +14,7 @@ namespace Modules.Base.StartGameScreen.Scripts
 
             builder.RegisterInstance(startGameView).As<StartGameView>();
             builder.Register<StartGameScreenPresenter>(Lifetime.Singleton);
-            builder.Register<StartGameModuleModel>(Lifetime.Singleton);
+            builder.Register<StartGameModel>(Lifetime.Singleton);
         }
     }
 }

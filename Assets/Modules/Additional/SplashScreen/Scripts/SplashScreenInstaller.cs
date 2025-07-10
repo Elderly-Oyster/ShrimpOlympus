@@ -1,4 +1,4 @@
-using CodeBase.Core.Modules.Installer;
+using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 
@@ -11,8 +11,8 @@ namespace Modules.Additional.SplashScreen.Scripts
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
             builder.RegisterInstance(splashView).As<SplashView>();
-            builder.Register<SplashScreenPresenter>(Lifetime.Singleton);
-            builder.Register<SplashScreenModuleModel>(Lifetime.Singleton);
+            builder.Register<SplashPresenter>(Lifetime.Singleton);
+            builder.Register<SplashScreenModel>(Lifetime.Singleton);
         }
     }
 }

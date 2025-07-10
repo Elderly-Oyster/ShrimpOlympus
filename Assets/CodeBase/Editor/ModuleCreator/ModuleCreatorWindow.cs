@@ -106,9 +106,7 @@ namespace CodeBase.Editor.ModuleCreator
             _createdModules.Add(targetModuleFolderPath);
             SaveCreatedModules();
         
-            Debug.Log("Before await");
             await TaskQueue.UniTaskCompletionSource.Task;
-            Debug.Log("After await");
         });
 
         private bool HasLastModule() =>

@@ -1,4 +1,3 @@
-using CodeBase.Core.Modules.Installer;
 using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;

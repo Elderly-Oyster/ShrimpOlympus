@@ -1,6 +1,5 @@
-﻿using CodeBase.Core.Modules;
-using CodeBase.Core.UI.Buttons;
-using CodeBase.Core.UI.Views;
+﻿using CodeBase.Core.UI.Views;
+using CodeBase.Core.UI.Widgets.Buttons;
 using R3;
 using TMPro;
 using UnityEngine;

@@ -20,7 +20,7 @@ namespace CodeBase.Editor.ModuleCreator.Base.ConfigManagement
 
         public static void RefreshPaths()
         {
-            Debug.Log("ModulePathCache updates paths...");
+            // Debug.Log("ModulePathCache updates paths...");
             LoadPaths();
         }
 

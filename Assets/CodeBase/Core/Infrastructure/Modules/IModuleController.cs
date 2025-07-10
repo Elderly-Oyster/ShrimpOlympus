@@ -1,7 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 
-namespace CodeBase.Core.Modules.MVP
+namespace CodeBase.Core.Infrastructure.Modules
 {
     public interface IModuleController : IDisposable
     {

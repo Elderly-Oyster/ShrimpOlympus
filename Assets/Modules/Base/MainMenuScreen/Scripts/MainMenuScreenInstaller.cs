@@ -1,4 +1,4 @@
-﻿using CodeBase.Core.Modules.Installer;
+﻿using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -15,7 +15,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
             builder.RegisterComponent(mainMenuView).As<MainMenuView>();
             builder.Register<MainMenuScreenPresenter>(Lifetime.Singleton);
-            builder.Register<MainMenuModuleModel>(Lifetime.Singleton);
+            builder.Register<MainMenuModel>(Lifetime.Singleton);
         }
     }
 }

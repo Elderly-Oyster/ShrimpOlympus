@@ -1,6 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
-using CodeBase.Core.UI.ProgressBars;
+using CodeBase.Core.UI.Widgets.ProgressBars;
 using Cysharp.Threading.Tasks;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Parcels;

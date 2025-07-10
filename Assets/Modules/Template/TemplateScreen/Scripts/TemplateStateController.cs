@@ -1,25 +1,24 @@
 using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules;
-using CodeBase.Core.Patterns.Architecture.MVP;
+using CodeBase.Core.Infrastructure.Modules;
 using Cysharp.Threading.Tasks;
 using R3;
 
 namespace Modules.Template.TemplateScreen.Scripts
 {
-    public class TemplateScreenPresenter : IScreenPresenter
+    public class TemplateStateController : IModuleController
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly TemplateModuleModel _moduleModel;
+        private readonly TemplateScreenModel _screenModel;
         private readonly TemplateScreenView _screenView;
         private readonly UniTaskCompletionSource _screenCompletionSource;
         
         private readonly ReactiveCommand<Unit> _mainMenuCommand = new();
         
-        public TemplateScreenPresenter(IScreenStateMachine screenStateMachine, 
-            TemplateModuleModel moduleModel, TemplateScreenView screenView)
+        public TemplateStateController(IScreenStateMachine screenStateMachine, 
+            TemplateScreenModel screenModel, TemplateScreenView screenView)
         {
             _screenStateMachine = screenStateMachine;
-            _moduleModel = moduleModel;
+            _screenModel = screenModel;
             _screenView = screenView;
             _screenCompletionSource = new UniTaskCompletionSource();
         }
@@ -32,13 +31,15 @@ namespace Modules.Template.TemplateScreen.Scripts
             
             await _screenView.Show();
         }
-        
+
+        public async UniTask Execute() => await _screenCompletionSource.Task;
+
         public async UniTask Exit() => await _screenView.Hide();
 
         public void Dispose()
         {
             _screenView.Dispose();
-            _moduleModel.Dispose();
+            _screenModel.Dispose();
         }
 
         private void SubscribeToUIUpdates() => 
@@ -50,7 +51,7 @@ namespace Modules.Template.TemplateScreen.Scripts
         private void RunNewScreen(ModulesMap screen)
         {
             _screenCompletionSource.TrySetResult();
-            _screenStateMachine.RunScreen(screen);
+            _screenStateMachine.RunModule(screen);
         }
     }
 }

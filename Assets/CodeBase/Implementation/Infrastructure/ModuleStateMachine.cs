@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Threading;
 using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules;
-using CodeBase.Core.Modules.MVP;
+using CodeBase.Core.Infrastructure.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Services;
 using CodeBase.Services.SceneInstallerService;
@@ -26,18 +25,18 @@ namespace CodeBase.Implementation.Infrastructure
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); 
         
         public ModulesMap CurrentModulesMap { get; private set; } = ModulesMap.None;
-        public IScreenPresenter CurrentPresenter { get; private set; }
+        public IPresenter CurrentPresenter { get; private set; }
 
         private IModuleController CurrentModuleController { get; set; }
         
-        public void Start() => RunScreen(SceneManager.GetActiveScene().name);
+        public void Start() => RunModule(SceneManager.GetActiveScene().name);
 
-        private void RunScreen(string sceneName, object param = null)
+        private void RunModule(string sceneName, object param = null)
         {
             ModulesMap? screenModelMap = SceneNameToEnum(sceneName);
             
             if (screenModelMap != null)
-                RunScreen((ModulesMap)screenModelMap, param).Forget(); 
+                RunModule((ModulesMap)screenModelMap, param).Forget(); 
             else
             {
                 _sceneService.AddActiveScene(sceneName);
@@ -51,7 +50,7 @@ namespace CodeBase.Implementation.Infrastructure
         /// </summary>
         /// <param name="modulesMap">Type of the screen.</param>
         /// <param name="param">Parameters to pass to Presenter.</param>
-        public async UniTaskVoid RunScreen(ModulesMap modulesMap, object param = null)
+        public async UniTaskVoid RunModule(ModulesMap modulesMap, object param = null)
         {
             if (CheckIsSameScreen(modulesMap))
             {

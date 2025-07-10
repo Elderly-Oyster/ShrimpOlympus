@@ -1,5 +1,5 @@
 ﻿using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules.MVP;
+using CodeBase.Core.Infrastructure.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.PopupHub;
@@ -13,7 +13,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
     public class MainMenuScreenPresenter : IModuleController
     {
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly MainMenuModuleModel _mainMenuModuleModel;
+        private readonly MainMenuModel _mainMenuModel;
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly MainMenuView _mainMenuView;
         private readonly IPopupHub _popupHub;
@@ -28,12 +28,12 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
         public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
-            MainMenuModuleModel mainMenuModuleModel, MainMenuView mainMenuView,
+            MainMenuModel mainMenuModel, MainMenuView mainMenuView,
             AudioSystem audioSystem)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
-            _mainMenuModuleModel = mainMenuModuleModel;
+            _mainMenuModel = mainMenuModel;
             _screenStateMachine = screenStateMachine;
             _mainMenuView = mainMenuView;
             _audioSystem = audioSystem;
@@ -81,7 +81,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void Dispose()
         {
             _mainMenuView.Dispose();
-            _mainMenuModuleModel.Dispose();
+            _mainMenuModel.Dispose();
         }
 
         private void OnConverterButtonClicked() => RunNewScreen(ModulesMap.Converter);
@@ -94,7 +94,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void RunNewScreen(ModulesMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunScreen(screen);
+            _screenStateMachine.RunModule(screen);
         }
     }
 }

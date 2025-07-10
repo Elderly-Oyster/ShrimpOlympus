@@ -1,4 +1,3 @@
-using CodeBase.Core.Modules.Installer;
 using CodeBase.Core.UI;
 using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
@@ -19,8 +18,8 @@ namespace Modules.Template.TemplateScreen.Scripts
             builder.RegisterInstance(mainCamera);
 
             builder.RegisterComponent(templateScreenView).AsImplementedInterfaces().AsSelf();
-            builder.Register<TemplateScreenPresenter>(Lifetime.Singleton);
-            builder.Register<TemplateModuleModel>(Lifetime.Singleton);
+            builder.Register<TemplateStateController>(Lifetime.Singleton);
+            builder.Register<TemplateScreenModel>(Lifetime.Singleton);
         }
     }
 }

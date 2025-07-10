@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using CodeBase.Core.Modules.Installer;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VContainer;

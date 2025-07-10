@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using CodeBase.Core.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using MediatR;
@@ -12,11 +11,11 @@ using Unit = R3.Unit;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 {
-    public class UpgradePopupPresenter : IScreenPresenter
+    public class UpgradePopupPresenter : IPresenter
     {
         
         private readonly UpgradePopupView _upgradePopupView;
-        private readonly GameModuleModel _gameModuleModel;
+        private readonly GameModel _gameModel;
         private TaskCompletionSource<bool> _screenCompletionSource;
         private readonly GameDataSystem _gameDataSystem;
         private readonly Mediator _mediator;
@@ -34,11 +33,11 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
         private readonly ReactiveCommand<Unit> _onPromoteCompanyCommand = new();
         private readonly ReactiveCommand<Unit> _onAddCapacityCommand = new();
         
-        public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameModuleModel gameModuleModel,
+        public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameModel gameModel,
             GameDataSystem gameDataSystem, Mediator mediator)
         {
             _upgradePopupView = upgradePopupView;
-            _gameModuleModel = gameModuleModel;
+            _gameModel = gameModel;
             _gameDataSystem = gameDataSystem;
             _mediator = mediator;
             
@@ -100,7 +99,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
 
         private async UniTask ClosePopup()
         {
-            await _gameModuleModel.ChangeState(GameModuleStates.Game);
+            await _gameModel.ChangeState(GameModuleStates.Game);
         }
         
         private async void OnBuyContainerButtonClicked()

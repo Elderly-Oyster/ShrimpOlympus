@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CodeBase.Core.Modules;
-using CodeBase.Core.Modules.MVP;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Services.LongInitializationServices;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
 
 namespace Modules.Base.StartGameScreen.Scripts
 {
-    public class StartGameModuleModel : IModuleModel
+    public class StartGameModel : IModel
     {
         public readonly Dictionary<string, Func<Task>> Commands;
 
@@ -20,7 +19,7 @@ namespace Modules.Base.StartGameScreen.Scripts
         private readonly string[] _tooltips;
         private int _currentTooltipIndex;
 
-        public StartGameModuleModel(FirstLongInitializationService firstLongInitializationService,
+        public StartGameModel(FirstLongInitializationService firstLongInitializationService,
             SecondLongInitializationService secondLongInitializationService,
             ThirdLongInitializationService thirdLongInitializationService)
         {

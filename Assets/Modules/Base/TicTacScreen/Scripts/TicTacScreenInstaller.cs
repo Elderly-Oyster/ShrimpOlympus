@@ -1,4 +1,4 @@
-﻿using CodeBase.Core.Modules.Installer;
+﻿using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 
@@ -14,7 +14,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
             builder.RegisterInstance(ticTacView).As<TicTacView>();
             builder.Register<TicTacScreenPresenter>(Lifetime.Singleton);
-            builder.Register<TicTacModuleModel>(Lifetime.Singleton);
+            builder.Register<TicTacModel>(Lifetime.Singleton);
         }
     }
 }

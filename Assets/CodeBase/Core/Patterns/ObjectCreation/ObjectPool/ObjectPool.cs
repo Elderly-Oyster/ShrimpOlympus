@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using CodeBase.Core.Patterns.ObjectCreation.ObjectPool;
 using UnityEngine;
 
-namespace CodeBase.Core.Patterns.ObjectCreation
+namespace CodeBase.Core.Patterns.ObjectCreation.ObjectPool
 {
     public abstract class ObjectPool<T> : IObjectPool<T> where T : class
     {

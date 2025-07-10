@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using VContainer;
 
-namespace CodeBase.Core.Modules.Installer
+namespace CodeBase.Services.SceneInstallerService
 {
     public abstract class SceneInstaller : MonoBehaviour, ISceneInstaller
     {

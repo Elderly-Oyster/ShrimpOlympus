@@ -1,5 +1,4 @@
 using System;
-using CodeBase.Core.Modules.Installer;
 using CodeBase.Services.SceneInstallerService;
 using R3;
 using UnityEngine;
@@ -19,7 +18,7 @@ namespace Modules.Test.PopupsTester.Scripts
             builder.Register<PopupsTesterScenePresenter>(Lifetime.Singleton)
                 .As<IStartable>()
                 .AsSelf();
-            builder.Register<PopupsTesterSceneModuleModel>(Lifetime.Singleton);
+            builder.Register<PopupsTesterSceneModel>(Lifetime.Singleton);
             
             builder.RegisterFactory<Action, TestButtonView>(action =>
             {

@@ -96,9 +96,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
             var scriptsToCreate = new List<(bool isRequired, string templateFile, string outputFile)>
             {
                 (createInstaller, "TemplateScreenInstaller.cs", $"{moduleName}ScreenInstaller.cs"),
-                (createPresenter, "TemplateScreenPresenter.cs", $"{moduleName}ScreenPresenter.cs"),
+                (createPresenter, "TemplateStateController.cs", $"{moduleName}ScreenPresenter.cs"),
                 (createView, "TemplateScreenView.cs", $"{moduleName}ScreenView.cs"),
-                (createModel, "TemplateModuleModel.cs", $"{moduleName}ScreenModel.cs"),
+                (createModel, "TemplateScreenModel.cs", $"{moduleName}ScreenModel.cs"),
             };
 
             foreach (var (shouldCreate, templateFile, outputFile) in scriptsToCreate)

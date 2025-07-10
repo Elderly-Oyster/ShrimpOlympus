@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using CodeBase.Core.Modules;
 using CodeBase.Core.UI.Views;
 using R3;
 using TMPro;

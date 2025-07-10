@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using CodeBase.Core.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -9,10 +8,10 @@ using VContainer.Unity;
 
 namespace Modules.Additional.SplashScreen.Scripts
 {
-    public class SplashScreenPresenter : IScreenPresenter
+    public class SplashPresenter : IPresenter
     {
         private readonly SplashView _splashView;
-        private readonly SplashScreenModuleModel _splashScreenModuleModel;
+        private readonly SplashScreenModel _splashScreenModel;
         private readonly TaskCompletionSource<bool> _screenCompletionSource;
         
         private readonly Subject<Unit> _servicesLoaded = new();
@@ -26,11 +25,11 @@ namespace Modules.Additional.SplashScreen.Scripts
        
         public Observable<Unit> ServicesLoaded => _servicesLoaded;
 
-        public SplashScreenPresenter(SplashView splashView, SplashScreenModuleModel splashScreenModuleModel)
+        public SplashPresenter(SplashView splashView, SplashScreenModel splashScreenModel)
         {
             Debug.Log("SplashScreenPresenter was born");
             _splashView = splashView;
-            _splashScreenModuleModel = splashScreenModuleModel;
+            _splashScreenModel = splashScreenModel;
             _screenCompletionSource = new TaskCompletionSource<bool>();
         }
         
@@ -39,7 +38,7 @@ namespace Modules.Additional.SplashScreen.Scripts
             Debug.Log("SplashScreenPresenter entered");
             InitializeUI();
             await _splashView.Show();
-            await _splashScreenModuleModel.WaitForTheEndOfRegistration();
+            await _splashScreenModel.WaitForTheEndOfRegistration();
             Debug.Log("Registration Complete");
             await LoadDataForServices();
         }
@@ -55,10 +54,10 @@ namespace Modules.Additional.SplashScreen.Scripts
         
         private async UniTask LoadDataForServices()
         {
-            var timing = 1f / _splashScreenModuleModel.Commands.Count;
+            var timing = 1f / _splashScreenModel.Commands.Count;
             var currentTiming = timing;
             
-            foreach (var (serviceName, initFunction) in _splashScreenModuleModel.Commands)
+            foreach (var (serviceName, initFunction) in _splashScreenModel.Commands)
             {
                 _progressStatus.Value = $"Loading: {serviceName}";
                 _exponentialProgress.Value = CalculateExponentialProgress(currentTiming);

@@ -3,7 +3,7 @@ guid: 2852038e373524b99b67701570c171c6
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
-  serializedVersion: 12
+  serializedVersion: 13
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -20,11 +20,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
-  ignoreMasterTextureLimit: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -63,6 +64,7 @@ TextureImporter:
   textureFormatSet: 0
   ignorePngGamma: 0
   applyGammaDecoding: 0
+  swizzle: 50462976
   cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
@@ -75,6 +77,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -87,6 +90,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -99,6 +103,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -111,6 +116,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -123,6 +129,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
@@ -135,6 +142,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
@@ -844,42 +852,41 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      KitchenSpritesheet_13: -1484564825
-      KitchenSpritesheet_12: 1835524707
-      KitchenSpritesheet_29: -1966935515
-      KitchenSpritesheet_27: -603181089
-      KitchenSpritesheet_10: -1538817445
       KitchenSpritesheet_0: -1230851167
-      KitchenSpritesheet_8: 1486267123
-      KitchenSpritesheet_26: -211909272
+      KitchenSpritesheet_1: -1394253090
+      KitchenSpritesheet_10: -1538817445
       KitchenSpritesheet_11: -596213063
+      KitchenSpritesheet_12: 1835524707
+      KitchenSpritesheet_13: -1484564825
+      KitchenSpritesheet_14: 2084901211
+      KitchenSpritesheet_15: -1903791045
+      KitchenSpritesheet_16: 2086376572
+      KitchenSpritesheet_17: 979844516
+      KitchenSpritesheet_18: 130668385
+      KitchenSpritesheet_19: -1626741655
+      KitchenSpritesheet_2: -788791091
       KitchenSpritesheet_20: 284735177
+      KitchenSpritesheet_21: -1986240833
       KitchenSpritesheet_22: 78340259
-      KitchenSpritesheet_25: 1061671323
       KitchenSpritesheet_23: 1123573828
       KitchenSpritesheet_24: 1120134316
-      KitchenSpritesheet_16: 2086376572
-      KitchenSpritesheet_2: -788791091
-      KitchenSpritesheet_4: 224116056
-      KitchenSpritesheet_17: 979844516
-      KitchenSpritesheet_30: -1839834220
-      KitchenSpritesheet_32: -124377382
-      KitchenSpritesheet_21: -1986240833
-      KitchenSpritesheet_9: 509411629
-      KitchenSpritesheet_7: -2018262852
+      KitchenSpritesheet_25: 1061671323
+      KitchenSpritesheet_26: -211909272
+      KitchenSpritesheet_27: -603181089
+      KitchenSpritesheet_28: -188202915
+      KitchenSpritesheet_29: -1966935515
       KitchenSpritesheet_3: -664115261
-      KitchenSpritesheet_19: -1626741655
-      KitchenSpritesheet_14: 2084901211
+      KitchenSpritesheet_30: -1839834220
+      KitchenSpritesheet_31: 978071960
+      KitchenSpritesheet_32: -124377382
+      KitchenSpritesheet_4: 224116056
       KitchenSpritesheet_5: -938525989
       KitchenSpritesheet_6: 875941695
-      KitchenSpritesheet_31: 978071960
-      KitchenSpritesheet_1: -1394253090
-      KitchenSpritesheet_18: 130668385
-      KitchenSpritesheet_28: -188202915
-      KitchenSpritesheet_15: -1903791045
-  spritePackingTag: 
+      KitchenSpritesheet_7: -2018262852
+      KitchenSpritesheet_8: 1486267123
+      KitchenSpritesheet_9: 509411629
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

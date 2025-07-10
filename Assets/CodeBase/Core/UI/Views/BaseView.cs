@@ -8,10 +8,12 @@ namespace CodeBase.Core.UI.Views
     [RequireComponent(typeof(Canvas))]
     public abstract class BaseView : MonoBehaviour, IView
     {
-        [SerializeField] private BaseAnimationElement animationElement;
         private CanvasGroup _canvasGroup;
         private Canvas _canvas;
-        public bool IsActive { get; private set; }
+        
+        [field: SerializeField] public BaseAnimationElement AnimationElement { get; private set; }
+        public bool IsActive { get; private set; } = true;
+        public bool IsInteractable { get; private set; }
 
         protected virtual void Awake()
         {
@@ -22,39 +24,42 @@ namespace CodeBase.Core.UI.Views
         public virtual async UniTask Show()
         {
             SetActive(true);
-            if (IsActive && animationElement != null) 
-                await animationElement.Show();
+            if (IsActive && AnimationElement)
+                await AnimationElement.Show();
+
+            IsInteractable = true;
         }
 
         public virtual async UniTask Hide()
         {
-            if (IsActive && animationElement != null) 
-                await animationElement.Hide(); 
+            IsInteractable = false;
+
+            if (IsActive && AnimationElement)
+                await AnimationElement.Hide();
             SetActive(false);
         }
         
         protected void SetActive(bool isActive)
         {
-            if (_canvas == null)
-                _canvas = GetComponent<Canvas>();
-            if (_canvasGroup == null)
-                _canvasGroup = GetComponent<CanvasGroup>();
-            
             if (IsActive == isActive) return;
             IsActive = isActive;
-            _canvas.enabled = isActive;
-            _canvasGroup.alpha = isActive ? 1 : 0;
-            _canvasGroup.blocksRaycasts = isActive;
-            _canvasGroup.interactable = isActive;
+            if (_canvas != null) _canvas.enabled = isActive;
+
+            if (_canvasGroup != null)
+            {
+                _canvasGroup.alpha = isActive ? 1 : 0;
+                _canvasGroup.blocksRaycasts = isActive;
+                _canvasGroup.interactable = isActive;
+            }
+
             gameObject.SetActive(isActive);
         }
         
-        public void HideInstantly() => SetActive(false);
+        public virtual void HideInstantly() => SetActive(false);
         
         public virtual void Dispose()
         {
-            if (this != null) 
-                Destroy(gameObject);
+            // if (this) Destroy(gameObject);
         } 
     }
 }

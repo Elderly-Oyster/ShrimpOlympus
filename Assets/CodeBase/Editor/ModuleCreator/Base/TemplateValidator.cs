@@ -10,9 +10,9 @@ namespace CodeBase.Editor.ModuleCreator.Base
         private static readonly List<string> RequiredTemplates = new()
         {
             "TemplateScreenInstaller.cs",
-            "TemplateScreenPresenter.cs",
+            "TemplateStateController.cs",
             "TemplateScreenView.cs",
-            "TemplateModuleModel.cs"
+            "TemplateScreenModel.cs"
         };
 
         public static bool AreTemplatesAvailable(bool createAsmdef)

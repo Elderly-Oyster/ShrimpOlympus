@@ -1,7 +1,5 @@
 ﻿using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules;
-using CodeBase.Core.Modules.MVP;
-using CodeBase.Core.Patterns.Architecture.MVP;
+using CodeBase.Core.Infrastructure.Modules;
 using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -12,10 +10,10 @@ namespace Modules.Base.TicTacScreen.Scripts
     {
         private readonly TicTacView _ticTacView;
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly TicTacModuleModel _newModuleModuleModel;
+        private readonly TicTacModel _newModel;
         private readonly TicTacView _newModuleView;
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly TicTacModuleModel _ticTacModuleModel;
+        private readonly TicTacModel _ticTacModel;
         private readonly IPopupHub _popupHub;
         
         private readonly ReactiveCommand<int[]> _cellCommand = new ReactiveCommand<int[]>();
@@ -24,16 +22,16 @@ namespace Modules.Base.TicTacScreen.Scripts
         private readonly ReactiveCommand<Unit> _thirdPopupCommand = new ReactiveCommand<Unit>();
 
         public TicTacScreenPresenter(IScreenStateMachine screenStateMachine,
-            TicTacModuleModel newModuleModuleModel, TicTacView newModuleView, 
-            TicTacView ticTacView, TicTacModuleModel ticTacModuleModel, IPopupHub popupHub)
+            TicTacModel newModel, TicTacView newModuleView, 
+            TicTacView ticTacView, TicTacModel ticTacModel, IPopupHub popupHub)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
             _screenStateMachine = screenStateMachine;
-            _newModuleModuleModel = newModuleModuleModel;
+            _newModel = newModel;
             _newModuleView = newModuleView;
             _ticTacView = ticTacView;
-            _ticTacModuleModel = ticTacModuleModel;
+            _ticTacModel = ticTacModel;
             _popupHub = popupHub;
         }
 
@@ -47,7 +45,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            _ticTacModuleModel.InitializeGame();
+            _ticTacModel.InitializeGame();
             _newModuleView.gameObject.SetActive(false);
             SubscribeToUIUpdates();
             _ticTacView.SetupEventListeners(_mainMenuCommand, _cellCommand, _restartCommand, 
@@ -63,29 +61,29 @@ namespace Modules.Base.TicTacScreen.Scripts
         public void Dispose()
         {
             _newModuleView.Dispose();
-            _newModuleModuleModel.Dispose();
+            _newModel.Dispose();
         }
 
         private void RunNewScreen(ModulesMap screen)
         {
             _completionSource.TrySetResult(true);
-            _screenStateMachine.RunScreen(screen);
+            _screenStateMachine.RunModule(screen);
         }
 
         private void OnMainMenuButtonClicked() => RunNewScreen(ModulesMap.MainMenu);
 
         private void OnCellClicked(int x, int y)
         {
-            _ticTacModuleModel.MakeMove(x, y);
-            _ticTacView.UpdateBoard(_ticTacModuleModel.Board);
-            char winner = _ticTacModuleModel.CheckWinner();
+            _ticTacModel.MakeMove(x, y);
+            _ticTacView.UpdateBoard(_ticTacModel.Board);
+            char winner = _ticTacModel.CheckWinner();
             if (winner != '\0')
             {
                 _ticTacView.ShowWinner(winner);
                 _ticTacView.BlockBoard();
                 _ticTacView.AnimateRestartButton();
             }
-            else if (_ticTacModuleModel.IsBoardFull())
+            else if (_ticTacModel.IsBoardFull())
             {
                 _ticTacView.ShowDraw();
                 _ticTacView.BlockBoard();
@@ -95,7 +93,7 @@ namespace Modules.Base.TicTacScreen.Scripts
 
         private void OnRestartButtonClicked()
         {
-            _ticTacModuleModel.InitializeGame();
+            _ticTacModel.InitializeGame();
             _ticTacView.ClearBoard();
             _ticTacView.UnblockBoard(); 
             _ticTacView.StopAnimateRestartButton();

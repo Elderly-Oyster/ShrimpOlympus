@@ -11,7 +11,9 @@
         "UniTask.DOTween",
         "Services",
         "Unity.InputSystem",
-        "Systems"
+        "Systems",
+        "UnityEditor.UI",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

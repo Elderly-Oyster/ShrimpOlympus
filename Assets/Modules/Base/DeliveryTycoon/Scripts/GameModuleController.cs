@@ -1,5 +1,5 @@
 using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules.MVP;
+using CodeBase.Core.Infrastructure.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
@@ -16,45 +16,45 @@ namespace Modules.Base.DeliveryTycoon.Scripts
     public class GameModuleController : IModuleController
     {
         private readonly IScreenStateMachine _screenStateMachine;
-        private readonly GameScreenPresenter _gameScreenPresenter;
+        private readonly GamePresenter _gamePresenter;
         private readonly UpgradePopupPresenter _upgradePopupPresenter;
-        private readonly SplashScreenPresenter _splashScreenPresenter;
-        private readonly PauseScreenPresenter _pauseScreenPresenter;
-        private readonly GameModuleModel _gameModuleModel;
+        private readonly SplashPresenter _splashPresenter;
+        private readonly PausePresenter _pausePresenter;
+        private readonly GameModel _gameModel;
         private readonly InputSystemService _inputSystemService;
         private readonly UniTaskCompletionSource<bool> _moduleCompletionSource;
         private readonly CompositeDisposable _disposables = new();
         
         public GameModuleController(IScreenStateMachine screenStateMachine,
-            GameModuleModel moduleModel, GameScreenPresenter gameScreenPresenter,
-            UpgradePopupPresenter upgradePopupPresenter, SplashScreenPresenter splashScreenPresenter,
-            PauseScreenPresenter pauseScreenPresenter, InputSystemService inputSystemService)
+            GameModel model, GamePresenter gamePresenter,
+            UpgradePopupPresenter upgradePopupPresenter, SplashPresenter splashPresenter,
+            PausePresenter pausePresenter, InputSystemService inputSystemService)
         {
             _screenStateMachine = screenStateMachine;
-            _gameScreenPresenter = gameScreenPresenter;
+            _gamePresenter = gamePresenter;
             _upgradePopupPresenter = upgradePopupPresenter;
-            _splashScreenPresenter = splashScreenPresenter;
-            _pauseScreenPresenter = pauseScreenPresenter;
+            _splashPresenter = splashPresenter;
+            _pausePresenter = pausePresenter;
             _inputSystemService = inputSystemService;
-            _gameModuleModel = moduleModel;
+            _gameModel = model;
             SubscribeToEvents();
             _moduleCompletionSource = new UniTaskCompletionSource<bool>();
-            _gameModuleModel.StateMachine.OnTransitionCompleted(OnStateChanged);
+            _gameModel.StateMachine.OnTransitionCompleted(OnStateChanged);
         }
 
         public async UniTask Enter(object param) => 
-            await _gameModuleModel.ChangeState(GameModuleStates.Loading);
+            await _gameModel.ChangeState(GameModuleStates.Loading);
 
         public async UniTask Execute() => await _moduleCompletionSource.Task;
 
-        public async UniTask Exit() => await _gameScreenPresenter.Exit();
+        public async UniTask Exit() => await _gamePresenter.Exit();
 
         private void SubscribeToEvents()
         {
-            _disposables.Add(_pauseScreenPresenter.OpenNewModuleCommand.Subscribe(RunNewScreen));
-            _disposables.Add(_gameScreenPresenter.OnMainMenuButtonClickedCommand.Subscribe(RunNewScreen));
-            _disposables.Add(_splashScreenPresenter.ServicesLoaded.
-                Subscribe(async _ => await _gameModuleModel.ChangeState(GameModuleStates.Game)));
+            _disposables.Add(_pausePresenter.OpenNewModuleCommand.Subscribe(RunNewScreen));
+            _disposables.Add(_gamePresenter.OnMainMenuButtonClickedCommand.Subscribe(RunNewScreen));
+            _disposables.Add(_splashPresenter.ServicesLoaded.
+                Subscribe(async _ => await _gameModel.ChangeState(GameModuleStates.Game)));
         }
         
         private async void OnStateChanged(StateMachine<GameModuleStates, GameModuleStates>.Transition transition) => 
@@ -69,31 +69,31 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 case GameModuleStates.Loading:
                 {
                     //TODO async refactoring
-                    _gameScreenPresenter.HideStateInstantly();
+                    _gamePresenter.HideStateInstantly();
                     _upgradePopupPresenter.HideStateInstantly();
-                    _pauseScreenPresenter.HideStateInstantly();
+                    _pausePresenter.HideStateInstantly();
                     
                     await UniTask.WhenAll(
-                        _gameScreenPresenter.Enter(null),
-                        _splashScreenPresenter.Enter(null)
+                        _gamePresenter.Enter(null),
+                        _splashPresenter.Enter(null)
                         );
                     break;
                 }
                 case GameModuleStates.Game:
                 {
                     await UniTask.WhenAll(
-                            _splashScreenPresenter.Exit(),
+                            _splashPresenter.Exit(),
                             _upgradePopupPresenter.Exit(),
-                            _pauseScreenPresenter.Exit()
+                            _pausePresenter.Exit()
                             );
-                    await _gameScreenPresenter.ShowState();
+                    await _gamePresenter.ShowState();
                     _inputSystemService.SwitchToPlayerCar();
                     break;
                 }
 
                 case GameModuleStates.UpgradePopup:
                 {
-                    await _gameScreenPresenter.HideState();
+                    await _gamePresenter.HideState();
                     await _upgradePopupPresenter.Enter(null);
                     _inputSystemService.SwitchToUI();
                     break;
@@ -101,28 +101,28 @@ namespace Modules.Base.DeliveryTycoon.Scripts
 
                 case GameModuleStates.Pause:
                 {
-                    await _gameScreenPresenter.HideState();
-                    await _pauseScreenPresenter.Enter(null);
+                    await _gamePresenter.HideState();
+                    await _pausePresenter.Enter(null);
                     _inputSystemService.SwitchToUI();
                     break;
                 }
             }
 
             await UniTask.WaitForEndOfFrame();
-            _gameModuleModel.ReleaseSemaphoreSlim();
+            _gameModel.ReleaseSemaphoreSlim();
         }
 
         private void RunNewScreen(ModulesMap screen)
         {
             _moduleCompletionSource.TrySetResult(true);
-            _screenStateMachine.RunScreen(screen);
+            _screenStateMachine.RunModule(screen);
         }
 
         public void Dispose()
         {
-            _gameScreenPresenter?.Dispose();
-            _splashScreenPresenter?.Dispose();
-            _gameModuleModel?.Dispose();
+            _gamePresenter?.Dispose();
+            _splashPresenter?.Dispose();
+            _gameModel?.Dispose();
             _disposables.Dispose();
         }
     }

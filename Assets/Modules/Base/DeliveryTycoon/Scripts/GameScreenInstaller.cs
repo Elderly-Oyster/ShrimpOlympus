@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using CodeBase.Core.Modules.Installer;
 using CodeBase.Core.UI;
+using CodeBase.Services.SceneInstallerService;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.NPCCars;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player;
@@ -88,10 +88,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private static void RegisterMvp(IContainerBuilder builder)
         {
             builder.Register<GameModuleController>(Lifetime.Singleton);
-            builder.Register<GameScreenPresenter>(Lifetime.Singleton);
+            builder.Register<GamePresenter>(Lifetime.Singleton);
             builder.Register<UpgradePopupPresenter>(Lifetime.Singleton);
-            builder.Register<PauseScreenPresenter>(Lifetime.Singleton);
-            builder.Register<GameModuleModel>(Lifetime.Singleton);
+            builder.Register<PausePresenter>(Lifetime.Singleton);
+            builder.Register<GameModel>(Lifetime.Singleton);
         }
     }
 }

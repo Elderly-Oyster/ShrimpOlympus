@@ -2,7 +2,7 @@ using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeBase.Core.UI.Buttons
+namespace CodeBase.Core.UI.Widgets.Buttons
 {
     public class PulsatingButton : MonoBehaviour
     {

@@ -1,5 +1,4 @@
 using CodeBase.Core.Infrastructure;
-using CodeBase.Core.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems.Save;
 using Cysharp.Threading.Tasks;
@@ -7,9 +6,9 @@ using R3;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.PausePopup
 {
-    public class PauseScreenPresenter : IScreenPresenter
+    public class PausePresenter : IPresenter
     {
-        private readonly GameModuleModel _gameModuleModuleModel;
+        private readonly GameModel _gameModel;
         private readonly PauseView _pauseView;
         private readonly SaveSystem _saveSystem;
         private readonly ReactiveCommand<Unit> _onMainMenuButtonClickedCommand = new();
@@ -19,10 +18,10 @@ namespace Modules.Base.DeliveryTycoon.Scripts.PausePopup
         public ReactiveCommand<Unit> ExitPauseCommand { get; private set; } = new();
         public ReactiveCommand<ModulesMap> OpenNewModuleCommand { get; private set; } = new();
 
-        public PauseScreenPresenter(GameModuleModel gameModuleModuleModel, PauseView pauseView,
+        public PausePresenter(GameModel gameModel, PauseView pauseView,
             SaveSystem saveSystem)
         {
-            _gameModuleModuleModel = gameModuleModuleModel;
+            _gameModel = gameModel;
             _pauseView = pauseView;
             _saveSystem = saveSystem;
             
@@ -74,12 +73,12 @@ namespace Modules.Base.DeliveryTycoon.Scripts.PausePopup
         
         public void HideStateInstantly() => _pauseView.HideInstantly();
 
-        private async UniTask OnExitPauseCommand() => await _gameModuleModuleModel.ChangeState(GameModuleStates.Game);
+        private async UniTask OnExitPauseCommand() => await _gameModel.ChangeState(GameModuleStates.Game);
 
         public void Dispose()
         {
             _pauseView.Dispose();
-            _gameModuleModuleModel.Dispose();
+            _gameModel.Dispose();
             _disposables.Dispose();
         }
     }

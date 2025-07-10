@@ -1,6 +1,5 @@
 using System.Threading;
-using CodeBase.Core.Modules;
-using CodeBase.Core.Modules.MVP;
+using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems.Save;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
@@ -13,7 +12,7 @@ using VContainer;
 
 namespace Modules.Base.DeliveryTycoon.Scripts
 {
-    public class GameModuleModel : IModuleModel
+    public class GameModel : IModel
     {
         private GameDataSystem _gameDataSystem;
         private SaveSystem _saveSystem;
@@ -37,7 +36,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             SubscribeToEvents();
         }
         
-        public GameModuleModel()
+        public GameModel()
         {
             StateMachine = new StateMachine<GameModuleStates, GameModuleStates>(GameModuleStates.Initial);
             ConfigureStateMachine();

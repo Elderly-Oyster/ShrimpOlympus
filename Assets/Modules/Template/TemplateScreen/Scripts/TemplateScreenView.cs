@@ -1,4 +1,3 @@
-using CodeBase.Core.Modules;
 using CodeBase.Core.UI.Views;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
