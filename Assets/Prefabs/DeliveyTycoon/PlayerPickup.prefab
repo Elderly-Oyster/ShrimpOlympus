@@ -192,9 +192,21 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9caa3d8a-6b2f-4e8e-8bad-6ede561bd9be
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 873b367c-8488-4be9-8f6b-96d84e9ea59d
+    m_ActionName: PlayerCar/ExitGame[/Keyboard/escape,/DualShock4GamepadHID/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 274fcf2d-d8bc-47b4-b0cd-036128baa788
+    m_ActionName: PlayerCar/OpenUpgradePopup[/Keyboard/tab]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e27fd102-aeb8-4728-92b2-09cb04c4025b
+    m_ActionName: UI/OpenSettings[/Keyboard/shift,/Keyboard/comma]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: PlayerCar
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &1949467351426374612
@@ -212,6 +224,7 @@ MonoBehaviour:
   parcelModel: {fileID: 1672384183835202944}
   acceleration: 10
   steering: 100
+  maxSpeed: 20
   IdleSound: {fileID: 8300000, guid: c502041826854664683f9914f63427b0, type: 3}
 --- !u!65 &4625336450613848166
 BoxCollider:
@@ -392,7 +405,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!1001 &705578700062294003
 PrefabInstance:

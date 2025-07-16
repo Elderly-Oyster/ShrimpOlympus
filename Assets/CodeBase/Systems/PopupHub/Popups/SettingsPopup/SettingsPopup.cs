@@ -43,9 +43,9 @@ namespace CodeBase.Systems.PopupHub.Popups.SettingsPopup
 
         private void SetInitialSettings()
         {
-            musicVolumeSlider.value = _audioSystem.MusicVolume * 100;
+            musicVolumeSlider.value = _audioSystem.MusicVolume;
             musicVolumeText.text = ((int)(_audioSystem.MusicVolume * 100)).ToString();
-            soundVolumeSlider.value = _audioSystem.SoundsVolume * 100;
+            soundVolumeSlider.value = _audioSystem.SoundsVolume;
             soundVolumeText.text = ((int)(_audioSystem.SoundsVolume * 100)).ToString();
         }
 

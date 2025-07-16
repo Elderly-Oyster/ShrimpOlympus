@@ -325,15 +325,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1055662074867636450, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
-      value: 0.6724368
+      value: 0.26666668
       objectReference: {fileID: 0}
     - target: {fileID: 1055662074867636450, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.g
-      value: 0.6724368
+      value: 0.69803923
       objectReference: {fileID: 0}
     - target: {fileID: 1055662074867636450, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.r
-      value: 0.6886792
+      value: 0.3647059
       objectReference: {fileID: 0}
     - target: {fileID: 1264369949816264011, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_text
@@ -461,15 +461,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5988041552077866060, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
-      value: 0.6724368
+      value: 0.26666668
       objectReference: {fileID: 0}
     - target: {fileID: 5988041552077866060, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.g
-      value: 0.6724368
+      value: 0.69803923
       objectReference: {fileID: 0}
     - target: {fileID: 5988041552077866060, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.r
-      value: 0.6886792
+      value: 0.3647059
       objectReference: {fileID: 0}
     - target: {fileID: 6347076942785668271, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
@@ -485,15 +485,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7863932159451389340, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.b
-      value: 0.6724368
+      value: 0.26666668
       objectReference: {fileID: 0}
     - target: {fileID: 7863932159451389340, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.g
-      value: 0.6724368
+      value: 0.69803923
       objectReference: {fileID: 0}
     - target: {fileID: 7863932159451389340, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: m_Colors.m_SelectedColor.r
-      value: 0.6886792
+      value: 0.3647059
       objectReference: {fileID: 0}
     - target: {fileID: 8635893348138656008, guid: f83c25ffaacfde645bd153b217a45ebd, type: 3}
       propertyPath: settingsPopupButton
@@ -550,9 +550,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  mainMenuView: {fileID: 862981117}
   screensCanvas: {fileID: 352199503}
   mainCamera: {fileID: 838462636}
+  mainMenuView: {fileID: 862981117}
 --- !u!4 &1461079802
 Transform:
   m_ObjectHideFlags: 0
