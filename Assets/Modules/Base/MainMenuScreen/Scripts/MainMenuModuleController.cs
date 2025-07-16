@@ -10,10 +10,10 @@ using UnityEngine.EventSystems;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuScreenPresenter : IModuleController
+    public class MainMenuModuleController : IModuleController
     {
         private readonly UniTaskCompletionSource<bool> _completionSource;
-        private readonly MainMenuModel _mainMenuModel;
+        private readonly MainMenuModuleModel _mainMenuModuleModel;
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly MainMenuView _mainMenuView;
         private readonly IPopupHub _popupHub;
@@ -27,13 +27,13 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<Unit> _tycoonCommand = new();
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
-        public MainMenuScreenPresenter(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
-            MainMenuModel mainMenuModel, MainMenuView mainMenuView,
+        public MainMenuModuleController(IScreenStateMachine screenStateMachine, IPopupHub popupHub,
+            MainMenuModuleModel mainMenuModuleModel, MainMenuView mainMenuView,
             AudioSystem audioSystem)
         {
             _completionSource = new UniTaskCompletionSource<bool>();
 
-            _mainMenuModel = mainMenuModel;
+            _mainMenuModuleModel = mainMenuModuleModel;
             _screenStateMachine = screenStateMachine;
             _mainMenuView = mainMenuView;
             _audioSystem = audioSystem;
@@ -81,7 +81,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void Dispose()
         {
             _mainMenuView.Dispose();
-            _mainMenuModel.Dispose();
+            _mainMenuModuleModel.Dispose();
         }
 
         private void OnConverterButtonClicked() => RunNewScreen(ModulesMap.Converter);

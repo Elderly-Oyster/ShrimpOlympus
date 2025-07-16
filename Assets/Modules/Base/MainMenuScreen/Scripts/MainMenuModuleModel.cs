@@ -2,9 +2,9 @@
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
-    public class MainMenuModel : IModel
+    public class MainMenuModuleModel : IModel
     {
-        public MainMenuModel() { }
+        public MainMenuModuleModel() { }
 
         public void Dispose() { }
     }

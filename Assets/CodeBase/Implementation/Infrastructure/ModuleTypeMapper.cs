@@ -26,7 +26,7 @@ namespace CodeBase.Implementation.Infrastructure
             {
                 { ModulesMap.StartGame, typeof(StartGameScreenPresenter) },
                 { ModulesMap.Converter, typeof(ConverterScreenPresenter) },
-                { ModulesMap.MainMenu, typeof(MainMenuScreenPresenter) },
+                { ModulesMap.MainMenu, typeof(MainMenuModuleController) },
                 { ModulesMap.TicTac, typeof(TicTacScreenPresenter) },
                 { ModulesMap.DeliveryTycoon, typeof(GameModuleController)}
             };

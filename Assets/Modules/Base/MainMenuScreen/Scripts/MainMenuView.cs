@@ -56,7 +56,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 .AddTo(this);
 
             tycoonButton.OnClickAsObservable()
-                .Subscribe(_ => tycoonCommand.Execute(default)).AddTo(this);
+                .Subscribe(_ => tycoonCommand.Execute(default))
+                .AddTo(this);
 
             settingsPopupButton.OnClickAsObservable()
                 .Subscribe(_ => settingsPopupCommand.Execute(default))
