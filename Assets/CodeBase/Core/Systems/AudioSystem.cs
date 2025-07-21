@@ -17,7 +17,6 @@ namespace CodeBase.Core.Systems
         [Header("Fade Parameters")]
         [SerializeField] private float fadeDuration = 1.0f;
         [Inject] private SaveSystem _saveSystem;
-        private float _soundsVolume;
         private float _musicVolume;
 
         public float MusicVolume
@@ -26,11 +25,7 @@ namespace CodeBase.Core.Systems
             private set => _musicVolume = value < 0 ? 0 : value;
         }
 
-        public float SoundsVolume
-        {
-            get => _soundsVolume;
-            private set => _soundsVolume = value;
-        }
+        public float SoundsVolume { get; private set; }
 
         public event Action<float> OnSoundsVolumeChanged;
 

@@ -35,6 +35,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void Initialize(bool isMusicOn)
         {
             musicToggle.SetIsOnWithoutNotify(isMusicOn);
+            _inputSystemService.SetFirstSelectedObject(tycoonButton);
         }
         
         public void SetupEventListeners(

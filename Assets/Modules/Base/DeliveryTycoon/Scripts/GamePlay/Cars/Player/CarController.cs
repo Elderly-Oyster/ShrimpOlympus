@@ -72,7 +72,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Cars.Player
                 _rigidbody.AddForce(moveForce, ForceMode.Acceleration);
 
             // Rotate only when moving forward or backward
-            if (moveInput.y != 0f)
+            if (moveInput.y != 0f && _rigidbody.velocity.magnitude > maxSpeed/10)
             {
                 float turn = moveInput.x * steering * Time.fixedDeltaTime;
                 Quaternion turnRotation = Quaternion.Euler(0f, turn, 0f);

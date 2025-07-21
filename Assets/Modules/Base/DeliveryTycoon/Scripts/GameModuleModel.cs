@@ -17,7 +17,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
         private GameDataSystem _gameDataSystem;
         private SaveSystem _saveSystem;
         
-        private ReactiveProperty<GameData> _gameData = new();
+        private readonly ReactiveProperty<GameData> _gameData = new();
         private CompositeDisposable _disposable = new();
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); 
         private InputSystemService _inputSystemService;
