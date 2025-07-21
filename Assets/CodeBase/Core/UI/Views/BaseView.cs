@@ -23,6 +23,7 @@ namespace CodeBase.Core.UI.Views
 
         public virtual async UniTask Show()
         {
+            Debug.Log("Show");
             SetActive(true);
             if (IsActive && AnimationElement)
                 await AnimationElement.Show();
@@ -32,6 +33,7 @@ namespace CodeBase.Core.UI.Views
 
         public virtual async UniTask Hide()
         {
+            Debug.Log("Hide");
             IsInteractable = false;
 
             if (IsActive && AnimationElement)

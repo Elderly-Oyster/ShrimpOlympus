@@ -7,6 +7,7 @@ namespace CodeBase.Core.Infrastructure
         MainMenu,
         Converter,
         TicTac,
+        Roguelike,
         DeliveryTycoon
     }
 }

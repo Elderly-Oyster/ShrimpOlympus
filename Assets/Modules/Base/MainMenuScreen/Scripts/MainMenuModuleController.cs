@@ -24,6 +24,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<Unit> _settingsPopupCommand = new();
         private readonly ReactiveCommand<Unit> _converterCommand = new();
         private readonly ReactiveCommand<Unit> _ticTacCommand = new();
+        private readonly ReactiveCommand<Unit> _roguelikeCommand = new();
         private readonly ReactiveCommand<Unit> _tycoonCommand = new();
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
@@ -47,6 +48,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _secondPopupCommand.Subscribe(_ => OnSecondPopupButtonClicked());
             _settingsPopupCommand.Subscribe(_ => OnSettingsPopupButtonClicked());
             _converterCommand.Subscribe(_ => OnConverterButtonClicked());
+            _roguelikeCommand.Subscribe(_ => OnRoguelikeButtonClicked());
             _ticTacCommand.Subscribe(_ => OnTicTacButtonClicked());
             _tycoonCommand.Subscribe(_ => OnTycoonButtonClicked());
             _toggleSoundCommand.Subscribe(OnSoundToggled);
@@ -61,6 +63,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 _converterCommand,
                 _ticTacCommand,
                 _tycoonCommand,
+                _roguelikeCommand,
                 _settingsPopupCommand,
                 _secondPopupCommand,
                 _toggleSoundCommand
@@ -87,6 +90,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private void OnConverterButtonClicked() => RunNewScreen(ModulesMap.Converter);
         private void OnTicTacButtonClicked() => RunNewScreen(ModulesMap.TicTac);
         private void OnTycoonButtonClicked() => RunNewScreen(ModulesMap.DeliveryTycoon);
+        private void OnRoguelikeButtonClicked() => RunNewScreen(ModulesMap.Roguelike);
         private void OnSettingsPopupButtonClicked() => _popupHub.OpenSettingsPopup();
         private void OnSecondPopupButtonClicked() => _popupHub.OpenSecondPopup();
         private void OnSoundToggled(bool isOn) => _audioSystem.SetMusicVolume(isOn ? 1 : 0);

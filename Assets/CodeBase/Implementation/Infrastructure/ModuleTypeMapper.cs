@@ -6,6 +6,7 @@ using CodeBase.Core.Patterns.Architecture.MVP;
 using Modules.Base.ConverterScreen.Scripts;
 using Modules.Base.DeliveryTycoon.Scripts;
 using Modules.Base.MainMenuScreen.Scripts;
+using Modules.Base.RoguelikeScreen.Scripts;
 using Modules.Base.StartGameScreen.Scripts;
 using Modules.Base.TicTacScreen.Scripts;
 using VContainer;
@@ -28,6 +29,7 @@ namespace CodeBase.Implementation.Infrastructure
                 { ModulesMap.Converter, typeof(ConverterScreenPresenter) },
                 { ModulesMap.MainMenu, typeof(MainMenuModuleController) },
                 { ModulesMap.TicTac, typeof(TicTacScreenPresenter) },
+                { ModulesMap.Roguelike, typeof(RoguelikeStatePresenter)},
                 { ModulesMap.DeliveryTycoon, typeof(GameModuleController)}
             };
         }

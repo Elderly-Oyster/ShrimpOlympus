@@ -14,17 +14,14 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
         [SerializeField] private Button tycoonButton;
+        [SerializeField] private Button roguelikeButton;
         [SerializeField] private Toggle musicToggle;
 
         private InputSystemService _inputSystemService;
         
-        public Button TycoonButton => tycoonButton;
-
         [Inject]
-        public void Construct(InputSystemService inputSystemService)
-        {
+        public void Construct(InputSystemService inputSystemService) => 
             _inputSystemService = inputSystemService;
-        }
 
         protected override void Awake()
         {
@@ -41,6 +38,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             ReactiveCommand<Unit> converterCommand,
             ReactiveCommand<Unit> ticTacCommand,
             ReactiveCommand<Unit> tycoonCommand,
+            ReactiveCommand<Unit> roguelikeCommand,
             ReactiveCommand<Unit> settingsPopupCommand,
             ReactiveCommand<Unit> secondPopupCommand,
             ReactiveCommand<bool> soundToggleCommand)
@@ -57,6 +55,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
             tycoonButton.OnClickAsObservable()
                 .Subscribe(_ => tycoonCommand.Execute(default))
+                .AddTo(this);
+            
+            roguelikeButton.OnClickAsObservable()
+                .Subscribe(_ => roguelikeCommand.Execute(default))
                 .AddTo(this);
 
             settingsPopupButton.OnClickAsObservable()
