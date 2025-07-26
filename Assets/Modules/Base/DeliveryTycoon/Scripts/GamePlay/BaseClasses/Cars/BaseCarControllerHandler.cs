@@ -1,17 +1,16 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Modules.Base.DeliveryTycoon.Scripts.DataSaving;
 using Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem;
-using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.CurrencyService;
 using Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService;
+using static Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars.BaseCarControllerOperations;
 
 namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars
 {
     public class BaseCarControllerHandler : 
-        IRequestHandler<BaseCarControllerOperations.MoneyObtainedCommand>,
-        IRequestHandler<BaseCarControllerOperations.ExperienceObtained>
+        IRequestHandler<MoneyObtainedCommand>,
+        IRequestHandler<ExperienceObtained>
     {
         private readonly CurrencyService _currencyService;
         private readonly GameDataSystem _gameDataSystem;
@@ -24,14 +23,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars
             _levelService = levelService;
         }
         
-        public Task<Unit> Handle(BaseCarControllerOperations.MoneyObtainedCommand request, CancellationToken cancellationToken)
+        public Task Handle(MoneyObtainedCommand request, CancellationToken cancellationToken)
         {
             _currencyService.AddMoney(request.Amount);
             _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
             return Task.FromResult(Unit.Value);
         }
 
-        public Task<Unit> Handle(BaseCarControllerOperations.ExperienceObtained request, CancellationToken cancellationToken)
+        public Task Handle(ExperienceObtained request, CancellationToken cancellationToken)
         {
             _levelService.GetExperience(request.Experience);
             _gameDataSystem.SetExperience(_levelService.Experience);

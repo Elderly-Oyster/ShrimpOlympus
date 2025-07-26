@@ -23,7 +23,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         private List<ContainerHolder> _containerHolders;
         private List<ParcelType> _parcelTypesForContainersToBeBought = new();
 
-        private Mediator _mediator;
+        private IMediator _mediator;
         private LoadingServiceProvider _loadingServiceProvider;
         
         private GameObject _cachedContainerModel;
@@ -36,7 +36,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         public Observable<float> WarmUpProgress => _warmUpProgress;
 
         [Inject]
-        public void Construct(Mediator mediator, 
+        public void Construct(IMediator mediator, 
             LoadingServiceProvider loadingServiceProvider,
             List<ContainerHolder> containerHolders)
         {

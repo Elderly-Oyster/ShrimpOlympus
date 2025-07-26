@@ -21,7 +21,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Managers.ContainerManager
         }
 
 
-        public Task<Unit> Handle(AddNewContainerCommand request, CancellationToken cancellationToken)
+        public Task Handle(AddNewContainerCommand request, CancellationToken cancellationToken)
         {
             ReceiverManager.UpdateReceiversTypes(request.ContainerHolders);
             Debug.Log("ContainerManagerHolder " + request.ContainerHolders.Count);

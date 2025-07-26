@@ -19,7 +19,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.DataSaving.GameDataSystem
             _gameDataSystem = gameDataSystem;
         }
         
-        public Task<Unit> Handle(LoadDataCommand request, CancellationToken cancellationToken)
+        public Task Handle(LoadDataCommand request, CancellationToken cancellationToken)
         {
            _gameManager.SendGameData(_gameDataSystem.GameDataProperty.CurrentValue);
            return Task.FromResult(Unit.Value);

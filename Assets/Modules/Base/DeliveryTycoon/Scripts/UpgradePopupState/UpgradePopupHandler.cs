@@ -32,30 +32,33 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
             _containerManager = containerManager;
         }
 
-        public Task<Unit> Handle(UpgradePopupOperations.ContainerBoughtCommand request, CancellationToken cancellationToken)
+        public Task Handle(UpgradePopupOperations.ContainerBoughtCommand request, CancellationToken cancellationToken)
         {
             _currencyService.SubtractMoney(request.ContainerCost);
             _containerManager.StartWarmUpOfContainer();
             _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
-            return Task.FromResult(Unit.Value);
+            
+            return Task.CompletedTask;
         }
 
-        public Task<Unit> Handle(UpgradePopupOperations.CompanyPromotedCommand request, CancellationToken cancellationToken)
+        public Task Handle(UpgradePopupOperations.CompanyPromotedCommand request, CancellationToken cancellationToken)
         {
             _currencyService.SubtractMoney(request.PromotionCost);
             _receiverManager.UpdateMaxNumberOfReceivers();
             _gameDataSystem.SetMaxNumberOfOrdersData(_receiverManager.MaxDemandingReceivers);
             _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
-            return Task.FromResult(Unit.Value);
+            
+            return Task.CompletedTask;
         }
 
-        public Task<Unit> Handle(UpgradePopupOperations.CapacityIncreasedCommand request, CancellationToken cancellationToken)
+        public Task Handle(UpgradePopupOperations.CapacityIncreasedCommand request, CancellationToken cancellationToken)
         {
             _currencyService.SubtractMoney(request.CapacityUpgradeCost);
             _carController.UpdateCarCapacity();
             _gameDataSystem.SetCapacityData(_carController.Capacity);
             _gameDataSystem.SetMoneyData(_currencyService.Money.CurrentValue);
-            return Task.FromResult(Unit.Value);
+            
+            return Task.CompletedTask;
         }
     }
 }
