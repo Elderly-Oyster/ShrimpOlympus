@@ -51,26 +51,35 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             var loggerFactory = new LoggerFactory();
             builder.RegisterInstance<ILoggerFactory>(loggerFactory);
 
+            builder.RegisterInstance(config);
+            
+            //MediatR.Licensing.LicenseAccessor
             var mediatRAssembly = typeof(Mediator).Assembly;
             var licenseAccessorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseAccessor")
                 ?? throw new InvalidOperationException("Не найден тип LicenseAccessor в MediatR");
+            
+            var licenseValidatorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseValidator") 
+                                       ?? throw new InvalidOperationException("Не найден тип LicenseValidator в MediatR");
 
-            builder.Register(resolver =>
+            builder.Register(licenseValidatorType, Lifetime.Singleton);
+
+            builder.Register(licenseAccessorType, Lifetime.Singleton);
+            
+            /*builder.Register(resolver =>
             {
                 var ctor = licenseAccessorType.GetConstructor(new[] { typeof(MediatRServiceConfiguration), typeof(ILoggerFactory) })
                     ?? throw new InvalidOperationException("Не найден конструктор LicenseAccessor");
                 return ctor.Invoke(new object[] { config, loggerFactory });
-            }, Lifetime.Singleton).As(licenseAccessorType);
+            }, Lifetime.Singleton).As(licenseAccessorType);*/
 
             builder.Register<VContainerServiceProvider>(Lifetime.Singleton).As<IServiceProvider>();
 
-            builder.Register(resolver => new Mediator(resolver.Resolve<IServiceProvider>()), Lifetime.Singleton)
+            builder.Register(resolver => 
+                    new Mediator(resolver.Resolve<IServiceProvider>()), Lifetime.Singleton)
                 .As<IMediator>();
 
-            foreach (var assembly in assemblies)
-            {
+            foreach (var assembly in assemblies) 
                 RegisterMediatRHandlers(builder, assembly);
-            }
         }
 
         private static void RegisterMediatRHandlers(IContainerBuilder builder, Assembly assembly)

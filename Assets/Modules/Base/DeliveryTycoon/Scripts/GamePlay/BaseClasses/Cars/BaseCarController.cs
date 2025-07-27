@@ -16,14 +16,14 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.BaseClasses.Cars
         private readonly List<Parcel> _parcels = new();
         
         private readonly ReactiveProperty<int> _experience = new();
-        private Mediator _mediator;
+        private IMediator _mediator;
         
         public ReadOnlyReactiveProperty<int> Experience => _experience;
 
         public int Capacity => _capacity;
 
         [Inject]
-        public void Construct(Mediator mediator) => _mediator = mediator;
+        public void Construct(IMediator mediator) => _mediator = mediator;
 
         public void Initialize(int capacity)
         {

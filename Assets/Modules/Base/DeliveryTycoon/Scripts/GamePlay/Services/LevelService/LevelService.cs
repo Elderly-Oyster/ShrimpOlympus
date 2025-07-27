@@ -14,10 +14,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
         private float _experienceNeededForNextLevel;
         private int _numberOfUnlockedUpgrades;
         private int _experienceForProgressBar;
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
         private readonly Subject<int> _levelSubject = new();
         private readonly Subject<float> _experienceSubject = new();
-        private int _experience;
 
         private const float ExperienceMultiplier = 0.5F;
         private const int BaseExperienceForLevel = 100;
@@ -25,18 +24,15 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
         public Observable<int> Level => _levelSubject.AsObservable();
         public Observable<float> ExperienceForProgressBar => _experienceSubject.AsObservable();
 
-        public int Experience => _experience;
+        public int Experience { get; private set; }
 
 
-        public LevelService(Mediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public LevelService(IMediator mediator) => _mediator = mediator;
 
         public void Initialize(int level, int experience, int numberOfFeatures)
         {
             _level = level;
-            _experience = experience;
+            Experience = experience;
             _numberOfUnlockedUpgrades = numberOfFeatures;
             SetExperienceForLevel(_level);
         }
@@ -44,8 +40,8 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
         public void GetExperience(int experience)
         {
             Debug.Log("GetExperience");
-            _experience += experience;
-            CalculateExperienceForProgressBar(_experience);
+            Experience += experience;
+            CalculateExperienceForProgressBar(Experience);
             CheckForLevelUp();
         }
 
@@ -66,13 +62,13 @@ namespace Modules.Base.DeliveryTycoon.Scripts.GamePlay.Services.LevelService
             await _mediator.Send(new LevelServiceOperations.LevelUpCommand(_level));
             SetExperienceForLevel(_level);
             CheckToUnlockNewUpgrade(_level);
-            _experience = 0;
-            CalculateExperienceForProgressBar(_experience);
+            Experience = 0;
+            CalculateExperienceForProgressBar(Experience);
         }
 
         private void CheckForLevelUp()
         {
-            if (_experience >= _experienceNeededForNextLevel)
+            if (Experience >= _experienceNeededForNextLevel)
                 LevelUp();
         }
 

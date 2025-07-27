@@ -18,7 +18,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
         private readonly GameModel _gameModel;
         private TaskCompletionSource<bool> _screenCompletionSource;
         private readonly GameDataSystem _gameDataSystem;
-        private readonly Mediator _mediator;
+        private readonly IMediator _mediator;
         private readonly CompositeDisposable _disposables = new();
         
         private const int BaseUpgradesCount = 120;
@@ -34,7 +34,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts.UpgradePopupState
         private readonly ReactiveCommand<Unit> _onAddCapacityCommand = new();
         
         public UpgradePopupPresenter(UpgradePopupView upgradePopupView, GameModel gameModel,
-            GameDataSystem gameDataSystem, Mediator mediator)
+            GameDataSystem gameDataSystem, IMediator mediator)
         {
             _upgradePopupView = upgradePopupView;
             _gameModel = gameModel;
