@@ -27,10 +27,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                 return result ?? Array.CreateInstance(elementType, 0);
             }
 
-            try
-            {
-                return _resolver.Resolve(serviceType);
-            }
+            try { return _resolver.Resolve(serviceType); }
             catch (VContainerException ex)
             {
                 Debug.LogError($"VContainer не смог разрешить {serviceType}: {ex.Message}");
@@ -62,15 +59,7 @@ namespace Modules.Base.DeliveryTycoon.Scripts
                                        ?? throw new InvalidOperationException("Не найден тип LicenseValidator в MediatR");
 
             builder.Register(licenseValidatorType, Lifetime.Singleton);
-
             builder.Register(licenseAccessorType, Lifetime.Singleton);
-            
-            /*builder.Register(resolver =>
-            {
-                var ctor = licenseAccessorType.GetConstructor(new[] { typeof(MediatRServiceConfiguration), typeof(ILoggerFactory) })
-                    ?? throw new InvalidOperationException("Не найден конструктор LicenseAccessor");
-                return ctor.Invoke(new object[] { config, loggerFactory });
-            }, Lifetime.Singleton).As(licenseAccessorType);*/
 
             builder.Register<VContainerServiceProvider>(Lifetime.Singleton).As<IServiceProvider>();
 
