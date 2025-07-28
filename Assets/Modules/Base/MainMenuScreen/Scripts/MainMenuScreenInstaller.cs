@@ -1,4 +1,5 @@
-﻿using CodeBase.Services.SceneInstallerService;
+﻿using CodeBase.Core;
+using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -13,6 +14,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
         {
             base.RegisterSceneDependencies(builder);
 
+            builder.AddMediatR(typeof(MainMenuHandler).Assembly);
             builder.RegisterComponent(mainMenuView).As<MainMenuView>();
             builder.Register<MainMenuModuleController>(Lifetime.Singleton);
             builder.Register<MainMenuModuleModel>(Lifetime.Singleton);

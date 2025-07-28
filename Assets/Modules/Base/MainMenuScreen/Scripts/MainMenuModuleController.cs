@@ -1,17 +1,30 @@
-﻿using CodeBase.Core.Infrastructure;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Infrastructure.Modules;
-using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.PopupHub;
 using CodeBase.Services;
 using Cysharp.Threading.Tasks;
+using MediatR;
 using R3;
-using UnityEngine.EventSystems;
+using UnityEngine;
+using VContainer;
+using Unit = R3.Unit;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
+    public class MainMenuRequest : IRequest<string> { }
+
+    public class MainMenuHandler : IRequestHandler<MainMenuRequest, string>
+    {
+        public Task<string> Handle(MainMenuRequest request, CancellationToken cancellationToken) => 
+            Task.FromResult("MainMenu Handler Invoked!");
+    }
+    
     public class MainMenuModuleController : IModuleController
     {
+        [Inject] private IMediator _mediator;
         private readonly UniTaskCompletionSource<bool> _completionSource;
         private readonly MainMenuModuleModel _mainMenuModuleModel;
         private readonly IScreenStateMachine _screenStateMachine;
@@ -54,6 +67,9 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Enter(object param)
         {
+            var result = await _mediator.Send(new MainMenuRequest()); 
+            Debug.Log($"MediatR request result: {result}");
+            
             _mainMenuView.Initialize(isMusicOn: _audioSystem.MusicVolume != 0);
             _mainMenuView.HideInstantly();
 
