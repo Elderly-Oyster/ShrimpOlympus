@@ -30,7 +30,7 @@ namespace CodeBase.Core
             try { return _resolver.Resolve(serviceType); }
             catch (VContainerException ex)
             {
-                Debug.LogError($"VContainer не смог разрешить {serviceType}: {ex.Message}");
+                Debug.LogError($"VContainer could not resolve {serviceType}: {ex.Message}");
                 return null;
             }
         }
@@ -43,33 +43,36 @@ namespace CodeBase.Core
 
         public static void AddMediatR(this IContainerBuilder builder, params Assembly[] assemblies)
         {
-            var config = new MediatRServiceConfiguration { LicenseKey = LicenseKey };
-
-            var loggerFactory = new LoggerFactory();
-            builder.RegisterInstance<ILoggerFactory>(loggerFactory);
-
-            builder.RegisterInstance(config);
-            
-            //MediatR.Licensing.LicenseAccessor
-            var mediatRAssembly = typeof(Mediator).Assembly;
-            var licenseAccessorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseAccessor")
-                ?? throw new InvalidOperationException("Не найден тип LicenseAccessor в MediatR");
-            
-            var licenseValidatorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseValidator") 
-                                       ?? throw new InvalidOperationException("Не найден тип LicenseValidator в MediatR");
-
-            builder.Register(licenseAccessorType, Lifetime.Singleton);
-            builder.Register(licenseValidatorType, Lifetime.Singleton);
-
+            RegisterMediatRLicense();
 
             builder.Register<VContainerServiceProvider>(Lifetime.Singleton).As<IServiceProvider>();
-
             builder.Register(resolver => 
                     new Mediator(resolver.Resolve<IServiceProvider>()), Lifetime.Singleton)
                 .As<IMediator>();
 
             foreach (var assembly in assemblies) 
                 RegisterMediatRHandlers(builder, assembly);
+            return;
+
+            void RegisterMediatRLicense()
+            {
+                var config = new MediatRServiceConfiguration { LicenseKey = LicenseKey };
+                builder.RegisterInstance(config);
+
+                var loggerFactory = new LoggerFactory();
+                builder.RegisterInstance<ILoggerFactory>(loggerFactory);
+
+            
+                var mediatRAssembly = typeof(Mediator).Assembly;
+                var licenseAccessorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseAccessor")
+                                          ?? throw new InvalidOperationException("The LicenseAccessor type was not found in MediatR");
+                builder.Register(licenseAccessorType, Lifetime.Singleton);
+
+            
+                var licenseValidatorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseValidator") 
+                                           ?? throw new InvalidOperationException("The LicenseValidator type was not found in MediatR");
+                builder.Register(licenseValidatorType, Lifetime.Singleton);
+            }
         }
 
         private static void RegisterMediatRHandlers(IContainerBuilder builder, Assembly assembly)
