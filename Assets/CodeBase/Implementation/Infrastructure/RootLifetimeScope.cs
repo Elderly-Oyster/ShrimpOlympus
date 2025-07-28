@@ -19,8 +19,6 @@ namespace CodeBase.Implementation.Infrastructure
         [SerializeField] private UniversalAppEventsService universalAppEventsService;
         [SerializeField] private AudioSystem audioSystem;
         
-        private const string ConfigAssetPath = "Configuration/appsettings";
-
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterServices(builder);
