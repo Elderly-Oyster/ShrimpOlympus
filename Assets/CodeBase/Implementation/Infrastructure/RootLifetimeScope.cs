@@ -2,6 +2,7 @@ using CodeBase.Core.Systems;
 using CodeBase.Core.Systems.Save;
 using CodeBase.Services;
 using CodeBase.Services.EventMediator;
+using CodeBase.Services.Input;
 using CodeBase.Services.LongInitializationServices;
 using CodeBase.Services.SceneInstallerService;
 using CodeBase.Systems;

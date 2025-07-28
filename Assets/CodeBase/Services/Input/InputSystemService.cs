@@ -9,7 +9,7 @@ using UnityEngine.UI;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
-namespace CodeBase.Services
+namespace CodeBase.Services.Input
 {
     /// <summary>
     /// A service responsible for creating and managing the InputSystem_Actions instance and controlling Action Maps.
