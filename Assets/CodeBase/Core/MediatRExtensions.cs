@@ -5,10 +5,10 @@ using System.Reflection;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using VContainer;
 using UnityEngine;
+using VContainer;
 
-namespace Modules.Base.DeliveryTycoon.Scripts
+namespace CodeBase.Core
 {
     public class VContainerServiceProvider : IServiceProvider
     {
@@ -58,8 +58,9 @@ namespace Modules.Base.DeliveryTycoon.Scripts
             var licenseValidatorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseValidator") 
                                        ?? throw new InvalidOperationException("Не найден тип LicenseValidator в MediatR");
 
-            builder.Register(licenseValidatorType, Lifetime.Singleton);
             builder.Register(licenseAccessorType, Lifetime.Singleton);
+            builder.Register(licenseValidatorType, Lifetime.Singleton);
+
 
             builder.Register<VContainerServiceProvider>(Lifetime.Singleton).As<IServiceProvider>();
 
