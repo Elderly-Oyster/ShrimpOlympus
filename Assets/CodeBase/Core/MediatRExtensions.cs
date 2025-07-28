@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using UnityEngine;
@@ -38,7 +39,6 @@ namespace CodeBase.Core
 
     public static class MediatRExtensions
     {
-        private const string LicenseKey = "eyJhbGciOiJSUzI1NiIsImtpZCI6Ikx1Y2t5UGVubnlTb2Z0d2FyZUxpY2Vuc2VLZXkvYmJiMTNhY2I1OTkwNGQ4OWI0Y2IxYzg1ZjA4OGNjZjkiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2x1Y2t5cGVubnlzb2Z0d2FyZS5jb20iLCJhdWQiOiJMdWNreVBlbm55U29mdHdhcmUiLCJleHAiOiIxNzg0OTM3NjAwIiwiaWF0IjoiMTc1MzQ0NDcyOCIsImFjY291bnRfaWQiOiIwMTk4NDE3MWUxMTM3MzE2YTFhY2Q5NmQxMGEzMmU0NiIsImN1c3RvbWVyX2lkIjoiY3RtXzAxazEwcTZmdHJocHJobXFqNWJheDNjeW5yIiwic3ViX2lkIjoiLSIsImVkaXRpb24iOiIwIiwidHlwZSI6IjIifQ.U2KZrYT6aLpeIG615WYnNIesM_o64kdibfNkMkyeuFmFdupuSvGVPMsgpK4-U1I_0T89VbgsZ8bBJ3nLEyXqdTOrTDCauGJubghRs_PFbLjd5MXG6vnmSF8BKkc1-zADIGDdq2KXo7ukxuohtQP1vZOyuyiwlRR9E4LjQVKLP_w9v9-iSOukO5woMOSvo_1yTLMTcb0B5xRfgqM0Fn3B9lp0qO_rubk7kDbGJkWLfsesYyq-r80t3k_hrY-JHt3FgnseEuasj9fT4sfpXLr9OIlvKy62hHCC-av3qPP8e4HAB56LXRDUwHWgIGYWVRVYyBweI1l3N17lVo87QoqKxw";
         private static readonly Dictionary<Assembly, Type[]> HandlerTypesCache = new();
 
         public static void AddMediatR(this IContainerBuilder builder, params Assembly[] assemblies)
@@ -52,22 +52,27 @@ namespace CodeBase.Core
 
             foreach (var assembly in assemblies) 
                 RegisterMediatRHandlers(builder, assembly);
+            
             return;
 
             void RegisterMediatRLicense()
             {
-                var config = new MediatRServiceConfiguration { LicenseKey = LicenseKey };
-                builder.RegisterInstance(config);
-
+                builder.Register(resolver =>
+                {
+                    var configuration = resolver.Resolve<IConfiguration>();
+                    const string licenseKeySection = "MediatR:LicenseKey";
+                    var licenseKey = configuration.GetValue<string>(licenseKeySection)
+                                     ?? throw new InvalidOperationException($"License key not found in section '{licenseKeySection}'");
+                    return new MediatRServiceConfiguration { LicenseKey = licenseKey };
+                }, Lifetime.Singleton);
+                
                 var loggerFactory = new LoggerFactory();
                 builder.RegisterInstance<ILoggerFactory>(loggerFactory);
-
-            
+                
                 var mediatRAssembly = typeof(Mediator).Assembly;
                 var licenseAccessorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseAccessor")
                                           ?? throw new InvalidOperationException("The LicenseAccessor type was not found in MediatR");
                 builder.Register(licenseAccessorType, Lifetime.Singleton);
-
             
                 var licenseValidatorType = mediatRAssembly.GetType("MediatR.Licensing.LicenseValidator") 
                                            ?? throw new InvalidOperationException("The LicenseValidator type was not found in MediatR");
@@ -81,10 +86,7 @@ namespace CodeBase.Core
             {
                 handlerTypesArray = assembly.GetTypes()
                     .Where(t => !t.IsAbstract && !t.IsInterface &&
-                                t.GetInterfaces().Any(i => i.IsGenericType &&
-                                                           (i.GetGenericTypeDefinition() == typeof(IRequestHandler<>) ||
-                                                            i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>) ||
-                                                            i.GetGenericTypeDefinition() == typeof(INotificationHandler<>))))
+                                t.GetInterfaces().Any(IsMediatRHandlerInterface))
                     .ToArray();
                 HandlerTypesCache[assembly] = handlerTypesArray;
             }
@@ -92,14 +94,21 @@ namespace CodeBase.Core
             foreach (var handlerType in handlerTypesArray)
             {
                 var interfaces = handlerType.GetInterfaces()
-                    .Where(i => i.IsGenericType &&
-                                (i.GetGenericTypeDefinition() == typeof(IRequestHandler<>) ||
-                                 i.GetGenericTypeDefinition() == typeof(IRequestHandler<,>) ||
-                                 i.GetGenericTypeDefinition() == typeof(INotificationHandler<>)))
+                    .Where(IsMediatRHandlerInterface)
                     .ToArray();
 
                 foreach (var handlerInterface in interfaces) 
                     builder.Register(handlerType, Lifetime.Transient).As(handlerInterface);
+            }
+
+            return;
+
+            static bool IsMediatRHandlerInterface(Type type)
+            {
+                return type.IsGenericType &&
+                       (type.GetGenericTypeDefinition() == typeof(IRequestHandler<>) ||
+                        type.GetGenericTypeDefinition() == typeof(IRequestHandler<,>) ||
+                        type.GetGenericTypeDefinition() == typeof(INotificationHandler<>));
             }
         }
     }

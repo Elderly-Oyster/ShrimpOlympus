@@ -7,6 +7,7 @@ using CodeBase.Services.LongInitializationServices;
 using CodeBase.Services.SceneInstallerService;
 using CodeBase.Systems;
 using CodeBase.Systems.InputSystem;
+using Microsoft.Extensions.Configuration;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -18,7 +19,7 @@ namespace CodeBase.Implementation.Infrastructure
     {
         [SerializeField] private UniversalAppEventsService universalAppEventsService;
         [SerializeField] private AudioSystem audioSystem;
-
+        
         protected override void Configure(IContainerBuilder builder)
         {
             RegisterServices(builder);
@@ -30,6 +31,17 @@ namespace CodeBase.Implementation.Infrastructure
             builder.Register<ModuleStateMachine>(Lifetime.Singleton)
                 .AsImplementedInterfaces()
                 .AsSelf();
+            
+            RegisterConfiguration(builder);
+        }
+
+        private static void RegisterConfiguration(IContainerBuilder builder)
+        {
+            IConfiguration configuration = new ConfigurationBuilder()
+                .SetBasePath(Application.dataPath + "/Configuration")
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .Build();
+            builder.RegisterInstance(configuration);
         }
 
         private void RegisterSystems(IContainerBuilder builder)
@@ -66,7 +78,7 @@ namespace CodeBase.Implementation.Infrastructure
             builder.Register<LoadingServiceProvider>(Lifetime.Singleton);
         }
 
-        private void RegisterLongInitializationService(IContainerBuilder builder)
+        private static void RegisterLongInitializationService(IContainerBuilder builder)
         {
             builder.Register<FirstLongInitializationService>(Lifetime.Singleton);
             builder.Register<SecondLongInitializationService>(Lifetime.Singleton);
