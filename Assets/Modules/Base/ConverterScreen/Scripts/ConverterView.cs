@@ -1,9 +1,11 @@
 ﻿using System.Globalization;
 using CodeBase.Core.UI.Views;
+using CodeBase.Services.Input;
 using R3;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -16,6 +18,13 @@ namespace Modules.Base.ConverterScreen.Scripts
         [SerializeField] private Scrollbar amountScrollBar;
         [SerializeField] private Button exitButton;
 
+        private InputSystemService _inputSystemService;
+        
+        [Inject]
+        private void Construct(InputSystemService inputSystemService)
+        {
+            _inputSystemService = inputSystemService;
+        }
         
         protected override void Awake()
         {
@@ -41,8 +50,18 @@ namespace Modules.Base.ConverterScreen.Scripts
                 .Execute(targetCurrencyDropdown.options[index].text));
 
             amountScrollBar.onValueChanged.AddListener(handleAmountScrollBarChangedCommand.Execute);
-
-            exitButton.onClick.AddListener(() => backButtonCommand.Execute(default));
+            
+            exitButton.OnClickAsObservable()
+                .Subscribe(_ => backButtonCommand.Execute(default))
+                .AddTo(this);
+            
+            var escapePerformedObservable = 
+                _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
+            
+            escapePerformedObservable
+                .Where(_ => IsInteractable)
+                .Subscribe(_ => backButtonCommand.Execute(default))
+                .AddTo(this);
         }
 
         public float CurrentSourceAmount =>

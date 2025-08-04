@@ -15,15 +15,22 @@ namespace Modules.Base.ConverterScreen.Scripts
         private readonly ConverterView _converterView;
         private readonly DynamicParticleController _dynamicParticleController;
         private readonly UniTaskCompletionSource<bool> _completionSource;
+
+        private readonly ReactiveCommand<Unit> _backButtonCommand = new();
+        private readonly ReactiveCommand<string> _determineSourceCurrencyCommand = new();
+        private readonly ReactiveCommand<string> _determineTargetCurrencyCommand = new();
+        private readonly ReactiveCommand<string> _sourceAmountChangedCommand = new();
+        private readonly ReactiveCommand<string> _targetAmountChangedCommand = new();
+        private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new();
         
-        private readonly ReactiveCommand<string> _determineSourceCurrencyCommand = new ReactiveCommand<string>();
-        private readonly ReactiveCommand<string> _determineTargetCurrencyCommand = new ReactiveCommand<string>();
-        private readonly ReactiveCommand<string> _sourceAmountChangedCommand = new ReactiveCommand<string>();
-        private readonly ReactiveCommand<string> _targetAmountChangedCommand = new ReactiveCommand<string>();
-        private readonly ReactiveCommand<float> _handleAmountScrollBarChangedCommand = new ReactiveCommand<float>();
-        private readonly ReactiveCommand<Unit> _backButtonCommand = new ReactiveCommand<Unit>();
-
-
+        private readonly Dictionary<string, Currencies> _currencyToName = new()
+        {
+            { "EUR", Currencies.Eur },
+            { "USD", Currencies.Usd },
+            { "PLN", Currencies.Pln },
+            { "PR", Currencies.Pr }
+        };
+        
         public ConverterScreenPresenter(IScreenStateMachine screenStateMachine, ConverterModel converterModel, 
             ConverterView converterView, DynamicParticleController dynamicParticleController)
         {
@@ -63,14 +70,6 @@ namespace Modules.Base.ConverterScreen.Scripts
         public async UniTask Execute() => await _completionSource.Task;
 
         public async UniTask Exit() => await _converterView.Hide();
-
-        private readonly Dictionary<string, Currencies> _currencyToName = new()
-        {
-            { "EUR", Currencies.Eur },
-            { "USD", Currencies.Usd },
-            { "PLN", Currencies.Pln },
-            { "PR", Currencies.Pr }
-        };
 
         private void DetermineSourceCurrency(string name)
         {

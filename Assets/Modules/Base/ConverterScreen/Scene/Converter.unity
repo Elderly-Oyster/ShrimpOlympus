@@ -266,9 +266,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  converterView: {fileID: 1601817687}
   screensCanvas: {fileID: 414013163}
   mainCamera: {fileID: 519420031}
+  converterView: {fileID: 1601817687}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,6 +476,10 @@ PrefabInstance:
       propertyPath: canvasGroup
       value: 
       objectReference: {fileID: 1601817686}
+    - target: {fileID: 4474734653127942602, guid: 8a5390bdd1badf742bc1b9fe7d21e7e2, type: 3}
+      propertyPath: <AnimationElement>k__BackingField
+      value: 
+      objectReference: {fileID: 1752488412}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -500,6 +504,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a88229c1d56649458657c022a37dc63a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1752488412 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5062243789545450104, guid: 8a5390bdd1badf742bc1b9fe7d21e7e2, type: 3}
+  m_PrefabInstance: {fileID: 1601817684}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d4c63c39374ea2977d276a9142466e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807

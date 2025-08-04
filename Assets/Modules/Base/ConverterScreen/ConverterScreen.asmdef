@@ -2,15 +2,16 @@
     "name": "ConverterScreen",
     "rootNamespace": "",
     "references": [
-        "UniTask",
+        "Core",
+        "Services",
+        "DynamicBackground",
+        "Unity.TextMeshPro",
+        "Unity.InputSystem",
         "VContainer",
         "R3.Unity",
-        "Core",
-        "Unity.TextMeshPro",
+        "UniTask",
         "DOTween.Modules",
-        "UniTask.DOTween",
-        "DynamicBackground",
-        "Services"
+        "UniTask.DOTween"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -1,6 +1,7 @@
 ﻿using CodeBase.Services.SceneInstallerService;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -12,7 +13,7 @@ namespace Modules.Base.ConverterScreen.Scripts
         {
             base.RegisterSceneDependencies(builder);
 
-            builder.RegisterInstance(converterView).As<ConverterView>();
+            builder.RegisterComponent(converterView).AsSelf();
             builder.Register<ConverterScreenPresenter>(Lifetime.Singleton);
             builder.Register<ConverterModel>(Lifetime.Singleton);
         }

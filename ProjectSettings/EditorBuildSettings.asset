@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Modules/Base/StartGameScreen/Scene/StartGame.unity
     guid: 2ccec45666a9743428ff3206922df110
   - enabled: 1
-    path: Assets/Modules/Base/MainMenuScreen/Scene/MainMenu.unity
+    path: Assets/Modules/Base/MainMenuScreen/Scenes/MainMenu.unity
     guid: 6c1b24bd33fa328499eebad74527aa27
   - enabled: 1
     path: Assets/Modules/Base/ConverterScreen/Scene/Converter.unity

@@ -1,6 +1,6 @@
 ﻿using CodeBase.Core.UI.Views;
-using CodeBase.Services;
 using CodeBase.Services.Input;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,30 +19,16 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         private InputSystemService _inputSystemService;
         
-        public Button TycoonButton => tycoonButton;
-
         [Inject]
         public void Construct(InputSystemService inputSystemService)
         {
             _inputSystemService = inputSystemService;
         }
-
-        protected override void Awake()
-        {
-            base.Awake();
-            HideInstantly();
-        }
-
-        public void Initialize(bool isMusicOn)
-        {
-            musicToggle.SetIsOnWithoutNotify(isMusicOn);
-            _inputSystemService.SetFirstSelectedObject(tycoonButton);
-        }
         
         public void SetupEventListeners(
-            ReactiveCommand<Unit> converterCommand,
-            ReactiveCommand<Unit> ticTacCommand,
-            ReactiveCommand<Unit> tycoonCommand,
+            ReactiveCommand<Unit> openConverterCommand,
+            ReactiveCommand<Unit> openTicTacCommand,
+            ReactiveCommand<Unit> openTycoonCommand,
             ReactiveCommand<Unit> settingsPopupCommand,
             ReactiveCommand<Unit> secondPopupCommand,
             ReactiveCommand<bool> soundToggleCommand)
@@ -50,15 +36,15 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _inputSystemService.SwitchToUI();
             
             converterButton.OnClickAsObservable()
-                .Subscribe(_ => converterCommand.Execute(default))
+                .Subscribe(_ => openConverterCommand.Execute(default))
                 .AddTo(this);
 
             ticTacButton.OnClickAsObservable()
-                .Subscribe(_ => ticTacCommand.Execute(default))
+                .Subscribe(_ => openTicTacCommand.Execute(default))
                 .AddTo(this);
 
             tycoonButton.OnClickAsObservable()
-                .Subscribe(_ => tycoonCommand.Execute(default))
+                .Subscribe(_ => openTycoonCommand.Execute(default))
                 .AddTo(this);
 
             settingsPopupButton.OnClickAsObservable()
@@ -72,6 +58,27 @@ namespace Modules.Base.MainMenuScreen.Scripts
             musicToggle.OnValueChangedAsObservable()
                 .Subscribe(_ => soundToggleCommand.Execute(musicToggle.isOn))
                 .AddTo(this);
+        }
+        
+        public override async UniTask Show()
+        {
+            //Example of logic: Work with tooltips system
+            // _controlsTooltipSystem.HideAllTooltips(); 
+            await base.Show();
+            
+            _inputSystemService.SwitchToUI();
+            OnScreenEnabled();
+        }
+        
+        public void InitializeSoundToggle(bool isMusicOn) => musicToggle.SetIsOnWithoutNotify(isMusicOn);
+
+        public void OnScreenEnabled()
+        {
+            _inputSystemService.SetFirstSelectedObject(converterButton);
+            
+            //Other logic. Showing tooltips for example
+            // _controlsTooltipSystem.ShowTooltip(SelectTooltipText, 
+            //     _inputSystemService.GetFullActionPath(_inputSystemService.InputActions.UI.Submit));
         }
     }
 }

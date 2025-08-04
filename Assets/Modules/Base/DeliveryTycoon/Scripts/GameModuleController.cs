@@ -1,7 +1,5 @@
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Infrastructure.Modules;
-using CodeBase.Core.Patterns.Architecture.MVP;
-using CodeBase.Services;
 using CodeBase.Services.Input;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.SplashScreen.Scripts;

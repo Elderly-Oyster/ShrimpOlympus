@@ -122,7 +122,8 @@ namespace CodeBase.Services.Input
 
             if (selectedObject == null)
             {
-                Debug.LogWarning("Selected object is null. Cannot set first selected object.");
+                Debug.LogWarning("Selected object is null.");
+                _eventSystem.SetSelectedGameObject(null);
                 return;
             }
 
@@ -151,12 +152,12 @@ namespace CodeBase.Services.Input
             }
 
             return Observable.FromEvent(
-                (Action<InputAction.CallbackContext> h) => action.started += h,
-                h => action.started -= h
+                (Action<InputAction.CallbackContext> h) => action.performed += h,
+                h => action.performed -= h
             ).Select(_ => Unit.Default); // Преобразуем в Unit для унификации
         }
 
-        //TODO Изучить
+        //TODO Изучить (заглянуть бы внутрь...) Это скрипт из коробки юнити
         // public static Observable<Unit> AsObservable(this UnityEngine.Events.UnityEvent unityEvent, CancellationToken cancellationToken = default)
         // {
         //     return Observable.FromEvent(h => new UnityAction(h), h => unityEvent.AddListener(h), h => unityEvent.RemoveListener(h), cancellationToken);

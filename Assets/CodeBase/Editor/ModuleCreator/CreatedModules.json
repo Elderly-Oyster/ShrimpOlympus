@@ -2,5 +2,7 @@
   "Assets/Modules/Base/GarageScreen",
   "Assets/Modules/Base/NewModuleScreen",
   "Assets/Modules/Base/NewModuleScreen",
-  "Assets/Modules/Base/AbramsScreen"
+  "Assets/Modules/Base/AbramsScreen",
+  "Assets/Modules/Base/NewModuleScreen",
+  "Assets/Modules/Test/NewModuleScreen"
 ]

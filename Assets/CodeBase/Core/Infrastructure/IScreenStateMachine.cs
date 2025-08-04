@@ -1,19 +1,20 @@
-﻿using CodeBase.Core.Patterns.Architecture.MVP;
+﻿using CodeBase.Core.Infrastructure.Modules;
 using Cysharp.Threading.Tasks;
 
 namespace CodeBase.Core.Infrastructure
 {
     public interface  IScreenStateMachine
     {
-        public IPresenter CurrentPresenter { get; }
+        public IModuleController CurrentModuleController { get; }
         
-        UniTaskVoid RunModule(ModulesMap modulesMap, object param = null);
+        UniTaskVoid RunModule(ModulesMap modulesMap, bool splashScreenRequired = false,
+            object param = null);
     }
     
-    public static class RootControllerExtension
+    public static class ScreenStateMachineExtension
     {
-        public static UniTaskVoid RunModel(this IScreenStateMachine self, ModulesMap modulesMap) => 
-            self.RunModule(modulesMap);
+        public static UniTaskVoid RunModule(this IScreenStateMachine self, bool splashScreenRequired,
+            ModulesMap modulesMap) 
+            => self.RunModule(modulesMap);
     }
 }
-

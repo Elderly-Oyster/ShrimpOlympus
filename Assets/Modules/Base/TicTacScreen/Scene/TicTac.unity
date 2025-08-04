@@ -250,9 +250,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  ticTacView: {fileID: 2097883547}
   screensCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
+  ticTacView: {fileID: 2097883547}
 --- !u!1 &1609517732
 GameObject:
   m_ObjectHideFlags: 0
@@ -396,6 +396,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7376980758423119674, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6c820e580c31846e1989471209632c06, type: 3}
     - target: {fileID: 8460049284147527158, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

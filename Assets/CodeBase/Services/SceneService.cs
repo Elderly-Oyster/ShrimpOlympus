@@ -48,7 +48,7 @@ namespace CodeBase.Services
         public void AddStaticAdditiveScene(AdditiveScenesMap sceneName) =>
             _staticModuleScenes.Add(sceneName.ToString());
 
-        public void AddActiveScene(string sceneName) => _activeModuleScenes.Add(sceneName);
+        public void AddModuleActiveScene(string sceneName) => _activeModuleScenes.Add(sceneName);
 
         public async UniTask LoadScenesForModule(ModulesMap modulesMap)
         {

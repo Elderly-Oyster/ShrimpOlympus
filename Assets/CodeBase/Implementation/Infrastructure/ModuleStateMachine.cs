@@ -2,7 +2,6 @@
 using System.Threading;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Infrastructure.Modules;
-using CodeBase.Core.Patterns.Architecture.MVP;
 using CodeBase.Services;
 using CodeBase.Services.SceneInstallerService;
 using Cysharp.Threading.Tasks;
@@ -25,23 +24,21 @@ namespace CodeBase.Implementation.Infrastructure
         private readonly SemaphoreSlim _semaphoreSlim = new(1, 1); 
         
         public ModulesMap CurrentModulesMap { get; private set; } = ModulesMap.None;
-        public IPresenter CurrentPresenter { get; private set; }
-
-        private IModuleController CurrentModuleController { get; set; }
+        public IModuleController CurrentModuleController { get; set; }
         
         public void Start() => RunModule(SceneManager.GetActiveScene().name);
 
         private void RunModule(string sceneName, object param = null)
         {
-            ModulesMap? screenModelMap = SceneNameToEnum(sceneName);
+            ModulesMap? moduleControllerMap = SceneNameToEnum(sceneName);
             
-            if (screenModelMap != null)
-                RunModule((ModulesMap)screenModelMap, param).Forget(); 
+            if (moduleControllerMap != null)
+                RunModule((ModulesMap)moduleControllerMap, splashScreenRequired: false, param).Forget(); 
             else
             {
-                _sceneService.AddActiveScene(sceneName);
+                _sceneService.AddModuleActiveScene(sceneName);
                 _sceneInstallerService.
-                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), false);
+                    CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
             }
         }
 
@@ -50,30 +47,38 @@ namespace CodeBase.Implementation.Infrastructure
         /// </summary>
         /// <param name="modulesMap">Type of the screen.</param>
         /// <param name="param">Parameters to pass to Presenter.</param>
-        public async UniTaskVoid RunModule(ModulesMap modulesMap, object param = null)
+        public async UniTaskVoid RunModule(ModulesMap modulesMap, bool splashScreenRequired = false, 
+            object param = null)
         {
-            if (CheckIsSameScreen(modulesMap))
+            if (CheckIsSameModule(modulesMap))
             {
-                Debug.LogWarning("⚠️ The same screen is already active.");
+                Debug.LogWarning("⚠️ The same module is already active.");
                 return;
             }
             
             await _semaphoreSlim.WaitAsync(); //Asynchronously waits to enter the SemaphoreSlim.
             try
             {
-                Debug.Log("currentScreenPresenter - " + modulesMap);
-                CurrentModulesMap = modulesMap;
-
-                await _sceneService.LoadScenesForModule(CurrentModulesMap);
+                // if (splashScreenRequired) _splashScreenPresenter.Activate(); TODO
+                await _sceneService.LoadScenesForModule(modulesMap);
                 await _sceneService.UnloadUnusedScenesAsync();
+                // if (splashScreenRequired) _splashScreenPresenter.Deactivate();
+
+                // Set the newly loaded module scene as active to handle lighting, etc.
+                // This ensures the module's scene becomes the main one.
+                var moduleScene = SceneManager.GetSceneByName(modulesMap.ToString());
+                if (moduleScene.IsValid())
+                    SceneManager.SetActiveScene(moduleScene);
+                else
+                    Debug.LogError($"Failed to set active scene for module {modulesMap}");
 
                 // creates children for the root installer
                 var sceneLifetimeScope =
                     _sceneInstallerService.CombineScenes(LifetimeScope.Find<RootLifetimeScope>(), true);
-
-                CurrentModuleController =
-                    _moduleTypeMapper.ResolveModuleController(CurrentModulesMap, sceneLifetimeScope.Container);
-
+                
+                CurrentModuleController = _moduleTypeMapper.ResolveModuleController(modulesMap, sceneLifetimeScope.Container);
+                CurrentModulesMap = modulesMap;
+                
                 _audioListenerService.EnsureAudioListenerExists(sceneLifetimeScope.Container);
 
                 await CurrentModuleController.Enter(param);
@@ -81,26 +86,25 @@ namespace CodeBase.Implementation.Infrastructure
                 await CurrentModuleController.Exit();
 
                 CurrentModuleController.Dispose();
-
                 sceneLifetimeScope.Dispose(); // only children lifeTimeScopes are destroyed
             }
-            // catch (Exception e)
-            // {
-            //     Debug.LogError("Nothing works, good luck figuring out what's wrong. Here is your beloved exception: " + e); 
-            // }
             finally
             {
-                _semaphoreSlim.Release(); 
+                _semaphoreSlim.Release();
             }
         }
         
         /// <summary>
         /// Checks if the requested screen is already active.
         /// </summary>
-        private bool CheckIsSameScreen(ModulesMap screenViewModelMap) => 
+        private bool CheckIsSameModule(ModulesMap screenViewModelMap) => 
             screenViewModelMap == CurrentModulesMap;
 
-        //tries to convert screen name in string to its name in enum. Can return null if the sceneName is not found
+        /// <summary>
+        /// Tries to convert screen name in string to its name in enum. Can return null if the sceneName is not found
+        /// </summary>
+        /// <param name="sceneName"></param>
+        /// <returns></returns>
         private static ModulesMap? SceneNameToEnum(string sceneName)
         {
             if (Enum.TryParse(sceneName, out ModulesMap result)) return result;

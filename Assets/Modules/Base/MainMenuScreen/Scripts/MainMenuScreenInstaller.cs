@@ -15,9 +15,12 @@ namespace Modules.Base.MainMenuScreen.Scripts
             base.RegisterSceneDependencies(builder);
 
             builder.AddMediatR(typeof(MainMenuHandler).Assembly);
-            builder.RegisterComponent(mainMenuView).As<MainMenuView>();
-            builder.Register<MainMenuModuleController>(Lifetime.Singleton);
+            
             builder.Register<MainMenuModuleModel>(Lifetime.Singleton);
+            builder.Register<MainMenuModuleController>(Lifetime.Singleton);
+            
+            builder.Register<MainMenuPresenter>(Lifetime.Singleton);
+            builder.RegisterComponent(mainMenuView).As<MainMenuView>();
         }
     }
 }
