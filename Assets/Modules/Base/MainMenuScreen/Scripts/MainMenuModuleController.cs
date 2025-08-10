@@ -5,6 +5,8 @@ using MediatR;
 using R3;
 using UnityEngine;
 using VContainer;
+using System;
+using Modules.Base.MainMenuScreen.Scripts;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
@@ -31,10 +33,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public async UniTask Enter(object param)
         {
-            //Mediator Test
-            var result = await _mediator.Send(new MainMenuRequest()); 
-            Debug.Log($"MediatR request result: {result}");
-            
             SubscribeToModuleUpdates();
 
             _mainMenuPresenter.HideInstantly();
@@ -60,7 +58,9 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         private void SubscribeToModuleUpdates()
         {
+            // Prevent rapid module switching
             _openNewModuleCommand
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_mainMenuModuleModel.ModuleTransitionThrottleDelay))
                 .Subscribe(RunNewModule)
                 .AddTo(_disposables);
         }

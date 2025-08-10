@@ -10,6 +10,7 @@ using R3;
 using UnityEngine;
 using VContainer;
 using Unit = R3.Unit;
+using System;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
@@ -21,11 +22,10 @@ namespace Modules.Base.MainMenuScreen.Scripts
             Task.FromResult("MainMenu Handler Invoked!");
     }
     
-    public class MainMenuPresenter
+    public class MainMenuPresenter : IDisposable
     {
         [Inject] private IMediator _mediator;
         private readonly MainMenuModuleModel _mainMenuModuleModel;
-        private readonly InputSystemService _eventSystemService;
         private readonly MainMenuView _mainMenuView;
         private readonly IPopupHub _popupHub;
         private readonly AudioSystem _audioSystem;
@@ -38,38 +38,51 @@ namespace Modules.Base.MainMenuScreen.Scripts
         private readonly ReactiveCommand<bool> _toggleSoundCommand = new();
         
         private ReactiveCommand<ModulesMap> _openNewModuleCommand = new();
+        private readonly CompositeDisposable _disposables = new();
         
         public MainMenuPresenter(IPopupHub popupHub, MainMenuModuleModel mainMenuModuleModel, 
             MainMenuView mainMenuView, AudioSystem audioSystem)
         {
-            _mainMenuModuleModel = mainMenuModuleModel;
-            _mainMenuView = mainMenuView;
-            _audioSystem = audioSystem;
-            _popupHub = popupHub;
+            _mainMenuModuleModel = mainMenuModuleModel ?? throw new ArgumentNullException(nameof(mainMenuModuleModel));
+            _mainMenuView = mainMenuView ?? throw new ArgumentNullException(nameof(mainMenuView));
+            _audioSystem = audioSystem ?? throw new ArgumentNullException(nameof(audioSystem));
+            _popupHub = popupHub ?? throw new ArgumentNullException(nameof(popupHub));
 
             SubscribeToUIUpdates();
         }
 
         private void SubscribeToUIUpdates()
         {
-            _openConverterCommand.Subscribe(_ => OnConverterButtonClicked());
-            _openTicTacCommand.Subscribe(_ => OnTicTacButtonClicked());
-            _openTycoonCommand.Subscribe(_ => OnTycoonButtonClicked());
-            _settingsPopupCommand.Subscribe(_ => OnSettingsPopupButtonClicked());
-            _secondPopupCommand.Subscribe(_ => OnSecondPopupButtonClicked());
-            _toggleSoundCommand.Subscribe(OnSoundToggled);
+            _openConverterCommand
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_mainMenuModuleModel.CommandThrottleDelay))
+                .Subscribe(_ => OnConverterButtonClicked())
+                .AddTo(_disposables);
+            _openTicTacCommand
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_mainMenuModuleModel.CommandThrottleDelay))
+                .Subscribe(_ => OnTicTacButtonClicked())
+                .AddTo(_disposables);
+            _openTycoonCommand
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_mainMenuModuleModel.CommandThrottleDelay))
+                .Subscribe(_ => OnTycoonButtonClicked())
+                .AddTo(_disposables);
+            _settingsPopupCommand
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_mainMenuModuleModel.CommandThrottleDelay))
+                .Subscribe(_ => OnSettingsPopupButtonClicked())
+                .AddTo(_disposables);
+            _secondPopupCommand
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_mainMenuModuleModel.CommandThrottleDelay))
+                .Subscribe(_ => OnSecondPopupButtonClicked())
+                .AddTo(_disposables);
+            _toggleSoundCommand.Subscribe(OnSoundToggled).AddTo(_disposables);
         }
 
         public async UniTask Enter(ReactiveCommand<ModulesMap> runModuleCommand)
         {
-            _openNewModuleCommand = runModuleCommand;
-            
-            var result = await _mediator.Send(new MainMenuRequest()); 
-            Debug.Log($"MediatR request result: {result}");
+            _openNewModuleCommand = runModuleCommand ?? throw new ArgumentNullException(nameof(runModuleCommand));
             
             _mainMenuView.HideInstantly();
 
-            _mainMenuView.SetupEventListeners(
+            var commands = new MainMenuCommands(
                 _openConverterCommand,
                 _openTicTacCommand,
                 _openTycoonCommand,
@@ -77,6 +90,8 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 _secondPopupCommand,
                 _toggleSoundCommand
             );
+
+            _mainMenuView.SetupEventListeners(commands);
 
             _mainMenuView.InitializeSoundToggle(isMusicOn: _audioSystem.MusicVolume != 0);
             await _mainMenuView.Show();
@@ -94,8 +109,9 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
         public void Dispose()
         {
-            _mainMenuView.Dispose();
-            _mainMenuModuleModel.Dispose();
+            _disposables?.Dispose();
+            _mainMenuView?.Dispose();
+            _mainMenuModuleModel?.Dispose();
         }
 
         private void OnConverterButtonClicked() => _openNewModuleCommand.Execute(ModulesMap.Converter);

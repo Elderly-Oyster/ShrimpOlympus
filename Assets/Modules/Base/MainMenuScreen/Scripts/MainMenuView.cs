@@ -8,6 +8,32 @@ using VContainer;
 
 namespace Modules.Base.MainMenuScreen.Scripts
 {
+    public readonly struct MainMenuCommands
+    {
+        public readonly ReactiveCommand<Unit> OpenConverterCommand;
+        public readonly ReactiveCommand<Unit> OpenTicTacCommand;
+        public readonly ReactiveCommand<Unit> OpenTycoonCommand;
+        public readonly ReactiveCommand<Unit> SettingsPopupCommand;
+        public readonly ReactiveCommand<Unit> SecondPopupCommand;
+        public readonly ReactiveCommand<bool> SoundToggleCommand;
+
+        public MainMenuCommands(
+            ReactiveCommand<Unit> openConverterCommand,
+            ReactiveCommand<Unit> openTicTacCommand,
+            ReactiveCommand<Unit> openTycoonCommand,
+            ReactiveCommand<Unit> settingsPopupCommand,
+            ReactiveCommand<Unit> secondPopupCommand,
+            ReactiveCommand<bool> soundToggleCommand)
+        {
+            OpenConverterCommand = openConverterCommand;
+            OpenTicTacCommand = openTicTacCommand;
+            OpenTycoonCommand = openTycoonCommand;
+            SettingsPopupCommand = settingsPopupCommand;
+            SecondPopupCommand = secondPopupCommand;
+            SoundToggleCommand = soundToggleCommand;
+        }
+    }
+    
     public class MainMenuView : BaseView
     {
         [SerializeField] private Button settingsPopupButton;
@@ -22,48 +48,65 @@ namespace Modules.Base.MainMenuScreen.Scripts
         [Inject]
         public void Construct(InputSystemService inputSystemService)
         {
-            _inputSystemService = inputSystemService;
+            _inputSystemService = inputSystemService;   
         }
         
-        public void SetupEventListeners(
-            ReactiveCommand<Unit> openConverterCommand,
-            ReactiveCommand<Unit> openTicTacCommand,
-            ReactiveCommand<Unit> openTycoonCommand,
-            ReactiveCommand<Unit> settingsPopupCommand,
-            ReactiveCommand<Unit> secondPopupCommand,
-            ReactiveCommand<bool> soundToggleCommand)
+        protected override void Awake()
+        {
+            base.Awake();
+            
+            #if UNITY_EDITOR
+            ValidateUIElements();
+            #endif
+        }
+        
+        private void ValidateUIElements()
+        {
+            if (settingsPopupButton == null) Debug.LogError($"{nameof(settingsPopupButton)} is not assigned in {nameof(MainMenuView)}");
+            if (secondPopupButton == null) Debug.LogError($"{nameof(secondPopupButton)} is not assigned in {nameof(MainMenuView)}");
+            if (converterButton == null) Debug.LogError($"{nameof(converterButton)} is not assigned in {nameof(MainMenuView)}");
+            if (ticTacButton == null) Debug.LogError($"{nameof(ticTacButton)} is not assigned in {nameof(MainMenuView)}");
+            if (tycoonButton == null) Debug.LogError($"{nameof(tycoonButton)} is not assigned in {nameof(MainMenuView)}");
+            if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(MainMenuView)}");
+        }
+        
+        public void SetupEventListeners(MainMenuCommands commands)
         {
             _inputSystemService.SwitchToUI();
             
             converterButton.OnClickAsObservable()
-                .Subscribe(_ => openConverterCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.OpenConverterCommand.Execute(default))
                 .AddTo(this);
 
             ticTacButton.OnClickAsObservable()
-                .Subscribe(_ => openTicTacCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.OpenTicTacCommand.Execute(default))
                 .AddTo(this);
 
             tycoonButton.OnClickAsObservable()
-                .Subscribe(_ => openTycoonCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.OpenTycoonCommand.Execute(default))
                 .AddTo(this);
 
             settingsPopupButton.OnClickAsObservable()
-                .Subscribe(_ => settingsPopupCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.SettingsPopupCommand.Execute(default))
                 .AddTo(this);
 
             secondPopupButton.OnClickAsObservable()
-                .Subscribe(_ => secondPopupCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.SecondPopupCommand.Execute(default))
                 .AddTo(this);
 
             musicToggle.OnValueChangedAsObservable()
-                .Subscribe(_ => soundToggleCommand.Execute(musicToggle.isOn))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.SoundToggleCommand.Execute(musicToggle.isOn))
                 .AddTo(this);
         }
         
         public override async UniTask Show()
         {
-            //Example of logic: Work with tooltips system
-            // _controlsTooltipSystem.HideAllTooltips(); 
             await base.Show();
             
             _inputSystemService.SwitchToUI();
@@ -75,10 +118,6 @@ namespace Modules.Base.MainMenuScreen.Scripts
         public void OnScreenEnabled()
         {
             _inputSystemService.SetFirstSelectedObject(converterButton);
-            
-            //Other logic. Showing tooltips for example
-            // _controlsTooltipSystem.ShowTooltip(SelectTooltipText, 
-            //     _inputSystemService.GetFullActionPath(_inputSystemService.InputActions.UI.Submit));
         }
     }
 }
