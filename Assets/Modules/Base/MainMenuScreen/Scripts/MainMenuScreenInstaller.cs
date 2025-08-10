@@ -16,9 +16,9 @@ namespace Modules.Base.MainMenuScreen.Scripts
 
             builder.AddMediatR(typeof(MainMenuHandler).Assembly);
             
-            builder.Register<MainMenuModuleModel>(Lifetime.Singleton);
             builder.Register<MainMenuModuleController>(Lifetime.Singleton);
             
+            builder.Register<MainMenuModuleModel>(Lifetime.Singleton);
             builder.Register<MainMenuPresenter>(Lifetime.Singleton);
             builder.RegisterComponent(mainMenuView).As<MainMenuView>();
         }

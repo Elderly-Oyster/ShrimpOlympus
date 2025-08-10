@@ -4,6 +4,7 @@
     "references": [
         "Core",
         "Services",
+        "Systems",
         "DynamicBackground",
         "Unity.TextMeshPro",
         "Unity.InputSystem",

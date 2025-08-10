@@ -10,13 +10,17 @@ namespace Modules.Base.ConverterScreen.Scripts
         Pln,
         Pr
     }
-    public class ConverterModel : IModel
+    
+    public class ConverterModuleModel : IModel
     {
+        // Throttle delays for anti-spam protection
+        public int CommandThrottleDelay { get; } = 300;
+        public int ModuleTransitionThrottleDelay { get; } = 500;
 
         private Currencies _sourceCurrency;
         private Currencies _targetCurrency;
 
-        public ConverterModel() { }
+        public ConverterModuleModel() { }
 
         private readonly Dictionary<Currencies, float> _currencyToEuroRate = new()
         {

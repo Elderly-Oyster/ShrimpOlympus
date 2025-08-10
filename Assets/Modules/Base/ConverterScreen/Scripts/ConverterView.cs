@@ -1,11 +1,12 @@
-﻿using System.Globalization;
-using CodeBase.Core.UI.Views;
+﻿using CodeBase.Core.UI.Views;
 using CodeBase.Services.Input;
+using Cysharp.Threading.Tasks;
 using R3;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
+using System.Globalization;
+using TMPro;
 
 namespace Modules.Base.ConverterScreen.Scripts
 {
@@ -29,39 +30,79 @@ namespace Modules.Base.ConverterScreen.Scripts
         protected override void Awake()
         {
             base.Awake();
-            HideInstantly();
+            
+            #if UNITY_EDITOR
+            ValidateUIElements();
+            #endif
+        }
+        
+        private void ValidateUIElements()
+        {
+            if (sourceAmountInputField == null) Debug.LogError($"{nameof(sourceAmountInputField)} is not assigned in {nameof(ConverterView)}");
+            if (targetAmountInputField == null) Debug.LogError($"{nameof(targetAmountInputField)} is not assigned in {nameof(ConverterView)}");
+            if (sourceCurrencyDropdown == null) Debug.LogError($"{nameof(sourceCurrencyDropdown)} is not assigned in {nameof(ConverterView)}");
+            if (targetCurrencyDropdown == null) Debug.LogError($"{nameof(targetCurrencyDropdown)} is not assigned in {nameof(ConverterView)}");
+            if (amountScrollBar == null) Debug.LogError($"{nameof(amountScrollBar)} is not assigned in {nameof(ConverterView)}");
+            if (exitButton == null) Debug.LogError($"{nameof(exitButton)} is not assigned in {nameof(ConverterView)}");
         }
 
-        public void SetupEventListeners(
-            ReactiveCommand<string> determineSourceCurrencyCommand,
-            ReactiveCommand<string> determineTargetCurrencyCommand,
-            ReactiveCommand<string> sourceAmountChangedCommand,
-            ReactiveCommand<string> targetAmountChangedCommand,
-            ReactiveCommand<float> handleAmountScrollBarChangedCommand,
-            ReactiveCommand<Unit> backButtonCommand)
+        public void SetupEventListeners(ConverterCommands commands)
         {
-            sourceAmountInputField.onValueChanged.AddListener(sourceAmountChangedCommand.Execute);
-            targetAmountInputField.onValueChanged.AddListener(targetAmountChangedCommand.Execute);
+            sourceAmountInputField.onValueChanged.AddListener(value => 
+            {
+                if (IsActive)
+                    commands.SourceAmountChangedCommand.Execute(value);
+            });
 
-            sourceCurrencyDropdown.onValueChanged.AddListener(index => determineSourceCurrencyCommand
-                .Execute(sourceCurrencyDropdown.options[index].text));
+            targetAmountInputField.onValueChanged.AddListener(value => 
+            {
+                if (IsActive)
+                    commands.TargetAmountChangedCommand.Execute(value);
+            });
 
-            targetCurrencyDropdown.onValueChanged.AddListener(index => determineTargetCurrencyCommand
-                .Execute(targetCurrencyDropdown.options[index].text));
+            sourceCurrencyDropdown.onValueChanged.AddListener(index => 
+            {
+                if (IsActive)
+                    commands.DetermineSourceCurrencyCommand.Execute(sourceCurrencyDropdown.options[index].text);
+            });
 
-            amountScrollBar.onValueChanged.AddListener(handleAmountScrollBarChangedCommand.Execute);
+            targetCurrencyDropdown.onValueChanged.AddListener(index => 
+            {
+                if (IsActive)
+                    commands.DetermineTargetCurrencyCommand.Execute(targetCurrencyDropdown.options[index].text);
+            });
+
+            amountScrollBar.onValueChanged.AddListener(value => 
+            {
+                if (IsActive)
+                    commands.HandleAmountScrollBarChangedCommand.Execute(value);
+            });
             
             exitButton.OnClickAsObservable()
-                .Subscribe(_ => backButtonCommand.Execute(default))
+                .Where(_ => IsActive)
+                .Subscribe(_ => commands.BackButtonCommand.Execute(default))
                 .AddTo(this);
             
             var escapePerformedObservable = 
                 _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
             
             escapePerformedObservable
-                .Where(_ => IsInteractable)
-                .Subscribe(_ => backButtonCommand.Execute(default))
+                .Where(_ => IsActive && IsInteractable)
+                .Subscribe(_ => commands.BackButtonCommand.Execute(default))
                 .AddTo(this);
+        }
+
+        public override async UniTask Show()
+        {
+            await base.Show();
+            
+            _inputSystemService.SwitchToUI();
+            OnScreenEnabled();
+        }
+        
+        public void OnScreenEnabled()
+        {
+            _inputSystemService.SetFirstSelectedObject(exitButton);
         }
 
         public float CurrentSourceAmount =>

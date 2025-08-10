@@ -25,7 +25,7 @@ namespace CodeBase.Implementation.Infrastructure
             _map = new Dictionary<ModulesMap, Type> 
             {
                 { ModulesMap.StartGame, typeof(StartGameScreenPresenter) },
-                { ModulesMap.Converter, typeof(ConverterScreenPresenter) },
+                { ModulesMap.Converter, typeof(ConverterModuleController) },
                 { ModulesMap.MainMenu, typeof(MainMenuModuleController) },
                 { ModulesMap.TicTac, typeof(TicTacScreenPresenter) },
                 { ModulesMap.DeliveryTycoon, typeof(GameModuleController)}

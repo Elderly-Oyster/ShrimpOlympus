@@ -13,9 +13,10 @@ namespace Modules.Base.ConverterScreen.Scripts
         {
             base.RegisterSceneDependencies(builder);
 
-            builder.RegisterComponent(converterView).AsSelf();
+            builder.Register<ConverterModuleModel>(Lifetime.Singleton);
             builder.Register<ConverterScreenPresenter>(Lifetime.Singleton);
-            builder.Register<ConverterModel>(Lifetime.Singleton);
+            builder.Register<ConverterModuleController>(Lifetime.Singleton);
+            builder.RegisterComponent(converterView).As<ConverterView>();
         }
     }
 }

@@ -59,17 +59,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
             ValidateUIElements();
             #endif
         }
-        
-        private void ValidateUIElements()
-        {
-            if (settingsPopupButton == null) Debug.LogError($"{nameof(settingsPopupButton)} is not assigned in {nameof(MainMenuView)}");
-            if (secondPopupButton == null) Debug.LogError($"{nameof(secondPopupButton)} is not assigned in {nameof(MainMenuView)}");
-            if (converterButton == null) Debug.LogError($"{nameof(converterButton)} is not assigned in {nameof(MainMenuView)}");
-            if (ticTacButton == null) Debug.LogError($"{nameof(ticTacButton)} is not assigned in {nameof(MainMenuView)}");
-            if (tycoonButton == null) Debug.LogError($"{nameof(tycoonButton)} is not assigned in {nameof(MainMenuView)}");
-            if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(MainMenuView)}");
-        }
-        
+
         public void SetupEventListeners(MainMenuCommands commands)
         {
             _inputSystemService.SwitchToUI();
@@ -104,7 +94,7 @@ namespace Modules.Base.MainMenuScreen.Scripts
                 .Subscribe(_ => commands.SoundToggleCommand.Execute(musicToggle.isOn))
                 .AddTo(this);
         }
-        
+
         public override async UniTask Show()
         {
             await base.Show();
@@ -112,12 +102,22 @@ namespace Modules.Base.MainMenuScreen.Scripts
             _inputSystemService.SwitchToUI();
             OnScreenEnabled();
         }
-        
+
         public void InitializeSoundToggle(bool isMusicOn) => musicToggle.SetIsOnWithoutNotify(isMusicOn);
 
         public void OnScreenEnabled()
         {
             _inputSystemService.SetFirstSelectedObject(converterButton);
+        }
+
+        private void ValidateUIElements()
+        {
+            if (settingsPopupButton == null) Debug.LogError($"{nameof(settingsPopupButton)} is not assigned in {nameof(MainMenuView)}");
+            if (secondPopupButton == null) Debug.LogError($"{nameof(secondPopupButton)} is not assigned in {nameof(MainMenuView)}");
+            if (converterButton == null) Debug.LogError($"{nameof(converterButton)} is not assigned in {nameof(MainMenuView)}");
+            if (ticTacButton == null) Debug.LogError($"{nameof(ticTacButton)} is not assigned in {nameof(MainMenuView)}");
+            if (tycoonButton == null) Debug.LogError($"{nameof(tycoonButton)} is not assigned in {nameof(MainMenuView)}");
+            if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(MainMenuView)}");
         }
     }
 }
