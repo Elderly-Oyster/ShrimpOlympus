@@ -85,8 +85,19 @@ namespace CodeBase.Editor.ModuleCreator.Tasks
             if (!EditorApplication.isCompiling)
             {
                 EditorApplication.update -= WaitForCompilation;
-                CompleteTask();
-                ExecuteNextTask();
+                
+                // Force asset database refresh after compilation to ensure new scripts are indexed
+                AssetDatabase.Refresh();
+                
+                // Clear type cache to ensure fresh lookups after compilation
+                CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask.ReflectionHelper.ClearTypeCache();
+                
+                // Small delay to allow Unity to fully process the refreshed assets
+                EditorApplication.delayCall += () =>
+                {
+                    CompleteTask();
+                    ExecuteNextTask();
+                };
             }
         }
 

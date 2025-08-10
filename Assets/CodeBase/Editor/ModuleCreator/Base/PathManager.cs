@@ -22,10 +22,10 @@ namespace CodeBase.Editor.ModuleCreator.Base
             BaseFolderPath = CombinePaths(BasePath, "Base");
             TestFolderPath = CombinePaths(BasePath, "Test");
             
-            TemplateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateScreen");
+            TemplateModuleFolderPath = CombinePaths(BasePath, "Template", "TemplateModule");
             TemplateViewsFolderPath = CombinePaths(TemplateModuleFolderPath, ModulePathCache.ViewsFolderName);
             TemplateScriptsFolderPath = CombinePaths(TemplateModuleFolderPath, ModulePathCache.ScriptsFolderName);
-            TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateScreenView.prefab");
+            TemplateViewPrefabPath = CombinePaths(TemplateViewsFolderPath, "TemplateModuleView.prefab");
 
             EnsureSubfoldersExist();
         }

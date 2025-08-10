@@ -14,13 +14,13 @@ namespace CodeBase.Tests.Editor.ModuleCreator
             Assert.AreEqual("Assets/Modules/Additional", PathManager.AdditionalFolderPath);
             Assert.AreEqual("Assets/Modules/Base", PathManager.BaseFolderPath);
             Assert.AreEqual("Assets/Modules/Test", PathManager.TestFolderPath);
-            Assert.AreEqual("Assets/Modules/Template/TemplateScreen", 
+            Assert.AreEqual("Assets/Modules/Template/TemplateModule", 
                 PathManager.TemplateModuleFolderPath);
-            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Views",
+            Assert.AreEqual("Assets/Modules/Template/TemplateModule/Views",
                 PathManager.TemplateViewsFolderPath);
-            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/Scripts",
+            Assert.AreEqual("Assets/Modules/Template/TemplateModule/Scripts",
                 PathManager.TemplateScriptsFolderPath);
-            Assert.AreEqual("Assets/Modules/Template/TemplateScreen/UI/TemplateView.prefab",
+            Assert.AreEqual("Assets/Modules/Template/TemplateModule/Views/TemplateModuleView.prefab",
                 PathManager.TemplateViewPrefabPath);
         }
 

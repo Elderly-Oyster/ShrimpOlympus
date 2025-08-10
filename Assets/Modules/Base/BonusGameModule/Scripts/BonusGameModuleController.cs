@@ -6,38 +6,38 @@ using MediatR;
 using R3;
 using VContainer;
 
-namespace Modules.Template.TemplateModule.Scripts
+namespace Modules.Base.BonusGameModule.Scripts
 {
     /// <summary>
-        /// Main controller for Template module that manages the module lifecycle
+        /// Main controller for BonusGame module that manages the module lifecycle
         /// and coordinates between Presenter, Model and View
         /// 
-        /// IMPORTANT: This is a template file for ModuleCreator system.
+        /// IMPORTANT: This is a bonusGame file for ModuleCreator system.
         /// When creating a new module, this file will be copied and modified.
         /// 
         /// Key points for customization:
-        /// 1. Change class name from TemplateModuleController to YourModuleNameModuleController
-        /// 2. Update namespace to match your module location
+        /// 1. Change class name from BonusGameModuleController to YourModuleNameModuleController
+        /// 2. Update namespace Modules.Base.BonusGameModule.Scripts match your module location
         /// 3. Customize module lifecycle management if needed
         /// 4. Add specific initialization logic for your module
         /// 5. Implement custom exit conditions if required
     /// </summary>
-    public class TemplateModuleController : IModuleController
+    public class BonusGameModuleController : IModuleController
     {
         [Inject] private IMediator _mediator;
         private readonly UniTaskCompletionSource _moduleCompletionSource;
-        private readonly TemplateModuleModel _templateModuleModel;
-        private readonly TemplatePresenter _templatePresenter;
+        private readonly BonusGameModuleModel _bonusGameModuleModel;
+        private readonly BonusGamePresenter _bonusGamePresenter;
         private readonly IScreenStateMachine _screenStateMachine;
         private readonly ReactiveCommand<ModulesMap> _openNewModuleCommand = new();
         
         private readonly CompositeDisposable _disposables = new();
         
-        public TemplateModuleController(IScreenStateMachine screenStateMachine, TemplateModuleModel templateModuleModel, 
-            TemplatePresenter templatePresenter)
+        public BonusGameModuleController(IScreenStateMachine screenStateMachine, BonusGameModuleModel bonusGameModuleModel, 
+            BonusGamePresenter bonusGamePresenter)
         {
-            _templateModuleModel = templateModuleModel ?? throw new ArgumentNullException(nameof(templateModuleModel));
-            _templatePresenter = templatePresenter ?? throw new ArgumentNullException(nameof(templatePresenter));
+            _bonusGameModuleModel = bonusGameModuleModel ?? throw new ArgumentNullException(nameof(bonusGameModuleModel));
+            _bonusGamePresenter = bonusGamePresenter ?? throw new ArgumentNullException(nameof(bonusGamePresenter));
             _screenStateMachine = screenStateMachine ?? throw new ArgumentNullException(nameof(screenStateMachine));
             
             _moduleCompletionSource = new UniTaskCompletionSource();
@@ -47,32 +47,32 @@ namespace Modules.Template.TemplateModule.Scripts
         {
             SubscribeToModuleUpdates();
 
-            _templatePresenter.HideInstantly();
+            _bonusGamePresenter.HideInstantly();
             
-            await _templatePresenter.Enter(_openNewModuleCommand);
+            await _bonusGamePresenter.Enter(_openNewModuleCommand);
         }
 
         public async UniTask Execute() => await _moduleCompletionSource.Task;
 
         public async UniTask Exit()
         {
-            await _templatePresenter.Exit();
+            await _bonusGamePresenter.Exit();
         }
 
         public void Dispose()
         {
             _disposables.Dispose();
             
-            _templatePresenter.Dispose();
+            _bonusGamePresenter.Dispose();
             
-            _templateModuleModel.Dispose();
+            _bonusGameModuleModel.Dispose();
         }
 
         private void SubscribeToModuleUpdates()
         {
             // Prevent rapid module switching
             _openNewModuleCommand
-                .ThrottleFirst(TimeSpan.FromMilliseconds(_templateModuleModel.ModuleTransitionThrottleDelay))
+                .ThrottleFirst(TimeSpan.FromMilliseconds(_bonusGameModuleModel.ModuleTransitionThrottleDelay))
                 .Subscribe(RunNewModule)
                 .AddTo(_disposables);
         }

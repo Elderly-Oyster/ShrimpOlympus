@@ -23,7 +23,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
             bool isAsmdefRequired)
         {
             string selectedFolderPath = GetSelectedFolderPath(selectedFolder);
-            string targetFolderPath = PathManager.CombinePaths(selectedFolderPath, $"{moduleName}Screen");
+            string targetFolderPath = PathManager.CombinePaths(selectedFolderPath, $"{moduleName}Module");
             TargetModuleFolderPath = targetFolderPath;
             EnsureModuleFolders(targetFolderPath);
 
@@ -45,7 +45,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         public static string GetTargetModuleFolderPath(string moduleName, string selectedFolder)
         {
             string selectedFolderPath = GetSelectedFolderPath(selectedFolder);
-            return PathManager.CombinePaths(selectedFolderPath, $"{moduleName}Screen");
+            return PathManager.CombinePaths(selectedFolderPath, $"{moduleName}Module");
         }
 
         private static string GetSelectedFolderPath(string selectedFolder) =>
@@ -78,10 +78,13 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         private static void CreateAsmdefFile(string targetFolderPath, string moduleName)
         {
             string templateAsmdefPath = PathManager.
-                CombinePaths(PathManager.TemplateModuleFolderPath, "TemplateScreen.asmdef");
+                CombinePaths(PathManager.TemplateModuleFolderPath, "Template.asmdef");
             string targetAsmdefPath = PathManager.
-                CombinePaths(targetFolderPath, $"{moduleName}Screen.asmdef");
+                CombinePaths(targetFolderPath, $"{moduleName}Module.asmdef");
             CopyAndAdjustAsmdef(templateAsmdefPath, targetAsmdefPath, moduleName);
+            
+            // Force asset database refresh after creating asmdef to ensure it is indexed
+            UnityEditor.AssetDatabase.Refresh();
         }
 
         private static void CreateSelectedScripts(
@@ -95,10 +98,11 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         {
             var scriptsToCreate = new List<(bool isRequired, string templateFile, string outputFile)>
             {
-                (createInstaller, "TemplateScreenInstaller.cs", $"{moduleName}ScreenInstaller.cs"),
-                (createPresenter, "TemplateStateController.cs", $"{moduleName}ScreenPresenter.cs"),
-                (createView, "TemplateScreenView.cs", $"{moduleName}ScreenView.cs"),
-                (createModel, "TemplateScreenModel.cs", $"{moduleName}ScreenModel.cs"),
+                (createInstaller, "TemplateModuleInstaller.cs", $"{moduleName}ModuleInstaller.cs"),
+                (createPresenter, "TemplatePresenter.cs", $"{moduleName}Presenter.cs"),
+                (createView, "TemplateView.cs", $"{moduleName}View.cs"),
+                (createModel, "TemplateModuleModel.cs", $"{moduleName}ModuleModel.cs"),
+                (true, "TemplateModuleController.cs", $"{moduleName}ModuleController.cs"),
             };
 
             foreach (var (shouldCreate, templateFile, outputFile) in scriptsToCreate)
@@ -109,6 +113,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
                     CreateScript(folderPath, outputFile, content);
                 }
             }
+            
+            // Force asset database refresh after creating all scripts to ensure they are indexed
+            UnityEditor.AssetDatabase.Refresh();
         }
 
         private static string GetTemplateContent(string templateFileName, string moduleName, string selectedFolder)
@@ -130,18 +137,32 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         private static string ReplaceNamespace(string content, string moduleName, string selectedFolder)
         {
             string namespaceReplacement = 
-                $"namespace Modules.{selectedFolder}.{moduleName}Screen.{ModulePathCache.ScriptsFolderName}";
+                $"namespace Modules.{selectedFolder}.{moduleName}Module.{ModulePathCache.ScriptsFolderName}";
             return Regex.Replace(content, @"namespace\s+[\w\.]+", namespaceReplacement);
         }
 
         private static string ReplaceTemplateOccurrences(string content, string moduleName, string moduleNameLower)
         {
-            return Regex.Replace(content, @"(_?)(template)", match =>
+            // Replace Template with ModuleName in class names and other identifiers
+            content = Regex.Replace(content, @"TemplateModuleController", $"{moduleName}ModuleController");
+            content = Regex.Replace(content, @"TemplateModuleInstaller", $"{moduleName}ModuleInstaller");
+            content = Regex.Replace(content, @"TemplateModuleModel", $"{moduleName}ModuleModel");
+            content = Regex.Replace(content, @"TemplatePresenter", $"{moduleName}Presenter");
+            content = Regex.Replace(content, @"TemplateView", $"{moduleName}View");
+            content = Regex.Replace(content, @"TemplateCommands", $"{moduleName}Commands");
+            
+            // Replace specific field names
+            content = Regex.Replace(content, @"screenTitle", $"{moduleNameLower}ScreenTitle");
+            
+            // Replace template with moduleName in lowercase for variables and fields
+            content = Regex.Replace(content, @"(_?)(template)", match =>
             {
                 string prefix = match.Groups[1].Value;
                 string templateWord = match.Groups[2].Value;
                 return prefix + (char.IsUpper(templateWord[0]) ? moduleName : moduleNameLower);
             }, RegexOptions.IgnoreCase);
+            
+            return content;
         }
 
         private static void CreateScript(string folderPath, string fileName, string scriptContent)
@@ -181,6 +202,6 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask
         }
 
         private static string AdjustAsmdefContent(string content, string moduleName) =>
-            Regex.Replace(content, @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Screen""");
+            Regex.Replace(content, @"""name"":\s*""[^""]+""", $@"""name"": ""{moduleName}Module""");
     }
 }

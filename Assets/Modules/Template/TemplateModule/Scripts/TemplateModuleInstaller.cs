@@ -13,7 +13,7 @@ namespace Modules.Template.TemplateModule.Scripts
     /// When creating a new module, this file will be copied and modified.
     /// 
     /// Key points for customization:
-    /// 1. Change class name from TemplateScreenInstaller to YourModuleNameInstaller
+    /// 1. Change class name from TemplateModuleInstaller to YourModuleNameInstaller
     /// 2. Update namespace to match your module location
     /// 3. Register your specific dependencies
     /// 4. Update the View component reference

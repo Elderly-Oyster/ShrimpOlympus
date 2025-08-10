@@ -7,6 +7,7 @@ using Modules.Template.TemplateModule.Scripts;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using System.Linq;
 
 namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 {
@@ -20,7 +21,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
             string templateViewPrefabPath = PathManager.TemplateViewPrefabPath;
             string targetPrefabPath = PathManager.CombinePaths(targetPrefabFolderPath,
-                $"{moduleName}View.prefab");
+                $"{moduleName}ModuleView.prefab");
             
             bool copyResult = AssetDatabase.CopyAsset(templateViewPrefabPath, targetPrefabPath);
             if (!copyResult)
@@ -30,6 +31,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
                 return null;
             }
             AssetDatabase.ImportAsset(targetPrefabPath, ImportAssetOptions.ForceUpdate);
+            
+            // Force asset database refresh after copying prefab to ensure it is properly indexed
+            AssetDatabase.Refresh();
 
             return targetPrefabPath;
         }
@@ -44,7 +48,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public static void ReplaceScriptProperty(GameObject prefabContents, string moduleName, string folderType)
         {
-            string fullClassName = $"Modules.{folderType}.{moduleName}Screen.{ModulePathCache.ScriptsFolderName}.{moduleName}ScreenView";
+            string fullClassName = $"Modules.{folderType}.{moduleName}Module.{ModulePathCache.ScriptsFolderName}.{moduleName}View";
+            Debug.Log($"Looking for MonoScript to replace script property: {fullClassName}");
+            
             MonoScript newMonoScript = FindMonoScript(fullClassName);
             if (newMonoScript == null)
             {
@@ -56,7 +62,8 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
             TemplateView templateViewComponent = prefabContents.GetComponent<TemplateView>();
             if (templateViewComponent == null)
             {
-                Debug.LogError("TemplateScreenView component not found in prefab.");
+                Debug.LogError("TemplateView component not found in prefab.");
+                Debug.LogError($"Available components: {string.Join(", ", prefabContents.GetComponents<Component>().Select(c => c.GetType().Name))}");
                 return;
             }
 
@@ -67,7 +74,7 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
             {
                 scriptProperty.objectReferenceValue = newMonoScript;
                 serializedObject.ApplyModifiedProperties();
-                Debug.Log($"Replaced script on TemplateScreenView with {fullClassName}.");
+                Debug.Log($"Successfully replaced script on TemplateView with {fullClassName}.");
             }
             else
             {
@@ -77,18 +84,35 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public static MonoScript FindMonoScript(string fullClassName)
         {
-            string[] guids = AssetDatabase.FindAssets("t:MonoScript");
-            foreach (string guid in guids)
+            const int maxRetries = 5;
+            const int retryDelayMs = 100;
+            
+            for (int retryCount = 0; retryCount < maxRetries; retryCount++)
             {
-                string path = AssetDatabase.GUIDToAssetPath(guid);
-                MonoScript monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
-                if (monoScript != null && monoScript.GetClass() != null)
+                if (retryCount > 0)
                 {
-                    if (monoScript.GetClass().FullName == fullClassName)
-                        return monoScript;
+                    Debug.Log($"Retry {retryCount} for finding MonoScript '{fullClassName}'. Refreshing AssetDatabase...");
+                    AssetDatabase.Refresh();
+                    System.Threading.Thread.Sleep(retryDelayMs);
+                }
+
+                string[] guids = AssetDatabase.FindAssets("t:MonoScript");
+                foreach (string guid in guids)
+                {
+                    string path = AssetDatabase.GUIDToAssetPath(guid);
+                    MonoScript monoScript = AssetDatabase.LoadAssetAtPath<MonoScript>(path);
+                    if (monoScript != null && monoScript.GetClass() != null)
+                    {
+                        if (monoScript.GetClass().FullName == fullClassName)
+                        {
+                            Debug.Log($"Successfully found MonoScript for '{fullClassName}' after {retryCount + 1} attempts.");
+                            return monoScript;
+                        }
+                    }
                 }
             }
-            Debug.LogError($"MonoScript for class '{fullClassName}' not found.");
+            
+            Debug.LogError($"MonoScript for class '{fullClassName}' not found after {maxRetries} attempts with AssetDatabase refresh.");
             return null;
         }
 
@@ -140,9 +164,12 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public static void SaveAndUnloadPrefab(GameObject prefabContents, string prefabPath, string moduleName)
         {
-            prefabContents.name = $"{moduleName}View";
+            prefabContents.name = $"{moduleName}ModuleView";
             PrefabUtility.SaveAsPrefabAsset(prefabContents, prefabPath);
             PrefabUtility.UnloadPrefabContents(prefabContents);
+            
+            // Force asset database refresh after saving prefab to ensure all changes are indexed
+            AssetDatabase.Refresh();
         }
 
         public static void LogTitleSet(string moduleName, string viewTypeName) => 

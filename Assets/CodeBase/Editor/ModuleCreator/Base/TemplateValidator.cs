@@ -9,10 +9,11 @@ namespace CodeBase.Editor.ModuleCreator.Base
     {
         private static readonly List<string> RequiredTemplates = new()
         {
-            "TemplateScreenInstaller.cs",
-            "TemplateStateController.cs",
-            "TemplateScreenView.cs",
-            "TemplateScreenModel.cs"
+            "TemplateModuleInstaller.cs",
+            "TemplateModuleController.cs",
+            "TemplatePresenter.cs",
+            "TemplateView.cs",
+            "TemplateModuleModel.cs"
         };
 
         public static bool AreTemplatesAvailable(bool createAsmdef)
@@ -54,7 +55,7 @@ namespace CodeBase.Editor.ModuleCreator.Base
         private static bool AsmdefTemplateExists()
         {
             string templateAsmdefPath = PathManager.CombinePaths(PathManager.TemplateModuleFolderPath,
-                "TemplateScreen.asmdef");
+                "Template.asmdef");
             if (!File.Exists(templateAsmdefPath))
             {
                 ShowDialog("Missing asmdef Template",

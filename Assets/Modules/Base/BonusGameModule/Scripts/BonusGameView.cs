@@ -8,18 +8,18 @@ using UnityEngine.UI;
 using VContainer;
 using Unit = R3.Unit;
 
-namespace Modules.Template.TemplateModule.Scripts
+namespace Modules.Base.BonusGameModule.Scripts
 {
     /// <summary>
-    /// Commands structure for Template module UI interactions
+    /// Commands structure for BonusGame module UI interactions
     /// </summary>
-    public readonly struct TemplateCommands
+    public readonly struct BonusGameCommands
     {
         public readonly ReactiveCommand<Unit> OpenMainMenuCommand;
         public readonly ReactiveCommand<Unit> SettingsPopupCommand;
         public readonly ReactiveCommand<bool> SoundToggleCommand;
 
-        public TemplateCommands(
+        public BonusGameCommands(
             ReactiveCommand<Unit> openMainMenuCommand,
             ReactiveCommand<Unit> settingsPopupCommand,
             ReactiveCommand<bool> soundToggleCommand)
@@ -31,26 +31,26 @@ namespace Modules.Template.TemplateModule.Scripts
     }
     
     /// <summary>
-    /// View for Template module that handles UI interactions and visual representation
+    /// View for BonusGame module that handles UI interactions and visual representation
     /// 
-    /// IMPORTANT: This is a template file for ModuleCreator system.
+    /// IMPORTANT: This is a bonusGame file for ModuleCreator system.
     /// When creating a new module, this file will be copied and modified.
     /// 
     /// Key points for customization:
-    /// 1. Change class name from TemplateView to YourModuleNameView
-    /// 2. Update namespace to match your module location
+    /// 1. Change class name from BonusGameView to YourModuleNameView
+    /// 2. Update namespace Modules.Base.BonusGameModule.Scripts match your module location
     /// 3. Add your specific UI elements and commands
     /// 4. Customize event handling for your UI
     /// 5. Update validation methods for your UI elements
     /// 6. Add any additional UI functionality your module needs
     /// </summary>
-    public class TemplateView : BaseView
+    public class BonusGameView : BaseView
     {
         [Header("UI Elements")]
         [SerializeField] private Button mainMenuButton;
         [SerializeField] private Button settingsPopupButton;
         [SerializeField] private Toggle musicToggle;
-        [SerializeField] private TMP_Text screenTitle;
+        [SerializeField] private TMP_Text bonusGameScreenTitle;
         
         private InputSystemService _inputSystemService;
 
@@ -69,7 +69,7 @@ namespace Modules.Template.TemplateModule.Scripts
             #endif
         }
 
-        public void SetupEventListeners(TemplateCommands commands)
+        public void SetupEventListeners(BonusGameCommands commands)
         {
             _inputSystemService.SwitchToUI();
             
@@ -106,10 +106,10 @@ namespace Modules.Template.TemplateModule.Scripts
 
         public void SetTitle(string title)
         {
-            if (screenTitle != null)
-                screenTitle.text = title;
+            if (bonusGameScreenTitle != null)
+                bonusGameScreenTitle.text = title;
             else
-                Debug.LogWarning("screenTitle is not assigned in the Inspector.");
+                Debug.LogWarning("bonusGameScreenTitle is not assigned in the Inspector.");
         }
 
         public void InitializeSoundToggle(bool isMusicOn) => musicToggle.SetIsOnWithoutNotify(isMusicOn);
@@ -121,10 +121,10 @@ namespace Modules.Template.TemplateModule.Scripts
 
         private void ValidateUIElements()
         {
-            if (mainMenuButton == null) Debug.LogError($"{nameof(mainMenuButton)} is not assigned in {nameof(TemplateView)}");
-            if (settingsPopupButton == null) Debug.LogError($"{nameof(settingsPopupButton)} is not assigned in {nameof(TemplateView)}");
-            if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(TemplateView)}");
-            if (screenTitle == null) Debug.LogError($"{nameof(screenTitle)} is not assigned in {nameof(TemplateView)}");
+            if (mainMenuButton == null) Debug.LogError($"{nameof(mainMenuButton)} is not assigned in {nameof(BonusGameView)}");
+            if (settingsPopupButton == null) Debug.LogError($"{nameof(settingsPopupButton)} is not assigned in {nameof(BonusGameView)}");
+            if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(BonusGameView)}");
+            if (bonusGameScreenTitle == null) Debug.LogError($"{nameof(bonusGameScreenTitle)} is not assigned in {nameof(BonusGameView)}");
         }
     }
 }

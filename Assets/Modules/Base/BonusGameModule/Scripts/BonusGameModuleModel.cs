@@ -1,11 +1,11 @@
 using CodeBase.Core.Patterns.Architecture.MVP;
 
-namespace Modules.Template.TemplateModule.Scripts
+namespace Modules.Base.BonusGameModule.Scripts
 {
     /// <summary>
-    /// Model for Template module that contains business logic and data
+    /// Model for BonusGame module that contains business logic and data
     /// </summary>
-    public class TemplateModuleModel : IModel
+    public class BonusGameModuleModel : IModel
     {
         /// <summary>
         /// Delay for command throttling to prevent rapid interactions

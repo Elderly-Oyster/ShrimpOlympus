@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using UnityEditor;
 using UnityEngine;
 
 namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
@@ -9,22 +11,52 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
     public static class ReflectionHelper
     {
         private static readonly Dictionary<string, Type> TypeCache = new();
+        private const int MaxRetries = 5;
+        private const int RetryDelayMs = 100;
 
         public static Type FindType(string fullName)
         {
             if (TypeCache.TryGetValue(fullName, out Type cachedType))
                 return cachedType;
 
-            Type type = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes())
-                .FirstOrDefault(t => t.FullName == fullName);
+            Type type = null;
+            int retryCount = 0;
+
+            while (type == null && retryCount < MaxRetries)
+            {
+                if (retryCount > 0)
+                {
+                    Debug.Log($"Retry {retryCount} for finding type '{fullName}'. Refreshing AssetDatabase...");
+                    AssetDatabase.Refresh();
+                    Thread.Sleep(RetryDelayMs);
+                }
+
+                type = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(a => a.GetTypes())
+                    .FirstOrDefault(t => t.FullName == fullName);
+
+                retryCount++;
+            }
 
             if (type != null)
+            {
                 TypeCache[fullName] = type;
+                Debug.Log($"Successfully found type '{fullName}' after {retryCount} attempts.");
+            }
             else
-                Debug.LogError($"Type '{fullName}' not found.");
+            {
+                Debug.LogError($"Type '{fullName}' not found after {MaxRetries} attempts with AssetDatabase refresh.");
+                // Clear cache on failure to allow future attempts
+                TypeCache.Remove(fullName);
+            }
 
             return type;
+        }
+
+        public static void ClearTypeCache()
+        {
+            TypeCache.Clear();
+            Debug.Log("Type cache cleared.");
         }
 
         public static void SetPrivateField<T>(object obj, string fieldName, T value)

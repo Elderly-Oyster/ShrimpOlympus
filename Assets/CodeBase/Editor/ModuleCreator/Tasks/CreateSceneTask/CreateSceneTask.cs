@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using CodeBase.Core.UI;
 using CodeBase.Editor.ModuleCreator.Base;
 using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
@@ -38,28 +39,39 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 Debug.LogError("Failed to create Canvas.");
                 return;
             }
+            
+            // Force asset database refresh after creating canvas to ensure it is indexed
+            UnityEditor.AssetDatabase.Refresh();
 
             string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, 
-                ModulePathCache.ViewsFolderName, $"{_moduleName}View.prefab");
+                ModulePathCache.ViewsFolderName, $"{_moduleName}ModuleView.prefab");
             GameObject viewInstance = GameObjectFactory.InstantiateViewPrefab(viewPrefabPath, canvas);
             if (viewInstance == null)
             {
                 Debug.LogError("Failed to instantiate View prefab."); 
                 return;
             }
+            
+            // Force asset database refresh after creating view instance to ensure it is indexed
+            UnityEditor.AssetDatabase.Refresh();
 
             //TODO Ошибка появилась после замены "Scripts"
             //TODO Здесь проблема. Скрипт успевает создаваться, однако он не обнаруживается 55-ой строчкой.
-            string installerName = $"{_moduleName}ScreenInstaller";
+            string installerName = $"{_moduleName}ModuleInstaller";
             string folderType = PathManager.GetFolderType(_targetModuleFolderPath);
             string installerFullName = 
-                $"Modules.{folderType}.{_moduleName}Screen.{ModulePathCache.ScriptsFolderName}.{installerName}";
+                $"Modules.{folderType}.{_moduleName}Module.{ModulePathCache.ScriptsFolderName}.{installerName}";
+            
+            Debug.Log($"Looking for installer type: {installerFullName}");
             Type installerType = ReflectionHelper.FindType(installerFullName);
             if (installerType == null)
             {
-                Debug.LogError($"Installer type '{installerName}' not found.");
+                Debug.LogError($"Installer type '{installerName}' not found. Full name: {installerFullName}");
+                Debug.LogError("This usually means the script compilation failed or the namespace/class name is incorrect.");
                 return;
             }
+            
+            Debug.Log($"Successfully found installer type: {installerType.FullName}");
 
             GameObject installerObject = GameObjectFactory.InstantiateInstaller(installerName, installerType);
             if (installerObject == null)
@@ -67,6 +79,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 Debug.LogError("Failed to instantiate Installer.");
                 return;
             }
+            
+            // Force asset database refresh after creating installer to ensure it is indexed
+            UnityEditor.AssetDatabase.Refresh();
 
             Camera camera = GameObjectFactory.CreateModuleCamera();
             if (camera == null)
@@ -74,11 +89,17 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 Debug.LogError("Failed to create Module Camera.");
                 return;
             }
+            
+            // Force asset database refresh after creating camera to ensure it is indexed
+            UnityEditor.AssetDatabase.Refresh();
 
             AssignInstallerFields(installerObject, viewInstance, canvas, camera);
             AssignScreensCanvasFields(canvas, camera);
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
+            
+            // Force asset database refresh after creating scene to ensure all assets are indexed
+            UnityEditor.AssetDatabase.Refresh();
         }
 
         private void CreateNewScene(string scenePath)
@@ -89,6 +110,9 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 EditorSceneManager.SaveScene(newScene, scenePath);
                 SceneManager.SetActiveScene(newScene);
                 Debug.Log($"New scene created at: {scenePath}");
+                
+                // Force asset database refresh after creating scene to ensure it is indexed
+                UnityEditor.AssetDatabase.Refresh();
             }
             else
                 Debug.LogError("Failed to create a new scene.");
@@ -103,12 +127,18 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 return;
 
             string fieldPrefix = char.ToLower(_moduleName[0]) + _moduleName.Substring(1);
-            string viewFieldName = $"{fieldPrefix}ScreenView";
-            Component viewComponent = viewInstance.GetComponent($"{_moduleName}ScreenView");
+            string viewFieldName = $"{fieldPrefix}View";
+            Component viewComponent = viewInstance.GetComponent($"{_moduleName}View");
             if (viewComponent != null)
+            {
                 ReflectionHelper.SetPrivateField(installerComponent, viewFieldName, viewComponent);
+                Debug.Log($"Successfully assigned view component '{_moduleName}View' to installer field '{viewFieldName}'");
+            }
             else
-                Debug.LogError($"View component '{_moduleName}ScreenView' not found on View prefab.");
+            {
+                Debug.LogError($"View component '{_moduleName}View' not found on View prefab.");
+                Debug.LogError($"Available components on view instance: {string.Join(", ", viewInstance.GetComponents<Component>().Select(c => c.GetType().Name))}");
+            }
 
             var screenCanvas = canvas.GetComponent<BaseScreenCanvas>();
             if (screenCanvas != null)

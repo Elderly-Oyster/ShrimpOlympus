@@ -37,12 +37,16 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
             PrefabHelper.ReplaceScriptProperty(prefabContents, _moduleName, folderType);
 
             MonoScript newMonoScript = PrefabHelper.
-                FindMonoScript($"Modules.{folderType}.{_moduleName}Screen.{ModulePathCache.ScriptsFolderName}.{_moduleName}ScreenView");
+                FindMonoScript($"Modules.{folderType}.{_moduleName}Module.{ModulePathCache.ScriptsFolderName}.{_moduleName}View");
             if (newMonoScript == null)
             {
+                Debug.LogError($"Failed to find MonoScript for '{_moduleName}View' in namespace 'Modules.{folderType}.{_moduleName}Module.{ModulePathCache.ScriptsFolderName}'");
+                Debug.LogError("This usually means the script compilation failed or the namespace/class name is incorrect.");
                 PrefabUtility.UnloadPrefabContents(prefabContents);
                 return;
             }
+            
+            Debug.Log($"Successfully found MonoScript for {_moduleName}View: {newMonoScript.name}");
 
             Type newViewType = PrefabHelper.GetViewType(newMonoScript);
             if (newViewType == null)
