@@ -1,5 +1,5 @@
 {
-    "name": "MainMenuScreen",
+    "name": "MainMenu",
     "rootNamespace": "",
     "references": [
         "UniTask",

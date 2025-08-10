@@ -4,9 +4,9 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace Modules.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenu.Scripts
 {
-    public class MainMenuScreenInstaller : BaseModuleSceneInstaller
+    public class MainMenuInstaller : BaseModuleSceneInstaller
     {
         [SerializeField] private MainMenuView mainMenuView;
 

@@ -3,7 +3,7 @@ using System.Reflection;
 using CodeBase.Editor.ModuleCreator.Base;
 using CodeBase.Editor.ModuleCreator.Base.ConfigManagement;
 using CodeBase.Editor.ModuleCreator.Tasks.AddScriptsTask;
-using Modules.Template.TemplateScreen.Scripts;
+using Modules.Template.TemplateModule.Scripts;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -53,14 +53,14 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
                 return;
             }
 
-            TemplateScreenView templateScreenViewComponent = prefabContents.GetComponent<TemplateScreenView>();
-            if (templateScreenViewComponent == null)
+            TemplateView templateViewComponent = prefabContents.GetComponent<TemplateView>();
+            if (templateViewComponent == null)
             {
                 Debug.LogError("TemplateScreenView component not found in prefab.");
                 return;
             }
 
-            SerializedObject serializedObject = new SerializedObject(templateScreenViewComponent);
+            SerializedObject serializedObject = new SerializedObject(templateViewComponent);
             SerializedProperty scriptProperty = serializedObject.FindProperty("m_Script");
 
             if (scriptProperty != null)

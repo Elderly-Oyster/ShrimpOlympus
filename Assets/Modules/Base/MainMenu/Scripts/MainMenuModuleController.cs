@@ -1,14 +1,12 @@
-﻿using CodeBase.Core.Infrastructure;
+﻿using System;
+using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Infrastructure.Modules;
 using Cysharp.Threading.Tasks;
 using MediatR;
 using R3;
-using UnityEngine;
 using VContainer;
-using System;
-using Modules.Base.MainMenuScreen.Scripts;
 
-namespace Modules.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenu.Scripts
 {
     public class MainMenuModuleController : IModuleController
     {

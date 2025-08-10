@@ -1,6 +1,6 @@
 using R3;
 
-namespace Modules.Base.ConverterScreen.Scripts
+namespace Modules.Base.Converter.Scripts
 {
     public readonly struct ConverterCommands
     {

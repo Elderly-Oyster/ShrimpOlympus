@@ -1,19 +1,17 @@
 {
-    "name": "TemplateModule",
+    "name": "Template",
     "rootNamespace": "",
     "references": [
-        "Core",
-        "Systems",
-        "Services",
         "Unity.InputSystem",
-        "UnityEngine.UI",
-        "UnityEditor.UI",
         "Unity.TextMeshPro",
         "VContainer",
-        "R3.Unity",
         "UniTask",
+        "R3.Unity",
+        "UniTask.DOTween",
         "DOTween.Modules",
-        "UniTask.DOTween"
+        "Core",
+        "Systems",
+        "Services"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

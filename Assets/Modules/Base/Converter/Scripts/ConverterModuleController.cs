@@ -1,12 +1,10 @@
+using System;
 using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Infrastructure.Modules;
 using Cysharp.Threading.Tasks;
 using R3;
-using UnityEngine;
-using VContainer;
-using System;
 
-namespace Modules.Base.ConverterScreen.Scripts
+namespace Modules.Base.Converter.Scripts
 {
     public class ConverterModuleController : IModuleController
     {

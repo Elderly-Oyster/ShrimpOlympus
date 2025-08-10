@@ -1,5 +1,5 @@
 {
-    "name": "ConverterScreen",
+    "name": "Converter",
     "rootNamespace": "",
     "references": [
         "Core",

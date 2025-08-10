@@ -1,14 +1,14 @@
-﻿using CodeBase.Core.UI.Views;
+﻿using System.Globalization;
+using CodeBase.Core.UI.Views;
 using CodeBase.Services.Input;
 using Cysharp.Threading.Tasks;
 using R3;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
-using System.Globalization;
-using TMPro;
 
-namespace Modules.Base.ConverterScreen.Scripts
+namespace Modules.Base.Converter.Scripts
 {
     public class ConverterView : BaseView
     {

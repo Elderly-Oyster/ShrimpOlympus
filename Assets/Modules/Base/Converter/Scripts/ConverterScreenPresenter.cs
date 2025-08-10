@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using CodeBase.Core.Infrastructure.Modules;
+﻿using System;
+using System.Collections.Generic;
+using CodeBase.Core.Infrastructure;
 using Cysharp.Threading.Tasks;
 using Modules.Additional.DynamicBackground.Scripts;
 using R3;
 using UnityEngine;
-using VContainer;
-using System;
-using CodeBase.Core.Infrastructure;
 using Unit = R3.Unit;
 
-namespace Modules.Base.ConverterScreen.Scripts
+namespace Modules.Base.Converter.Scripts
 {
     public class ConverterScreenPresenter : IDisposable
     {

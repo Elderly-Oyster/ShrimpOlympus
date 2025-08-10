@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CodeBase.Core.Infrastructure;
@@ -8,9 +9,8 @@ using MediatR;
 using R3;
 using VContainer;
 using Unit = R3.Unit;
-using System;
 
-namespace Modules.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenu.Scripts
 {
     public class MainMenuRequest : IRequest<string> { }
 

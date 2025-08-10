@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CodeBase.Core.Patterns.Architecture.MVP;
 
-namespace Modules.Base.ConverterScreen.Scripts
+namespace Modules.Base.Converter.Scripts
 {
     public enum Currencies
     {

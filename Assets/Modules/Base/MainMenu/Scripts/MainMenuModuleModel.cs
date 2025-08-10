@@ -1,6 +1,6 @@
 ﻿using CodeBase.Core.Patterns.Architecture.MVP;
 
-namespace Modules.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenu.Scripts
 {
     public class MainMenuModuleModel : IModel
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Modules.Base.MainMenuScreen.Scripts
+namespace Modules.Base.MainMenu.Scripts
 {
     public readonly struct MainMenuCommands
     {
