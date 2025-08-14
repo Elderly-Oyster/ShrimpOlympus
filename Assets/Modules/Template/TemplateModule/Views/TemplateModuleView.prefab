@@ -352,10 +352,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <AnimationElement>k__BackingField: {fileID: 140403774526292463}
-  mainMenuButton: {fileID: 3212842411858370114}
+  exitButton: {fileID: 3212842411858370114}
   settingsPopupButton: {fileID: 1813068351255251490}
   musicToggle: {fileID: 3346561778418727547}
-  templateScreenTitle: {fileID: 2407338544286022845}
+  screenTitle: {fileID: 2407338544286022845}
 --- !u!114 &140403774526292463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,7 +742,7 @@ GameObject:
   - component: {fileID: 2865454834671757584}
   - component: {fileID: 2407338544286022845}
   m_Layer: 5
-  m_Name: Text
+  m_Name: HeaderText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

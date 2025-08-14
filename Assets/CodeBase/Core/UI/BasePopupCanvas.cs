@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CodeBase.Core.UI
 {
-    public abstract class BasePopupCanvas : BaseScreenCanvas
+    public abstract class BasePopupCanvas : BaseModuleCanvas
     {
         [SerializeField] private Transform popupParent;
         

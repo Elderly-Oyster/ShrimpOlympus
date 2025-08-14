@@ -118,6 +118,24 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
 
         public static Type GetViewType(MonoScript monoScript) => monoScript.GetClass();
 
+        private static Transform FindChildRecursively(Transform parent, string childName)
+        {
+            // First try to find at current level
+            Transform child = parent.Find(childName);
+            if (child != null)
+                return child;
+
+            // If not found, search in all children recursively
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                child = FindChildRecursively(parent.GetChild(i), childName);
+                if (child != null)
+                    return child;
+            }
+
+            return null;
+        }
+
         public static Component GetViewComponent(GameObject prefabContents, Type viewType)
         {
             Component component = prefabContents.GetComponent(viewType);
@@ -130,10 +148,10 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.AddPrefabTask
             string moduleName, Component newViewComponent, Type viewType)
         {
             string fieldName = $"{char.ToLower(moduleName[0])}{moduleName.Substring(1)}ScreenTitle";
-            Transform titleTransform = prefabContents.transform.Find("Title");
+            Transform titleTransform = FindChildRecursively(prefabContents.transform, "HeaderText");
             if (titleTransform == null)
             {
-                Debug.LogError("Title GameObject not found in prefab.");
+                Debug.LogError("HeaderText GameObject not found in prefab.");
                 return;
             }
 

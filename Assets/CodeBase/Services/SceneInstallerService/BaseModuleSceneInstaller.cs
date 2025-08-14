@@ -7,12 +7,12 @@ namespace CodeBase.Services.SceneInstallerService
 {
     public class BaseModuleSceneInstaller : SceneInstaller
     {
-        [SerializeField] private BaseScreenCanvas screensCanvas;
+        [SerializeField] private BaseModuleCanvas moduleCanvas;
         [SerializeField] private Camera mainCamera;
         
         public override void RegisterSceneDependencies(IContainerBuilder builder)
         {
-            builder.RegisterComponent(screensCanvas);
+            builder.RegisterComponent(moduleCanvas);
             builder.RegisterInstance(mainCamera);
         }
     }

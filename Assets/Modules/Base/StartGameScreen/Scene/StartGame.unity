@@ -846,7 +846,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  screensCanvas: {fileID: 1609517733}
+  moduleCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
   startGameView: {fileID: 2097883545}
 --- !u!1 &1381388253
@@ -1294,7 +1294,7 @@ GameObject:
   - component: {fileID: 1609517735}
   - component: {fileID: 1609517733}
   m_Layer: 5
-  m_Name: ScreenCanvas
+  m_Name: ModuleCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1879,7 +1879,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cd52333733b44748a2fd10cc161bcb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationElement: {fileID: 2097883547}
+  <AnimationElement>k__BackingField: {fileID: 0}
   continueButton: {fileID: 2097883543}
   progressBarCanvasGroup: {fileID: 1506299015}
   progressValueText: {fileID: 1624380901}

@@ -7,6 +7,7 @@ using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using MediatR;
 using R3;
+using UnityEngine;
 using Unit = R3.Unit;
 
 namespace Modules.Template.TemplateModule.Scripts
@@ -38,6 +39,8 @@ namespace Modules.Template.TemplateModule.Scripts
     /// 4. Customize module navigation logic
     /// 5. Implement your specific UI event handling
     /// 6. Add any additional services or systems your module needs
+    /// 
+    /// NOTE: Navigation to MainMenuModule is already implemented via exit button
     /// </summary>
     public class TemplatePresenter : IDisposable
     {
@@ -78,6 +81,7 @@ namespace Modules.Template.TemplateModule.Scripts
             );
 
             _templateView.SetupEventListeners(commands);
+            SubscribeToUIUpdates();
 
             _templateView.InitializeSoundToggle(isMusicOn: _audioSystem.MusicVolume != 0);
             await _templateView.Show();

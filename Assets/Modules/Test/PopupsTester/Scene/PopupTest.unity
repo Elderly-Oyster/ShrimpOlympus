@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -378,7 +377,7 @@ GameObject:
   - component: {fileID: 764246979}
   - component: {fileID: 764246978}
   m_Layer: 5
-  m_Name: ScreenCanvas
+  m_Name: ModuleCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -442,7 +441,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 2
@@ -919,7 +918,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49e2a4f768674beb8f46c7d610e266ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationElement: {fileID: 0}
+  <AnimationElement>k__BackingField: {fileID: 0}
   buttonsParent: {fileID: 106455366}
 --- !u!225 &1967170982
 CanvasGroup:

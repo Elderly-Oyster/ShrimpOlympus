@@ -7,7 +7,7 @@ namespace CodeBase.Core.UI
     /// Base abstract class for managing UI canvas functionality.
     /// Provides common methods and properties for UI canvas-related operations.
     /// </summary>
-    public abstract class BaseScreenCanvas : MonoBehaviour
+    public abstract class BaseModuleCanvas : MonoBehaviour
     {
         [SerializeField] protected CanvasScaler canvasScaler;
         [SerializeField] protected Camera uiCamera;
