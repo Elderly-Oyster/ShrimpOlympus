@@ -33,19 +33,22 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
             string scenePath = PathManager.CombinePaths(sceneFolderPath, $"{_moduleName}.unity");
             CreateNewScene(scenePath);
 
-            GameObject canvas = GameObjectFactory.CreateCanvas();
-            if (canvas == null)
-            {
-                Debug.LogError("Failed to create Canvas.");
-                return;
-            }
+            // Create template hierarchy structure that matches Template module scene layout
+            // This ensures consistent organization across all modules
+            GameObjectFactory.CreateTemplateHierarchy(_moduleName);
             
-            // Force asset database refresh after creating canvas to ensure it is indexed
+            // Get references to created objects at scene root level
+            GameObject systemsObject = GameObject.Find("Systems");
+            GameObject installerObject = systemsObject.transform.Find($"{_moduleName}ModuleInstaller").gameObject;
+            GameObject canvasObject = GameObject.Find("ModuleCanvas");
+            GameObject cameraObject = GameObject.Find("ModuleCamera");
+            
+            // Force asset database refresh after creating hierarchy to ensure it is indexed
             UnityEditor.AssetDatabase.Refresh();
 
             string viewPrefabPath = PathManager.CombinePaths(_targetModuleFolderPath, 
                 ModulePathCache.ViewsFolderName, $"{_moduleName}ModuleView.prefab");
-            GameObject viewInstance = GameObjectFactory.InstantiateViewPrefab(viewPrefabPath, canvas);
+            GameObject viewInstance = GameObjectFactory.InstantiateViewPrefab(viewPrefabPath, canvasObject);
             if (viewInstance == null)
             {
                 Debug.LogError("Failed to instantiate View prefab."); 
@@ -73,28 +76,14 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
             
             Debug.Log($"Successfully found installer type: {installerType.FullName}");
 
-            GameObject installerObject = GameObjectFactory.InstantiateInstaller(installerName, installerType);
-            if (installerObject == null)
-            {
-                Debug.LogError("Failed to instantiate Installer.");
-                return;
-            }
+            // Add installer component to the existing installer object
+            installerObject.AddComponent(installerType);
             
             // Force asset database refresh after creating installer to ensure it is indexed
             UnityEditor.AssetDatabase.Refresh();
 
-            Camera camera = GameObjectFactory.CreateModuleCamera();
-            if (camera == null)
-            {
-                Debug.LogError("Failed to create Module Camera.");
-                return;
-            }
-            
-            // Force asset database refresh after creating camera to ensure it is indexed
-            UnityEditor.AssetDatabase.Refresh();
-
-            AssignInstallerFields(installerObject, viewInstance, canvas, camera);
-            AssignScreensCanvasFields(canvas, camera);
+            AssignInstallerFields(installerObject, viewInstance, canvasObject, cameraObject.GetComponent<Camera>());
+            AssignScreensCanvasFields(canvasObject, cameraObject.GetComponent<Camera>());
             EditorSceneManager.SaveScene(SceneManager.GetActiveScene(), scenePath);
             EditorSceneManager.OpenScene(scenePath, OpenSceneMode.Single);
             
@@ -140,11 +129,11 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 Debug.LogError($"Available components on view instance: {string.Join(", ", viewInstance.GetComponents<Component>().Select(c => c.GetType().Name))}");
             }
 
-            var screenCanvas = canvas.GetComponent<BaseScreenCanvas>();
+            var screenCanvas = canvas.GetComponent<BaseModuleCanvas>();
             if (screenCanvas != null)
-                ReflectionHelper.SetPrivateField(installerComponent, "screenCanvas", screenCanvas);
+                ReflectionHelper.SetPrivateField(installerComponent, "moduleCanvas", screenCanvas);
             else
-                Debug.LogError("ScreenCanvas component not found on Canvas.");
+                Debug.LogError("ModuleCanvas component not found on Canvas.");
 
             if (camera != null)
                 ReflectionHelper.SetPrivateField(installerComponent, "mainCamera", camera);
@@ -154,10 +143,10 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
 
         private void AssignScreensCanvasFields(GameObject canvas, Camera camera)
         {
-            var screenCanvas = canvas.GetComponent<ScreenCanvas>();
+            var screenCanvas = canvas.GetComponent<ModuleCanvas>();
             if (screenCanvas == null)
             {
-                Debug.LogError("ScreenCanvas component not found on Canvas.");
+                Debug.LogError("ModuleCanvas component not found on Canvas.");
                 return;
             }
 

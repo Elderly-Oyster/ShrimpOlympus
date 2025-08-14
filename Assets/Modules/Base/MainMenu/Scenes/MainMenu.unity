@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 352199505}
   - component: {fileID: 352199503}
   m_Layer: 5
-  m_Name: ScreenCanvas
+  m_Name: ModuleCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -447,7 +447,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  screensCanvas: {fileID: 352199503}
+  moduleCanvas: {fileID: 352199503}
   mainCamera: {fileID: 838462636}
   mainMenuView: {fileID: 862981117}
 --- !u!4 &1461079802

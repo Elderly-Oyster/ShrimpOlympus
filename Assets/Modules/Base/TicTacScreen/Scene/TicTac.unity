@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectsToDelete: []
-  screensCanvas: {fileID: 1609517733}
+  moduleCanvas: {fileID: 1609517733}
   mainCamera: {fileID: 915724101}
   ticTacView: {fileID: 2097883547}
 --- !u!1 &1609517732
@@ -266,7 +266,7 @@ GameObject:
   - component: {fileID: 1609517735}
   - component: {fileID: 1609517733}
   m_Layer: 5
-  m_Name: ScreenCanvas
+  m_Name: ModuleCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

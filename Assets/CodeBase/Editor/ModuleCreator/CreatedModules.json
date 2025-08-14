@@ -8,5 +8,11 @@
   "Assets/Modules/Base/BonusGameModule",
   "Assets/Modules/Base/BonusGameModule",
   "Assets/Modules/Base/BonusGameModule",
-  "Assets/Modules/Base/BonusGameModule"
+  "Assets/Modules/Base/BonusGameModule",
+  "Assets/Modules/Base/NewModuleModule",
+  "Assets/Modules/Test/NewModuleModule",
+  "Assets/Modules/Test/NewModuleModule",
+  "Assets/Modules/Base/BonusGameModule",
+  "Assets/Modules/Base/HierarchyTestingModule",
+  "Assets/Modules/Base/HierarcyCrashTestingModule"
 ]

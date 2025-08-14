@@ -67,12 +67,27 @@ namespace CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask
                 return;
             }
 
-            FieldInfo field = obj.GetType().GetField(fieldName,
-                BindingFlags.NonPublic | BindingFlags.Instance);
+            FieldInfo field = FindFieldInHierarchy(obj.GetType(), fieldName);
             if (field != null)
                 field.SetValue(obj, value);
             else
-                Debug.LogError($"Field '{fieldName}' not found in {obj.GetType().Name}.");
+                Debug.LogError($"Field '{fieldName}' not found in {obj.GetType().Name} or its base classes.");
+        }
+
+        private static FieldInfo FindFieldInHierarchy(Type type, string fieldName)
+        {
+            // Search in current type and all base types
+            Type currentType = type;
+            while (currentType != null)
+            {
+                FieldInfo field = currentType.GetField(fieldName,
+                    BindingFlags.NonPublic | BindingFlags.Instance);
+                if (field != null)
+                    return field;
+                
+                currentType = currentType.BaseType;
+            }
+            return null;
         }
 
         public static Component GetComponentByName(GameObject gameObject, string componentName)

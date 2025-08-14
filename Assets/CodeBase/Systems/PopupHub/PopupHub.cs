@@ -18,7 +18,7 @@ using VContainer;
 
 namespace CodeBase.Systems.PopupHub
 {
-    //TODO Действия аналогичные с ScreenCanvas, или придумать что-то более подходящее
+    //TODO Действия аналогичные с ModuleCanvas, или придумать что-то более подходящее
 
     public class PopupHub : IPopupHub
     {

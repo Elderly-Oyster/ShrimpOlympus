@@ -1,6 +1,5 @@
 ﻿using CodeBase.Core.UI;
 using CodeBase.Editor.ModuleCreator.Tasks.CreateSceneTask;
-using CodeBase.Implementation.UI;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +19,7 @@ namespace CodeBase.Tests.Editor.ModuleCreator
             Assert.IsNotNull(scaler);
             GraphicRaycaster raycaster = canvas.GetComponent<GraphicRaycaster>();
             Assert.IsNotNull(raycaster);
-            BaseScreenCanvas screenCanvas = canvas.GetComponent<BaseScreenCanvas>();
+            BaseModuleCanvas screenCanvas = canvas.GetComponent<BaseModuleCanvas>();
             Assert.IsNotNull(screenCanvas);
             Object.DestroyImmediate(canvas);
         }

@@ -43,11 +43,13 @@ namespace Modules.Template.TemplateModule.Scripts
     /// 4. Customize event handling for your UI
     /// 5. Update validation methods for your UI elements
     /// 6. Add any additional UI functionality your module needs
+    /// 
+    /// NOTE: Exit button (exitButton) is already configured to return to MainMenuModule
     /// </summary>
     public class TemplateView : BaseView
     {
         [Header("UI Elements")]
-        [SerializeField] private Button mainMenuButton;
+        [SerializeField] private Button exitButton;
         [SerializeField] private Button settingsPopupButton;
         [SerializeField] private Toggle musicToggle;
         [SerializeField] private TMP_Text screenTitle;
@@ -73,7 +75,7 @@ namespace Modules.Template.TemplateModule.Scripts
         {
             _inputSystemService.SwitchToUI();
             
-            mainMenuButton.OnClickAsObservable()
+            exitButton.OnClickAsObservable()
                 .Where(_ => IsActive)
                 .Subscribe(_ => commands.OpenMainMenuCommand.Execute(default))
                 .AddTo(this);
@@ -88,11 +90,12 @@ namespace Modules.Template.TemplateModule.Scripts
                 .Subscribe(_ => commands.SoundToggleCommand.Execute(musicToggle.isOn))
                 .AddTo(this);
 
-            // Keyboard navigation support
+            // Keyboard navigation support - Escape key for exit
             var openMainMenuPerformedObservable =
                 _inputSystemService.GetPerformedObservable(_inputSystemService.InputActions.UI.Cancel);
 
             openMainMenuPerformedObservable
+                .Where(_ => IsActive)
                 .Subscribe(_ => commands.OpenMainMenuCommand.Execute(default))
                 .AddTo(this);
         }
@@ -101,7 +104,7 @@ namespace Modules.Template.TemplateModule.Scripts
         {
             await base.Show();
             _inputSystemService.SwitchToUI();
-            _inputSystemService.SetFirstSelectedObject(mainMenuButton);
+            _inputSystemService.SetFirstSelectedObject(exitButton);
         }
 
         public void SetTitle(string title)
@@ -116,12 +119,12 @@ namespace Modules.Template.TemplateModule.Scripts
 
         public void OnScreenEnabled()
         {
-            _inputSystemService.SetFirstSelectedObject(mainMenuButton);
+            _inputSystemService.SetFirstSelectedObject(exitButton);
         }
 
         private void ValidateUIElements()
         {
-            if (mainMenuButton == null) Debug.LogError($"{nameof(mainMenuButton)} is not assigned in {nameof(TemplateView)}");
+            if (exitButton == null) Debug.LogError($"{nameof(exitButton)} is not assigned in {nameof(TemplateView)}");
             if (settingsPopupButton == null) Debug.LogError($"{nameof(settingsPopupButton)} is not assigned in {nameof(TemplateView)}");
             if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(TemplateView)}");
             if (screenTitle == null) Debug.LogError($"{nameof(screenTitle)} is not assigned in {nameof(TemplateView)}");
