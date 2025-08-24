@@ -26,6 +26,7 @@ namespace CodeBase.Services
         
         public event Action OnSwitchToUI;
         public event Action OnSwitchToPlayerHumanoid;
+        public event Action OnSwitchToRoguelikeCharacterMode;
         
         public void Start()
         {
@@ -54,6 +55,15 @@ namespace CodeBase.Services
             InputActions.UI.Enable(); // UI остаётся включённым
             Debug.Log("Switched to PlayerHumanoid mode.");
             OnSwitchToPlayerHumanoid?.Invoke();
+        }
+
+        public void SwitchToRoguelikeCharacter()
+        {
+            InputActions.PlayerCar.Disable();
+            InputActions.UI.Disable();
+            InputActions.RoguelikeCharacter.Enable();
+            Debug.Log("Switched to RoguelikeCharacter mode.");
+            OnSwitchToRoguelikeCharacterMode?.Invoke();
         }
 
         public void DisableInputAndSaveActiveMaps()
