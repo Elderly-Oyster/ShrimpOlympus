@@ -2,6 +2,9 @@
     "name": "ServerSampleModule",
     "rootNamespace": "",
     "references": [
+        "Core",
+        "Systems",
+        "Services",
         "Unity.InputSystem",
         "Unity.TextMeshPro",
         "VContainer",
@@ -9,9 +12,7 @@
         "R3.Unity",
         "UniTask.DOTween",
         "DOTween.Modules",
-        "Core",
-        "Systems",
-        "Services"
+        "PurrNet.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
