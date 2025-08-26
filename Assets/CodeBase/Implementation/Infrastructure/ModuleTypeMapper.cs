@@ -4,7 +4,6 @@ using CodeBase.Core.Infrastructure;
 using CodeBase.Core.Infrastructure.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Modules.Base.Converter.Scripts;
-using Modules.Base.DeliveryTycoon.Scripts;
 using Modules.Base.MainMenu.Scripts;
 using Modules.Base.StartGameScreen.Scripts;
 using Modules.Base.TicTacScreen.Scripts;
@@ -28,7 +27,6 @@ namespace CodeBase.Implementation.Infrastructure
                 { ModulesMap.Converter, typeof(ConverterModuleController) },
                 { ModulesMap.MainMenu, typeof(MainMenuModuleController) },
                 { ModulesMap.TicTac, typeof(TicTacScreenPresenter) },
-                { ModulesMap.DeliveryTycoon, typeof(GameModuleController)}
             };
         }
 

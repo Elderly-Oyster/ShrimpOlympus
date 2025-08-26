@@ -4,34 +4,17 @@ using UnityEngine;
 
 public class CustomNetworkIdentity : NetworkBehaviour
 {
-    [SerializeField] private NetworkIdentity networkIdentity;
-    
-    private void Awake()
+    [SerializeField] private Color color;
+    [SerializeField] private Renderer renderer;
+
+    private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.A)) SetColor(color);
     }
 
-    private void Start()
+    [ServerRpc]
+    private void SetColor(Color color1)
     {
-        
+        renderer.material.color = color1;
     }
-
-    protected override void OnSpawned()
-    {
-        base.OnSpawned();
-
-        if (!isServer)
-            return;
-        
-        Instantiate(networkIdentity, Vector3.zero, Quaternion.identity);
-    }
-    
-    //One of the way to handle onSpawned
-    // protected override void OnSpawned(bool asServer)
-    // {
-    //     base.OnSpawned(asServer);
-    //
-    //     if (!asServer)
-    //         return;
-    // }
 }
