@@ -90,6 +90,36 @@ Assets/
 - **R3**: Reactive Extensions for Unity
 - **Stateless**: State management (optional)
 
+## ⚡ Reactive Programming with R3
+
+The repository extensively uses **R3 (Reactive Extensions for Unity)** for reactive programming patterns:
+
+### Key Features:
+- **Observable Streams**: Event-driven architecture with reactive data flows
+- **UI Binding**: Automatic UI updates based on data changes
+- **Event Handling**: Reactive event processing and composition
+- **Memory Management**: Automatic subscription cleanup with `AddTo()` pattern
+
+### Usage Examples:
+```csharp
+// Reactive button clicks with automatic cleanup
+button.OnClickAsObservable()
+    .Subscribe(_ => action.Invoke())
+    .AddTo(this);
+
+// Reactive data binding
+dataStream
+    .Where(x => x.IsValid)
+    .Subscribe(UpdateUI)
+    .AddTo(this);
+```
+
+### Benefits:
+- **Declarative Code**: Clear data flow and event handling
+- **Automatic Cleanup**: Prevents memory leaks with `AddTo()` pattern
+- **Composition**: Easy combination of multiple event streams
+- **Performance**: Efficient event processing and UI updates
+
 ## 📝 Features
 
 - **Not a game**: This is a technical repository for development and testing
