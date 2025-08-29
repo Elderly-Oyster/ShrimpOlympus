@@ -2,7 +2,7 @@
 using UnityEngine;
 using VContainer;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Base.StartGame.Scripts
 {
     public class StartGameScreenInstaller : BaseModuleSceneInstaller
     {

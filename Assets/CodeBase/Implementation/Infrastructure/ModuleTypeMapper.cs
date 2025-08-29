@@ -5,8 +5,8 @@ using CodeBase.Core.Infrastructure.Modules;
 using CodeBase.Core.Patterns.Architecture.MVP;
 using Modules.Base.Converter.Scripts;
 using Modules.Base.MainMenu.Scripts;
-using Modules.Base.StartGameScreen.Scripts;
-using Modules.Base.TicTacScreen.Scripts;
+using Modules.Base.StartGame.Scripts;
+using Modules.Base.TicTac.Scripts;
 using VContainer;
 
 namespace CodeBase.Implementation.Infrastructure

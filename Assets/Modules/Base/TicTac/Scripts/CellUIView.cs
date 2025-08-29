@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTac.Scripts
 {
     public class CellUIView : MonoBehaviour
     {

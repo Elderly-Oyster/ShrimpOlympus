@@ -6,7 +6,7 @@ using CodeBase.Services.LongInitializationServices;
 using DG.Tweening;
 using DG.Tweening.Core.Enums;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Base.StartGame.Scripts
 {
     public class StartGameModel : IModel
     {

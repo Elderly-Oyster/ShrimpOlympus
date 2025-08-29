@@ -1,6 +1,6 @@
 ﻿using CodeBase.Core.Patterns.Architecture.MVP;
 
-namespace Modules.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTac.Scripts
 {
     public class TicTacModel : IModel
     {

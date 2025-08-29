@@ -72,12 +72,7 @@ namespace CodeBase.Services.Input
             Debug.LogWarning("UI Action Map cannot be disabled as per design.");
             InputActions.UI.Enable(); // Ignore disable attempt
         }
-
-        /// <summary>
-        /// Checks if the UI Action Map is enabled.
-        /// </summary>
-        public bool IsUIInputEnabled() => InputActions.UI.enabled;
-
+        
         /// <summary>
         /// Checks if the Player Action Map is enabled.
         /// </summary>
@@ -146,7 +141,7 @@ namespace CodeBase.Services.Input
             ).Select(_ => Unit.Default); // Convert to Unit for unification
         }
 
-        // TODO: Study UnityEvent to Observable conversion (Unity built-in script)
+        // TODO: Watch UnityEvent to Observable conversion (Unity built-in script)
         // public static Observable<Unit> AsObservable(this UnityEngine.Events.UnityEvent unityEvent, CancellationToken cancellationToken = default)
         // {
         //     return Observable.FromEvent(h => new UnityAction(h), h => unityEvent.AddListener(h), h => unityEvent.RemoveListener(h), cancellationToken);
@@ -179,7 +174,6 @@ namespace CodeBase.Services.Input
                 _eventSystem = CreateEventSystem();
                 _uiInputModule.actionsAsset = InputActions.asset;
                 Object.DontDestroyOnLoad(_eventSystem.gameObject);
-                // Debug.Log("Created new EventSystem.");
             }
             else
             {

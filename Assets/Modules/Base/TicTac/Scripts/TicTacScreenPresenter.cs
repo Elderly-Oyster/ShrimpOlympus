@@ -4,7 +4,7 @@ using CodeBase.Core.Systems.PopupHub;
 using Cysharp.Threading.Tasks;
 using R3;
 
-namespace Modules.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTac.Scripts
 {
     public class TicTacScreenPresenter : IModuleController
     {

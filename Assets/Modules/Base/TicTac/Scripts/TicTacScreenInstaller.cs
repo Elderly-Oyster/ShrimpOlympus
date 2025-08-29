@@ -2,7 +2,7 @@
 using UnityEngine;
 using VContainer;
 
-namespace Modules.Base.TicTacScreen.Scripts
+namespace Modules.Base.TicTac.Scripts
 {
     public class TicTacScreenInstaller : BaseModuleSceneInstaller
     {

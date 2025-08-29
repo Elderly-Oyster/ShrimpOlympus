@@ -8,7 +8,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Modules.Base.StartGameScreen.Scripts
+namespace Modules.Base.StartGame.Scripts
 {
     public class StartGameView : BaseView
     {
