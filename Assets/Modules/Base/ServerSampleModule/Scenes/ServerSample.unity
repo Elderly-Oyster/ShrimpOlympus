@@ -957,8 +957,12 @@ MonoBehaviour:
   _directChildren: []
   _networkRules: {fileID: 0}
   _visitiblityRules: {fileID: 0}
-  color: {r: 0.2519278, g: 0.49481657, b: 1, a: 1}
+  color: {r: 0, g: 0, b: 0, a: 0}
   renderer: {fileID: 2120679252}
+  health:
+    _value: 100
+    _ownerAuth: 0
+    _sendIntervalInSeconds: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
