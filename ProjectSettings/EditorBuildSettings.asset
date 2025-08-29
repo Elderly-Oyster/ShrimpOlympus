@@ -9,10 +9,10 @@ EditorBuildSettings:
     path: Assets/Modules/Base/StartGameScreen/Scene/StartGame.unity
     guid: 2ccec45666a9743428ff3206922df110
   - enabled: 1
-    path: Assets/Modules/Base/MainMenuScreen/Scenes/MainMenu.unity
+    path: Assets/Modules/Base/MainMenu/Scenes/MainMenu.unity
     guid: 6c1b24bd33fa328499eebad74527aa27
   - enabled: 1
-    path: Assets/Modules/Base/ConverterScreen/Scene/Converter.unity
+    path: Assets/Modules/Base/Converter/Scene/Converter.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
     path: Assets/Modules/Base/TicTacScreen/Scene/TicTac.unity
@@ -23,7 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Modules/Additional/PopupsManager/Scenes/PopupsManager.unity
     guid: 0fd8d7b6ee230064aa06ea08bcb21331
-  - enabled: 1
+  - enabled: 0
     path: Assets/Modules/Base/DeliveryTycoon/Scene/DeliveryTycoon.unity
     guid: ffcdee76e8d0f8241b1ae125da20bfaf
   - enabled: 1

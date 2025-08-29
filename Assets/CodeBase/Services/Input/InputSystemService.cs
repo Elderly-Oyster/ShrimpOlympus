@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,17 +20,17 @@ namespace CodeBase.Services.Input
         private static InputSystemUIInputModule _uiInputModule;
         private static EventSystem _eventSystem;
 
-        private Dictionary<string, bool> _currentMapConfiguration = new();
         public InputSystem_Actions InputActions { get; private set; }
         
+        // Events for switching between input modes
         public event Action OnSwitchToUI;
-        public event Action OnSwitchToPlayerHumanoid;
+        public event Action OnSwitchToPlayer;
         
         public void Start()
         {
             CreateInputSystemActions();
             InitializeEventSystem();
-            InputActions.UI.Enable(); // Включаем UI Action Map по умолчанию
+            InputActions.UI.Enable(); // Enable UI Action Map by default
         }
         
         /// <summary>
@@ -39,45 +38,21 @@ namespace CodeBase.Services.Input
         /// </summary>
         public void SwitchToUI()
         {
-            InputActions.PlayerCar.Disable();
-            InputActions.UI.Enable(); // Убеждаемся, что UI всегда включён
+            // InputActions.Player.Disable(); // Commented out - Player ActionMap not implemented yet
+            InputActions.UI.Enable(); // Ensure UI is always enabled
             Debug.Log("Switched to UI mode.");
             OnSwitchToUI?.Invoke();
         }
 
         /// <summary>
-        /// Enables PlayerHumanoid Action Map, keeping UI enabled.
+        /// Enables Player Action Map, keeping UI enabled.
         /// </summary>
-        public void SwitchToPlayerCar()
+        public void SwitchToPlayer()
         {
-            InputActions.PlayerCar.Enable();
-            InputActions.UI.Enable(); // UI остаётся включённым
-            Debug.Log("Switched to PlayerHumanoid mode.");
-            OnSwitchToPlayerHumanoid?.Invoke();
-        }
-
-        public void DisableInputAndSaveActiveMaps()
-        {
-            _currentMapConfiguration.Clear();
-            
-            foreach (var map in InputActions.asset.actionMaps)
-            {
-                _currentMapConfiguration[map.name] = map.enabled;
-            }
-            
-            InputActions.Disable();
-        }
-
-        public void EnablePreviouslyActiveMaps()
-        {
-            foreach (var map in InputActions.asset.actionMaps)
-            {
-                if (_currentMapConfiguration.TryGetValue(map.name, out bool wasEnabled))
-                {
-                    if (wasEnabled)
-                        map.Enable();
-                }
-            }
+            // InputActions.Player.Enable(); // Commented out - Player ActionMap not implemented yet
+            InputActions.UI.Enable(); // UI remains enabled
+            Debug.Log("Switched to Player mode.");
+            OnSwitchToPlayer?.Invoke();
         }
 
         /// <summary>
@@ -95,7 +70,7 @@ namespace CodeBase.Services.Input
         public void DisableUI()
         {
             Debug.LogWarning("UI Action Map cannot be disabled as per design.");
-            InputActions.UI.Enable(); // Игнорируем попытку отключения
+            InputActions.UI.Enable(); // Ignore disable attempt
         }
 
         /// <summary>
@@ -104,9 +79,13 @@ namespace CodeBase.Services.Input
         public bool IsUIInputEnabled() => InputActions.UI.enabled;
 
         /// <summary>
-        /// Checks if the PlayerHumanoid Action Map is enabled.
+        /// Checks if the Player Action Map is enabled.
         /// </summary>
-        public bool IsPlayerHumanoidInputEnabled() => InputActions.PlayerCar.enabled;
+        public bool IsPlayerInputEnabled() 
+        {
+            // return InputActions.Player.enabled; // Commented out - Player ActionMap not implemented yet
+            return false; // Temporary return until Player ActionMap is implemented
+        }
         
         /// <summary>
         /// Sets the first selected object for UI navigation.
@@ -130,6 +109,11 @@ namespace CodeBase.Services.Input
             _eventSystem.SetSelectedGameObject(selectedObject.gameObject);
         }
         
+        /// <summary>
+        /// Gets the full action path for debugging purposes.
+        /// </summary>
+        /// <param name="action">The input action to get path for.</param>
+        /// <returns>Full path in format "MapName/ActionName".</returns>
         public string GetFullActionPath(InputAction action)
         {
             if (action == null)
@@ -143,21 +127,26 @@ namespace CodeBase.Services.Input
             return $"{mapName}/{actionName}";
         }
         
+        /// <summary>
+        /// Creates an Observable for input action performed events.
+        /// </summary>
+        /// <param name="action">The input action to observe.</param>
+        /// <returns>Observable that emits Unit when action is performed.</returns>
         public Observable<Unit> GetPerformedObservable(InputAction action)
         {
             if (action == null)
             {
                 Debug.LogWarning("InputAction is null. Cannot create Observable.");
-                return Observable.Empty<Unit>(); // Возвращаем пустой Observable в случае ошибки
+                return Observable.Empty<Unit>(); // Return empty Observable on error
             }
 
             return Observable.FromEvent(
                 (Action<InputAction.CallbackContext> h) => action.performed += h,
                 h => action.performed -= h
-            ).Select(_ => Unit.Default); // Преобразуем в Unit для унификации
+            ).Select(_ => Unit.Default); // Convert to Unit for unification
         }
 
-        //TODO Изучить (заглянуть бы внутрь...) Это скрипт из коробки юнити
+        // TODO: Study UnityEvent to Observable conversion (Unity built-in script)
         // public static Observable<Unit> AsObservable(this UnityEngine.Events.UnityEvent unityEvent, CancellationToken cancellationToken = default)
         // {
         //     return Observable.FromEvent(h => new UnityAction(h), h => unityEvent.AddListener(h), h => unityEvent.RemoveListener(h), cancellationToken);
@@ -172,7 +161,7 @@ namespace CodeBase.Services.Input
         {
             if (InputActions == null) return;
 
-            InputActions.PlayerCar.Disable();
+            // InputActions.Player.Disable(); // Commented out - Player ActionMap not implemented yet
             InputActions.UI.Disable();
             
             InputActions.Disable();

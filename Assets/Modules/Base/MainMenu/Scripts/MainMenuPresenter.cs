@@ -83,7 +83,6 @@ namespace Modules.Base.MainMenu.Scripts
             var commands = new MainMenuCommands(
                 _openConverterCommand,
                 _openTicTacCommand,
-                _openTycoonCommand,
                 _settingsPopupCommand,
                 _secondPopupCommand,
                 _toggleSoundCommand

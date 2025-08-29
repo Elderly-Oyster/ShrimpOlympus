@@ -803,7 +803,7 @@ PlayerSettings:
     PS5: TextMeshPro
     Stadia: TextMeshPro
     Standalone: UNITASK_DOTWEEN_SUPPORT;TextMeshPro
-    WebGL: TextMeshPro
+    WebGL: TextMeshPro;DOTWEEN;UNITASK_DOTWEEN_SUPPORT
     Windows Store Apps: TextMeshPro
     XboxOne: TextMeshPro
     iPhone: TextMeshPro

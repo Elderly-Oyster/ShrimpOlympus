@@ -12,7 +12,6 @@ namespace Modules.Base.MainMenu.Scripts
     {
         public readonly ReactiveCommand<Unit> OpenConverterCommand;
         public readonly ReactiveCommand<Unit> OpenTicTacCommand;
-        public readonly ReactiveCommand<Unit> OpenTycoonCommand;
         public readonly ReactiveCommand<Unit> SettingsPopupCommand;
         public readonly ReactiveCommand<Unit> SecondPopupCommand;
         public readonly ReactiveCommand<bool> SoundToggleCommand;
@@ -20,14 +19,12 @@ namespace Modules.Base.MainMenu.Scripts
         public MainMenuCommands(
             ReactiveCommand<Unit> openConverterCommand,
             ReactiveCommand<Unit> openTicTacCommand,
-            ReactiveCommand<Unit> openTycoonCommand,
             ReactiveCommand<Unit> settingsPopupCommand,
             ReactiveCommand<Unit> secondPopupCommand,
             ReactiveCommand<bool> soundToggleCommand)
         {
             OpenConverterCommand = openConverterCommand;
             OpenTicTacCommand = openTicTacCommand;
-            OpenTycoonCommand = openTycoonCommand;
             SettingsPopupCommand = settingsPopupCommand;
             SecondPopupCommand = secondPopupCommand;
             SoundToggleCommand = soundToggleCommand;
@@ -40,7 +37,6 @@ namespace Modules.Base.MainMenu.Scripts
         [SerializeField] private Button secondPopupButton;
         [SerializeField] private Button converterButton;
         [SerializeField] private Button ticTacButton;
-        [SerializeField] private Button tycoonButton;
         [SerializeField] private Toggle musicToggle;
 
         private InputSystemService _inputSystemService;
@@ -72,11 +68,6 @@ namespace Modules.Base.MainMenu.Scripts
             ticTacButton.OnClickAsObservable()
                 .Where(_ => IsActive)
                 .Subscribe(_ => commands.OpenTicTacCommand.Execute(default))
-                .AddTo(this);
-
-            tycoonButton.OnClickAsObservable()
-                .Where(_ => IsActive)
-                .Subscribe(_ => commands.OpenTycoonCommand.Execute(default))
                 .AddTo(this);
 
             settingsPopupButton.OnClickAsObservable()
@@ -116,7 +107,6 @@ namespace Modules.Base.MainMenu.Scripts
             if (secondPopupButton == null) Debug.LogError($"{nameof(secondPopupButton)} is not assigned in {nameof(MainMenuView)}");
             if (converterButton == null) Debug.LogError($"{nameof(converterButton)} is not assigned in {nameof(MainMenuView)}");
             if (ticTacButton == null) Debug.LogError($"{nameof(ticTacButton)} is not assigned in {nameof(MainMenuView)}");
-            if (tycoonButton == null) Debug.LogError($"{nameof(tycoonButton)} is not assigned in {nameof(MainMenuView)}");
             if (musicToggle == null) Debug.LogError($"{nameof(musicToggle)} is not assigned in {nameof(MainMenuView)}");
         }
     }
