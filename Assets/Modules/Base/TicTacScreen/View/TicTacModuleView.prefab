@@ -272,7 +272,7 @@ GameObject:
   - component: {fileID: 581037856043144597}
   - component: {fileID: 2633842654031411279}
   m_Layer: 5
-  m_Name: TicTacUIView
+  m_Name: TicTacModuleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
