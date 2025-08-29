@@ -1,4 +1,5 @@
 ﻿using CodeBase.Core.Patterns.Architecture.MVP;
+using System.Collections.Generic;
 
 namespace Modules.Base.TicTac.Scripts
 {
@@ -69,6 +70,24 @@ namespace Modules.Base.TicTac.Scripts
             IsGameOver = true;
             return true;
         }
+        
+        public int[][] GetWinningPositions()
+        {
+            var winningPositions = new List<int[]>();
+            
+            foreach (var pos in WinPositions)
+            {
+                if (Board[pos[0], pos[1]] == Board[pos[2], pos[3]] &&
+                    Board[pos[2], pos[3]] == Board[pos[4], pos[5]] &&
+                    Board[pos[0], pos[1]] != '\0')
+                {
+                    winningPositions.Add(pos);
+                }
+            }
+            
+            return winningPositions.ToArray();
+        }
+        
         public void Dispose() {}
     }
 }

@@ -47,11 +47,20 @@ namespace Modules.Base.TicTac.Scripts
         {
             _ticTacModel.InitializeGame();
             _newModuleView.gameObject.SetActive(false);
+            
+            // First setup event listeners to initialize cell views
             SubscribeToUIUpdates();
             _ticTacView.SetupEventListeners(_mainMenuCommand, _cellCommand, _restartCommand, 
                 _thirdPopupCommand);
-            _ticTacView.ClearBoard();
+            
+            // Show the view first
             await _newModuleView.Show();
+            
+            // Wait a frame to ensure all components are properly initialized
+            await UniTask.Yield();
+            
+            // Now clear the board after everything is ready
+            _ticTacView.ClearBoard();
         }
 
         public async UniTask Execute() => await _completionSource.Task;
@@ -80,6 +89,7 @@ namespace Modules.Base.TicTac.Scripts
             if (winner != '\0')
             {
                 _ticTacView.ShowWinner(winner);
+                _ticTacView.MarkWinningCells(_ticTacModel.GetWinningPositions());
                 _ticTacView.BlockBoard();
                 _ticTacView.AnimateRestartButton();
             }

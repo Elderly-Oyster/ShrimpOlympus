@@ -408,10 +408,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1609517737}
     m_Modifications:
+    - target: {fileID: 581037856043144597, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
+      propertyPath: m_Transition
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1141731889776401104, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: canvasGroup
       value: 
       objectReference: {fileID: 8485262377920194198}
+    - target: {fileID: 1141731889776401104, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
+      propertyPath: <AnimationElement>k__BackingField
+      value: 
+      objectReference: {fileID: 8485262377920194199}
     - target: {fileID: 2423300587383462799, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -422,7 +430,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3188841569138021983, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: m_Name
-      value: TicTacUIView
+      value: TicTacCellView
       objectReference: {fileID: 0}
     - target: {fileID: 7229969883785827177, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
       propertyPath: m_IsActive
@@ -522,6 +530,17 @@ CanvasGroup:
   m_CorrespondingSourceObject: {fileID: 6781735954023091426, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
   m_PrefabInstance: {fileID: 8485262377920194197}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8485262377920194199 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2633842654031411279, guid: ad51cfae8a3582d429c0e98a496c3e30, type: 3}
+  m_PrefabInstance: {fileID: 8485262377920194197}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d4c63c39374ea2977d276a9142466e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

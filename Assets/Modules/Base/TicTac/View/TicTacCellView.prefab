@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8891708831878851780}
   - component: {fileID: 5474714004580145293}
   m_Layer: 5
-  m_Name: CellUIView
+  m_Name: TicTacCellView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
